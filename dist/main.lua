@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.7  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.8  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -707,6 +707,102 @@ end
 return x
 end
 
+
+
+
+
+
+
+
+
+
+
+
+local function DownloadFile(v,x)
+local z=p.Request{Url=v,Method="GET"}
+local A=z and(z.Body or z)or""
+writefile(x,A)
+local B,C=pcall(getcustomasset,x)
+if B then return C end
+return nil
+end
+
+function p.ConvertGifToMp4(v,x,z,A)
+local B="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+local C=x.."/"..z.."-"..A..".mp4"
+if not B then return nil end
+local F=h:JSONEncode{
+tasks={
+["import-1"]={operation="import/url",url=v},
+["convert-1"]={operation="convert",input="import-1",input_format="gif",output_format="mp4"},
+["export-1"]={operation="export/url",input="convert-1"}
+}
+}
+local G,H=pcall(function()
+return p.Request{
+Url="https://api.cloudconvert.com/v2/jobs",
+Method="POST",
+Headers={Authorization=
+"Bearer "..B,
+["Content-Type"]="application/json",Accept=
+"application/json",
+},
+Body=F,
+}
+end)
+if not G or not H or not H.Body then return nil end
+local J,L=pcall(function()return h:JSONDecode(H.Body)end)
+if not J or not L or not L.data or not L.data.id then return nil end
+local M=L.data.id
+local N
+for O=1,60 do
+task.wait(0.5)
+local P,Q=pcall(function()
+return p.Request{
+Url="https://api.cloudconvert.com/v2/jobs/"..M,
+Method="GET",
+Headers={Authorization=
+"Bearer "..B,Accept=
+"application/json",
+}
+}
+end)
+if P and Q and Q.Body then
+local R,S=pcall(function()return h:JSONDecode(Q.Body)end)
+if R and S and S.data and S.data.tasks then
+for T,U in pairs(S.data.tasks)do
+if U.operation=="export/url"and U.status=="finished"and U.result and U.result.files and U.result.files[1]and U.result.files[1].url then
+N=U.result.files[1].url
+break
+end
+end
+end
+end
+if N then break end
+end
+if not N then return nil end
+local O=DownloadFile(N,C)
+return O
+end
+
+local function GetBaseUrl(v)
+return v:match"^[^%?]+"or v
+end
+
+local function LoadUrlMap(v)
+local x=v.."/urlmap.json"
+if isfile and isfile(x)then
+local z,A=pcall(function()return h:JSONDecode(readfile(x))end)
+if z and typeof(A)=="table"then return A end
+end
+return{}
+end
+
+local function SaveUrlMap(v,x)
+local z=v.."/urlmap.json"
+writefile(z,h:JSONEncode(x))
+end
+
 function p.Image(v,x,z,A,B,C,F,G)
 A=A or"Temp"
 x=p.SanitizeFilename(x)
@@ -751,33 +847,101 @@ if not isfolder(L)then makefolder(L)end
 end
 local M,N=pcall(function()
 task.spawn(function()
-local M=p.Request{Url=v,Method="GET"}
-local N=M and(M.Body or M)or""
-local O=v:match"^[^%?]+"or v
-local P=string.lower((O:match"%.([%w]+)$"or""))
-local Q
-if M and M.Headers then
-Q=M.Headers["Content-Type"]or M.Headers["content-type"]or M.Headers["Content-type"]
+local M=GetBaseUrl(v)
+local N=LoadUrlMap(L)
+local O=N[M]
+if O and O.mp4 and isfile and isfile(L.."/"..O.mp4)then
+local P,Q=pcall(getcustomasset,L.."/"..O.mp4)
+if P then
+local R=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=Q,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,z)})
+})
+R.Parent=H
+J.Visible=false
+R:Play()
+return
 end
-if not P or P==""then
-if Q then
-if string.find(Q,"gif")then P="gif"
-elseif string.find(Q,"jpeg")or string.find(Q,"jpg")then P="jpg"
-elseif string.find(Q,"png")then P="png"else P="png"end
+end
+if O and O.gif and isfile and isfile(L.."/"..O.gif)then
+local P,Q=pcall(getcustomasset,L.."/"..O.gif)
+if P and J then
+J.Image=Q
+J.ScaleType="Fit"
+end
+local R=p.ConvertGifToMp4(v,L,B,x)
+if R then
+O.mp4=B.."-"..x..".mp4"
+SaveUrlMap(L,N)
+local S=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=R,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,z)})
+})
+S.Parent=H
+J.Visible=false
+S:Play()
+return
+end
+end
+local P=p.Request{Url=v,Method="GET"}
+local Q=P and(P.Body or P)or""
+local R=GetBaseUrl(v)
+local S=string.lower((R:match"%.([%w]+)$"or""))
+local T
+if P and P.Headers then
+T=P.Headers["Content-Type"]or P.Headers["content-type"]or P.Headers["Content-type"]
+end
+if not S or S==""then
+if T then
+if string.find(T,"gif")then S="gif"
+elseif string.find(T,"jpeg")or string.find(T,"jpg")then S="jpg"
+elseif string.find(T,"png")then S="png"else S="png"end
 else
-P="png"
+S="png"
 end
 end
-local R=L.."/"..B.."-"..x.."."..P
-if P=="gif"then
+local U=B.."-"..x.."."..S
+local V=L.."/"..U
+writefile(V,Q)
+N[R]=N[R]or{}
+if S=="gif"then
+N[R].gif=U
+SaveUrlMap(L,N)
 if J then J.ScaleType="Fit"end
+local W=p.ConvertGifToMp4(v,L,B,x)
+if W then
+N[R].mp4=B.."-"..x..".mp4"
+SaveUrlMap(L,N)
+local X=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=W,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,z)})
+})
+X.Parent=H
+J.Visible=false
+X:Play()
+return
 end
-writefile(R,N)
-local S,T=pcall(getcustomasset,R)
-if S then
-if J then J.Image=T end
+end
+local W,X=pcall(getcustomasset,V)
+if W then
+if J then J.Image=X end
 else
-warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",R,tostring(T)))
+warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",V,tostring(X)))
 H:Destroy()
 return
 end
@@ -1550,7 +1714,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

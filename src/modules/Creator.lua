@@ -641,6 +641,102 @@ function Creator.SanitizeFilename(url)
     return filename
 end
 
+local function SafeGetEnv(key)
+    local ok, val = pcall(function()
+        if getgenv then
+            return getgenv()[key]
+        end
+        return nil
+    end)
+    if ok then return val end
+    return nil
+end
+
+local function DownloadFile(url, filePath)
+    local resp = Creator.Request({ Url = url, Method = "GET" })
+    local body = resp and (resp.Body or resp) or ""
+    writefile(filePath, body)
+    local ok, asset = pcall(getcustomasset, filePath)
+    if ok then return asset end
+    return nil
+end
+
+function Creator.ConvertGifToMp4(url, dir, Type, Name)
+    local apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+    local targetMp4 = dir .. "/" .. Type .. "-" .. Name .. ".mp4"
+    if not apiKey then return nil end
+    local jobBody = HttpService:JSONEncode({
+        tasks = {
+            ["import-1"] = { operation = "import/url", url = url },
+            ["convert-1"] = { operation = "convert", input = "import-1", input_format = "gif", output_format = "mp4" },
+            ["export-1"] = { operation = "export/url", input = "convert-1" }
+        }
+    })
+    local okCreate, createRes = pcall(function()
+        return Creator.Request({
+            Url = "https://api.cloudconvert.com/v2/jobs",
+            Method = "POST",
+            Headers = {
+                ["Authorization"] = "Bearer " .. apiKey,
+                ["Content-Type"] = "application/json",
+                ["Accept"] = "application/json",
+            },
+            Body = jobBody,
+        })
+    end)
+    if not okCreate or not createRes or not createRes.Body then return nil end
+    local parsedCreateOk, createData = pcall(function() return HttpService:JSONDecode(createRes.Body) end)
+    if not parsedCreateOk or not createData or not createData.data or not createData.data.id then return nil end
+    local jobId = createData.data.id
+    local fileUrl = nil
+    for i=1,60 do
+        task.wait(0.5)
+        local okStat, statRes = pcall(function()
+            return Creator.Request({
+                Url = "https://api.cloudconvert.com/v2/jobs/" .. jobId,
+                Method = "GET",
+                Headers = {
+                    ["Authorization"] = "Bearer " .. apiKey,
+                    ["Accept"] = "application/json",
+                }
+            })
+        end)
+        if okStat and statRes and statRes.Body then
+            local parsedStatOk, statData = pcall(function() return HttpService:JSONDecode(statRes.Body) end)
+            if parsedStatOk and statData and statData.data and statData.data.tasks then
+                for _, t in pairs(statData.data.tasks) do
+                    if t.operation == "export/url" and t.status == "finished" and t.result and t.result.files and t.result.files[1] and t.result.files[1].url then
+                        fileUrl = t.result.files[1].url
+                        break
+                    end
+                end
+            end
+        end
+        if fileUrl then break end
+    end
+    if not fileUrl then return nil end
+    local asset = DownloadFile(fileUrl, targetMp4)
+    return asset
+end
+
+local function GetBaseUrl(url)
+    return url:match("^[^%?]+") or url
+end
+
+local function LoadUrlMap(dir)
+    local mapPath = dir .. "/urlmap.json"
+    if isfile and isfile(mapPath) then
+        local ok, data = pcall(function() return HttpService:JSONDecode(readfile(mapPath)) end)
+        if ok and typeof(data) == "table" then return data end
+    end
+    return {}
+end
+
+local function SaveUrlMap(dir, map)
+    local mapPath = dir .. "/urlmap.json"
+    writefile(mapPath, HttpService:JSONEncode(map))
+end
+
 function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, ThemeTagName)
     Folder = Folder or "Temp"
     Name = Creator.SanitizeFilename(Name)
@@ -685,9 +781,55 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         end
         local success, respErr = pcall(function()
             task.spawn(function()
+                local urlKey = GetBaseUrl(Img)
+                local map = LoadUrlMap(dir)
+                local entry = map[urlKey]
+                if entry and entry.mp4 and isfile and isfile(dir .. "/" .. entry.mp4) then
+                    local okMp, mpAsset = pcall(getcustomasset, dir .. "/" .. entry.mp4)
+                    if okMp then
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = mpAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        return
+                    end
+                end
+                if entry and entry.gif and isfile and isfile(dir .. "/" .. entry.gif) then
+                    local okGif, gifAsset = pcall(getcustomasset, dir .. "/" .. entry.gif)
+                    if okGif and ImageLabel then
+                        ImageLabel.Image = gifAsset
+                        ImageLabel.ScaleType = "Fit"
+                    end
+                    local videoAsset = Creator.ConvertGifToMp4(Img, dir, Type, Name)
+                    if videoAsset then
+                        entry.mp4 = Type .. "-" .. Name .. ".mp4"
+                        SaveUrlMap(dir, map)
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = videoAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        return
+                    end
+                end
                 local resp = Creator.Request({ Url = Img, Method = "GET" })
                 local body = resp and (resp.Body or resp) or ""
-                local baseUrl = Img:match("^[^%?]+") or Img
+                local baseUrl = GetBaseUrl(Img)
                 local ext = string.lower((baseUrl:match("%.([%w]+)$") or ""))
                 local ctype = nil
                 if resp and resp.Headers then
@@ -702,16 +844,38 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                         ext = "png"
                     end
                 end
-                local FileName = dir .. "/" .. Type .. "-" .. Name .. "." .. ext
-        if ext == "gif" then
-            if ImageLabel then ImageLabel.ScaleType = "Fit" end
-        end
-                writefile(FileName, body)
-                local ok, asset = pcall(getcustomasset, FileName)
+                local FileName = Type .. "-" .. Name .. "." .. ext
+                local FullPath = dir .. "/" .. FileName
+                writefile(FullPath, body)
+                map[baseUrl] = map[baseUrl] or {}
+                if ext == "gif" then
+                    map[baseUrl].gif = FileName
+                    SaveUrlMap(dir, map)
+                    if ImageLabel then ImageLabel.ScaleType = "Fit" end
+                    local videoAsset = Creator.ConvertGifToMp4(Img, dir, Type, Name)
+                    if videoAsset then
+                        map[baseUrl].mp4 = Type .. "-" .. Name .. ".mp4"
+                        SaveUrlMap(dir, map)
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = videoAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        return
+                    end
+                end
+                local ok, asset = pcall(getcustomasset, FullPath)
                 if ok then
                     if ImageLabel then ImageLabel.Image = asset end
                 else
-                    warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s", FileName, tostring(asset)))
+                    warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s", FullPath, tostring(asset)))
                     ImageFrame:Destroy()
                     return
                 end
