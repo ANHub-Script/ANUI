@@ -32,14 +32,14 @@ function OpenButton.New(Window)
 
     local Title = New("TextLabel", {
         Text = Window.Title,
-        TextSize = 17,
+        TextSize = 10,
         FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
         BackgroundTransparency = 1,
         AutomaticSize = "XY",
     })
 
     local Drag = New("Frame", {
-        Size = UDim2.new(0,44-8,0,44-8),
+        Size = UDim2.new(0,22-8,0,22-8),
         BackgroundTransparency = 1, 
         Name = "Drag",
     }, {
@@ -47,7 +47,7 @@ function OpenButton.New(Window)
             Image = Creator.Icon("move")[1],
             ImageRectOffset = Creator.Icon("move")[2].ImageRectPosition,
             ImageRectSize = Creator.Icon("move")[2].ImageRectSize,
-            Size = UDim2.new(0,18,0,18),
+            Size = UDim2.new(0,9,0,9),
             BackgroundTransparency = 1,
             Position = UDim2.new(0.5,0,0.5,0),
             AnchorPoint = Vector2.new(0.5,0.5),
@@ -59,7 +59,7 @@ function OpenButton.New(Window)
     })
     local Divider = New("Frame", {
         Size = UDim2.new(0,1,1,0),
-        Position = UDim2.new(0,20+16,0.5,0),
+        Position = UDim2.new(0,10+8,0.5,0),
         AnchorPoint = Vector2.new(0,0.5),
         BackgroundColor3 = Color3.new(1,1,1),
         BackgroundTransparency = .9,
@@ -67,7 +67,7 @@ function OpenButton.New(Window)
 
     local Container = New("Frame", {
         Size = UDim2.new(0,0,0,0),
-        Position = UDim2.new(0.5,0,0,6+44/2),
+        Position = UDim2.new(0.5,0,0,6+22/2),
         AnchorPoint = Vector2.new(0.5,0.5),
         Parent = Window.Parent,
         BackgroundTransparency = 1,
@@ -75,7 +75,7 @@ function OpenButton.New(Window)
         Visible = false,
     })
     local Button = New("TextButton", {
-        Size = UDim2.new(0,0,0,44),
+        Size = UDim2.new(0,0,0,22),
         AutomaticSize = "X",
         Parent = Container,
         Active = false,
@@ -111,9 +111,8 @@ function OpenButton.New(Window)
         New("TextButton",{
             AutomaticSize = "XY",
             Active = true,
-            BackgroundTransparency = 1, -- .93
-            Size = UDim2.new(0,0,0,44-(4*2)),
-            --Position = UDim2.new(0,20+16+16+1,0,0),
+            BackgroundTransparency = 1,
+            Size = UDim2.new(0,0,0,22-(4*2)),
             BackgroundColor3 = Color3.new(1,1,1),
         }, {
             New("UICorner", {
@@ -127,8 +126,8 @@ function OpenButton.New(Window)
             }),
             Title,
             New("UIPadding", {
-                PaddingLeft = UDim.new(0,7+4),
-                PaddingRight = UDim.new(0,7+4),
+                PaddingLeft = UDim.new(0,6),
+                PaddingRight = UDim.new(0,6),
             }),
         }),
         New("UIPadding", {
@@ -155,7 +154,7 @@ function OpenButton.New(Window)
                 true,
                 Window.IconThemed
             )
-            Icon.Size = UDim2.new(0,22,0,22)
+            Icon.Size = UDim2.new(0,11,0,11)
             Icon.LayoutOrder = -1
             Icon.Parent = OpenButtonMain.Button.TextButton
         end
@@ -231,12 +230,12 @@ function OpenButton.New(Window)
         
         if OpenButtonModule.OnlyIcon == true and Title then
             Title.Visible = false
-            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,7)
-            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,7)
+            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,4)
+            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,4)
         elseif OpenButtonModule.OnlyIcon == false then
             Title.Visible = true
-            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,7+4)
-            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,7+4)
+            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,6)
+            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,6)
         end
         
         --OpenButtonMain:Visible((not OpenButtonModule.OnlyMobile) or (not Window.IsPC))

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.1  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.2  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1531,7 +1531,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4089,14 +4089,14 @@ local ah
 
 local ai=ac("TextLabel",{
 Text=af.Title,
-TextSize=17,
+TextSize=10,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 BackgroundTransparency=1,
 AutomaticSize="XY",
 })
 
 local aj=ac("Frame",{
-Size=UDim2.new(0,36,0,36),
+Size=UDim2.new(0,14,0,14),
 BackgroundTransparency=1,
 Name="Drag",
 },{
@@ -4104,7 +4104,7 @@ ac("ImageLabel",{
 Image=ab.Icon"move"[1],
 ImageRectOffset=ab.Icon"move"[2].ImageRectPosition,
 ImageRectSize=ab.Icon"move"[2].ImageRectSize,
-Size=UDim2.new(0,18,0,18),
+Size=UDim2.new(0,9,0,9),
 BackgroundTransparency=1,
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
@@ -4116,7 +4116,7 @@ ImageTransparency=.3,
 })
 local ak=ac("Frame",{
 Size=UDim2.new(0,1,1,0),
-Position=UDim2.new(0,36,0.5,0),
+Position=UDim2.new(0,18,0.5,0),
 AnchorPoint=Vector2.new(0,0.5),
 BackgroundColor3=Color3.new(1,1,1),
 BackgroundTransparency=.9,
@@ -4124,7 +4124,7 @@ BackgroundTransparency=.9,
 
 local al=ac("Frame",{
 Size=UDim2.new(0,0,0,0),
-Position=UDim2.new(0.5,0,0,28),
+Position=UDim2.new(0.5,0,0,17),
 AnchorPoint=Vector2.new(0.5,0.5),
 Parent=af.Parent,
 BackgroundTransparency=1,
@@ -4132,7 +4132,7 @@ Active=true,
 Visible=false,
 })
 local am=ac("TextButton",{
-Size=UDim2.new(0,0,0,44),
+Size=UDim2.new(0,0,0,22),
 AutomaticSize="X",
 Parent=al,
 Active=false,
@@ -4169,8 +4169,7 @@ ac("TextButton",{
 AutomaticSize="XY",
 Active=true,
 BackgroundTransparency=1,
-Size=UDim2.new(0,0,0,36),
-
+Size=UDim2.new(0,0,0,14),
 BackgroundColor3=Color3.new(1,1,1),
 },{
 ac("UICorner",{
@@ -4184,8 +4183,8 @@ VerticalAlignment="Center",
 }),
 ai,
 ac("UIPadding",{
-PaddingLeft=UDim.new(0,11),
-PaddingRight=UDim.new(0,11),
+PaddingLeft=UDim.new(0,6),
+PaddingRight=UDim.new(0,6),
 }),
 }),
 ac("UIPadding",{
@@ -4212,7 +4211,7 @@ af.Folder,
 true,
 af.IconThemed
 )
-ah.Size=UDim2.new(0,22,0,22)
+ah.Size=UDim2.new(0,11,0,11)
 ah.LayoutOrder=-1
 ah.Parent=ag.Button.TextButton
 end
@@ -4288,12 +4287,12 @@ end
 
 if aq.OnlyIcon==true and ai then
 ai.Visible=false
-am.TextButton.UIPadding.PaddingLeft=UDim.new(0,7)
-am.TextButton.UIPadding.PaddingRight=UDim.new(0,7)
+am.TextButton.UIPadding.PaddingLeft=UDim.new(0,4)
+am.TextButton.UIPadding.PaddingRight=UDim.new(0,4)
 elseif aq.OnlyIcon==false then
 ai.Visible=true
-am.TextButton.UIPadding.PaddingLeft=UDim.new(0,11)
-am.TextButton.UIPadding.PaddingRight=UDim.new(0,11)
+am.TextButton.UIPadding.PaddingLeft=UDim.new(0,6)
+am.TextButton.UIPadding.PaddingRight=UDim.new(0,6)
 end
 
 
@@ -4329,6 +4328,7 @@ end
 
 
 return aa end function a.y()
+
 local aa={}
 
 local ab=a.load'b'
