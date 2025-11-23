@@ -668,21 +668,35 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         ImageFrame.ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
         ImageFrame.ImageLabel.ImageRectSize = ic[2].ImageRectSize
     elseif string.find(Img,"http") then
-        local ext = string.lower(string.match(Img, "%.([%w]+)$") or "png")
         local dir = "ANUI/" .. Folder .. "/assets"
         if isfolder and makefolder then
             if not isfolder("ANUI") then makefolder("ANUI") end
             if not isfolder("ANUI/" .. Folder) then makefolder("ANUI/" .. Folder) end
             if not isfolder(dir) then makefolder(dir) end
         end
-        local FileName = dir .. "/" .. Type .. "-" .. Name .. "." .. ext
-        if ext == "gif" then
-            ImageFrame.ImageLabel.ScaleType = "Fit"
-        end
         local success, respErr = pcall(function()
             task.spawn(function()
                 local resp = Creator.Request({ Url = Img, Method = "GET" })
                 local body = resp and (resp.Body or resp) or ""
+                local baseUrl = Img:match("^[^%?]+") or Img
+                local ext = string.lower((baseUrl:match("%.([%w]+)$") or ""))
+                local ctype = nil
+                if resp and resp.Headers then
+                    ctype = resp.Headers["Content-Type"] or resp.Headers["content-type"] or resp.Headers["Content-type"]
+                end
+                if not ext or ext == "" then
+                    if ctype then
+                        if string.find(ctype, "gif") then ext = "gif"
+                        elseif string.find(ctype, "jpeg") or string.find(ctype, "jpg") then ext = "jpg"
+                        elseif string.find(ctype, "png") then ext = "png" else ext = "png" end
+                    else
+                        ext = "png"
+                    end
+                end
+                local FileName = dir .. "/" .. Type .. "-" .. Name .. "." .. ext
+                if ext == "gif" then
+                    ImageFrame.ImageLabel.ScaleType = "Fit"
+                end
                 writefile(FileName, body)
                 local ok, asset = pcall(getcustomasset, FileName)
                 if ok then

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.5  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.6  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -734,34 +734,48 @@ H.ImageLabel.Image=J[1]
 H.ImageLabel.ImageRectOffset=J[2].ImageRectPosition
 H.ImageLabel.ImageRectSize=J[2].ImageRectSize
 elseif string.find(v,"http")then
-local J=string.lower(string.match(v,"%.([%w]+)$")or"png")
-local L="ANUI/"..A.."/assets"
+local J="ANUI/"..A.."/assets"
 if isfolder and makefolder then
 if not isfolder"ANUI"then makefolder"ANUI"end
 if not isfolder("ANUI/"..A)then makefolder("ANUI/"..A)end
-if not isfolder(L)then makefolder(L)end
+if not isfolder(J)then makefolder(J)end
 end
-local M=L.."/"..B.."-"..x.."."..J
-if J=="gif"then
+local L,M=pcall(function()
+task.spawn(function()
+local L=p.Request{Url=v,Method="GET"}
+local M=L and(L.Body or L)or""
+local N=v:match"^[^%?]+"or v
+local O=string.lower((N:match"%.([%w]+)$"or""))
+local P
+if L and L.Headers then
+P=L.Headers["Content-Type"]or L.Headers["content-type"]or L.Headers["Content-type"]
+end
+if not O or O==""then
+if P then
+if string.find(P,"gif")then O="gif"
+elseif string.find(P,"jpeg")or string.find(P,"jpg")then O="jpg"
+elseif string.find(P,"png")then O="png"else O="png"end
+else
+O="png"
+end
+end
+local Q=J.."/"..B.."-"..x.."."..O
+if O=="gif"then
 H.ImageLabel.ScaleType="Fit"
 end
-local N,O=pcall(function()
-task.spawn(function()
-local N=p.Request{Url=v,Method="GET"}
-local O=N and(N.Body or N)or""
-writefile(M,O)
-local P,Q=pcall(getcustomasset,M)
-if P then
-H.ImageLabel.Image=Q
+writefile(Q,M)
+local R,S=pcall(getcustomasset,Q)
+if R then
+H.ImageLabel.Image=S
 else
-warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",M,tostring(Q)))
+warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",Q,tostring(S)))
 H:Destroy()
 return
 end
 end)
 end)
-if not N then
-warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(O))
+if not L then
+warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(M))
 H:Destroy()
 end
 elseif v==""then
@@ -1527,7 +1541,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -3237,6 +3251,161 @@ Rotation=60,
 }),
 
 Icon=Color3.fromHex"#ffffff",
+},
+
+NordTheme={
+Name="Nord",
+
+Accent=Color3.fromHex"#88c0d0",
+Dialog=Color3.fromHex"#3b4252",
+Outline=Color3.fromHex"#eceff4",
+Text=Color3.fromHex"#eceff4",
+Placeholder=Color3.fromHex"#81a1c1",
+Background=Color3.fromHex"#2e3440",
+Button=Color3.fromHex"#5e81ac",
+Icon=Color3.fromHex"#8fbcbb",
+Toggle=Color3.fromHex"#a3be8c",
+Checkbox=Color3.fromHex"#81a1c1",
+},
+DraculaTheme={
+Name="Dracula",
+
+Accent=Color3.fromHex"#ff79c6",
+Dialog=Color3.fromHex"#44475a",
+Outline=Color3.fromHex"#f8f8f2",
+Text=Color3.fromHex"#f8f8f2",
+Placeholder=Color3.fromHex"#6272a4",
+Background=Color3.fromHex"#282a36",
+Button=Color3.fromHex"#bd93f9",
+Icon=Color3.fromHex"#50fa7b",
+Toggle=Color3.fromHex"#50fa7b",
+Checkbox=Color3.fromHex"#8be9fd",
+},
+TokyoNight={
+Name="Tokyo Night",
+
+Accent=Color3.fromHex"#7aa2f7",
+Dialog=Color3.fromHex"#16161e",
+Outline=Color3.fromHex"#c0caf5",
+Text=Color3.fromHex"#c0caf5",
+Placeholder=Color3.fromHex"#565f89",
+Background=Color3.fromHex"#1a1b26",
+Button=Color3.fromHex"#9ece6a",
+Icon=Color3.fromHex"#7aa2f7",
+Toggle=Color3.fromHex"#9ece6a",
+Checkbox=Color3.fromHex"#7aa2f7",
+},
+OneDark={
+Name="One Dark",
+
+Accent=Color3.fromHex"#61afef",
+Dialog=Color3.fromHex"#2c323c",
+Outline=Color3.fromHex"#abb2bf",
+Text=Color3.fromHex"#abb2bf",
+Placeholder=Color3.fromHex"#5c6370",
+Background=Color3.fromHex"#1e2127",
+Button=Color3.fromHex"#e06c75",
+Icon=Color3.fromHex"#56b6c2",
+Toggle=Color3.fromHex"#98c379",
+Checkbox=Color3.fromHex"#61afef",
+},
+Gruvbox={
+Name="Gruvbox",
+
+Accent=Color3.fromHex"#d65c0b",
+Dialog=Color3.fromHex"#3c3836",
+Outline=Color3.fromHex"#ebdbb2",
+Text=Color3.fromHex"#ebdbb2",
+Placeholder=Color3.fromHex"#928374",
+Background=Color3.fromHex"#282828",
+Button=Color3.fromHex"#b8bb26",
+Icon=Color3.fromHex"#83a598",
+Toggle=Color3.fromHex"#b8bb26",
+Checkbox=Color3.fromHex"#d3869b",
+},
+SolarizedDark={
+Name="Solarized Dark",
+
+Accent=Color3.fromHex"#268bd2",
+Dialog=Color3.fromHex"#073642",
+Outline=Color3.fromHex"#93a1a1",
+Text=Color3.fromHex"#93a1a1",
+Placeholder=Color3.fromHex"#586e75",
+Background=Color3.fromHex"#002b36",
+Button=Color3.fromHex"#2aa198",
+Icon=Color3.fromHex"#859900",
+Toggle=Color3.fromHex"#859900",
+Checkbox=Color3.fromHex"#268bd2",
+},
+MaterialDark={
+Name="Material Dark",
+
+Accent=Color3.fromHex"#bb86fc",
+Dialog=Color3.fromHex"#1e1e1e",
+Outline=Color3.fromHex"#fffbfe",
+Text=Color3.fromHex"#e1e1e6",
+Placeholder=Color3.fromHex"#8a8a8f",
+Background=Color3.fromHex"#121212",
+Button=Color3.fromHex"#6200ee",
+Icon=Color3.fromHex"#03dac6",
+Toggle=Color3.fromHex"#03dac6",
+Checkbox=Color3.fromHex"#bb86fc",
+},
+CyberpunkPink={
+Name="Cyberpunk Pink",
+
+Accent=Color3.fromHex"#ff006e",
+Dialog=Color3.fromHex"#0a0012",
+Outline=Color3.fromHex"#ffbe0b",
+Text=Color3.fromHex"#ffffff",
+Placeholder=Color3.fromHex"#8338ec",
+Background=Color3.fromHex"#050008",
+Button=Color3.fromHex"#ff006e",
+Icon=Color3.fromHex"#ffbe0b",
+Toggle=Color3.fromHex"#06ffa5",
+Checkbox=Color3.fromHex"#8338ec",
+},
+OceanBlue={
+Name="Ocean Blue",
+
+Accent=Color3.fromHex"#0a7ea4",
+Dialog=Color3.fromHex"#0d2c3e",
+Outline=Color3.fromHex"#b0e0e6",
+Text=Color3.fromHex"#d4f1f4",
+Placeholder=Color3.fromHex"#4a90a4",
+Background=Color3.fromHex"#061621",
+Button=Color3.fromHex"#1695a0",
+Icon=Color3.fromHex"#1db5d9",
+Toggle=Color3.fromHex"#40b5b5",
+Checkbox=Color3.fromHex"#0a7ea4",
+},
+NeonGreen={
+Name="Neon Green",
+
+Accent=Color3.fromHex"#00ff00",
+Dialog=Color3.fromHex"#0a1f0a",
+Outline=Color3.fromHex"#00ff00",
+Text=Color3.fromHex"#00ff00",
+Placeholder=Color3.fromHex"#00aa00",
+Background=Color3.fromHex"#001a00",
+Button=Color3.fromHex"#00dd00",
+Icon=Color3.fromHex"#00ff00",
+Toggle=Color3.fromHex"#00ff00",
+Checkbox=Color3.fromHex"#00ff66",
+},
+SoftPastel={
+Name="Soft Pastel",
+
+Accent=Color3.fromHex"#e0bbea",
+Dialog=Color3.fromHex"#faf5f0",
+Outline=Color3.fromHex"#c4b5a0",
+Text=Color3.fromHex"#5a4a4a",
+Placeholder=Color3.fromHex"#b8a0a0",
+Background=Color3.fromHex"#fef9f5",
+Button=Color3.fromHex"#d4a5d4",
+Icon=Color3.fromHex"#c9a8c9",
+Toggle=Color3.fromHex"#a8d4a8",
+Checkbox=Color3.fromHex"#b8d4e0",
 },
 }
 end end function a.t()
