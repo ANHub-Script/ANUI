@@ -1,0 +1,2720 @@
+{
+    "AddTheme": "function",
+    "CreateWindow": "function",
+    "Creator": {
+        "AddFontObject": "function",
+        "AddLangObject": "function",
+        "AddSignal": "function",
+        "AddThemeObject": "function",
+        "CanDraggable": true,
+        "ChangeTranslationKey": "function",
+        "Colors": {
+            "Blue": "#039be5",
+            "Green": "#43a047",
+            "Grey": "#484848",
+            "Orange": "#f57c00",
+            "Red": "#e53935",
+            "White": "#ffffff"
+        },
+        "DefaultProperties": {
+            "CanvasGroup": {
+                "BackgroundColor3": "userdata",
+                "BorderSizePixel": 0
+            },
+            "Frame": {
+                "BackgroundColor3": "userdata",
+                "BorderSizePixel": 0
+            },
+            "ImageButton": {
+                "AutoButtonColor": false,
+                "BackgroundColor3": "userdata",
+                "BorderSizePixel": 0
+            },
+            "ImageLabel": {
+                "BackgroundColor3": "userdata",
+                "BackgroundTransparency": 1,
+                "BorderSizePixel": 0
+            },
+            "ScreenGui": {
+                "ResetOnSpawn": false,
+                "ZIndexBehavior": "Sibling"
+            },
+            "ScrollingFrame": {
+                "BorderSizePixel": 0,
+                "ScrollBarImageTransparency": 1
+            },
+            "TextBox": {
+                "BackgroundColor3": "userdata",
+                "BorderColor3": "userdata",
+                "ClearTextOnFocus": false,
+                "Text": "",
+                "TextColor3": "userdata",
+                "TextSize": 14
+            },
+            "TextButton": {
+                "AutoButtonColor": false,
+                "BackgroundColor3": "userdata",
+                "BorderSizePixel": 0,
+                "Text": "",
+                "TextColor3": "userdata",
+                "TextSize": 14
+            },
+            "TextLabel": {
+                "BackgroundColor3": "userdata",
+                "BorderSizePixel": 0,
+                "RichText": true,
+                "Text": "",
+                "TextColor3": "userdata",
+                "TextSize": 14
+            },
+            "UIListLayout": {
+                "SortOrder": "LayoutOrder"
+            },
+            "VideoFrame": {
+                "BorderSizePixel": 0
+            }
+        },
+        "DisconnectAll": "function",
+        "Drag": "function",
+        "Font": "rbxassetid://12187365364",
+        "FontObjects": [
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata"
+        ],
+        "GetThemeProperty": "function",
+        "Icon": "function",
+        "Image": "function",
+        "Init": "function",
+        "Language": "ru",
+        "Localization": {
+            "DefaultLanguage": "en",
+            "Enabled": true,
+            "Prefix": "loc:",
+            "Translations": {
+                "en": {
+                    "APPEARANCE": "Appearance",
+                    "CONFIGURATION": "Configuration",
+                    "FEATURES": "Features",
+                    "LIB_DESC": "Beautiful UI library for Roblox",
+                    "LOAD_CONFIG": "Load Configuration",
+                    "SAVE_CONFIG": "Save Configuration",
+                    "SETTINGS": "Settings",
+                    "THEME_SELECT": "Select Theme",
+                    "TRANSPARENCY": "Window Transparency",
+                    "UI_ELEMENTS": "UI Elements",
+                    "UTILITIES": "Utilities",
+                    "WELCOME": "Welcome to ANUI!",
+                    "WINDUI_EXAMPLE": "ANUI Example"
+                },
+                "ru": {
+                    "APPEARANCE": "Внешний вид",
+                    "CONFIGURATION": "Конфигурация",
+                    "FEATURES": "Функционал",
+                    "LIB_DESC": "Библиотека для создания красивых интерфейсов",
+                    "LOAD_CONFIG": "Загрузить конфигурацию",
+                    "SAVE_CONFIG": "Сохранить конфигурацию",
+                    "SETTINGS": "Настройки",
+                    "THEME_SELECT": "Выберите тему",
+                    "TRANSPARENCY": "Прозрачность окна",
+                    "UI_ELEMENTS": "UI Элементы",
+                    "UTILITIES": "Инструменты",
+                    "WELCOME": "Добро пожаловать в ANUI!",
+                    "WINDUI_EXAMPLE": "ANUI Пример"
+                }
+            }
+        },
+        "LocalizationObjects": [
+            {
+                "Object": "userdata",
+                "TranslationId": "LIB_DESC"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "WINDUI_EXAMPLE"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "WELCOME"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "WINDUI_EXAMPLE"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "FEATURES"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "SETTINGS"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "UTILITIES"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "UI_ELEMENTS"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "UI_ELEMENTS"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "APPEARANCE"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "APPEARANCE"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "CONFIGURATION"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "CONFIGURATION"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "THEME_SELECT"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "TRANSPARENCY"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "SAVE_CONFIG"
+            },
+            {
+                "Object": "userdata",
+                "TranslationId": "LOAD_CONFIG"
+            }
+        ],
+        "New": "function",
+        "NewRoundFrame": "function",
+        "Objects": {
+            "Background": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Background"
+                }
+            },
+            "CanvasGroup": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Accent"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Button"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Button"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Dialog"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "Frame": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageButton": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Outline"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Background"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Accent"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Dialog"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Outline"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Accent"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Outline"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Background"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Outline"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Accent"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "ImageLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Icon"
+                }
+            },
+            "Layer": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Button"
+                }
+            },
+            "Layer": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Button"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Outline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            },
+            "Squircle": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "Squircle": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Button"
+                }
+            },
+            "SquircleOutline": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Outline"
+                }
+            },
+            "SquircleOutline": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextBox": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextBox": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextBox": {
+                "Object": "userdata",
+                "Properties": {
+                    "PlaceholderColor3": "PlaceholderText",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": false
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": false
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {}
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "BackgroundColor3": "Text",
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Icon"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "TextLabel": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "Title": {
+                "Object": "userdata",
+                "Properties": {
+                    "TextColor3": "Text"
+                }
+            },
+            "UIStroke": {
+                "Object": "userdata",
+                "Properties": {
+                    "Color": "Text"
+                }
+            },
+            "UserIcon": {
+                "Object": "userdata",
+                "Properties": {
+                    "ImageColor3": "Text"
+                }
+            }
+        },
+        "Request": "function",
+        "SafeCallback": "function",
+        "SetDraggable": "function",
+        "SetLangForObject": "function",
+        "SetLanguage": "function",
+        "SetTheme": "function",
+        "Signals": [
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata",
+            "userdata"
+        ],
+        "Theme": {
+            "Accent": "#18181b",
+            "Background": "#101010",
+            "Button": "#52525b",
+            "Dialog": "#18181b",
+            "Icon": "#a1a1aa",
+            "Name": "Dark",
+            "Outline": "#FFFFFF",
+            "Placeholder": "#999999",
+            "Text": "#FFFFFF"
+        },
+        "Themes": {
+            "Amber": {
+                "Accent": "#f59e0b",
+                "Background": "#78350f",
+                "Button": "#f59e0b",
+                "Icon": "#fde68a",
+                "Name": "Amber",
+                "Outline": "#fef3c7",
+                "Placeholder": "#fcd34d",
+                "Text": "#fef3c7"
+            },
+            "Dark": "[Circular Reference]",
+            "Emerald": {
+                "Accent": "#10b981",
+                "Background": "#064e3b",
+                "Button": "#10b981",
+                "Icon": "#a7f3d0",
+                "Name": "Emerald",
+                "Outline": "#d1fae5",
+                "Placeholder": "#6ee7b7",
+                "Text": "#d1fae5"
+            },
+            "Indigo": {
+                "Accent": "#6366f1",
+                "Background": "#312e81",
+                "Button": "#6366f1",
+                "Icon": "#c7d2fe",
+                "Name": "Indigo",
+                "Outline": "#e0e7ff",
+                "Placeholder": "#a5b4fc",
+                "Text": "#e0e7ff"
+            },
+            "Light": {
+                "Accent": "#FFFFFF",
+                "Background": "#e4e4e7",
+                "Button": "#18181b",
+                "Dialog": "#f4f4f5",
+                "Icon": "#52525b",
+                "Name": "Light",
+                "Outline": "#09090b",
+                "Placeholder": "#777777",
+                "Text": "#000000"
+            },
+            "Plant": {
+                "Accent": "#22c55e",
+                "Background": "#14532d",
+                "Button": "#22c55e",
+                "Icon": "#86efac",
+                "Name": "Plant",
+                "Outline": "#dcfce7",
+                "Placeholder": "#bbf7d0",
+                "Text": "#dcfce7"
+            },
+            "Red": {
+                "Accent": "#ef4444",
+                "Background": "#7f1d1d",
+                "Button": "#ef4444",
+                "Icon": "#fecaca",
+                "Name": "Red",
+                "Outline": "#fee2e2",
+                "Placeholder": "#fca5a5",
+                "Text": "#ffe4e6"
+            },
+            "Rose": {
+                "Accent": "#f43f5e",
+                "Background": "#881337",
+                "Button": "#e11d48",
+                "Icon": "#fecdd3",
+                "Name": "Rose",
+                "Outline": "#ffe4e6",
+                "Placeholder": "#fda4af",
+                "Text": "#ffe4e6"
+            },
+            "Sky": {
+                "Accent": "#0ea5e9",
+                "Background": "#075985",
+                "Button": "#0ea5e9",
+                "Icon": "#bae6fd",
+                "Name": "Sky",
+                "Outline": "#e0f2fe",
+                "Placeholder": "#7dd3fc",
+                "Text": "#e0f2fe"
+            },
+            "Violet": {
+                "Accent": "#8b5cf6",
+                "Background": "#4c1d95",
+                "Button": "#8b5cf6",
+                "Icon": "#ddd6fe",
+                "Name": "Violet",
+                "Outline": "#ede9fe",
+                "Placeholder": "#c4b5fd",
+                "Text": "#ede9fe"
+            }
+        },
+        "Tween": "function",
+        "UpdateFont": "function",
+        "UpdateLang": "function",
+        "UpdateTheme": "function",
+        "ANUI": "[Circular Reference]"
+    },
+    "DropdownGui": "userdata",
+    "GetCurrentTheme": "function",
+    "GetThemes": "function",
+    "GetTransparency": "function",
+    "GetWindowSize": "function",
+    "Gradient": "function",
+    "Localization": "function",
+    "LocalizationModule": {
+        "New": "function"
+    },
+    "NotificationGui": "userdata",
+    "Notify": "function",
+    "Popup": "function",
+    "ScreenGui": "userdata",
+    "Services": {
+        "pandadevelopment": {
+            "Args": [
+                "ServiceId"
+            ],
+            "Icon": "panda",
+            "Name": "Panda Development",
+            "New": "function"
+        },
+        "platoboost": {
+            "Args": [
+                "ServiceId",
+                "Secret"
+            ],
+            "Icon": "rbxassetid://75920162824531",
+            "Name": "Platoboost",
+            "New": "function"
+        }
+    },
+    "SetFont": "function",
+    "SetLanguage": "function",
+    "SetNotificationLower": "function",
+    "SetTheme": "function",
+    "Theme": "[Circular Reference]",
+    "Themes": "[Circular Reference]",
+    "TransparencyValue": 0.2,
+    "UIScale": 1,
+    "Version": "1.6.4",
+    "Window": {
+        "Author": "loc:WELCOME",
+        "BackgroundImageTransparency": 0,
+        "CanDropdown": true,
+        "CanResize": true,
+        "Close": "function",
+        "Closed": false,
+        "ConfigManager": {
+            "AllConfigs": "function",
+            "Configs": {},
+            "CreateConfig": "function",
+            "Folder": "WindUI_Example",
+            "GetConfig": "function",
+            "Init": "function",
+            "Parser": {
+                "Colorpicker": {
+                    "Load": "function",
+                    "Save": "function"
+                },
+                "Dropdown": {
+                    "Load": "function",
+                    "Save": "function"
+                },
+                "Input": {
+                    "Load": "function",
+                    "Save": "function"
+                },
+                "Keybind": {
+                    "Load": "function",
+                    "Save": "function"
+                },
+                "Slider": {
+                    "Load": "function",
+                    "Save": "function"
+                },
+                "Toggle": {
+                    "Load": "function",
+                    "Save": "function"
+                }
+            },
+            "Path": "ANUI/WindUI_Example/config/",
+            "Window": "[Circular Reference]"
+        },
+        "CreateTopbarButton": "function",
+        "CurrentTab": 3,
+        "Destroyed": false,
+        "Dialog": "function",
+        "DisableTopbarButtons": "function",
+        "Divider": "function",
+        "EditOpenButton": "function",
+        "Folder": "WindUI_Example",
+        "HideSearchBar": true,
+        "Icon": "palette",
+        "IsFullscreen": false,
+        "IsOpenButtonEnabled": true,
+        "IsResizable": "function",
+        "OnClose": "function",
+        "OnCloseCallback": "function",
+        "OnDestroy": "function",
+        "OnDestroyCallback": "function",
+        "Open": "function",
+        "Parent": "userdata",
+        "Position": "userdata",
+        "Resizable": true,
+        "ScrollBarEnabled": true,
+        "Section": "function",
+        "SelectTab": "function",
+        "SetBackgroundImage": "function",
+        "SetBackgroundImageTransparency": "function",
+        "SetToggleKey": "function",
+        "SetUIScale": "function",
+        "SideBarWidth": 220,
+        "Size": "userdata",
+        "Tab": "function",
+        "TabModule": {
+            "Containers": [
+                "userdata",
+                "userdata",
+                "userdata"
+            ],
+            "Init": "function",
+            "New": "function",
+            "OnChange": "function",
+            "OnChangeFunc": "function",
+            "SelectTab": "function",
+            "SelectedTab": 3,
+            "TabCount": 3,
+            "Tabs": [
+                {
+                    "Button": "function",
+                    "Code": "function",
+                    "Colorpicker": "function",
+                    "Divider": "function",
+                    "Dropdown": "function",
+                    "Elements": [
+                        {
+                            "Desc": "Explore ANUI's powerful elements",
+                            "Destroy": "function",
+                            "Locked": false,
+                            "ParagraphFrame": {
+                                "Color": "White",
+                                "Desc": "Explore ANUI's powerful elements",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "Image": "component",
+                                "ImageSize": 20,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Interactive Components",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Interactive Components",
+                            "__type": "Paragraph"
+                        },
+                        {
+                            "Callback": "function",
+                            "Desc": "Unlocks additional functionality",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Enable Advanced Features",
+                            "ToggleFrame": {
+                                "Desc": "Unlocks additional functionality",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Enable Advanced Features",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Type": "Toggle",
+                            "UIElements": {},
+                            "Unlock": "function",
+                            "Value": false,
+                            "__type": "Toggle"
+                        },
+                        {
+                            "Callback": "function",
+                            "Desc": "Adjust the effect strength",
+                            "Destroy": "function",
+                            "IsFocusing": false,
+                            "Lock": "function",
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "SliderFrame": {
+                                "Desc": "Adjust the effect strength",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Effect Intensity",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Step": 1,
+                            "Title": "Effect Intensity",
+                            "UIElements": {
+                                "SliderContainer": "userdata",
+                                "SliderIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "Value": {
+                                "Default": 50,
+                                "Max": 100,
+                                "Min": 0
+                            },
+                            "__type": "Slider"
+                        },
+                        {
+                            "Callback": "function",
+                            "Close": "function",
+                            "Destroy": "function",
+                            "Display": "function",
+                            "DropdownFrame": {
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Select Mode",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Lock": "function",
+                            "Locked": false,
+                            "MenuWidth": 170,
+                            "Open": "function",
+                            "Opened": false,
+                            "Refresh": "function",
+                            "Select": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Tabs": [
+                                {
+                                    "Name": "Standard",
+                                    "Selected": true,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Advanced",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Expert",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                }
+                            ],
+                            "Title": "Select Mode",
+                            "UIElements": {
+                                "Dropdown": "userdata",
+                                "Menu": "userdata",
+                                "MenuCanvas": "userdata",
+                                "UIListLayout": "userdata"
+                            },
+                            "Unlock": "function",
+                            "Value": "Standard",
+                            "Values": [
+                                "Standard",
+                                "Advanced",
+                                "Expert"
+                            ],
+                            "__type": "Dropdown"
+                        },
+                        {
+                            "ButtonFrame": {
+                                "Destroy": "function",
+                                "Hover": true,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "Scalable": true,
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Show Notification",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Show Notification",
+                            "UIElements": {
+                                "ButtonIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "__type": "Button"
+                        },
+                        {
+                            "Callback": "function",
+                            "ColorpickerFrame": {
+                                "Desc": "Change the UI accent color",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Accent Color",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Default": "userdata",
+                            "Desc": "Change the UI accent color",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Accent Color",
+                            "UIElements": {
+                                "Colorpicker": "userdata"
+                            },
+                            "Unlock": "function",
+                            "Update": "function",
+                            "Window": "[Circular Reference]",
+                            "__type": "Colorpicker"
+                        }
+                    ],
+                    "Icon": "layout-grid",
+                    "Index": 1,
+                    "Input": "function",
+                    "Keybind": "function",
+                    "Paragraph": "function",
+                    "Parent": "userdata",
+                    "Section": "function",
+                    "Selected": false,
+                    "Slider": "function",
+                    "Title": "loc:UI_ELEMENTS",
+                    "Toggle": "function",
+                    "UICorner": 9,
+                    "UIElements": {
+                        "ContainerFrame": "userdata",
+                        "ContainerFrameCanvas": "userdata",
+                        "Icon": "userdata",
+                        "Main": "userdata"
+                    },
+                    "__type": "Tab"
+                },
+                {
+                    "Button": "function",
+                    "Code": "function",
+                    "Colorpicker": "function",
+                    "Divider": "function",
+                    "Dropdown": "function",
+                    "Elements": [
+                        {
+                            "Desc": "Personalize your experience",
+                            "Destroy": "function",
+                            "Locked": false,
+                            "ParagraphFrame": {
+                                "Color": "White",
+                                "Desc": "Personalize your experience",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "Image": "palette",
+                                "ImageSize": 20,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Customize Interface",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Customize Interface",
+                            "__type": "Paragraph"
+                        },
+                        {
+                            "Callback": "function",
+                            "Close": "function",
+                            "Destroy": "function",
+                            "Display": "function",
+                            "DropdownFrame": {
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "loc:THEME_SELECT",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Lock": "function",
+                            "Locked": false,
+                            "MenuWidth": 170,
+                            "Open": "function",
+                            "Opened": false,
+                            "Refresh": "function",
+                            "Select": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Tabs": [
+                                {
+                                    "Name": "Amber",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Dark",
+                                    "Selected": true,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Emerald",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Indigo",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Light",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Plant",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Red",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Rose",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Sky",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                },
+                                {
+                                    "Name": "Violet",
+                                    "Selected": false,
+                                    "UIElements": {
+                                        "TabItem": "userdata"
+                                    }
+                                }
+                            ],
+                            "Title": "loc:THEME_SELECT",
+                            "UIElements": {
+                                "Dropdown": "userdata",
+                                "Menu": "userdata",
+                                "MenuCanvas": "userdata",
+                                "UIListLayout": "userdata"
+                            },
+                            "Unlock": "function",
+                            "Value": "Dark",
+                            "Values": [
+                                "Amber",
+                                "Dark",
+                                "Emerald",
+                                "Indigo",
+                                "Light",
+                                "Plant",
+                                "Red",
+                                "Rose",
+                                "Sky",
+                                "Violet"
+                            ],
+                            "__type": "Dropdown"
+                        },
+                        {
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "IsFocusing": false,
+                            "Lock": "function",
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "SliderFrame": {
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "loc:TRANSPARENCY",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Step": 0.1,
+                            "Title": "loc:TRANSPARENCY",
+                            "UIElements": {
+                                "SliderContainer": "userdata",
+                                "SliderIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "Value": {
+                                "Default": 0.2,
+                                "Max": 1,
+                                "Min": 0
+                            },
+                            "__type": "Slider"
+                        },
+                        {
+                            "Callback": "function",
+                            "Desc": "Use dark color scheme",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Enable Dark Mode",
+                            "ToggleFrame": {
+                                "Desc": "Use dark color scheme",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Enable Dark Mode",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Type": "Toggle",
+                            "UIElements": {},
+                            "Unlock": "function",
+                            "Value": true,
+                            "__type": "Toggle"
+                        },
+                        {
+                            "ButtonFrame": {
+                                "Destroy": "function",
+                                "Hover": true,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "Scalable": true,
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Create New Theme",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Create New Theme",
+                            "UIElements": {
+                                "ButtonIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "__type": "Button"
+                        }
+                    ],
+                    "Icon": "brush",
+                    "Index": 2,
+                    "Input": "function",
+                    "Keybind": "function",
+                    "Paragraph": "function",
+                    "Parent": "userdata",
+                    "Section": "function",
+                    "Selected": false,
+                    "Slider": "function",
+                    "Title": "loc:APPEARANCE",
+                    "Toggle": "function",
+                    "UICorner": 9,
+                    "UIElements": {
+                        "ContainerFrame": "userdata",
+                        "ContainerFrameCanvas": "userdata",
+                        "Icon": "userdata",
+                        "Main": "userdata"
+                    },
+                    "__type": "Tab"
+                },
+                {
+                    "Button": "function",
+                    "Code": "function",
+                    "Colorpicker": "function",
+                    "Divider": "function",
+                    "Dropdown": "function",
+                    "Elements": [
+                        {
+                            "Desc": "Save and load your settings",
+                            "Destroy": "function",
+                            "Locked": false,
+                            "ParagraphFrame": {
+                                "Color": "White",
+                                "Desc": "Save and load your settings",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "Image": "save",
+                                "ImageSize": 20,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Configuration Manager",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Configuration Manager",
+                            "__type": "Paragraph"
+                        },
+                        {
+                            "Callback": "function",
+                            "ClearTextOnFocus": false,
+                            "Destroy": "function",
+                            "InputFrame": {
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Config Name",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "InputIcon": false,
+                            "Lock": "function",
+                            "Locked": false,
+                            "Placeholder": "Enter Text...",
+                            "Set": "function",
+                            "SetDesc": "function",
+                            "SetPlaceholder": "function",
+                            "SetTitle": "function",
+                            "Title": "Config Name",
+                            "Type": "Input",
+                            "UIElements": {},
+                            "Unlock": "function",
+                            "Value": "default",
+                            "__type": "Input"
+                        },
+                        {
+                            "ButtonFrame": {
+                                "Destroy": "function",
+                                "Hover": true,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "Scalable": true,
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "loc:SAVE_CONFIG",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "loc:SAVE_CONFIG",
+                            "UIElements": {
+                                "ButtonIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "__type": "Button"
+                        },
+                        {
+                            "ButtonFrame": {
+                                "Destroy": "function",
+                                "Hover": true,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "Scalable": true,
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "loc:LOAD_CONFIG",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "loc:LOAD_CONFIG",
+                            "UIElements": {
+                                "ButtonIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "__type": "Button"
+                        },
+                        {
+                            "Desc": "github.com/ANHub-Script/ANUI",
+                            "Destroy": "function",
+                            "Locked": false,
+                            "ParagraphFrame": {
+                                "Color": "Grey",
+                                "Desc": "github.com/ANHub-Script/ANUI",
+                                "Destroy": "function",
+                                "Hover": false,
+                                "IconThemed": false,
+                                "Image": "github",
+                                "ImageSize": 20,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Created with ❤️",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Created with ❤️",
+                            "__type": "Paragraph"
+                        },
+                        {
+                            "Destroy": "function",
+                            "SetTitle": "function",
+                            "TextSize": 19,
+                            "TextXAlignment": "Left",
+                            "Title": "Get ANUI JSON",
+                            "UIElements": {
+                                "Main": "userdata"
+                            },
+                            "__type": "Section"
+                        },
+                        {
+                            "ButtonFrame": {
+                                "Destroy": "function",
+                                "Hover": true,
+                                "IconThemed": false,
+                                "ImageSize": 30,
+                                "Lock": "function",
+                                "Parent": "userdata",
+                                "Scalable": true,
+                                "SetDesc": "function",
+                                "SetTitle": "function",
+                                "ThumbnailSize": 80,
+                                "Title": "Get ANUI JSON",
+                                "UICorner": 14,
+                                "UIElements": {
+                                    "Container": "userdata",
+                                    "Locked": "userdata",
+                                    "Main": "userdata"
+                                },
+                                "UIPadding": 14,
+                                "Unlock": "function"
+                            },
+                            "Callback": "function",
+                            "Destroy": "function",
+                            "Lock": "function",
+                            "Locked": false,
+                            "SetDesc": "function",
+                            "SetTitle": "function",
+                            "Title": "Get ANUI JSON",
+                            "UIElements": {
+                                "ButtonIcon": "userdata"
+                            },
+                            "Unlock": "function",
+                            "__type": "Button"
+                        }
+                    ],
+                    "Icon": "settings",
+                    "Index": 3,
+                    "Input": "function",
+                    "Keybind": "function",
+                    "Paragraph": "function",
+                    "Parent": "userdata",
+                    "Section": "function",
+                    "Selected": true,
+                    "Slider": "function",
+                    "Title": "loc:CONFIGURATION",
+                    "Toggle": "function",
+                    "UICorner": 9,
+                    "UIElements": {
+                        "ContainerFrame": "userdata",
+                        "ContainerFrameCanvas": "userdata",
+                        "Icon": "userdata",
+                        "Main": "userdata"
+                    },
+                    "__type": "Tab"
+                }
+            ],
+            "ToolTipParent": "userdata",
+            "ANUI": "[Circular Reference]",
+            "Window": "[Circular Reference]"
+        },
+        "Tag": "function",
+        "Title": "loc:WINDUI_EXAMPLE",
+        "ToggleFullscreen": "function",
+        "ToggleKey": "userdata",
+        "ToggleTransparency": "function",
+        "TopBarButtons": {
+            "-890": {
+                "Name": "theme-switcher",
+                "Object": "userdata"
+            },
+            "-897": {
+                "Name": "Minimize",
+                "Object": "userdata"
+            },
+            "-898": {
+                "Name": "Fullscreen",
+                "Object": "userdata"
+            },
+            "-899": {
+                "Name": "Close",
+                "Object": "userdata"
+            }
+        },
+        "Transparent": false,
+        "UICorner": 16,
+        "UIElements": {
+            "Main": "userdata",
+            "MainBar": "userdata",
+            "SideBar": "userdata",
+            "SideBarContainer": "userdata"
+        },
+        "UIPadding": 14,
+        "User": {
+            "Anonymous": true,
+            "Callback": "function",
+            "Enabled": true
+        }
+    }
+}
