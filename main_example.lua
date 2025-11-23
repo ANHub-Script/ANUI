@@ -3,7 +3,7 @@ local Window = ANUI:CreateWindow({
 	Title = ".an hub | ANUI Library",
 	Author = "by .an • AdityaNugraha",
 	Folder = "anhub",
-	Icon = "https://cdn.discordapp.com/attachments/1432552221798699028/1442155590683066500/logo_an_magic.gif?ex=6924678e&is=6923160e&hm=7292ada521c2dacc5c15c9e4c406b90ed45a3d2881457926a2a4f46bb711f04b",
+	Icon = "rbxassetid://84366761557806",
 	IconSize = 22 * 2,
 	NewElements = true,
 	HideSearchBar = false,
@@ -140,7 +140,7 @@ do
 		Opened = true
 	});
 	AboutSection:Image({
-		Image = "https://repository-images.githubusercontent.com/1102204566/1e0767ba-5304-48d2-8226-b68f11505a09",
+		Image = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
 		AspectRatio = "16:9",
 		Radius = 9
 	});
@@ -228,7 +228,7 @@ do
 	ToggleTab:Toggle({
 		Title = "Toggle with Left Image",
 		Desc = "Image on the left, centered between title and desc.",
-		Image = "mouse",
+		Image = "rbxassetid://84366761557806",
 		ImageSize = 24,
 		Callback = function(v)
 			print("Toggle with Left Image:", v);
@@ -303,7 +303,7 @@ do
 		Title = "Checkbox with Left Image",
 		Desc = "Image left of text, centered vertically.",
 		Type = "Checkbox",
-		Image = "image",
+		Image = "rbxassetid://84366761557806",
 		ImageSize = 22,
 		Callback = function(v)
 			print("Checkbox with Left Image:", v);
@@ -761,7 +761,7 @@ do
 				Desc = "With description",
 				Icon = "info",
 				Images = {
-					"rbxassetid://109266060342925",
+					"rbxassetid://84366761557806",
 					"bird"
 				}
 			},
@@ -769,7 +769,7 @@ do
 				Title = "Beta",
 				Icon = "gift",
 				Images = {
-					"rbxassetid://109266060342925",
+					"rbxassetid://84366761557806",
 					"droplet"
 				}
 			},
