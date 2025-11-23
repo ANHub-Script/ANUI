@@ -662,11 +662,20 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
             })
         })
     })
+    local ImageLabel = ImageFrame:FindFirstChildOfClass("ImageLabel")
     if Creator.Icon(Img) then
         local ic = Creator.Icon(Img)
-        ImageFrame.ImageLabel.Image = ic[1]
-        ImageFrame.ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
-        ImageFrame.ImageLabel.ImageRectSize = ic[2].ImageRectSize
+        if not ImageLabel then
+            ImageLabel = New("ImageLabel", {
+                Size = UDim2.new(1,0,1,0),
+                BackgroundTransparency = 1,
+                ScaleType = "Crop",
+            })
+            ImageLabel.Parent = ImageFrame
+        end
+        ImageLabel.Image = ic[1]
+        ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
+        ImageLabel.ImageRectSize = ic[2].ImageRectSize
     elseif string.find(Img,"http") then
         local dir = "ANUI/" .. Folder .. "/assets"
         if isfolder and makefolder then
@@ -694,13 +703,13 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                     end
                 end
                 local FileName = dir .. "/" .. Type .. "-" .. Name .. "." .. ext
-                if ext == "gif" then
-                    ImageFrame.ImageLabel.ScaleType = "Fit"
-                end
+        if ext == "gif" then
+            if ImageLabel then ImageLabel.ScaleType = "Fit" end
+        end
                 writefile(FileName, body)
                 local ok, asset = pcall(getcustomasset, FileName)
                 if ok then
-                    ImageFrame.ImageLabel.Image = asset
+                    if ImageLabel then ImageLabel.Image = asset end
                 else
                     warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s", FileName, tostring(asset)))
                     ImageFrame:Destroy()
@@ -715,7 +724,7 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
     elseif Img == "" then
         ImageFrame.Visible = false
     else
-        ImageFrame.ImageLabel.Image = Img
+        if ImageLabel then ImageLabel.Image = Img end
     end
     
     return ImageFrame

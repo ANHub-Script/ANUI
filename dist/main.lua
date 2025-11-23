@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.6  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.7  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -728,60 +728,69 @@ CornerRadius=UDim.new(0,z)
 })
 })
 })
+local J=H:FindFirstChildOfClass"ImageLabel"
 if p.Icon(v)then
-local J=p.Icon(v)
-H.ImageLabel.Image=J[1]
-H.ImageLabel.ImageRectOffset=J[2].ImageRectPosition
-H.ImageLabel.ImageRectSize=J[2].ImageRectSize
+local L=p.Icon(v)
+if not J then
+J=r("ImageLabel",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ScaleType="Crop",
+})
+J.Parent=H
+end
+J.Image=L[1]
+J.ImageRectOffset=L[2].ImageRectPosition
+J.ImageRectSize=L[2].ImageRectSize
 elseif string.find(v,"http")then
-local J="ANUI/"..A.."/assets"
+local L="ANUI/"..A.."/assets"
 if isfolder and makefolder then
 if not isfolder"ANUI"then makefolder"ANUI"end
 if not isfolder("ANUI/"..A)then makefolder("ANUI/"..A)end
-if not isfolder(J)then makefolder(J)end
+if not isfolder(L)then makefolder(L)end
 end
-local L,M=pcall(function()
+local M,N=pcall(function()
 task.spawn(function()
-local L=p.Request{Url=v,Method="GET"}
-local M=L and(L.Body or L)or""
-local N=v:match"^[^%?]+"or v
-local O=string.lower((N:match"%.([%w]+)$"or""))
-local P
-if L and L.Headers then
-P=L.Headers["Content-Type"]or L.Headers["content-type"]or L.Headers["Content-type"]
+local M=p.Request{Url=v,Method="GET"}
+local N=M and(M.Body or M)or""
+local O=v:match"^[^%?]+"or v
+local P=string.lower((O:match"%.([%w]+)$"or""))
+local Q
+if M and M.Headers then
+Q=M.Headers["Content-Type"]or M.Headers["content-type"]or M.Headers["Content-type"]
 end
-if not O or O==""then
-if P then
-if string.find(P,"gif")then O="gif"
-elseif string.find(P,"jpeg")or string.find(P,"jpg")then O="jpg"
-elseif string.find(P,"png")then O="png"else O="png"end
+if not P or P==""then
+if Q then
+if string.find(Q,"gif")then P="gif"
+elseif string.find(Q,"jpeg")or string.find(Q,"jpg")then P="jpg"
+elseif string.find(Q,"png")then P="png"else P="png"end
 else
-O="png"
+P="png"
 end
 end
-local Q=J.."/"..B.."-"..x.."."..O
-if O=="gif"then
-H.ImageLabel.ScaleType="Fit"
+local R=L.."/"..B.."-"..x.."."..P
+if P=="gif"then
+if J then J.ScaleType="Fit"end
 end
-writefile(Q,M)
-local R,S=pcall(getcustomasset,Q)
-if R then
-H.ImageLabel.Image=S
+writefile(R,N)
+local S,T=pcall(getcustomasset,R)
+if S then
+if J then J.Image=T end
 else
-warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",Q,tostring(S)))
+warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",R,tostring(T)))
 H:Destroy()
 return
 end
 end)
 end)
-if not L then
-warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(M))
+if not M then
+warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(N))
 H:Destroy()
 end
 elseif v==""then
 H.Visible=false
 else
-H.ImageLabel.Image=v
+if J then J.Image=v end
 end
 
 return H
@@ -1541,7 +1550,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
