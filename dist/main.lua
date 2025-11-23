@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.9  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.10  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.9",
+    "version": "1.0.10",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9115,7 +9115,7 @@ ae("UIListLayout",{
 FillDirection="Horizontal",
 HorizontalAlignment="Center",
 VerticalAlignment="Center",
-Padding=UDim.new(0,aj.Tab and aj.Tab.Gap or(Window.NewElements and 1 or 6))
+Padding=UDim.new(0,aj.Tab and aj.Tab.Gap or((aj.Window and aj.Window.NewElements)and 1 or 6))
 }),
 })
 
@@ -9127,7 +9127,7 @@ am.Elements,
 aj.Window,
 aj.ANUI,
 function(an,ao)
-local ap=aj.Tab and aj.Tab.Gap or(aj.Window.NewElements and 1 or 6)
+local ap=aj.Tab and aj.Tab.Gap or((aj.Window and aj.Window.NewElements)and 1 or 6)
 
 local aq={}
 local ar=0
@@ -9145,23 +9145,19 @@ end
 local as=#aq
 if as==0 then return end
 
-local at=1/as
-
-local au=ap*(as-1)
-
-local av=-(au+ar)
-
-local aw=math.floor(av/as)
-local ax=av-(aw*as)
-
-for ay,az in next,aq do
-local aA=aw
-if ay<=math.abs(ax)then
-aA=aA-1
+local at=al.AbsoluteSize.X
+local au
+if at and at>0 then
+local av=ap*(as-1)
+local aw=math.max(at-av-ar,0)
+au=(aw/at)/as
+else
+au=1/as
 end
 
-if az.ElementFrame then
-az.ElementFrame.Size=UDim2.new(at,aA,1,0)
+for av,aw in next,aq do
+if aw.ElementFrame then
+aw.ElementFrame.Size=UDim2.new(au,0,1,0)
 end
 end
 end,
@@ -9176,6 +9172,7 @@ return ak.__type,ak
 end
 
 return af end function a.T()
+
 return{
 Elements={
 Paragraph=a.load'A',

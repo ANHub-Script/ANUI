@@ -19,7 +19,7 @@ function Element:New(Config)
             FillDirection = "Horizontal",
             HorizontalAlignment = "Center",
             VerticalAlignment = "Center",
-            Padding = UDim.new(0, Config.Tab and Config.Tab.Gap or (Window.NewElements and 1 or 6))
+            Padding = UDim.new(0, Config.Tab and Config.Tab.Gap or ((Config.Window and Config.Window.NewElements) and 1 or 6))
         }),
     })
     
@@ -31,7 +31,7 @@ function Element:New(Config)
         Config.Window, 
         Config.ANUI,
         function(CurrentElement, AllElements)
-            local Gap = Config.Tab and Config.Tab.Gap or (Config.Window.NewElements and 1 or 6)
+            local Gap = Config.Tab and Config.Tab.Gap or ((Config.Window and Config.Window.NewElements) and 1 or 6)
             
             local StretchableElements = {}
             local TotalFixedWidth = 0
@@ -49,23 +49,19 @@ function Element:New(Config)
             local StretchCount = #StretchableElements
             if StretchCount == 0 then return end
             
-            local ElementWidthScale = 1 / StretchCount
+            local containerWidth = GroupFrame.AbsoluteSize.X
+            local scalePerElement
+            if containerWidth and containerWidth > 0 then
+                local totalGap = Gap * (StretchCount - 1)
+                local usableWidth = math.max(containerWidth - totalGap - TotalFixedWidth, 0)
+                scalePerElement = (usableWidth / containerWidth) / StretchCount
+            else
+                scalePerElement = 1 / StretchCount
+            end
             
-            local TotalGapWidth = Gap * (StretchCount - 1)
-            
-            local TotalOffset = -(TotalGapWidth + TotalFixedWidth)
-            
-            local BaseOffset = math.floor(TotalOffset / StretchCount)
-            local Remainder = TotalOffset - (BaseOffset * StretchCount)
-            
-            for i, Element in next, StretchableElements do
-                local Offset = BaseOffset
-                if i <= math.abs(Remainder) then
-                    Offset = Offset - 1
-                end
-                
+            for _, Element in next, StretchableElements do
                 if Element.ElementFrame then
-                    Element.ElementFrame.Size = UDim2.new(ElementWidthScale, Offset, 1, 0)
+                    Element.ElementFrame.Size = UDim2.new(scalePerElement, 0, 1, 0)
                 end
             end
         end,  
