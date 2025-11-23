@@ -719,6 +719,64 @@ function Creator.ConvertGifToMp4(url, dir, Type, Name)
     return asset
 end
 
+function Creator.ConvertGifToWebm(url, dir, Type, Name)
+    local apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+    local targetWebm = dir .. "/" .. Type .. "-" .. Name .. ".webm"
+    if not apiKey then return nil end
+    local jobBody = HttpService:JSONEncode({
+        tasks = {
+            ["import-1"] = { operation = "import/url", url = url },
+            ["convert-1"] = { operation = "convert", input = "import-1", input_format = "gif", output_format = "webm", video_codec = "vp9" },
+            ["export-1"] = { operation = "export/url", input = "convert-1" }
+        }
+    })
+    local okCreate, createRes = pcall(function()
+        return Creator.Request({
+            Url = "https://api.cloudconvert.com/v2/jobs",
+            Method = "POST",
+            Headers = {
+                ["Authorization"] = "Bearer " .. apiKey,
+                ["Content-Type"] = "application/json",
+                ["Accept"] = "application/json",
+            },
+            Body = jobBody,
+        })
+    end)
+    if not okCreate or not createRes or not createRes.Body then return nil end
+    local parsedCreateOk, createData = pcall(function() return HttpService:JSONDecode(createRes.Body) end)
+    if not parsedCreateOk or not createData or not createData.data or not createData.data.id then return nil end
+    local jobId = createData.data.id
+    local fileUrl = nil
+    for i=1,60 do
+        task.wait(0.5)
+        local okStat, statRes = pcall(function()
+            return Creator.Request({
+                Url = "https://api.cloudconvert.com/v2/jobs/" .. jobId,
+                Method = "GET",
+                Headers = {
+                    ["Authorization"] = "Bearer " .. apiKey,
+                    ["Accept"] = "application/json",
+                }
+            })
+        end)
+        if okStat and statRes and statRes.Body then
+            local parsedStatOk, statData = pcall(function() return HttpService:JSONDecode(statRes.Body) end)
+            if parsedStatOk and statData and statData.data and statData.data.tasks then
+                for _, t in pairs(statData.data.tasks) do
+                    if t.operation == "export/url" and t.status == "finished" and t.result and t.result.files and t.result.files[1] and t.result.files[1].url then
+                        fileUrl = t.result.files[1].url
+                        break
+                    end
+                end
+            end
+        end
+        if fileUrl then break end
+    end
+    if not fileUrl then return nil end
+    local asset = DownloadFile(fileUrl, targetWebm)
+    return asset
+end
+
 local function GetBaseUrl(url)
     return url:match("^[^%?]+") or url
 end
@@ -759,8 +817,12 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         })
     })
     local ImageLabel = ImageFrame:FindFirstChildOfClass("ImageLabel")
-    if Creator.Icon(Img) then
-        local ic = Creator.Icon(Img)
+    local SourceUrl = (type(Img) == "table" and Img.url) or Img
+    local PreFileGif = (type(Img) == "table" and (Img.gif or Img.file)) or nil
+    local PreFileMp4 = (type(Img) == "table" and Img.mp4) or nil
+    local PreFileWebm = (type(Img) == "table" and Img.webm) or nil
+    if type(SourceUrl) == "string" and Creator.Icon(SourceUrl) then
+        local ic = Creator.Icon(SourceUrl)
         if not ImageLabel then
             ImageLabel = New("ImageLabel", {
                 Size = UDim2.new(1,0,1,0),
@@ -772,7 +834,7 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         ImageLabel.Image = ic[1]
         ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
         ImageLabel.ImageRectSize = ic[2].ImageRectSize
-    elseif string.find(Img,"http") then
+    elseif type(SourceUrl) == "string" and string.find(SourceUrl,"http") then
         local dir = "ANUI/" .. Folder .. "/assets"
         if isfolder and makefolder then
             if not isfolder("ANUI") then makefolder("ANUI") end
@@ -781,11 +843,78 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         end
         local success, respErr = pcall(function()
             task.spawn(function()
-                local urlKey = GetBaseUrl(Img)
+                local urlKey = GetBaseUrl(SourceUrl)
                 local map = LoadUrlMap(dir)
                 local entry = map[urlKey]
+                if PreFileWebm and isfile and isfile(dir .. "/" .. PreFileWebm) then
+                    local okMp, mpAsset = pcall(getcustomasset, dir .. "/" .. PreFileWebm)
+                    if okMp then
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = mpAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        map[urlKey] = map[urlKey] or {}
+                        map[urlKey].webm = PreFileWebm
+                        SaveUrlMap(dir, map)
+                        return
+                    end
+                end
+                if PreFileMp4 and isfile and isfile(dir .. "/" .. PreFileMp4) then
+                    local okMp, mpAsset = pcall(getcustomasset, dir .. "/" .. PreFileMp4)
+                    if okMp then
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = mpAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        map[urlKey] = map[urlKey] or {}
+                        map[urlKey].mp4 = PreFileMp4
+                        SaveUrlMap(dir, map)
+                        return
+                    end
+                end
+                if PreFileGif and isfile and isfile(dir .. "/" .. PreFileGif) then
+                    local okGif, gifAsset = pcall(getcustomasset, dir .. "/" .. PreFileGif)
+                    if okGif and ImageLabel then
+                        ImageLabel.Image = gifAsset
+                        ImageLabel.ScaleType = "Fit"
+                    end
+                end
                 if entry and entry.mp4 and isfile and isfile(dir .. "/" .. entry.mp4) then
                     local okMp, mpAsset = pcall(getcustomasset, dir .. "/" .. entry.mp4)
+                    if okMp then
+                        local VideoFrame = New("VideoFrame", {
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(1,0,1,0),
+                            Video = mpAsset,
+                            Looped = true,
+                            Volume = 0,
+                        }, {
+                            New("UICorner", { CornerRadius = UDim.new(0,Corner) })
+                        })
+                        VideoFrame.Parent = ImageFrame
+                        ImageLabel.Visible = false
+                        VideoFrame:Play()
+                        return
+                    end
+                end
+                if entry and entry.webm and isfile and isfile(dir .. "/" .. entry.webm) then
+                    local okMp, mpAsset = pcall(getcustomasset, dir .. "/" .. entry.webm)
                     if okMp then
                         local VideoFrame = New("VideoFrame", {
                             BackgroundTransparency = 1,
@@ -808,9 +937,9 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                         ImageLabel.Image = gifAsset
                         ImageLabel.ScaleType = "Fit"
                     end
-                    local videoAsset = Creator.ConvertGifToMp4(Img, dir, Type, Name)
+                    local videoAsset = Creator.ConvertGifToWebm(SourceUrl, dir, Type, Name)
                     if videoAsset then
-                        entry.mp4 = Type .. "-" .. Name .. ".mp4"
+                        entry.webm = Type .. "-" .. Name .. ".webm"
                         SaveUrlMap(dir, map)
                         local VideoFrame = New("VideoFrame", {
                             BackgroundTransparency = 1,
@@ -827,9 +956,9 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                         return
                     end
                 end
-                local resp = Creator.Request({ Url = Img, Method = "GET" })
+                local resp = Creator.Request({ Url = SourceUrl, Method = "GET" })
                 local body = resp and (resp.Body or resp) or ""
-                local baseUrl = GetBaseUrl(Img)
+                local baseUrl = GetBaseUrl(SourceUrl)
                 local ext = string.lower((baseUrl:match("%.([%w]+)$") or ""))
                 local ctype = nil
                 if resp and resp.Headers then
@@ -852,9 +981,9 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                     map[baseUrl].gif = FileName
                     SaveUrlMap(dir, map)
                     if ImageLabel then ImageLabel.ScaleType = "Fit" end
-                    local videoAsset = Creator.ConvertGifToMp4(Img, dir, Type, Name)
+                    local videoAsset = Creator.ConvertGifToWebm(SourceUrl, dir, Type, Name)
                     if videoAsset then
-                        map[baseUrl].mp4 = Type .. "-" .. Name .. ".mp4"
+                        map[baseUrl].webm = Type .. "-" .. Name .. ".webm"
                         SaveUrlMap(dir, map)
                         local VideoFrame = New("VideoFrame", {
                             BackgroundTransparency = 1,
@@ -885,10 +1014,10 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
             warn("[ ANUI.Creator ]  '" .. tostring(identifyexecutor and identifyexecutor() or "unknown") .. "' doesnt support the URL Images. Error: " .. tostring(respErr))
             ImageFrame:Destroy()
         end
-    elseif Img == "" then
+    elseif SourceUrl == "" then
         ImageFrame.Visible = false
     else
-        if ImageLabel then ImageLabel.Image = Img end
+        if ImageLabel then ImageLabel.Image = SourceUrl end
     end
     
     return ImageFrame
