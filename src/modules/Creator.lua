@@ -663,17 +663,10 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         })
     })
     if Creator.Icon(Img) then
-        ImageFrame.ImageLabel:Destroy()
-        
-        local IconLabel = Icons.Image({ 
-            Icon = Img, 
-            Size = UDim2.new(1,0,1,0), 
-            Colors = { 
-                (IsThemeTag and (ThemeTagName or "Icon") or false),
-                "Button" 
-            }
-        }).IconFrame
-        IconLabel.Parent = ImageFrame
+        local ic = Creator.Icon(Img)
+        ImageFrame.ImageLabel.Image = ic[1]
+        ImageFrame.ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
+        ImageFrame.ImageLabel.ImageRectSize = ic[2].ImageRectSize
     elseif string.find(Img,"http") then
         local ext = string.lower(string.match(Img, "%.([%w]+)$") or "png")
         local dir = "ANUI/" .. Folder .. "/assets"

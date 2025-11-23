@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.4  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.5  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -729,17 +729,10 @@ CornerRadius=UDim.new(0,z)
 })
 })
 if p.Icon(v)then
-H.ImageLabel:Destroy()
-
-local J=l.Image{
-Icon=v,
-Size=UDim2.new(1,0,1,0),
-Colors={
-(C and(G or"Icon")or false),
-"Button"
-}
-}.IconFrame
-J.Parent=H
+local J=p.Icon(v)
+H.ImageLabel.Image=J[1]
+H.ImageLabel.ImageRectOffset=J[2].ImageRectPosition
+H.ImageLabel.ImageRectSize=J[2].ImageRectSize
 elseif string.find(v,"http")then
 local J=string.lower(string.match(v,"%.([%w]+)$")or"png")
 local L="ANUI/"..A.."/assets"
@@ -1534,7 +1527,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
