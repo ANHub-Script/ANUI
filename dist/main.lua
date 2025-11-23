@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.3  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.4  |  2025-11-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -741,31 +741,34 @@ Colors={
 }.IconFrame
 J.Parent=H
 elseif string.find(v,"http")then
-local J="ANUI/"..A.."/assets/."..B.."-"..x..".png"
-local L,M=pcall(function()
+local J=string.lower(string.match(v,"%.([%w]+)$")or"png")
+local L="ANUI/"..A.."/assets"
+if isfolder and makefolder then
+if not isfolder"ANUI"then makefolder"ANUI"end
+if not isfolder("ANUI/"..A)then makefolder("ANUI/"..A)end
+if not isfolder(L)then makefolder(L)end
+end
+local M=L.."/"..B.."-"..x.."."..J
+if J=="gif"then
+H.ImageLabel.ScaleType="Fit"
+end
+local N,O=pcall(function()
 task.spawn(function()
-local L=p.Request{
-Url=v,
-Method="GET",
-}.Body
-
-writefile(J,L)
-
-
-local M,N=pcall(getcustomasset,J)
-if M then
-H.ImageLabel.Image=N
+local N=p.Request{Url=v,Method="GET"}
+local O=N and(N.Body or N)or""
+writefile(M,O)
+local P,Q=pcall(getcustomasset,M)
+if P then
+H.ImageLabel.Image=Q
 else
-warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",J,tostring(N)))
+warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",M,tostring(Q)))
 H:Destroy()
-
 return
 end
 end)
 end)
-if not L then
-warn("[ ANUI.Creator ]  '"..identifyexecutor().."' doesnt support the URL Images. Error: "..M)
-
+if not N then
+warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(O))
 H:Destroy()
 end
 elseif v==""then
@@ -1531,7 +1534,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

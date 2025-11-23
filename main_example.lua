@@ -3,7 +3,7 @@ local Window = ANUI:CreateWindow({
 	Title = ".an hub | ANUI Library",
 	Author = "by .an • AdityaNugraha",
 	Folder = "anhub",
-	Icon = "rbxassetid://84366761557806",
+	Icon = "https://cdn.discordapp.com/attachments/1432552221798699028/1442155590683066500/logo_an_magic.gif?ex=6924678e&is=6923160e&hm=7292ada521c2dacc5c15c9e4c406b90ed45a3d2881457926a2a4f46bb711f04b",
 	IconSize = 22 * 2,
 	NewElements = true,
 	HideSearchBar = false,

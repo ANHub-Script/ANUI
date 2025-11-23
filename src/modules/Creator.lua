@@ -675,31 +675,34 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         }).IconFrame
         IconLabel.Parent = ImageFrame
     elseif string.find(Img,"http") then
-        local FileName = "ANUI/" .. Folder .. "/assets/." .. Type .. "-" .. Name .. ".png"
-        local success, response = pcall(function()
+        local ext = string.lower(string.match(Img, "%.([%w]+)$") or "png")
+        local dir = "ANUI/" .. Folder .. "/assets"
+        if isfolder and makefolder then
+            if not isfolder("ANUI") then makefolder("ANUI") end
+            if not isfolder("ANUI/" .. Folder) then makefolder("ANUI/" .. Folder) end
+            if not isfolder(dir) then makefolder(dir) end
+        end
+        local FileName = dir .. "/" .. Type .. "-" .. Name .. "." .. ext
+        if ext == "gif" then
+            ImageFrame.ImageLabel.ScaleType = "Fit"
+        end
+        local success, respErr = pcall(function()
             task.spawn(function()
-                local response = Creator.Request({
-                    Url = Img,
-                    Method = "GET",
-                }).Body
-                
-                writefile(FileName, response)
-                --ImageFrame.ImageLabel.Image = getcustomasset(FileName)
-                
-                local assetSuccess, asset = pcall(getcustomasset, FileName)
-                if assetSuccess then
+                local resp = Creator.Request({ Url = Img, Method = "GET" })
+                local body = resp and (resp.Body or resp) or ""
+                writefile(FileName, body)
+                local ok, asset = pcall(getcustomasset, FileName)
+                if ok then
                     ImageFrame.ImageLabel.Image = asset
                 else
                     warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s", FileName, tostring(asset)))
                     ImageFrame:Destroy()
-                    
                     return
                 end
             end)
         end)
         if not success then
-            warn("[ ANUI.Creator ]  '" .. identifyexecutor() .. "' doesnt support the URL Images. Error: " .. response)
-            
+            warn("[ ANUI.Creator ]  '" .. tostring(identifyexecutor and identifyexecutor() or "unknown") .. "' doesnt support the URL Images. Error: " .. tostring(respErr))
             ImageFrame:Destroy()
         end
     elseif Img == "" then
