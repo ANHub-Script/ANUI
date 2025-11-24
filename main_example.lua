@@ -803,7 +803,7 @@ do
       Desc = "With description",
       Icon = "info",
       Images = { "rbxassetid://84366761557806", "bird" }
-      // Opsional: Image = "rbxassetid://84366761557806"
+    --   // Opsional: Image = "rbxassetid://84366761557806"
     },
     {
       Title = "Beta",

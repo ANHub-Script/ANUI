@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.16  |  2025-11-24  |  Roblox UI Library for scripts
+    v1.0.17  |  2025-11-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.16",
+    "version": "1.0.17",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7542,6 +7542,8 @@ local ao={
 __type="Dropdown",
 Title=an.Title or"Dropdown",
 Desc=an.Desc or nil,
+Image=an.Image,
+ImageSize=an.ImageSize,
 Locked=an.Locked or false,
 Values=an.Values or{},
 MenuWidth=an.MenuWidth,
@@ -7569,6 +7571,8 @@ local ap=true
 ao.DropdownFrame=a.load'z'{
 Title=ao.Title,
 Desc=ao.Desc,
+Image=ao.Image,
+ImageSize=ao.ImageSize,
 Parent=an.Parent,
 TextOffset=ao.Callback and ao.Width or 20,
 Hover=not ao.Callback and true or false,

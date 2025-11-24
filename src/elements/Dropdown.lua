@@ -29,6 +29,8 @@ function Element:New(Config)
         __type = "Dropdown",
         Title = Config.Title or "Dropdown",
         Desc = Config.Desc or nil,
+        Image = Config.Image,
+        ImageSize = Config.ImageSize,
         Locked = Config.Locked or false,
         Values = Config.Values or {},
         MenuWidth = Config.MenuWidth,
@@ -56,6 +58,8 @@ function Element:New(Config)
     Dropdown.DropdownFrame = require("../components/window/Element")({
         Title = Dropdown.Title,
         Desc = Dropdown.Desc,
+        Image = Dropdown.Image,
+        ImageSize = Dropdown.ImageSize,
         Parent = Config.Parent,
         TextOffset = Dropdown.Callback and Dropdown.Width or 20,
         Hover = not Dropdown.Callback and true or false,
