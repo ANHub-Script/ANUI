@@ -795,27 +795,27 @@ do
   Desc = "Images are shown below the title if description is missing, or below the description when it exists.",
   Image = "rbxassetid://84366761557806",
   ImageSize = UDim2.fromOffset(20, 20),
-  ItemImageSize = UDim2.fromOffset(20, 20),
   ImagePadding = 6,
   Values = {
-    {
-      Title = "Alpha",
-      Desc = "With description",
-      Icon = "info",
-      Images = { "rbxassetid://84366761557806", "bird" }
-    --   // Opsional: Image = "rbxassetid://84366761557806"
-    },
-    {
-      Title = "Beta",
-      Icon = "gift",
-      Images = { "rbxassetid://84366761557806", "droplet" }
-    },
-    { Title = "Gamma", Desc = "Only description", Icon = "file-text" }
-  },
+			{
+				Title = "Category A",
+				Icon = "folder"
+			},
+			{
+				Title = "Category B",
+				Icon = "folder"
+			},
+			{
+				Title = "Category C",
+				Icon = "folder"
+			},
+			{
+				Title = "Category D",
+				Icon = "folder"
+			}
+		},
   SearchBarEnabled = true,
-  Callback = function(option)
-    print("Selected:", option.Title)
-  end
+  Callback = function(option) print("Selected:", option.Title) end
 })
 	DropdownTab:Space();
 	DropdownTab:Dropdown({
