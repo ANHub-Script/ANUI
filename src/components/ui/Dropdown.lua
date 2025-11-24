@@ -353,6 +353,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding)
                         }),
                         TabIcon,
+                        SideImage,
                         New("Frame", {
                             Size = UDim2.new(1,(TabIcon and -Element.TabPadding-Element.TabIcon or 0) + (SideImage and -Element.TabPadding - (((Dropdown.ItemImageSize and Dropdown.ItemImageSize.X.Offset) or (Dropdown.ImageSize and Dropdown.ImageSize.X.Offset)) or 30) or 0),0,0),
                             BackgroundTransparency = 1,
@@ -443,6 +444,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     if TabMain.UIElements.TabIcon then
                         TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6
                     end
+                    if TabMain.UIElements.SideImage then
+                        TabMain.UIElements.SideImage.ImageLabel.ImageTransparency = 0.6
+                    end
                 end
 
                 if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
@@ -479,6 +483,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     if TabMain.UIElements.TabIcon then
                         TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0
                     end
+                    if TabMain.UIElements.SideImage then
+                        TabMain.UIElements.SideImage.ImageLabel.ImageTransparency = 0
+                    end
                 end
                 
                 Dropdown.Tabs[Index] = TabMain
@@ -498,6 +505,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 if TabMain.UIElements.TabIcon then
                                     Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
                                 end
+                                if TabMain.UIElements.SideImage then
+                                    Tween(TabMain.UIElements.SideImage.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
+                                end
                                 table.insert(Dropdown.Value, TabMain.Original)
                             else
                                 if not Dropdown.AllowNone and #Dropdown.Value == 1 then
@@ -509,6 +519,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
                                 if TabMain.UIElements.TabIcon then
                                     Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
+                                end
+                                if TabMain.UIElements.SideImage then
+                                    Tween(TabMain.UIElements.SideImage.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
                                 end
                                 
                                 for i, v in next, Dropdown.Value do
@@ -526,6 +539,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 if TabPisun.UIElements.TabIcon then
                                     Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
                                 end
+                                if TabPisun.UIElements.SideImage then
+                                    Tween(TabPisun.UIElements.SideImage.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
+                                end
                                 TabPisun.Selected = false
                             end
                             TabMain.Selected = true
@@ -534,6 +550,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
                             if TabMain.UIElements.TabIcon then
                                 Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
+                            end
+                            if TabMain.UIElements.SideImage then
+                                Tween(TabMain.UIElements.SideImage.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
                             end
                             Dropdown.Value = TabMain.Original
                         end

@@ -177,7 +177,11 @@ return function(Config)
             ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
         end
         
-        ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
+        if typeof(ImageSize) == "UDim2" then
+            ImageFrame.Size = ImageSize
+        else
+            ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
+        end
         
         IconOffset = ImageSize
     end
@@ -593,8 +597,18 @@ return function(Config)
             
             ImageFrame.Visible = true
 
+        if typeof(ImageSize) == "UDim2" then
+            ImageFrame.Size = ImageSize
+            IconOffset = ImageSize.X.Offset
+        else
+        if typeof(ImageSize) == "UDim2" then
+            ImageFrame.Size = ImageSize
+            IconOffset = ImageSize.X.Offset
+        else
             ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
             IconOffset = ImageSize
+        end
+        end
             
         else
             if ImageFrame then
