@@ -576,36 +576,36 @@ return function(Config)
             Element.ImageSize = newSize
             ImageSize = newSize
         end
-        
+
+        local oldFrame = ImageFrame
         if newImage then
-            ImageFrame = Creator.Image(
-                newImage, 
-                Element.Title, 
-                Element.UICorner-3, 
+            local newFrame = Creator.Image(
+                newImage,
+                Element.Title,
+                Element.UICorner-3,
                 Config.Window.Folder,
                 "Image",
                 not Element.Color and true or false
             )
-            
-            if typeof(Element.Color) == "string" then 
-                ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-            elseif typeof(Element.Color) == "Color3" then
-                ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
+            if typeof(Element.Color) == "string" and newFrame.ImageLabel then
+                newFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+            elseif typeof(Element.Color) == "Color3" and newFrame.ImageLabel then
+                newFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
             end
-            
-            ImageFrame.Visible = true
-
-            ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
+            newFrame.Visible = true
+            newFrame.Size = UDim2.new(0, ImageSize, 0, ImageSize)
             IconOffset = ImageSize
-            
+            if oldFrame and oldFrame.Parent then oldFrame:Destroy() end
+            newFrame.Parent = Element.UIElements.Container.TitleFrame
+            ImageFrame = newFrame
         else
             if ImageFrame then
-                ImageFrame.Visible = true
+                ImageFrame.Visible = false
             end
             IconOffset = 0
         end
-        
-        Element.UIElements.Container.TitleFrame.TitleFrame.Size = UDim2.new(1,-IconOffset,1,0)
+
+        Element.UIElements.Container.TitleFrame.TitleFrame.Size = UDim2.new(1, -IconOffset, 1, 0)
     end
     
     function Element:Destroy()

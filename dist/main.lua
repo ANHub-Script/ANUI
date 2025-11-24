@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.20  |  2025-11-24  |  Roblox UI Library for scripts
+    v1.0.21  |  2025-11-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.20",
+    "version": "1.0.21",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5516,8 +5516,9 @@ ag.ImageSize=h
 ah=h
 end
 
+local j=am
 if g then
-am=aa.Image(
+local l=aa.Image(
 g,
 ag.Title,
 ag.UICorner-3,
@@ -5525,21 +5526,20 @@ af.Window.Folder,
 "Image",
 not ag.Color and true or false
 )
-
-if typeof(ag.Color)=="string"then
-am.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ag.Color]))
-elseif typeof(ag.Color)=="Color3"then
-am.ImageLabel.ImageColor3=GetTextColorForHSB(ag.Color)
+if typeof(ag.Color)=="string"and l.ImageLabel then
+l.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ag.Color]))
+elseif typeof(ag.Color)=="Color3"and l.ImageLabel then
+l.ImageLabel.ImageColor3=GetTextColorForHSB(ag.Color)
 end
-
-am.Visible=true
-
-am.Size=UDim2.new(0,ah,0,ah)
+l.Visible=true
+l.Size=UDim2.new(0,ah,0,ah)
 ak=ah
-
+if j and j.Parent then j:Destroy()end
+l.Parent=ag.UIElements.Container.TitleFrame
+am=l
 else
 if am then
-am.Visible=true
+am.Visible=false
 end
 ak=0
 end
