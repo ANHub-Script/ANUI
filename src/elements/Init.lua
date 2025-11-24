@@ -77,6 +77,12 @@ return {
                     function content:SetDesc(desc)
                         frame:SetDesc(desc)
                     end
+                    function content:SetImage(img, size)
+                        frame:SetImage(img, size)
+                    end
+                    function content:SetIcon(img, size)
+                        frame:SetImage(img, size)
+                    end
                     function content:Highlight()
                         frame:Highlight()
                     end

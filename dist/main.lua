@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.19  |  2025-11-24  |  Roblox UI Library for scripts
+    v1.0.20  |  2025-11-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.19",
+    "version": "1.0.20",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9259,6 +9259,12 @@ end
 function at.SetDesc(av,aw)
 au:SetDesc(aw)
 end
+function at.SetImage(av,aw,ax)
+au:SetImage(aw,ax)
+end
+function at.SetIcon(av,aw,ax)
+au:SetImage(aw,ax)
+end
 function at.Highlight(av)
 au:Highlight()
 end
@@ -9311,6 +9317,7 @@ end
 end,
 
 }end function a.U()
+
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 aa(game:GetService"UserInputService")
