@@ -36,6 +36,7 @@ function Element:New(Config)
         AllowNone = Config.AllowNone,
         SearchBarEnabled = Config.SearchBarEnabled or false,
         Multi = Config.Multi,
+        ItemImageSize = Config.ItemImageSize,
         Callback = Config.Callback or nil,
         
         UIElements = {},

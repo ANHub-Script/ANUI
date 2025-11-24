@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.13  |  2025-11-23  |  Roblox UI Library for scripts
+    v1.0.14  |  2025-11-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.13",
+    "version": "1.0.14",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7054,6 +7054,7 @@ local ax={
 Name=typeof(aw)=="table"and aw.Title or aw,
 Desc=typeof(aw)=="table"and aw.Desc or nil,
 Icon=typeof(aw)=="table"and aw.Icon or nil,
+Image=typeof(aw)=="table"and aw.Image or nil,
 Images=typeof(aw)=="table"and aw.Images or nil,
 Original=aw,
 Selected=false,
@@ -7061,6 +7062,7 @@ Locked=typeof(aw)=="table"and aw.Locked or false,
 UIElements={},
 }
 local ay
+local az
 if ax.Icon then
 ay=aj.Image(
 ax.Icon,
@@ -7073,6 +7075,29 @@ true
 ay.Size=UDim2.new(0,ao.TabIcon,0,ao.TabIcon)
 ay.ImageLabel.ImageTransparency=aq=="Dropdown"and.2 or 0
 ax.UIElements.TabIcon=ay
+end
+if ax.Image or(ax.Images and#ax.Images>0)then
+local aA
+if ax.Image then
+aA=ax.Image
+else
+local aB=ax.Images[1]
+if typeof(aB)=="table"then
+aA=aB.Image or aB.Icon or aB.Id or aB
+else
+aA=aB
+end
+end
+az=aj.Image(
+aA,
+tostring(aA)..":"..ax.Name,
+6,
+am.Window.Folder,
+"Dropdown",
+false
+)
+az.Size=an.ItemImageSize or an.ImageSize or UDim2.new(0,30,0,30)
+ax.UIElements.SideImage=az
 end
 ax.UIElements.TabItem=aj.NewRoundFrame(ao.MenuCorner-ao.MenuPadding,"Squircle",{
 Size=UDim2.new(1,0,0,36),
@@ -7122,7 +7147,7 @@ CornerRadius=UDim.new(0,ao.MenuCorner-ao.MenuPadding)
 }),
 ay,
 ak("Frame",{
-Size=UDim2.new(1,ay and-ao.TabPadding-ao.TabIcon or 0,0,0),
+Size=UDim2.new(1,(ay and-ao.TabPadding-ao.TabIcon or 0)+(az and-ao.TabPadding-(((an.ItemImageSize and an.ItemImageSize.X.Offset)or(an.ImageSize and an.ImageSize.X.Offset))or 30)or 0),0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
 Name="Title",
@@ -7183,25 +7208,25 @@ FillDirection="Vertical",
 },true)
 
 if ax.Images and#ax.Images>0 then
-local az=ax.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
-if az then
-for aA,aB in ipairs(ax.Images)do
-local d
-if typeof(aB)=="table"then
-d=aB.Image or aB.Icon or aB.Id or aB
+local aA=ax.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
+if aA then
+for aB,d in ipairs(ax.Images)do
+local e
+if typeof(d)=="table"then
+e=d.Image or d.Icon or d.Id or d
 else
-d=aB
+e=d
 end
-local e=aj.Image(
-d,
-tostring(d)..":"..ax.Name,
+local f=aj.Image(
+e,
+tostring(e)..":"..ax.Name,
 6,
 am.Window.Folder,
 "Dropdown",
 false
 )
-e.Size=an.ImageSize or UDim2.new(0,30,0,30)
-e.Parent=az
+f.Size=an.ImageSize or UDim2.new(0,30,0,30)
+f.Parent=aA
 end
 end
 end
@@ -7214,30 +7239,30 @@ end
 end
 
 if an.Multi and typeof(an.Value)=="string"then
-for az,aA in next,an.Values do
-if typeof(aA)=="table"then
-if aA.Title==an.Value then an.Value={aA}end
+for aA,aB in next,an.Values do
+if typeof(aB)=="table"then
+if aB.Title==an.Value then an.Value={aB}end
 else
-if aA==an.Value then an.Value={an.Value}end
+if aB==an.Value then an.Value={an.Value}end
 end
 end
 end
 
 if an.Multi then
-local az=false
+local aA=false
 if typeof(an.Value)=="table"then
-for aA,aB in ipairs(an.Value)do
-local d=typeof(aB)=="table"and aB.Title or aB
-if d==ax.Name then
-az=true
+for aB,d in ipairs(an.Value)do
+local e=typeof(d)=="table"and d.Title or d
+if e==ax.Name then
+aA=true
 break
 end
 end
 end
-ax.Selected=az
+ax.Selected=aA
 else
-local az=typeof(an.Value)=="table"and an.Value.Title or an.Value
-ax.Selected=az==ax.Name
+local aA=typeof(an.Value)=="table"and an.Value.Title or an.Value
+ax.Selected=aA==ax.Name
 end
 
 if ax.Selected and not ax.Locked then
@@ -7279,22 +7304,22 @@ if ax.UIElements.TabIcon then
 al(ax.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()
 end
 
-for az,aA in next,an.Value do
-if typeof(aA)=="table"and(aA.Title==ax.Name)or(aA==ax.Name)then
-table.remove(an.Value,az)
+for aA,aB in next,an.Value do
+if typeof(aB)=="table"and(aB.Title==ax.Name)or(aB==ax.Name)then
+table.remove(an.Value,aA)
 break
 end
 end
 end
 else
-for az,aA in next,an.Tabs do
-al(aA.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
-al(aA.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
-al(aA.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
-if aA.UIElements.TabIcon then
-al(aA.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()
+for aA,aB in next,an.Tabs do
+al(aB.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
+al(aB.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
+al(aB.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
+if aB.UIElements.TabIcon then
+al(aB.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()
 end
-aA.Selected=false
+aB.Selected=false
 end
 ax.Selected=true
 al(ax.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
@@ -7491,6 +7516,7 @@ Value=an.Value,
 AllowNone=an.AllowNone,
 SearchBarEnabled=an.SearchBarEnabled or false,
 Multi=an.Multi,
+ItemImageSize=an.ItemImageSize,
 Callback=an.Callback or nil,
 
 UIElements={},
@@ -7589,6 +7615,7 @@ return ao.__type,ao
 end
 
 return al end function a.L()
+
 
 
 

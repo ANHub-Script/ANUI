@@ -261,6 +261,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     Name = typeof(Tab) == "table" and Tab.Title or Tab,
                     Desc = typeof(Tab) == "table" and Tab.Desc or nil,
                     Icon = typeof(Tab) == "table" and Tab.Icon or nil,
+                    Image = typeof(Tab) == "table" and Tab.Image or nil,
                     Images = typeof(Tab) == "table" and Tab.Images or nil,
                     Original = Tab,
                     Selected = false,
@@ -268,6 +269,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     UIElements = {},
                 }
                 local TabIcon
+                local SideImage
                 if TabMain.Icon then
                     TabIcon = Creator.Image(
                         TabMain.Icon,
@@ -280,6 +282,29 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     TabIcon.Size = UDim2.new(0,Element.TabIcon,0,Element.TabIcon)
                     TabIcon.ImageLabel.ImageTransparency = Type == "Dropdown" and .2 or 0
                     TabMain.UIElements.TabIcon = TabIcon
+                end
+                if TabMain.Image or (TabMain.Images and #TabMain.Images > 0) then
+                    local imageId
+                    if TabMain.Image then
+                        imageId = TabMain.Image
+                    else
+                        local first = TabMain.Images[1]
+                        if typeof(first) == "table" then
+                            imageId = first.Image or first.Icon or first.Id or first
+                        else
+                            imageId = first
+                        end
+                    end
+                    SideImage = Creator.Image(
+                        imageId,
+                        tostring(imageId) .. ":" .. TabMain.Name,
+                        6,
+                        Config.Window.Folder,
+                        "Dropdown",
+                        false
+                    )
+                    SideImage.Size = Dropdown.ItemImageSize or Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
+                    TabMain.UIElements.SideImage = SideImage
                 end
                 TabMain.UIElements.TabItem = Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "Squircle", {
                     Size = UDim2.new(1,0,0,36),
@@ -329,7 +354,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         }),
                         TabIcon,
                         New("Frame", {
-                            Size = UDim2.new(1,TabIcon and -Element.TabPadding-Element.TabIcon or 0,0,0),
+                            Size = UDim2.new(1,(TabIcon and -Element.TabPadding-Element.TabIcon or 0) + (SideImage and -Element.TabPadding - (((Dropdown.ItemImageSize and Dropdown.ItemImageSize.X.Offset) or (Dropdown.ImageSize and Dropdown.ImageSize.X.Offset)) or 30) or 0),0,0),
                             BackgroundTransparency = 1,
                             AutomaticSize = "Y",
                             Name = "Title",
