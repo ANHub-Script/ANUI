@@ -237,7 +237,9 @@ return function(Config)
             New("UIListLayout", {
                 Padding = UDim.new(0,Element.UIPadding),
                 FillDirection = "Horizontal",
-                VerticalAlignment = (ImageFrame and Config.ElementTable and Config.ElementTable.__type == "Toggle") and "Center" or (Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center"),
+                VerticalAlignment = (Config.ElementTable and Config.ElementTable.__type == "Dropdown") and "Center" 
+                    or ((ImageFrame and Config.ElementTable and Config.ElementTable.__type == "Toggle") and "Center" 
+                    or (Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center")),
                 HorizontalAlignment = Element.Justify ~= "Between" and Element.Justify or "Center",
             }),
             ImageFrame,

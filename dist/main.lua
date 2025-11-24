@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.18  |  2025-11-24  |  Roblox UI Library for scripts
+    v1.0.19  |  2025-11-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5176,7 +5176,9 @@ Name="TitleFrame",
 ab("UIListLayout",{
 Padding=UDim.new(0,ag.UIPadding),
 FillDirection="Horizontal",
-VerticalAlignment=(am and af.ElementTable and af.ElementTable.__type=="Toggle")and"Center"or(af.Window.NewElements and(ag.Justify=="Between"and"Top"or"Center")or"Center"),
+VerticalAlignment=(af.ElementTable and af.ElementTable.__type=="Dropdown")and"Center"
+or((am and af.ElementTable and af.ElementTable.__type=="Toggle")and"Center"
+or(af.Window.NewElements and(ag.Justify=="Between"and"Top"or"Center")or"Center")),
 HorizontalAlignment=ag.Justify~="Between"and ag.Justify or"Center",
 }),
 am,

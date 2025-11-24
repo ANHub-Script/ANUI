@@ -791,27 +791,33 @@ do
 	});
 	DropdownTab:Space();
 	DropdownTab:Dropdown({
-  Title = "Title/Desc/Images Ordering",
-  Desc = "Images are shown below the title if description is missing, or below the description when it exists.",
-  Image = "rbxassetid://84366761557806",
-  ImageSize = UDim2.fromOffset(20, 20),
-  ImagePadding = 6,
-  Values = {
+		Title = "Title/Desc/Images Ordering",
+		Desc = "Images are shown below the title if description is missing, or below the description when it exists.",
+		Image = "rbxassetid://84366761557806",
+		ImageSize = 40,
+		ImagePadding = 6,
+		Values = {
 			{
-				Title = "Category A",
-				Icon = "folder"
+				Title = "Alpha",
+				Desc = "With description",
+				Icon = "info",
+				Images = {
+					"rbxassetid://84366761557806",
+					"bird"
+				}
 			},
 			{
-				Title = "Category B",
-				Icon = "folder"
+				Title = "Beta",
+				Icon = "gift",
+				Images = {
+					"rbxassetid://84366761557806",
+					"droplet"
+				}
 			},
 			{
-				Title = "Category C",
-				Icon = "folder"
-			},
-			{
-				Title = "Category D",
-				Icon = "folder"
+				Title = "Gamma",
+				Desc = "Only description",
+				Icon = "file-text"
 			}
 		},
   SearchBarEnabled = true,
