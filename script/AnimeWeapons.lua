@@ -1765,7 +1765,9 @@ task.spawn(function()
                     local displayName = (MaterialsModule[tokenKey] and MaterialsModule[tokenKey].Display) or (RollDisplayNames[rollType] or tokenKey);
                     local currentCount = pData.Materials[tokenKey] or 0;
                     pcall(function()
-                        toggle:SetDesc(displayName .. ": " .. FormatNumber(currentCount));
+                        if not Window.Closed then
+                            toggle:SetDesc(displayName .. ": " .. FormatNumber(currentCount));
+                        end
                     end);
                 end;
             end;
@@ -2030,6 +2032,8 @@ if MagicEyesModule then
     
     local MagicEyeToggle = _chanceGroup:Toggle({
         Title = "Magic Eye Upgrade",
+        Image = "rbxassetid://84366761557806",
+        ImageSize = 24,
         Desc = "Loading...",
         Flag = "AutoUpgradeMagicEyes_Cfg",
         Callback = function(val)
@@ -2050,47 +2054,75 @@ if MagicEyesModule then
     })
     
     task.spawn(function()
+        local function FormatBonus(bonuses)
+            local str = ""
+            for k, v in pairs(bonuses) do
+                local displayValue = math.floor(v * 10) / 10
+                str = str .. k .. ": " .. FormatNumber(displayValue) .. " "
+            end
+            return str
+        end
+
         while not Window.Destroyed do
-            local pData = (getgenv()).PlayerData
-            if pData and pData.Attributes and pData.GachaLevel and MagicEyesModule then
-                local currentLevel = pData.Attributes.MagicEyes
+            local pData = getgenv().PlayerData
+			local currentToken = pData.Materials.UpgradeEyeToken or 0;
+            if pData and pData.Attributes and pData.GachaLevel and MagicEyesModule and MagicEyesModule.List then
+                -- Get Equipped Magic Eye Index
+                local equippedEyeIndex = pData.Attributes.MagicEyes
+                
+                -- Get Upgrade Level
+                local currentLevel = pData.GachaLevel.MagicEyes[tostring(equippedEyeIndex)]
+                local equippedItemData = MagicEyesModule.List[equippedEyeIndex]
+                
                 if currentLevel then
-                    -- Correction: Get stats from MagicEyesModule.List[currentLevel]
-                    -- Note: The module structure provided shows List is a table of tables.
-                    -- Each item in List has a "Bonus" table.
-                    
+                    if not Window.Closed then
+                        if equippedItemData and equippedItemData.Template then
+                            MagicEyeToggle:SetImage(GetIcon(equippedItemData.Template))
+                        end
+                    end
+
                     local maxLevel = MagicEyesModule.MaxLevel or 50
                     
                     if currentLevel >= maxLevel then
-                        MagicEyeToggle:SetDesc(string.format("Lvl: %s [MAX]", tostring(currentLevel)))
-                        MagicEyeToggle:Lock()
+                        if not Window.Closed then
+                            MagicEyeToggle:SetDesc(string.format("Lvl: %s [MAX]", tostring(currentLevel)))
+                            MagicEyeToggle:Lock()
+                        end
                         if Config.AutoUpgradeMagicEyes then
                             Config.AutoUpgradeMagicEyes = false
                             MagicEyeToggle:Set(false)
                         end
-                    else
-                        local levelData = MagicEyesModule.List and MagicEyesModule.List[currentLevel]
-                        
-                        if levelData and levelData.Bonus then
+                    elseif equippedItemData and equippedItemData.Bonus then
+                        if not Window.Closed then
                             local cost = MagicEyesModule.GetCost(currentLevel)
-                            local bonuses = MagicEyesModule.GetBonuses(currentLevel, levelData.Bonus)
+                            local currentBonuses = MagicEyesModule.GetBonuses(currentLevel, equippedItemData.Bonus)
+                            local nextBonuses = MagicEyesModule.GetBonuses(currentLevel + 1, equippedItemData.Bonus)
                             
-                            local bonusStr = ""
-                            for k, v in pairs(bonuses) do
-                                bonusStr = bonusStr .. k .. ": " .. FormatNumber(v) .. " "
-                            end
+                            local bonusStr = FormatBonus(currentBonuses)
+                            local nextBonusStr = FormatBonus(nextBonuses)
                             
-                            MagicEyeToggle:SetDesc(string.format("Lvl: %s | Cost: %s | %s", tostring(currentLevel), FormatNumber(cost), bonusStr))
-                        else
-                             -- If we can't find the next level data, maybe maxed or error
-                             -- Try to show just level and cost if possible, or just level
-                             if MagicEyesModule.GetCost then
-                                 local cost = MagicEyesModule.GetCost(currentLevel)
-                                 MagicEyeToggle:SetDesc(string.format("Lvl: %s | Cost: %s", tostring(currentLevel), FormatNumber(cost)))
-                             else
-                                 MagicEyeToggle:SetDesc(string.format("Lvl: %s", tostring(currentLevel)))
-                             end
+                            MagicEyeToggle:SetDesc(string.format(
+                                "Used: %s(%s)\nLvl: %s/%s\nCost: %s	\nUpgrade Eyes Shard: %s", 
+                                equippedItemData.Display, 
+                                equippedItemData.Rarity, 
+                                tostring(currentLevel), 
+                                tostring(maxLevel),
+                                FormatNumber(cost),
+                                FormatNumber(currentToken)
+                            ))
                         end
+                    else
+                        -- Fallback if item data is missing
+                        if not Window.Closed then
+                            local cost = MagicEyesModule.GetCost and MagicEyesModule.GetCost(currentLevel) or "?"
+                            MagicEyeToggle:SetDesc(string.format("Lvl: %s | Cost: %s (Item Data Missing: Index %s)", tostring(currentLevel), FormatNumber(cost), tostring(equippedEyeIndex)))
+                        end
+                    end
+                else
+                    -- Fallback if level is not found
+                    if not Window.Closed then
+                        local itemName = equippedItemData and equippedItemData.Display or "Unknown"
+                        MagicEyeToggle:SetDesc(string.format("Used: %s | Lvl: 0 (Upgrade not started)", itemName))
                     end
                 end
             end
@@ -2276,7 +2308,7 @@ task.spawn(function()
 			local req = GetRankRequirement(currentRank);
 			local currentBuff = GetRankBuff(currentRank);
 			local nextBuff = GetRankBuff(currentRank + 1);
-			if RankProgressUI then
+			if RankProgressUI and not Window.Closed then
 				local percent = req > 0 and math.clamp(currentMastery / req, 0, 1) or 0;
 				local barText = string.rep("█", math.floor(percent * 10)) .. string.rep("▒", 10 - math.floor(percent * 10));
 				local buffText = currentRank >= MaxRankCap and "Buff: " .. FormatNumber(currentBuff) .. "% (MAX)" or "Buff: " .. FormatNumber(currentBuff) .. "% >> " .. FormatNumber(nextBuff) .. "%";
@@ -2313,12 +2345,16 @@ task.spawn(function()
 					if toggle and toggle.SetTitle and toggle.SetDesc then
 						local maxLvl = configData.MaxLevel or 20;
 						if lvl >= maxLvl then
-							toggle:SetTitle(name .. " [MAX]");
-							toggle:Lock();
-							toggle:SetDesc(string.format("Maxed Out (Buff: +%s%%)", FormatNumber(GetYenBuff(name, lvl))));
+							if not Window.Closed then
+								toggle:SetTitle(name .. " [MAX]");
+								toggle:Lock();
+								toggle:SetDesc(string.format("Maxed Out (Buff: +%s%%)", FormatNumber(GetYenBuff(name, lvl))));
+							end
 						else
-							toggle:SetTitle(name .. " [" .. lvl .. "/" .. maxLvl .. "]");
-							toggle:SetDesc(string.format("Cost: %s | Buff: +%s%%", FormatNumber(cost), FormatNumber(GetYenBuff(name, lvl))));
+							if not Window.Closed then
+								toggle:SetTitle(name .. " [" .. lvl .. "/" .. maxLvl .. "]");
+								toggle:SetDesc(string.format("Cost: %s | Buff: +%s%%", FormatNumber(cost), FormatNumber(GetYenBuff(name, lvl))));
+							end
 							if Config["AutoYen_" .. name] and currentYen >= cost then
 								if Reliable then
 									pcall(function()
@@ -2341,12 +2377,16 @@ task.spawn(function()
 					if toggle and toggle.SetTitle and toggle.SetDesc then
 						local maxLvl = configData.MaxLevel or 999;
 						if lvl >= maxLvl then
-							toggle:Lock();
-							toggle:SetTitle(name .. " [MAX]");
-							toggle:SetDesc(string.format("Maxed Out (Buff: +%s%%)", FormatNumber(GetTokenBuff(name, lvl))));
+							if not Window.Closed then
+								toggle:Lock();
+								toggle:SetTitle(name .. " [MAX]");
+								toggle:SetDesc(string.format("Maxed Out (Buff: +%s%%)", FormatNumber(GetTokenBuff(name, lvl))));
+							end
 						else
-							toggle:SetTitle(name .. " [" .. lvl .. "/" .. maxLvl .. "]");
-							toggle:SetDesc(string.format("Cost: %s | Buff: +%s%%\nUpgrade Shard: %s", FormatNumber(cost), FormatNumber(GetTokenBuff(name, lvl)), FormatNumber(currentToken)));
+							if not Window.Closed then
+								toggle:SetTitle(name .. " [" .. lvl .. "/" .. maxLvl .. "]");
+								toggle:SetDesc(string.format("Cost: %s | Buff: +%s%%\nUpgrade Shard: %s", FormatNumber(cost), FormatNumber(GetTokenBuff(name, lvl)), FormatNumber(currentToken)));
+							end
 							if Config["AutoToken_" .. name] and currentToken >= cost then
 								if Reliable then
 									pcall(function()
@@ -2375,12 +2415,16 @@ task.spawn(function()
 							displayName = MaterialsModule[tokenKey].Display;
 						end;
 						if lvl >= maxLvl then
-							toggleObj:SetTitle(name .. " [MAX]");
-							toggleObj:SetDesc("Max Level Reached");
-							toggleObj:Lock();
+							if not Window.Closed then
+								toggleObj:SetTitle(name .. " [MAX]");
+								toggleObj:SetDesc("Max Level Reached");
+								toggleObj:Lock();
+							end
 						else
-							toggleObj:SetTitle(string.format("%s [%d/%d]", name, lvl, maxLvl));
-							toggleObj:SetDesc(string.format("Cost: %s | Chance: %s%%\n%s: %s", FormatNumber(cost), chance, displayName, FormatNumber(currentMaterial)));
+							if not Window.Closed then
+								toggleObj:SetTitle(string.format("%s [%d/%d]", name, lvl, maxLvl));
+								toggleObj:SetDesc(string.format("Cost: %s | Chance: %s%%\n%s: %s", FormatNumber(cost), chance, displayName, FormatNumber(currentMaterial)));
+							end
 							if Config["AutoChance_" .. name] then
 								if currentMaterial >= cost then
 									if Reliable then
