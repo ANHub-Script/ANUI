@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.22  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.23  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.22",
+    "version": "1.0.23",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4745,6 +4745,17 @@ af.IsPC=false
 end
 
 
+local as=af.IsPC and 150 or 60
+if not ar.Size then
+ar.Size=UDim2.new(0,as,0,22)
+end
+
+if ar.Size then
+am.AutomaticSize=Enum.AutomaticSize.None
+am.Size=ar.Size
+end
+
+
 if ar.Draggable==false and aj and ak then
 aj.Visible=ar.Draggable
 ak.Visible=ar.Draggable
@@ -4764,6 +4775,12 @@ if aj then aj.Visible=false end
 if ak then ak.Visible=false end
 am.TextButton.UIPadding.PaddingLeft=UDim.new(0,4)
 am.TextButton.UIPadding.PaddingRight=UDim.new(0,4)
+
+
+if ar.Size then
+am.TextButton.Size=UDim2.new(1,0,1,0)
+am.TextButton.AutomaticSize=Enum.AutomaticSize.None
+end
 elseif ar.OnlyIcon==false then
 ai.Visible=true
 if aj then aj.Visible=true end

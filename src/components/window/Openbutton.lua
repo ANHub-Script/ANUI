@@ -220,6 +220,17 @@ function OpenButton.New(Window)
             Window.IsPC = false
         end
         
+        -- Default Size Logic
+        local defaultWidth = Window.IsPC and 150 or 60
+        if not OpenButtonModule.Size then
+             OpenButtonModule.Size = UDim2.new(0, defaultWidth, 0, 22)
+        end
+        
+        if OpenButtonModule.Size then
+            Button.AutomaticSize = Enum.AutomaticSize.None
+            Button.Size = OpenButtonModule.Size
+        end
+        
         
         if OpenButtonModule.Draggable == false and Drag and Divider then
             Drag.Visible = OpenButtonModule.Draggable
@@ -240,6 +251,12 @@ function OpenButton.New(Window)
             if Divider then Divider.Visible = false end
             Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,4)
             Button.TextButton.UIPadding.PaddingRight = UDim.new(0,4)
+            
+            -- Fill container if fixed size
+            if OpenButtonModule.Size then
+                Button.TextButton.Size = UDim2.new(1, 0, 1, 0)
+                Button.TextButton.AutomaticSize = Enum.AutomaticSize.None
+            end
         elseif OpenButtonModule.OnlyIcon == false then
             Title.Visible = true
             if Drag then Drag.Visible = true end
