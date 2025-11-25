@@ -60,7 +60,7 @@ function autoCommit(version) {
     return;
   }
 
-    console.log(`${P}[ > ]${R} Auto commit & push ke Git...`);
+  console.log(`${P}[ > ]${R} Auto commit & push ke Git...`);
 
   // commit SEMUA perubahan di repo
   let res = runGit(['add', '.'], { stdio: 'inherit' });
@@ -84,6 +84,38 @@ function autoCommit(version) {
   }
 
   console.log(`${P}[ ✓ ]${R} Auto commit & push selesai`);
+}
+
+// === Folder Movement Logic ===
+
+// Lokasi folder saat ini (di dalam folder build)
+const currentScriptPath = path.join(__dirname, 'script');
+// Lokasi folder sebelumnya (di luar folder build / parent)
+const previousScriptPath = path.join(__dirname, '..', 'script');
+
+function moveScriptToParent() {
+  if (fs.existsSync(currentScriptPath)) {
+    try {
+      fs.renameSync(currentScriptPath, previousScriptPath);
+      console.log(`${P}[ > ]${R} Folder 'script' dipindahkan sementara ke folder sebelumnya.`);
+      return true;
+    } catch (err) {
+      console.error(`${E}[ × ]${R} Gagal memindahkan folder script: ${err.message}`);
+      return false;
+    }
+  }
+  return false;
+}
+
+function restoreScriptFromParent() {
+  if (fs.existsSync(previousScriptPath)) {
+    try {
+      fs.renameSync(previousScriptPath, currentScriptPath);
+      console.log(`${P}[ > ]${R} Folder 'script' dikembalikan ke folder saat ini.`);
+    } catch (err) {
+      console.error(`${E}[ × ]${R} Gagal mengembalikan folder script: ${err.message}`);
+    }
+  }
 }
 
 // === Build logic ===
@@ -134,6 +166,7 @@ function runDarklua(input, config) {
   const code = (res.status !== null && res.status !== undefined) ? res.status : (res.error ? 1 : 0);
   return { code, stdout: res.stdout?.toString() || '', stderr: res.stderr?.toString() || '', time };
 }
+
 function main() {
   // NEW: bump version dulu kalau mode build
   let bumpInfo = null;
@@ -164,7 +197,7 @@ function main() {
       console.error(`${E}[ × ]${R} Missing output file: ${tempPath}`);
       console.error(`${E}[ > ]${R} Pastikan 'darklua' terinstall dan ada di PATH (lihat 'aftman.toml').`);
     }
-    try { if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath); } catch {}
+    try { if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath); } catch { }
     process.exit(1);
   }
 
@@ -172,7 +205,7 @@ function main() {
   fs.writeFileSync(output, header + '\n\n', 'utf-8');
   const temp = fs.readFileSync(tempPath, 'utf-8');
   fs.appendFileSync(output, temp, 'utf-8');
-  try { fs.unlinkSync(tempPath); } catch {}
+  try { fs.unlinkSync(tempPath); } catch { }
 
   const sizeKB = Math.floor(fs.statSync(output).size / 1024);
 
@@ -196,7 +229,18 @@ function main() {
 
   // Auto-commit hanya untuk mode build
   if (MODE === 'build') {
-    autoCommit(VER);
+    // 1. Pindahkan folder script SEBELUM commit
+    const scriptWasMoved = moveScriptToParent();
+
+    try {
+      // 2. Lakukan Auto Commit
+      autoCommit(VER);
+    } finally {
+      // 3. Kembalikan folder script SETELAH commit (gunakan finally agar tetap jalan meski commit error)
+      if (scriptWasMoved) {
+        restoreScriptFromParent();
+      }
+    }
   }
 }
 
