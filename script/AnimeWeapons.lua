@@ -87,6 +87,9 @@ local Config = {
 	AutoRollBreathing = false,
 	AutoRollOrganization = false,
 	AutoRollTitan = false,
+    AutoRollMagicEyes = false,
+    AutoRollDemonArt = false,
+    AutoUpgradeMagicEyes = false,
 	AutoChance_Breath = false,
 	AutoChance_Pirate = false,
 	AutoChance_Wise = false,
@@ -113,7 +116,9 @@ local AllRollTypes = {
 	"Haki",
 	"Breathing",
 	"Organization",
-	"Titan"
+	"Titan",
+    "MagicEyes",
+    "DemonArt"
 };
 local ChanceUpgradeTypes = {
 	"Breath",
@@ -240,6 +245,10 @@ if ChancePath then
 		end;
 	end;
 end;
+local MagicEyesModule = nil;
+pcall(function()
+    MagicEyesModule = require(ReplicatedStorage.Scripts.Configs.RollGachaUpgrades.MagicEyes);
+end);
 local YenUpgradeConfig = YenModule.Config;
 local TokenUpgradeConfig = TokenModule.Config;
 local MaxRankCap = RankModule.MAX or 33;
@@ -272,7 +281,9 @@ local RollMaterialMap = {
 	Haki = "HakiToken",
 	Breathing = "BreathingToken",
 	Organization = "OrganizationToken",
-	Titan = "TitanToken"
+	Titan = "TitanToken",
+    MagicEyes = "EyeToken",
+    DemonArt = "DemonToken"
 };
 local RollDisplayNames = {
 	Biju = "Biju Shard",
@@ -282,7 +293,9 @@ local RollDisplayNames = {
 	Haki = "Haki Shard",
 	Breathing = "Breathing Stone",
 	Organization = "Organization Shard",
-	Titan = "Titan Shard"
+	Titan = "Titan Shard",
+    MagicEyes = "Magic Eyes",
+    DemonArt = "Demon Art"
 };
 local RollTypeToConfig = {
 	Biju = "AutoRollBiju",
@@ -292,7 +305,9 @@ local RollTypeToConfig = {
 	Haki = "AutoRollHaki",
 	Breathing = "AutoRollBreathing",
 	Organization = "AutoRollOrganization",
-	Titan = "AutoRollTitan"
+	Titan = "AutoRollTitan",
+    MagicEyes = "AutoRollMagicEyes",
+    DemonArt = "AutoRollDemonArt"
 };
 
 local function LoadZoneDB()
@@ -385,7 +400,7 @@ local function GetRollIconAsset(rollType)
 	local fallback = "rbxassetid://84366761557806";
 	local assetId = "";
 	pcall(function()
-		local machine = Workspace.Billboards.Machines:FindFirstChild(rollType);
+		local machine = Workspace.Billboards.CrateRoll:FindFirstChild(rollType);
 		if machine and machine:FindFirstChild("icon") then
 			assetId = machine.icon.Image;
 		end;
@@ -416,14 +431,16 @@ local function LoadDungeonData()
 		for id, phase in ipairs(module.PHASES) do
 			local dName = phase.Name;
 			local hpCalc = math.floor((phase.HealthBase or 0) / 50);
+			local desc = "Hp Base: " .. FormatNumber(hpCalc);
 			table.insert(dungeonList, {
 				Title = dName,
-				Desc = "Hp Base: " .. FormatNumber(hpCalc),
+				Desc = desc,
 				Value = dName
 			});
 			dungeonDB[dName] = {
 				ID = id,
-				Time = phase.START_MINUTE
+				Time = phase.START_MINUTE,
+				BaseDesc = desc
 			};
 		end;
 	end;
@@ -437,14 +454,16 @@ local function LoadRaidData()
 		for id, phase in ipairs(module.PHASES) do
 			local rName = phase.Name;
 			local hpCalc = math.floor((phase.HealthBase or 0) / 50);
+			local desc = "Hp Base: " .. FormatNumber(hpCalc);
 			table.insert(raidList, {
 				Title = rName,
-				Desc = "Hp Base: " .. FormatNumber(hpCalc),
+				Desc = desc,
 				Value = rName
 			});
 			raidDB[rName] = {
 				ID = id,
-				Times = phase.START_TIMES
+				Times = phase.START_TIMES,
+				BaseDesc = desc
 			};
 		end;
 	end;
@@ -458,14 +477,16 @@ local function LoadDefenseData()
 		for id, phase in ipairs(module.PHASES) do
 			local rName = phase.Name;
 			local hpCalc = math.floor((phase.HealthBase or 0) / 50);
+			local desc = "Hp Base: " .. FormatNumber(hpCalc);
 			table.insert(defenseList, {
 				Title = rName,
-				Desc = "Hp Base: " .. FormatNumber(hpCalc),
+				Desc = desc,
 				Value = rName
 			});
 			defenseDB[rName] = {
 				ID = id,
-				Times = phase.START_TIMES 
+				Times = phase.START_TIMES,
+				BaseDesc = desc 
 			};
 		end;
 	end;
@@ -903,7 +924,7 @@ local function LogicGamemodes()
 			end;
 		end;
 		local isFightingZone = string.find(currentMap, ":") and (string.find(currentMap, "Dungeon") or string.find(currentMap, "Raid") or string.find(currentMap, "Defense"));
-		if currentMap == "Dungeon" or currentMap == "Raid" or currentMap == "Defense" then
+		if currentMap == "Raid" or currentMap == "Defense" then
 			isFightingZone = true 
 		end
 		
@@ -950,7 +971,7 @@ local function LogicGamemodes()
 				task.wait(0.1);
 			elseif inLobbyZone or wasInGamemode and (not isFightingZone) then
 				currentTargetObj = nil;
-				if LastZone and LastZone ~= "" and LastZone ~= "Dungeon" and LastZone ~= "Raid" and LastZone ~= "Defense" and LastZone ~= "Unknown" then
+				if LastZone and LastZone ~= "" and not string.find(LastZone, "Dungeon:") and not string.find(LastZone, "Raid:") and not string.find(LastZone, "Defense:") and LastZone ~= "Unknown" then
 					l:Notify({
 						Title = "Mode Finished",
 						Content = "In Lobby -> Returning to " .. LastZone,
@@ -1017,7 +1038,7 @@ local function LogicGamemodes()
 				end;
 
 				if targetString then
-					if not string.find(currentMap, "Dungeon") and (not string.find(currentMap, "Raid")) and (not string.find(currentMap, "Defense")) then
+					if not string.find(currentMap, "Dungeon:") and (not string.find(currentMap, "Raid:")) and (not string.find(currentMap, "Defense:")) then
 						LastZone = currentMap;
 					end;
 					l:Notify({
@@ -1052,6 +1073,8 @@ task.spawn(function()
 			"Fruits",
 			"Haki",
 			"Breathing",
+			"MagicEyes",
+            "DemonArt",
 			"Organization",
 			"Titan"
 		};
@@ -1085,6 +1108,8 @@ task.spawn(function()
 			"Fruits",
 			"Haki",
 			"Breathing",
+			"MagicEyes",
+            "DemonArt",
 			"Organization",
 			"Titan"
 		};
@@ -1218,32 +1243,7 @@ local FarmTabs = CreateTabButtons(FarmingManagerSection, {
     "Gamemodes"
 })
 
-task.spawn(function()
-    task.wait(0.1)
-    local function SetupButton(btnName, iconId)
-        local btn = FarmTabs.ButtonObjects[btnName]
-        if btn then
-            local lbl = btn:FindFirstChildOfClass("TextLabel")
-            if lbl then
-                lbl.Size = UDim2.new(1, -25, 1, 0)
-                lbl.Position = UDim2.new(0, 25, 0, 0)
-                lbl.TextXAlignment = Enum.TextXAlignment.Left
-            end
-
-            local iconImg = Instance.new("ImageLabel")
-            iconImg.Name = btnName.."Icon"
-            iconImg.Parent = btn
-            iconImg.Size = UDim2.fromOffset(20, 20)
-            iconImg.AnchorPoint = Vector2.new(0, 0.5)
-            iconImg.Position = UDim2.new(0, 0, 0.5, 0)
-            iconImg.BackgroundTransparency = 1
-            iconImg.Image = iconId
-            iconImg.ScaleType = Enum.ScaleType.Fit
-        end
-    end
-    SetupButton("Zone Farming", "rbxassetid://10709791437")
-    SetupButton("Gamemodes", "rbxassetid://10709752906")
-end)
+-- Icons removed as per user request
 
 EnemyDropdown = FarmingManagerSection:Dropdown({
 	Title = "Select Enemy",
@@ -1292,6 +1292,45 @@ local DgnDrop = FarmingManagerSection:Dropdown({
 	end
 });
 FarmTabs:Add("Gamemodes", DgnDrop);
+
+task.spawn(function()
+	while not Window.Destroyed do
+		local t = os.date("*t");
+		local currentTotalSeconds = t.min * 60 + t.sec;
+		local newList = {};
+		
+		for _, item in ipairs(dungeonList) do
+			local dName = item.Value;
+			local data = dungeonDB[dName];
+			if data then
+				local startMin = data.Time;
+				local startTotalSeconds = startMin * 60;
+				local diff = startTotalSeconds - currentTotalSeconds;
+				if diff < 0 then
+					diff = diff + 3600;
+				end;
+				local m = math.floor(diff / 60);
+				local s = diff % 60;
+				local timeStr = string.format("%02d:%02d", m, s);
+				
+				table.insert(newList, {
+					Title = item.Title,
+					Value = item.Value,
+					Desc = data.BaseDesc .. " | Starts in: " .. timeStr
+				});
+			else
+				table.insert(newList, item);
+			end;
+		end;
+		
+		if DgnDrop and DgnDrop.Refresh then
+			pcall(function()
+				DgnDrop:Refresh(newList);
+			end);
+		end;
+		task.wait(1);
+	end;
+end);
 local RaidDrop = FarmingManagerSection:Dropdown({
 	Title = "Select Raid",
 	Multi = true,AllowNone = true,
@@ -1321,6 +1360,86 @@ local DefenseDrop = FarmingManagerSection:Dropdown({
 	end
 });
 FarmTabs:Add("Gamemodes", DefenseDrop);
+
+task.spawn(function()
+	local function GetNextTimeDiff(times, currentMin, currentSec)
+		if not times or #times == 0 then return 0 end
+		table.sort(times)
+		
+		-- Find next time in current hour
+		for _, t in ipairs(times) do
+			if t > currentMin then
+				return (t - currentMin) * 60 - currentSec
+			end
+		end
+		
+		-- If not found, get first time in next hour
+		local firstTime = times[1]
+		return (60 - currentMin + firstTime) * 60 - currentSec
+	end
+
+	while not Window.Destroyed do
+		local t = os.date("*t")
+		local currentMin = t.min
+		local currentSec = t.sec
+		
+		-- Update Raid Dropdown
+		local newRaidList = {}
+		for _, item in ipairs(raidList) do
+			local rName = item.Value
+			local data = raidDB[rName]
+			if data and data.Times then
+				local diff = GetNextTimeDiff(data.Times, currentMin, currentSec)
+				if diff < 0 then diff = 0 end -- Should not happen with logic above but safety
+				
+				local m = math.floor(diff / 60)
+				local s = diff % 60
+				local timeStr = string.format("%02d:%02d", m, s)
+				
+				table.insert(newRaidList, {
+					Title = item.Title,
+					Value = item.Value,
+					Desc = data.BaseDesc .. " | Starts in: " .. timeStr
+				})
+			else
+				table.insert(newRaidList, item)
+			end
+		end
+		
+		if RaidDrop and RaidDrop.Refresh then
+			pcall(function() RaidDrop:Refresh(newRaidList) end)
+		end
+		
+		-- Update Defense Dropdown
+		local newDefenseList = {}
+		for _, item in ipairs(defenseList) do
+			local dName = item.Value
+			local data = defenseDB[dName]
+			if data and data.Times then
+				local diff = GetNextTimeDiff(data.Times, currentMin, currentSec)
+				if diff < 0 then diff = 0 end
+				
+				local m = math.floor(diff / 60)
+				local s = diff % 60
+				local timeStr = string.format("%02d:%02d", m, s)
+				
+				table.insert(newDefenseList, {
+					Title = item.Title,
+					Value = item.Value,
+					Desc = data.BaseDesc .. " | Starts in: " .. timeStr
+				})
+			else
+				table.insert(newDefenseList, item)
+			end
+		end
+		
+		if DefenseDrop and DefenseDrop.Refresh then
+			pcall(function() DefenseDrop:Refresh(newDefenseList) end)
+		end
+		
+		task.wait(1)
+	end
+end)
 
 local ModeToggle = FarmingManagerSection:Toggle({
 	Title = "Auto Join & Kill",
@@ -1354,32 +1473,7 @@ local GeneralTabs = CreateTabButtons(GeneralManagerSection, {
     "Crate Roll"
 })
 
-task.spawn(function()
-    task.wait(0.1)
-    local function SetupButton(btnName, iconId)
-        local btn = GeneralTabs.ButtonObjects[btnName]
-        if btn then
-            local lbl = btn:FindFirstChildOfClass("TextLabel")
-            if lbl then
-                lbl.Size = UDim2.new(1, -25, 1, 0)
-                lbl.Position = UDim2.new(0, 25, 0, 0)
-                lbl.TextXAlignment = Enum.TextXAlignment.Left
-            end
-
-            local iconImg = Instance.new("ImageLabel")
-            iconImg.Name = btnName.."Icon"
-            iconImg.Parent = btn
-            iconImg.Size = UDim2.fromOffset(20, 20)
-            iconImg.AnchorPoint = Vector2.new(0, 0.5)
-            iconImg.Position = UDim2.new(0, 0, 0.5, 0)
-            iconImg.BackgroundTransparency = 1
-            iconImg.Image = iconId
-            iconImg.ScaleType = Enum.ScaleType.Fit
-        end
-    end
-    SetupButton("Exchange", "rbxassetid://10709791437")
-    SetupButton("Crate Roll", "rbxassetid://10709752906")
-end)
+-- Icons removed as per user request
 
 local MaterialsModule = require(ReplicatedStorage.Scripts.Configs.General.Materials)
 local TradeTokenInfo = MaterialsModule.TradeToken
@@ -1624,6 +1718,14 @@ local rollToggleData = {
     {
         "Titan",
         "AutoRollTitan"
+    },
+    {
+        "MagicEyes",
+        "AutoRollMagicEyes"
+    },
+    {
+        "DemonArt",
+        "AutoRollDemonArt"
     }
 };
 local _rollGroup;
@@ -1651,21 +1753,36 @@ for i, rollData in ipairs(rollToggleData) do
     _rollCount = _rollCount + 1;
 end;
 
--- [Auto Lock Maxed Rolls]
+-- [Auto Lock Maxed Rolls & Update Counts]
 task.spawn(function()
 	while not Window.Destroyed do
 		local pData = (getgenv()).PlayerData;
-		if pData and pData.Vault then
-			for rollType, toggle in pairs(RollToggleUI) do
-				if pData.Vault[rollType] and pData.Vault[rollType]["7"] == true then
-					pcall(function()
-						toggle:Lock();
-						toggle:SetTitle(rollType .. " [MAX]");
-						if Config["AutoRoll" .. rollType] then
-							Config["AutoRoll" .. rollType] = false;
-							toggle:Set(false);
-						end;
-					end);
+		if pData then
+            -- Update Counts
+            if pData.Materials then
+                for rollType, toggle in pairs(RollToggleUI) do
+                    local tokenKey = RollMaterialMap[rollType];
+                    local displayName = (MaterialsModule[tokenKey] and MaterialsModule[tokenKey].Display) or (RollDisplayNames[rollType] or tokenKey);
+                    local currentCount = pData.Materials[tokenKey] or 0;
+                    pcall(function()
+                        toggle:SetDesc(displayName .. ": " .. FormatNumber(currentCount));
+                    end);
+                end;
+            end;
+
+            -- Check Maxed
+			if pData.Vault then
+				for rollType, toggle in pairs(RollToggleUI) do
+					if pData.Vault[rollType] and pData.Vault[rollType]["7"] == true then
+						pcall(function()
+							toggle:Lock();
+							toggle:SetTitle(rollType .. " [MAX]");
+							if Config["AutoRoll" .. rollType] then
+								Config["AutoRoll" .. rollType] = false;
+								toggle:Set(false);
+							end;
+						end);
+					end;
 				end;
 			end;
 		end;
@@ -1843,23 +1960,41 @@ task.spawn(function()
     SetupButton("Trainer", GetTrainerIcon())
 end)
 
+local _yenGroup
+local _yenCount = 0
 for _, name in ipairs(upgradeOrder) do
     if YenUpgradeConfig[name] then
-        local myToggle = YenMainSection:Toggle({
+        if _yenCount % 2 == 0 then
+            _yenGroup = YenMainSection:Group({})
+            YenTabs:Add("Yen", _yenGroup)
+        end
+        local myToggle = _yenGroup:Toggle({
             Title = name, Flag = "AutoYen_" .. name, Callback = function(val) Config["AutoYen_" .. name] = val end
         })
         YenUpgradeToggleUI[name] = myToggle 
-        YenTabs:Add("Yen", myToggle) 
+        _yenCount = _yenCount + 1
     end
 end
 
 if TokenUpgradeConfig then
-    for name, configData in pairs(TokenUpgradeConfig) do
-        local myToggle = YenMainSection:Toggle({
+    local _tokenGroup
+    local _tokenCount = 0
+    local sortedTokens = {}
+    for name, _ in pairs(TokenUpgradeConfig) do
+        table.insert(sortedTokens, name)
+    end
+    table.sort(sortedTokens)
+
+    for _, name in ipairs(sortedTokens) do
+        if _tokenCount % 2 == 0 then
+            _tokenGroup = YenMainSection:Group({})
+            YenTabs:Add("Token", _tokenGroup)
+        end
+        local myToggle = _tokenGroup:Toggle({
             Title = name, Flag = "AutoToken_" .. name, Callback = function(val) Config["AutoToken_" .. name] = val end
         })
         TokenUpgradeToggleUI[name] = myToggle
-        YenTabs:Add("Token", myToggle)
+        _tokenCount = _tokenCount + 1
     end
 end
 
@@ -1869,8 +2004,14 @@ YenTabs:Add("Rank", RankProgressUI)
 local RankToggle = YenMainSection:Toggle({ Title = "Auto Rank Up", Flag = "AutoRankUp_Cfg", Callback = function(val) Config.AutoRankUp = val end })
 YenTabs:Add("Rank", RankToggle)
 
+local _chanceGroup
+local _chanceCount = 0
 for _, name in ipairs(ChanceUpgradeTypes) do
-    local myToggle = YenMainSection:Toggle({
+    if _chanceCount % 2 == 0 then
+        _chanceGroup = YenMainSection:Group({})
+        YenTabs:Add("Trainer", _chanceGroup)
+    end
+    local myToggle = _chanceGroup:Toggle({
         Title = "Loading...", 
         Flag = "AutoChance_" .. name, 
         Callback = function(val) 
@@ -1878,7 +2019,85 @@ for _, name in ipairs(ChanceUpgradeTypes) do
         end
     })
     ChanceUpgradeToggleUI[name] = myToggle
-    YenTabs:Add("Trainer", myToggle)
+    _chanceCount = _chanceCount + 1
+end
+
+if MagicEyesModule then
+    if _chanceCount % 2 == 0 then
+        _chanceGroup = YenMainSection:Group({})
+        YenTabs:Add("Trainer", _chanceGroup)
+    end
+    
+    local MagicEyeToggle = _chanceGroup:Toggle({
+        Title = "Magic Eye Upgrade",
+        Desc = "Loading...",
+        Flag = "AutoUpgradeMagicEyes_Cfg",
+        Callback = function(val)
+            Config.AutoUpgradeMagicEyes = val
+            if val then
+                task.spawn(function()
+                    while Config.AutoUpgradeMagicEyes and not Window.Destroyed do
+                        if Reliable then
+                            pcall(function()
+                                Reliable:FireServer("Crate Upgrade", {"MagicEyes"})
+                            end)
+                        end
+                        task.wait(1)
+                    end
+                end)
+            end
+        end
+    })
+    
+    task.spawn(function()
+        while not Window.Destroyed do
+            local pData = (getgenv()).PlayerData
+            if pData and pData.Attributes and pData.GachaLevel and MagicEyesModule then
+                local currentLevel = pData.Attributes.MagicEyes
+                if currentLevel then
+                    -- Correction: Get stats from MagicEyesModule.List[currentLevel]
+                    -- Note: The module structure provided shows List is a table of tables.
+                    -- Each item in List has a "Bonus" table.
+                    
+                    local maxLevel = MagicEyesModule.MaxLevel or 50
+                    
+                    if currentLevel >= maxLevel then
+                        MagicEyeToggle:SetDesc(string.format("Lvl: %s [MAX]", tostring(currentLevel)))
+                        MagicEyeToggle:Lock()
+                        if Config.AutoUpgradeMagicEyes then
+                            Config.AutoUpgradeMagicEyes = false
+                            MagicEyeToggle:Set(false)
+                        end
+                    else
+                        local levelData = MagicEyesModule.List and MagicEyesModule.List[currentLevel]
+                        
+                        if levelData and levelData.Bonus then
+                            local cost = MagicEyesModule.GetCost(currentLevel)
+                            local bonuses = MagicEyesModule.GetBonuses(currentLevel, levelData.Bonus)
+                            
+                            local bonusStr = ""
+                            for k, v in pairs(bonuses) do
+                                bonusStr = bonusStr .. k .. ": " .. FormatNumber(v) .. " "
+                            end
+                            
+                            MagicEyeToggle:SetDesc(string.format("Lvl: %s | Cost: %s | %s", tostring(currentLevel), FormatNumber(cost), bonusStr))
+                        else
+                             -- If we can't find the next level data, maybe maxed or error
+                             -- Try to show just level and cost if possible, or just level
+                             if MagicEyesModule.GetCost then
+                                 local cost = MagicEyesModule.GetCost(currentLevel)
+                                 MagicEyeToggle:SetDesc(string.format("Lvl: %s | Cost: %s", tostring(currentLevel), FormatNumber(cost)))
+                             else
+                                 MagicEyeToggle:SetDesc(string.format("Lvl: %s", tostring(currentLevel)))
+                             end
+                        end
+                    end
+                end
+            end
+            task.wait(1)
+        end
+    end)
+    _chanceCount = _chanceCount + 1
 end
 
 local SettingsTab = Window:Tab({
