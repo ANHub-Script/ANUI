@@ -41,6 +41,7 @@ function TabModule.New(Config, UIScale)
         Title = Config.Title or "Tab",
         Desc = Config.Desc,
         Icon = Config.Icon,
+        Image = Config.Image,
         IconThemed = Config.IconThemed,
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
@@ -172,6 +173,32 @@ function TabModule.New(Config, UIScale)
         --Icon2.Parent = Tab.UIElements.Main.Frame
         --Tab.UIElements.Main.Frame.TextLabel.Size = UDim2.new(1,-30,0,0)
         --Tab.UIElements.Icon = Icon
+	end
+	
+	if Tab.Image then
+	    local Image = Creator.Image(
+            Tab.Image,
+            Tab.Title,
+            Tab.UICorner,
+            Window.Folder,
+            "TabImage",
+            false
+        )
+        Image.Size = UDim2.new(1,0,0,100)
+        Image.Parent = Tab.UIElements.Main.Frame
+        Image.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
+        Image.LayoutOrder = -1
+        
+        Tab.UIElements.Main.Frame.UIListLayout.FillDirection = "Vertical"
+        Tab.UIElements.Main.Frame.UIListLayout.Padding = UDim.new(0,0)
+        Tab.UIElements.Main.Frame.TextLabel.Size = UDim2.new(1,0,0,30)
+        Tab.UIElements.Main.Frame.TextLabel.TextXAlignment = "Center"
+        Tab.UIElements.Main.Frame.UIPadding.PaddingTop = UDim.new(0,0)
+        Tab.UIElements.Main.Frame.UIPadding.PaddingLeft = UDim.new(0,0)
+        Tab.UIElements.Main.Frame.UIPadding.PaddingRight = UDim.new(0,0)
+        Tab.UIElements.Main.Frame.UIPadding.PaddingBottom = UDim.new(0,0)
+        
+        Tab.UIElements.Image = Image
 	end
 	
 	Tab.UIElements.ContainerFrame = New("ScrollingFrame", {

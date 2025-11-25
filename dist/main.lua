@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.37  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.38  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.37",
+    "version": "1.0.38",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9404,6 +9404,7 @@ __type="Tab",
 Title=an.Title or"Tab",
 Desc=an.Desc,
 Icon=an.Icon,
+Image=an.Image,
 IconThemed=an.IconThemed,
 Locked=an.Locked,
 ShowTabTitle=an.ShowTabTitle,
@@ -9535,6 +9536,32 @@ ar=-30
 
 
 
+end
+
+if ap.Image then
+local au=af.Image(
+ap.Image,
+ap.Title,
+ap.UICorner,
+Window.Folder,
+"TabImage",
+false
+)
+au.Size=UDim2.new(1,0,0,100)
+au.Parent=ap.UIElements.Main.Frame
+au.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
+au.LayoutOrder=-1
+
+ap.UIElements.Main.Frame.UIListLayout.FillDirection="Vertical"
+ap.UIElements.Main.Frame.UIListLayout.Padding=UDim.new(0,0)
+ap.UIElements.Main.Frame.TextLabel.Size=UDim2.new(1,0,0,30)
+ap.UIElements.Main.Frame.TextLabel.TextXAlignment="Center"
+ap.UIElements.Main.Frame.UIPadding.PaddingTop=UDim.new(0,0)
+ap.UIElements.Main.Frame.UIPadding.PaddingLeft=UDim.new(0,0)
+ap.UIElements.Main.Frame.UIPadding.PaddingRight=UDim.new(0,0)
+ap.UIElements.Main.Frame.UIPadding.PaddingBottom=UDim.new(0,0)
+
+ap.UIElements.Image=au
 end
 
 ap.UIElements.ContainerFrame=ah("ScrollingFrame",{
