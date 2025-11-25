@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.24  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.25  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.24",
+    "version": "1.0.25",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4705,88 +4705,98 @@ ab.AddSignal(am.TextButton.MouseLeave,function()
 ad(am.TextButton,.1,{BackgroundTransparency=1}):Play()
 end)
 
-local an=ab.Drag(al,{aj,am.TextButton})
+ab.Drag(al,{aj,am.TextButton})
 
 
-function ag.Visible(ao,ap)
-al.Visible=ap
+function ag.Visible(an,ao)
+al.Visible=ao
 end
 
-function ag.Edit(ao,ap)
-for aq,ar in pairs(ap)do
-ag.CurrentConfig[aq]=ar
+function ag.Edit(an,ao)
+for ap,aq in pairs(ao)do
+ag.CurrentConfig[ap]=aq
 end
-local aq=ag.CurrentConfig
+local ap=ag.CurrentConfig
 
-local ar={
-Title=aq.Title,
-Icon=aq.Icon,
-Enabled=aq.Enabled,
-Position=aq.Position,
-OnlyIcon=aq.OnlyIcon or false,
-Draggable=aq.Draggable,
-OnlyMobile=aq.OnlyMobile,
-CornerRadius=aq.CornerRadius or UDim.new(1,0),
-StrokeThickness=aq.StrokeThickness or 2,
-Color=aq.Color
+local aq={
+Title=ap.Title,
+Icon=ap.Icon,
+Enabled=ap.Enabled,
+Position=ap.Position,
+OnlyIcon=ap.OnlyIcon or false,
+Draggable=ap.Draggable,
+OnlyMobile=ap.OnlyMobile,
+CornerRadius=ap.CornerRadius or UDim.new(1,0),
+StrokeThickness=ap.StrokeThickness or 2,
+Color=ap.Color
 or ColorSequence.new(Color3.fromHex"40c9ff",Color3.fromHex"e81cff"),
 }
 
 
 
-if ar.Enabled==false then
+if aq.Enabled==false then
 af.IsOpenButtonEnabled=false
 end
 
-if ar.OnlyMobile~=false then
-ar.OnlyMobile=true
+if aq.OnlyMobile~=false then
+aq.OnlyMobile=true
 else
 af.IsPC=false
 end
 
+if aq.OnlyIcon==true then
 
-local as=af.IsPC and 150 or 60
-if not ar.Size then
-ar.Size=UDim2.new(0,as,0,22)
-end
+local ar=af.IsPC and 50 or 60
+aq.Size=UDim2.new(0,ar,0,ar)
+aq.CornerRadius=UDim.new(1,0)
 
-if ar.Size then
-am.AutomaticSize=Enum.AutomaticSize.None
-am.Size=ar.Size
-end
-
-
-if ar.Draggable==false and aj and ak then
-aj.Visible=ar.Draggable
-ak.Visible=ar.Draggable
-
-if an then
-an:Set(ar.Draggable)
-end
-end
-
-if ar.Position and al then
-al.Position=ar.Position
-end
-
-if ar.OnlyIcon==true and ai then
-ai.Visible=false
+if ai then ai.Visible=false end
 if aj then aj.Visible=false end
 if ak then ak.Visible=false end
-am.TextButton.UIPadding.PaddingLeft=UDim.new(0,4)
-am.TextButton.UIPadding.PaddingRight=UDim.new(0,4)
 
 
-if ar.Size then
+am.TextButton.UIPadding.PaddingLeft=UDim.new(0,0)
+am.TextButton.UIPadding.PaddingRight=UDim.new(0,0)
+
+
+am.TextButton.UIListLayout.HorizontalAlignment=Enum.HorizontalAlignment.Center
+am.TextButton.UIListLayout.VerticalAlignment=Enum.VerticalAlignment.Center
+
+
+if ah then
+ah.Size=UDim2.new(0,ar*0.5,0,ar*0.5)
+end
+
+
+am.AutomaticSize=Enum.AutomaticSize.None
+am.Size=aq.Size
 am.TextButton.Size=UDim2.new(1,0,1,0)
 am.TextButton.AutomaticSize=Enum.AutomaticSize.None
-end
-elseif ar.OnlyIcon==false then
+
+elseif aq.OnlyIcon==false then
 ai.Visible=true
 if aj then aj.Visible=true end
 if ak then ak.Visible=true end
+
 am.TextButton.UIPadding.PaddingLeft=UDim.new(0,6)
 am.TextButton.UIPadding.PaddingRight=UDim.new(0,6)
+
+am.TextButton.UIListLayout.HorizontalAlignment=Enum.HorizontalAlignment.Left
+am.TextButton.UIListLayout.VerticalAlignment=Enum.VerticalAlignment.Center
+
+if ah then
+ah.Size=UDim2.new(0,11,0,11)
+end
+
+
+local ar=af.IsPC and 150 or 60
+if not aq.Size then
+aq.Size=UDim2.new(0,ar,0,22)
+end
+am.AutomaticSize=Enum.AutomaticSize.None
+am.Size=aq.Size
+am.TextButton.Size=UDim2.new(0,0,0,14)
+am.TextButton.AutomaticSize=Enum.AutomaticSize.XY
 end
 
 
@@ -4794,26 +4804,26 @@ end
 
 
 if ai then
-if ar.Title then
-ai.Text=ar.Title
-ab:ChangeTranslationKey(ai,ar.Title)
-elseif ar.Title==nil then
+if aq.Title then
+ai.Text=aq.Title
+ab:ChangeTranslationKey(ai,aq.Title)
+elseif aq.Title==nil then
 
 end
 end
 
-if ar.Icon then
-ag:SetIcon(ar.Icon)
+if aq.Icon then
+ag:SetIcon(aq.Icon)
 end
 
-am.UIStroke.UIGradient.Color=ar.Color
+am.UIStroke.UIGradient.Color=aq.Color
 if Glow then
-Glow.UIGradient.Color=ar.Color
+Glow.UIGradient.Color=aq.Color
 end
 
-am.UICorner.CornerRadius=ar.CornerRadius
-am.TextButton.UICorner.CornerRadius=UDim.new(ar.CornerRadius.Scale,ar.CornerRadius.Offset-4)
-am.UIStroke.Thickness=ar.StrokeThickness
+am.UICorner.CornerRadius=aq.CornerRadius
+am.TextButton.UICorner.CornerRadius=UDim.new(aq.CornerRadius.Scale,aq.CornerRadius.Offset-4)
+am.UIStroke.Thickness=aq.StrokeThickness
 end
 
 return ag

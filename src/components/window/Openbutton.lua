@@ -220,49 +220,59 @@ function OpenButton.New(Window)
             Window.IsPC = false
         end
         
-        -- Default Size Logic
-        local defaultWidth = Window.IsPC and 150 or 60
-        if not OpenButtonModule.Size then
-             OpenButtonModule.Size = UDim2.new(0, defaultWidth, 0, 22)
-        end
-        
-        if OpenButtonModule.Size then
-            Button.AutomaticSize = Enum.AutomaticSize.None
-            Button.Size = OpenButtonModule.Size
-        end
-        
-        
-        if OpenButtonModule.Draggable == false and Drag and Divider then
-            Drag.Visible = OpenButtonModule.Draggable
-            Divider.Visible = OpenButtonModule.Draggable
+        if OpenButtonModule.OnlyIcon == true then
+            -- Delta Executor Style: Square/Circle, Icon Only
+            local size = Window.IsPC and 50 or 60
+            OpenButtonModule.Size = UDim2.new(0, size, 0, size)
+            OpenButtonModule.CornerRadius = UDim.new(1, 0)
             
-            if DragModule then
-                DragModule:Set(OpenButtonModule.Draggable)
-            end
-        end
-        
-        if OpenButtonModule.Position and Container then
-            Container.Position = OpenButtonModule.Position
-        end
-        
-        if OpenButtonModule.OnlyIcon == true and Title then
-            Title.Visible = false
+            if Title then Title.Visible = false end
             if Drag then Drag.Visible = false end
             if Divider then Divider.Visible = false end
-            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,4)
-            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,4)
             
-            -- Fill container if fixed size
-            if OpenButtonModule.Size then
-                Button.TextButton.Size = UDim2.new(1, 0, 1, 0)
-                Button.TextButton.AutomaticSize = Enum.AutomaticSize.None
+            -- Adjust Padding to 0 for centering
+            Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,0)
+            Button.TextButton.UIPadding.PaddingRight = UDim.new(0,0)
+            
+            -- Center the layout
+            Button.TextButton.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+            Button.TextButton.UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+            
+            -- Make Icon Bigger
+            if Icon then
+                Icon.Size = UDim2.new(0, size * 0.5, 0, size * 0.5)
             end
+
+            -- Fill container
+            Button.AutomaticSize = Enum.AutomaticSize.None
+            Button.Size = OpenButtonModule.Size
+            Button.TextButton.Size = UDim2.new(1, 0, 1, 0)
+            Button.TextButton.AutomaticSize = Enum.AutomaticSize.None
+
         elseif OpenButtonModule.OnlyIcon == false then
             Title.Visible = true
             if Drag then Drag.Visible = true end
             if Divider then Divider.Visible = true end
+            
             Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,6)
             Button.TextButton.UIPadding.PaddingRight = UDim.new(0,6)
+            
+            Button.TextButton.UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+            Button.TextButton.UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+            
+            if Icon then
+                Icon.Size = UDim2.new(0,11,0,11)
+            end
+            
+            -- Reset Size Logic for Normal Mode
+            local defaultWidth = Window.IsPC and 150 or 60
+            if not OpenButtonModule.Size then
+                 OpenButtonModule.Size = UDim2.new(0, defaultWidth, 0, 22)
+            end
+            Button.AutomaticSize = Enum.AutomaticSize.None
+            Button.Size = OpenButtonModule.Size
+            Button.TextButton.Size = UDim2.new(0,0,0,22-(4*2))
+            Button.TextButton.AutomaticSize = Enum.AutomaticSize.XY
         end
         
         --OpenButtonMain:Visible((not OpenButtonModule.OnlyMobile) or (not Window.IsPC))
