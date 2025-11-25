@@ -14,6 +14,7 @@ const R = "\x1b[0m";
 // === Git helpers ===
 
 const repoRoot = path.join(__dirname, '..');
+
 // === Version helper ===
 function bumpVersion() {
   const pkgPath = path.join(__dirname, '..', 'package.json');
@@ -38,6 +39,7 @@ function bumpVersion() {
 
   return { oldVer, newVer };
 }
+
 function runGit(args, options = {}) {
   const res = spawnSync('git', args, {
     cwd: repoRoot,
@@ -76,14 +78,26 @@ function autoCommit(version) {
     return;
   }
 
-  // kalau tidak mau auto-push, komentar blok ini
+  // --- LOGIKA PUSH DENGAN AUTO FORCE ---
+  console.log(`${P}[ > ]${R} Mencoba push ke origin/main...`);
   res = runGit(['push', 'origin', 'main'], { stdio: 'inherit' });
-  if (res.status !== 0) {
-    console.error(`${E}[ × ]${R} git push gagal`);
-    return;
-  }
 
-  console.log(`${P}[ ✓ ]${R} Auto commit & push selesai`);
+  if (res.status !== 0) {
+    console.error(`${E}[ ! ]${R} Git push biasa gagal (mungkin karena konflik remote).`);
+    console.log(`${P}[ > ]${R} Melakukan Force Push...`);
+
+    // Coba Force Push
+    res = runGit(['push', 'origin', 'main', '--force'], { stdio: 'inherit' });
+
+    if (res.status !== 0) {
+      console.error(`${E}[ × ]${R} Git push --force juga gagal! Cek koneksi atau izin repo.`);
+      return;
+    } else {
+      console.log(`${P}[ ✓ ]${R} Force push berhasil.`);
+    }
+  } else {
+    console.log(`${P}[ ✓ ]${R} Auto commit & push selesai`);
+  }
 }
 
 // === Folder Movement Logic ===
@@ -160,6 +174,7 @@ function renderHeader(pkgInfo) {
 function runDarklua(input, config) {
   const args = ['process', input, path.join('dist', 'temp.lua'), '--config', config];
   const start = Date.now();
+  // Menggunakan shell: true bisa menyebabkan warning DEP0190, tapi diperlukan di beberapa env Windows
   const res = spawnSync('darklua', args, { stdio: ['ignore', 'pipe', 'pipe'], shell: true });
   const end = Date.now();
   const time = end - start;
@@ -233,12 +248,12 @@ function main() {
     const scriptWasMoved = moveScriptToParent();
 
     try {
-      // 2. Lakukan Auto Commit
+      // 2. Lakukan Auto Commit (dengan auto force push)
       autoCommit(VER);
     } finally {
       // 3. Kembalikan folder script SETELAH commit (gunakan finally agar tetap jalan meski commit error)
       if (scriptWasMoved) {
-        restoreScriptFromParent();
+        // restoreScriptFromParent();
       }
     }
   }
