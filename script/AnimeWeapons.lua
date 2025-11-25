@@ -1421,13 +1421,14 @@ local TradePreview = ExchangeSection:Paragraph({
 })
 
 
+local ExchangePercent = 1
 local ExSlider = ExchangeSection:Slider({
-    Title = "Amount",
+    Title = "Amount %",
     Min = 1,
     Max = 100,
     Default = 1,
     Callback = function(v)
-        ExchangeAmount = v
+        ExchangePercent = v / 100
     end
 })
 
@@ -1456,8 +1457,7 @@ ExchangeSection:Button({
             "Convert Tokens",
             {
                 SelectedExToken,
-                ExchangeIsBuying,
-                ExchangeAmount
+                ExchangeIsBuying
             }
         }
         
@@ -1479,21 +1479,60 @@ task.spawn(function()
             MatPreview:Refresh(BuildExchangeValues())
             PrevMaterialsDigest = digest
         end
+        
+        -- Calculate Amounts based on Decompiled Logic
+        -- v2 logic: Buying (v_u4=true) -> 1, Selling (v_u4=false) -> 0.1
+        -- Formula: floor(Source * Percent * v2) // v2 * v2
+        -- Simplified:
+        -- Buy: floor(Trade * P)
+        -- Sell: floor(Mat * P / 10)
+        
+        local tradeCount = (pData and pData.Materials and pData.Materials["TradeToken"]) or 0
+        local matCount = (SelectedExToken and pData and pData.Materials and pData.Materials[SelectedExToken]) or 0
+        
+        local inputAmount = 0
+        local outputAmount = 0
+        
+        if ExchangeIsBuying then
+            -- Buying: TradeToken -> Material
+            -- Input: TradeToken * Percent
+            -- Output: Input (1:1 ratio)
+            inputAmount = math.floor(tradeCount * ExchangePercent)
+            outputAmount = inputAmount
+        else
+            -- Selling: Material -> TradeToken
+            -- Input: Material * Percent
+            -- Output: Material * Percent / 10 (10:1 ratio)
+            local rawInput = math.floor(matCount * ExchangePercent)
+            -- Logic from decompile: floor(Mat * P * 0.1) // 0.1 * 0.1
+            -- Effectively floor(rawInput / 10)
+            outputAmount = math.floor(rawInput / 10)
+            inputAmount = rawInput
+        end
+
         if SelectedExToken then
             local info = MaterialsModule[SelectedExToken]
             if info and info.Template then
                 MatPreview:SetTitle(info.Display)
                 MatPreview:SetIcon(SelectedExIcon or GetIcon(info.Template), 30)
-                local pData2 = (getgenv()).PlayerData
-                local matCount2 = pData2 and pData2.Materials and pData2.Materials[SelectedExToken] or 0
-                MatPreview:SetDesc(string.format("(%s/%s)", FormatNumber(ExchangeAmount), FormatNumber(matCount2)))
+                
+                -- Update Desc on Material Preview
+                -- If Buying: Show +Output
+                -- If Selling: Show -Input
+                if ExchangeIsBuying then
+                     MatPreview:SetDesc(string.format("Current: %s | +%s", FormatNumber(matCount), FormatNumber(outputAmount)))
+                else
+                     MatPreview:SetDesc(string.format("Current: %s | -%s", FormatNumber(matCount), FormatNumber(inputAmount)))
+                end
             end
-        end
-        if SelectedExToken then
-            if pData and pData.Materials then
-                local tradeCount = pData.Materials["TradeToken"] or 0
-                local totalGain = ExchangeAmount
-                TradePreview:SetDesc(string.format("%s  +%s", FormatNumber(tradeCount), FormatNumber(totalGain)))
+            
+            -- Update Desc on Trade Token Preview
+            -- If Buying: Show -Input
+            -- If Selling: Show +Output
+            if ExchangeIsBuying then
+                TradePreview:SetDesc(string.format("Current: %s | -%s", FormatNumber(tradeCount), FormatNumber(inputAmount)))
+            else
+                TradePreview:SetDesc(string.format("Current: %s | +%s", FormatNumber(tradeCount), FormatNumber(outputAmount)))
             end
         else
             MatPreview:SetTitle("Select Token")
@@ -1567,6 +1606,29 @@ for i, rollData in ipairs(rollToggleData) do
     RollToggleUI[rollType] = myToggle;
     _rollCount = _rollCount + 1;
 end;
+
+-- [Auto Lock Maxed Rolls]
+task.spawn(function()
+	while not Window.Destroyed do
+		local pData = (getgenv()).PlayerData;
+		if pData and pData.Vault then
+			for rollType, toggle in pairs(RollToggleUI) do
+				if pData.Vault[rollType] and pData.Vault[rollType]["7"] == true then
+					pcall(function()
+						toggle:Lock();
+						toggle:SetTitle(rollType .. " [MAX]");
+						if Config["AutoRoll" .. rollType] then
+							Config["AutoRoll" .. rollType] = false;
+							toggle:Set(false);
+						end;
+					end);
+				end;
+			end;
+		end;
+		task.wait(1);
+	end;
+end);
+
 GeneralTab:Toggle({
 	Title = "Auto Fuse Weapons",
 	Flag = "AutoFuse_Cfg",

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.25  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.26  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.25",
+    "version": "1.0.26",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6324,7 +6324,11 @@ __type="Slider",
 Title=ai.Title or"Slider",
 Desc=ai.Desc or nil,
 Locked=ai.Locked or nil,
-Value=ai.Value or{},
+Value=ai.Value or{
+Min=ai.Min or 0,
+Max=ai.Max or 100,
+Default=ai.Default or 0
+},
 Step=ai.Step or 1,
 Callback=ai.Callback or function()end,
 UIElements={},
@@ -6456,7 +6460,7 @@ if not aj.IsFocusing and not ag and(not av or(av.UserInputType==Enum.UserInputTy
 au=math.clamp(au,aj.Value.Min or 0,aj.Value.Max or 100)
 
 local aw=math.clamp((au-(aj.Value.Min or 0))/((aj.Value.Max or 100)-(aj.Value.Min or 0)),0,1)
-au=CalculateValue(aj.Value.Min+aw*(aj.Value.Max-aj.Value.Min))
+au=CalculateValue((aj.Value.Min or 0)+aw*((aj.Value.Max or 100)-(aj.Value.Min or 0)))
 
 if au~=ao then
 ad(aj.UIElements.SliderIcon.Frame,0.05,{Size=UDim2.new(aw,0,1,0)}):Play()
@@ -6473,7 +6477,7 @@ ag=true
 al=ae(game:GetService"RunService").RenderStepped:Connect(function()
 local ax=ak and av.Position.X or ae(game:GetService"UserInputService"):GetMouseLocation().X
 local ay=math.clamp((ax-aj.UIElements.SliderIcon.AbsolutePosition.X)/aj.UIElements.SliderIcon.AbsoluteSize.X,0,1)
-au=CalculateValue(aj.Value.Min+ay*(aj.Value.Max-aj.Value.Min))
+au=CalculateValue((aj.Value.Min or 0)+ay*((aj.Value.Max or 100)-(aj.Value.Min or 0)))
 
 if au~=ao then
 ad(aj.UIElements.SliderIcon.Frame,0.05,{Size=UDim2.new(ay,0,1,0)}):Play()

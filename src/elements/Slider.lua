@@ -15,7 +15,11 @@ function Element:New(Config)
         Title = Config.Title or "Slider",
         Desc = Config.Desc or nil,
         Locked = Config.Locked or nil,
-        Value = Config.Value or {},
+        Value = Config.Value or {
+            Min = Config.Min or 0,
+            Max = Config.Max or 100,
+            Default = Config.Default or 0
+        },
         Step = Config.Step or 1,
         Callback = Config.Callback or function() end,
         UIElements = {},
@@ -147,7 +151,7 @@ function Element:New(Config)
                 Value = math.clamp(Value, Slider.Value.Min or 0, Slider.Value.Max or 100)
                 
                 local delta = math.clamp((Value - (Slider.Value.Min or 0)) / ((Slider.Value.Max or 100) - (Slider.Value.Min or 0)), 0, 1)
-                Value = CalculateValue(Slider.Value.Min + delta * (Slider.Value.Max - Slider.Value.Min))
+                Value = CalculateValue((Slider.Value.Min or 0) + delta * ((Slider.Value.Max or 100) - (Slider.Value.Min or 0)))
     
                 if Value ~= LastValue then
                     Tween(Slider.UIElements.SliderIcon.Frame, 0.05, {Size = UDim2.new(delta,0,1,0)}):Play()
@@ -164,7 +168,7 @@ function Element:New(Config)
                     moveconnection = cloneref(game:GetService("RunService")).RenderStepped:Connect(function()
                         local inputPosition = isTouch and input.Position.X or cloneref(game:GetService("UserInputService")):GetMouseLocation().X
                         local delta = math.clamp((inputPosition - Slider.UIElements.SliderIcon.AbsolutePosition.X) / Slider.UIElements.SliderIcon.AbsoluteSize.X, 0, 1)
-                        Value = CalculateValue(Slider.Value.Min + delta * (Slider.Value.Max - Slider.Value.Min))
+                        Value = CalculateValue((Slider.Value.Min or 0) + delta * ((Slider.Value.Max or 100) - (Slider.Value.Min or 0)))
     
                         if Value ~= LastValue then
                             Tween(Slider.UIElements.SliderIcon.Frame, 0.05, {Size = UDim2.new(delta,0,1,0)}):Play()
