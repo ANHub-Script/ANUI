@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 updater
+docs-website
 dist-ssr
 *.local
 .env

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.42  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.43  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.42",
+    "version": "1.0.43",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -3105,7 +3105,14 @@ function ab.Enable()
 for ae,af in pairs(ad)do
 af.Enabled=false
 end
+
+local ae=pcall(function()
 ac.Parent=aa(game:GetService"Lighting")
+end)
+
+if not ae then
+ac.Parent=aa(game:GetService"Workspace").CurrentCamera
+end
 end
 
 function ab.Disable()

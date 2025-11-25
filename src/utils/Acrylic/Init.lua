@@ -21,7 +21,14 @@ function Acrylic.init()
 		for _, effect in pairs(depthOfFieldDefaults) do
 			effect.Enabled = false
 		end
-		baseEffect.Parent = cloneref(game:GetService("Lighting"))
+		
+		local success = pcall(function()
+			baseEffect.Parent = cloneref(game:GetService("Lighting"))
+		end)
+		
+		if not success then
+			baseEffect.Parent = cloneref(game:GetService("Workspace")).CurrentCamera
+		end
 	end
 
 	function Acrylic.Disable()
