@@ -1184,7 +1184,8 @@ return function(Config)
             task.wait(0.4)
             Window.UIElements.Main.Visible = false
             
-            if Window.OpenButtonMain and not Window.Destroyed and not Window.IsPC and Window.IsOpenButtonEnabled then
+            if Window.OpenButtonMain and not Window.Destroyed and Window.IsOpenButtonEnabled then
+                Window.OpenButtonMain:Edit({ OnlyIcon = true })
                 Window.OpenButtonMain:Visible(true)
             end
         end)

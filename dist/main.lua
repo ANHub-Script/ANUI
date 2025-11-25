@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.21  |  2025-11-24  |  Roblox UI Library for scripts
+    v1.0.22  |  2025-11-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.21",
+    "version": "1.0.22",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4537,7 +4537,8 @@ ae(game:GetService"UserInputService")
 
 function aa.New(af)
 local ag={
-Button=nil
+Button=nil,
+CurrentConfig={}
 }
 
 local ah
@@ -4704,7 +4705,7 @@ ab.AddSignal(am.TextButton.MouseLeave,function()
 ad(am.TextButton,.1,{BackgroundTransparency=1}):Play()
 end)
 
-local an=ab.Drag(al)
+local an=ab.Drag(al,{aj,am.TextButton})
 
 
 function ag.Visible(ao,ap)
@@ -4712,52 +4713,61 @@ al.Visible=ap
 end
 
 function ag.Edit(ao,ap)
-local aq={
-Title=ap.Title,
-Icon=ap.Icon,
-Enabled=ap.Enabled,
-Position=ap.Position,
-OnlyIcon=ap.OnlyIcon or false,
-Draggable=ap.Draggable or nil,
-OnlyMobile=ap.OnlyMobile,
-CornerRadius=ap.CornerRadius or UDim.new(1,0),
-StrokeThickness=ap.StrokeThickness or 2,
-Color=ap.Color
+for aq,ar in pairs(ap)do
+ag.CurrentConfig[aq]=ar
+end
+local aq=ag.CurrentConfig
+
+local ar={
+Title=aq.Title,
+Icon=aq.Icon,
+Enabled=aq.Enabled,
+Position=aq.Position,
+OnlyIcon=aq.OnlyIcon or false,
+Draggable=aq.Draggable,
+OnlyMobile=aq.OnlyMobile,
+CornerRadius=aq.CornerRadius or UDim.new(1,0),
+StrokeThickness=aq.StrokeThickness or 2,
+Color=aq.Color
 or ColorSequence.new(Color3.fromHex"40c9ff",Color3.fromHex"e81cff"),
 }
 
 
 
-if aq.Enabled==false then
+if ar.Enabled==false then
 af.IsOpenButtonEnabled=false
 end
 
-if aq.OnlyMobile~=false then
-aq.OnlyMobile=true
+if ar.OnlyMobile~=false then
+ar.OnlyMobile=true
 else
 af.IsPC=false
 end
 
 
-if aq.Draggable==false and aj and ak then
-aj.Visible=aq.Draggable
-ak.Visible=aq.Draggable
+if ar.Draggable==false and aj and ak then
+aj.Visible=ar.Draggable
+ak.Visible=ar.Draggable
 
 if an then
-an:Set(aq.Draggable)
+an:Set(ar.Draggable)
 end
 end
 
-if aq.Position and al then
-al.Position=aq.Position
+if ar.Position and al then
+al.Position=ar.Position
 end
 
-if aq.OnlyIcon==true and ai then
+if ar.OnlyIcon==true and ai then
 ai.Visible=false
+if aj then aj.Visible=false end
+if ak then ak.Visible=false end
 am.TextButton.UIPadding.PaddingLeft=UDim.new(0,4)
 am.TextButton.UIPadding.PaddingRight=UDim.new(0,4)
-elseif aq.OnlyIcon==false then
+elseif ar.OnlyIcon==false then
 ai.Visible=true
+if aj then aj.Visible=true end
+if ak then ak.Visible=true end
 am.TextButton.UIPadding.PaddingLeft=UDim.new(0,6)
 am.TextButton.UIPadding.PaddingRight=UDim.new(0,6)
 end
@@ -4767,26 +4777,26 @@ end
 
 
 if ai then
-if aq.Title then
-ai.Text=aq.Title
-ab:ChangeTranslationKey(ai,aq.Title)
-elseif aq.Title==nil then
+if ar.Title then
+ai.Text=ar.Title
+ab:ChangeTranslationKey(ai,ar.Title)
+elseif ar.Title==nil then
 
 end
 end
 
-if aq.Icon then
-ag:SetIcon(aq.Icon)
+if ar.Icon then
+ag:SetIcon(ar.Icon)
 end
 
-am.UIStroke.UIGradient.Color=aq.Color
+am.UIStroke.UIGradient.Color=ar.Color
 if Glow then
-Glow.UIGradient.Color=aq.Color
+Glow.UIGradient.Color=ar.Color
 end
 
-am.UICorner.CornerRadius=aq.CornerRadius
-am.TextButton.UICorner.CornerRadius=UDim.new(aq.CornerRadius.Scale,aq.CornerRadius.Offset-4)
-am.UIStroke.Thickness=aq.StrokeThickness
+am.UICorner.CornerRadius=ar.CornerRadius
+am.TextButton.UICorner.CornerRadius=UDim.new(ar.CornerRadius.Scale,ar.CornerRadius.Offset-4)
+am.UIStroke.Thickness=ar.StrokeThickness
 end
 
 return ag
@@ -11726,7 +11736,8 @@ task.spawn(function()
 task.wait(0.4)
 as.UIElements.Main.Visible=false
 
-if as.OpenButtonMain and not as.Destroyed and not as.IsPC and as.IsOpenButtonEnabled then
+if as.OpenButtonMain and not as.Destroyed and as.IsOpenButtonEnabled then
+as.OpenButtonMain:Edit{OnlyIcon=true}
 as.OpenButtonMain:Visible(true)
 end
 end)

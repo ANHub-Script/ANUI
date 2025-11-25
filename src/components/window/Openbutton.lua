@@ -13,7 +13,8 @@ local UserInputService = cloneref(game:GetService("UserInputService"))
 
 function OpenButton.New(Window)
     local OpenButtonMain = {
-        Button = nil
+        Button = nil,
+        CurrentConfig = {}
     }
     
     local Icon
@@ -180,7 +181,7 @@ function OpenButton.New(Window)
         Tween(Button.TextButton, .1, {BackgroundTransparency = 1}):Play()
     end)
     
-    local DragModule = Creator.Drag(Container)
+    local DragModule = Creator.Drag(Container, {Drag, Button.TextButton})
     
     
     function OpenButtonMain:Visible(v)
@@ -188,17 +189,22 @@ function OpenButton.New(Window)
     end
     
     function OpenButtonMain:Edit(OpenButtonConfig)
+        for k, v in pairs(OpenButtonConfig) do
+            OpenButtonMain.CurrentConfig[k] = v
+        end
+        local cfg = OpenButtonMain.CurrentConfig
+
         local OpenButtonModule = {
-            Title = OpenButtonConfig.Title,
-            Icon = OpenButtonConfig.Icon,
-            Enabled = OpenButtonConfig.Enabled,
-            Position = OpenButtonConfig.Position,
-            OnlyIcon = OpenButtonConfig.OnlyIcon or false,
-            Draggable = OpenButtonConfig.Draggable or nil,
-            OnlyMobile = OpenButtonConfig.OnlyMobile,
-            CornerRadius = OpenButtonConfig.CornerRadius or UDim.new(1, 0),
-            StrokeThickness = OpenButtonConfig.StrokeThickness or 2,
-            Color = OpenButtonConfig.Color 
+            Title = cfg.Title,
+            Icon = cfg.Icon,
+            Enabled = cfg.Enabled,
+            Position = cfg.Position,
+            OnlyIcon = cfg.OnlyIcon or false,
+            Draggable = cfg.Draggable,
+            OnlyMobile = cfg.OnlyMobile,
+            CornerRadius = cfg.CornerRadius or UDim.new(1, 0),
+            StrokeThickness = cfg.StrokeThickness or 2,
+            Color = cfg.Color 
                 or ColorSequence.new(Color3.fromHex("40c9ff"), Color3.fromHex("e81cff")),
         }
         
@@ -230,10 +236,14 @@ function OpenButton.New(Window)
         
         if OpenButtonModule.OnlyIcon == true and Title then
             Title.Visible = false
+            if Drag then Drag.Visible = false end
+            if Divider then Divider.Visible = false end
             Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,4)
             Button.TextButton.UIPadding.PaddingRight = UDim.new(0,4)
         elseif OpenButtonModule.OnlyIcon == false then
             Title.Visible = true
+            if Drag then Drag.Visible = true end
+            if Divider then Divider.Visible = true end
             Button.TextButton.UIPadding.PaddingLeft = UDim.new(0,6)
             Button.TextButton.UIPadding.PaddingRight = UDim.new(0,6)
         end
