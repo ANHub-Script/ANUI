@@ -23,6 +23,8 @@ function Element:New(Config)
         }),
     })
     
+    GroupModule.GroupFrame = GroupFrame
+    
     local ElementsModule = Config.ElementsModule
     ElementsModule.Load(
         GroupModule, 

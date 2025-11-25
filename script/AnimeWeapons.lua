@@ -682,6 +682,11 @@ local function CreateTabButtons(section, tabNames)
     ButtonContainer.Size = UDim2.new(1, 0, 0, 35)
     ButtonContainer.BackgroundTransparency = 1
     
+    local ContainerPadding = Instance.new("UIPadding")
+    ContainerPadding.Parent = ButtonContainer
+    ContainerPadding.PaddingLeft = UDim.new(0, 5)
+    ContainerPadding.PaddingRight = UDim.new(0, 5)
+    
     local Dummy = section:Paragraph({Title="Temp", Desc=""})
     local ContentParent = Dummy.ParagraphFrame.UIElements.Main.Parent.Parent.Content
     ButtonContainer.Parent = ContentParent
@@ -693,7 +698,7 @@ local function CreateTabButtons(section, tabNames)
     UIList.Parent = ButtonContainer
     UIList.FillDirection = Enum.FillDirection.Horizontal
     UIList.SortOrder = Enum.SortOrder.LayoutOrder
-    UIList.Padding = UDim.new(0, 6)
+    UIList.Padding = UDim.new(0, 5)
     
     local function UpdateVisibility(selectedTab)
         TabSystem.CurrentTab = selectedTab
@@ -704,6 +709,8 @@ local function CreateTabButtons(section, tabNames)
                     obj.ElementFrame.Visible = isVisible 
                 elseif obj.UIElements and obj.UIElements.Main then
                     obj.UIElements.Main.Visible = isVisible
+                elseif obj.GroupFrame then
+                    obj.GroupFrame.Visible = isVisible
                 end
             end
         end
@@ -728,7 +735,7 @@ local function CreateTabButtons(section, tabNames)
         local btn = Instance.new("TextButton")
         btn.Name = name .. "_Btn"
         btn.Parent = ButtonContainer
-        btn.Size = UDim2.new(btnWidth, -4, 1, 0)
+        btn.Size = UDim2.new(btnWidth, -5, 1, 0)
         btn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
         btn.AutoButtonColor = true
         btn.Text = ""
@@ -758,6 +765,8 @@ local function CreateTabButtons(section, tabNames)
                 elementObject.ElementFrame.Visible = false 
             elseif elementObject.UIElements and elementObject.UIElements.Main then
                 elementObject.UIElements.Main.Visible = false
+            elseif elementObject.GroupFrame then
+                elementObject.GroupFrame.Visible = false
             end
         end
     end
@@ -1333,12 +1342,44 @@ local GeneralTab = MainSection:Tab({
 	Icon = "settings"
 });
 
--- EXCHANGE MANAGER SECTION
-local ExchangeSection = GeneralTab:Section({
-    Title = "Exchange Manager",
-    Icon = "arrow-left-right",
+-- GENERAL MANAGER SECTION
+local GeneralManagerSection = GeneralTab:Section({
+    Title = "General Manager",
+    Icon = "settings-2",
     Opened = true
 })
+
+local GeneralTabs = CreateTabButtons(GeneralManagerSection, {
+    "Exchange",
+    "Crate Roll"
+})
+
+task.spawn(function()
+    task.wait(0.1)
+    local function SetupButton(btnName, iconId)
+        local btn = GeneralTabs.ButtonObjects[btnName]
+        if btn then
+            local lbl = btn:FindFirstChildOfClass("TextLabel")
+            if lbl then
+                lbl.Size = UDim2.new(1, -25, 1, 0)
+                lbl.Position = UDim2.new(0, 25, 0, 0)
+                lbl.TextXAlignment = Enum.TextXAlignment.Left
+            end
+
+            local iconImg = Instance.new("ImageLabel")
+            iconImg.Name = btnName.."Icon"
+            iconImg.Parent = btn
+            iconImg.Size = UDim2.fromOffset(20, 20)
+            iconImg.AnchorPoint = Vector2.new(0, 0.5)
+            iconImg.Position = UDim2.new(0, 0, 0.5, 0)
+            iconImg.BackgroundTransparency = 1
+            iconImg.Image = iconId
+            iconImg.ScaleType = Enum.ScaleType.Fit
+        end
+    end
+    SetupButton("Exchange", "rbxassetid://10709791437")
+    SetupButton("Crate Roll", "rbxassetid://10709752906")
+end)
 
 local MaterialsModule = require(ReplicatedStorage.Scripts.Configs.General.Materials)
 local TradeTokenInfo = MaterialsModule.TradeToken
@@ -1391,7 +1432,10 @@ local function BuildExchangeValues()
     return mats
 end
 
-local MatPreview = ExchangeSection:Dropdown({
+local PreviewGroup = GeneralManagerSection:Group()
+GeneralTabs:Add("Exchange", PreviewGroup)
+
+local MatPreview = PreviewGroup:Dropdown({
     Title = "Select Token",
     Desc = "None Selected",
     Image = "rbxassetid://84366761557806",
@@ -1413,7 +1457,7 @@ local MatPreview = ExchangeSection:Dropdown({
 })
 MatPreview:Refresh(BuildExchangeValues())
 
-local TradePreview = ExchangeSection:Paragraph({
+local TradePreview = PreviewGroup:Paragraph({
     Title = TradeTokenInfo.Display,
     Desc = "Waiting...",
     Image = GetIcon(TradeTokenInfo.Template),
@@ -1422,25 +1466,27 @@ local TradePreview = ExchangeSection:Paragraph({
 
 
 local ExchangePercent = 1
-local ExSlider = ExchangeSection:Slider({
+local ExSlider = GeneralManagerSection:Slider({
     Title = "Amount %",
-    Min = 1,
+    Min = 0,
     Max = 100,
-    Default = 1,
+    Default = 100,
     Callback = function(v)
         ExchangePercent = v / 100
     end
 })
+GeneralTabs:Add("Exchange", ExSlider)
 
-local ExSwap = ExchangeSection:Toggle({
+local ExSwap = GeneralManagerSection:Toggle({
     Title = "Swap Direction (Buy Mode)",
     Desc = "OFF: Material -> Trade Token | ON: Trade Token -> Material",
     Callback = function(v)
         ExchangeIsBuying = v
     end
 })
+GeneralTabs:Add("Exchange", ExSwap)
 
-ExchangeSection:Button({
+local ExchangeButton = GeneralManagerSection:Button({
     Title = "Exchange",
     Icon = "check",
     Callback = function()
@@ -1457,7 +1503,8 @@ ExchangeSection:Button({
             "Convert Tokens",
             {
                 SelectedExToken,
-                ExchangeIsBuying
+                ExchangeIsBuying,
+                ExchangePercent
             }
         }
         
@@ -1469,6 +1516,7 @@ ExchangeSection:Button({
         end
     end
 })
+GeneralTabs:Add("Exchange", ExchangeButton)
 
 -- Update Exchange UI Loop
 task.spawn(function()
@@ -1544,11 +1592,6 @@ task.spawn(function()
     end
 end)
 
-local RollSection = GeneralTab:Section({
-    Title = "Crate Roll",
-    Icon = "refresh-cw",
-    Opened = true
-});
 local rollToggleData = {
 	{
 		"Biju",
@@ -1588,7 +1631,8 @@ local _rollCount = 0;
 for i, rollData in ipairs(rollToggleData) do
     local rollType, configFlag = rollData[1], rollData[2];
     if _rollCount % 2 == 0 then
-        _rollGroup = RollSection:Group({});
+        _rollGroup = GeneralManagerSection:Group({});
+        GeneralTabs:Add("Crate Roll", _rollGroup)
     end;
     local tokenKey = RollMaterialMap[rollType];
     local displayName = (MaterialsModule[tokenKey] and MaterialsModule[tokenKey].Display) or (RollDisplayNames[rollType] or tokenKey);
