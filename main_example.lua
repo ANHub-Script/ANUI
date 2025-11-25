@@ -130,32 +130,10 @@ local function tableToClipboard(luau_table, indent)
 	setclipboard(jsonString);
 	return jsonString;
 end;
-
-do
-	-- Card Example Tab
-	-- This demonstrates a card-like layout using the new Image property for the Tab itself.
-	local CardTab = Window:Tab({
-		Title = "Card Example",
-		Image = "rbxassetid://84366761557806"
-	});
-	CardTab:Paragraph({
-		Title = "KAZHUB",
-		Desc = "Fish it Script",
-		Buttons = {
-			{
-				Title = "Information",
-				Callback = function()
-					print("Information button clicked")
-				end
-			}
-		}
-	});
-	});
-end;
 do
 	local AboutTab = Window:Tab({
 		Title = "About ANUI",
-		Icon = "info"
+		Image = "rbxassetid://84366761557806"
 	});
 	local AboutSection = AboutTab:Section({
 		Title = "About ANUI",
