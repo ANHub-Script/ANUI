@@ -13,6 +13,7 @@ const R = "\x1b[0m";
 
 // === Git helpers ===
 
+// repoRoot = folder "WindUI"
 const repoRoot = path.join(__dirname, '..');
 
 // === Version helper ===
@@ -102,32 +103,39 @@ function autoCommit(version) {
 
 // === Folder Movement Logic ===
 
-// Lokasi folder saat ini (di dalam folder build)
-const currentScriptPath = path.join(__dirname, 'script');
-// Lokasi folder sebelumnya (di luar folder build / parent)
-const previousScriptPath = path.join(__dirname, '..', 'script');
+// PERBAIKAN PATH:
+// Folder script ada di dalam repoRoot (WindUI/script), BUKAN di __dirname (WindUI/build/script)
+const folderScriptDiRepo = path.join(repoRoot, 'script');
+
+// Folder tujuan pemindahan (Di luar folder WindUI / Parent)
+const folderScriptDiLuar = path.join(repoRoot, '..', 'script');
 
 function moveScriptToParent() {
-  if (fs.existsSync(currentScriptPath)) {
+  if (fs.existsSync(folderScriptDiRepo)) {
     try {
-      fs.renameSync(currentScriptPath, previousScriptPath);
-      console.log(`${P}[ > ]${R} Folder 'script' dipindahkan sementara ke folder sebelumnya.`);
+      // Pindahkan DARI Repo KE Luar
+      fs.renameSync(folderScriptDiRepo, folderScriptDiLuar);
+      console.log(`${P}[ > ]${R} Folder 'script' dipindahkan sementara ke folder luar (parent).`);
       return true;
     } catch (err) {
-      console.error(`${E}[ × ]${R} Gagal memindahkan folder script: ${err.message}`);
+      console.error(`${E}[ × ]${R} Gagal memindahkan folder script keluar: ${err.message}`);
       return false;
     }
+  } else {
+    console.log(`${D}[ ! ]${R} Folder script tidak ditemukan di ${folderScriptDiRepo}, melewati pemindahan.`);
   }
   return false;
 }
 
 function restoreScriptFromParent() {
-  if (fs.existsSync(previousScriptPath)) {
+  if (fs.existsSync(folderScriptDiLuar)) {
     try {
-      fs.renameSync(previousScriptPath, currentScriptPath);
-      console.log(`${P}[ > ]${R} Folder 'script' dikembalikan ke folder saat ini.`);
+      // Pindahkan DARI Luar KE Repo
+      fs.renameSync(folderScriptDiLuar, folderScriptDiRepo);
+      console.log(`${P}[ > ]${R} Folder 'script' dikembalikan ke dalam repo.`);
     } catch (err) {
       console.error(`${E}[ × ]${R} Gagal mengembalikan folder script: ${err.message}`);
+      console.error(`${E}[ ! ]${R} Cek manual di folder luar: ${folderScriptDiLuar}`);
     }
   }
 }
@@ -253,7 +261,7 @@ function main() {
     } finally {
       // 3. Kembalikan folder script SETELAH commit (gunakan finally agar tetap jalan meski commit error)
       if (scriptWasMoved) {
-        // restoreScriptFromParent();
+        restoreScriptFromParent();
       }
     }
   }
