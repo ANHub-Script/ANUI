@@ -1390,117 +1390,125 @@ do
 		});
 	end;
 end;
+-- [1] Buat Tab Baru
 local UpgradeTab = Window:Tab({
     Title = "Upgrade System",
     Icon = "hammer"
 })
 
--- 1. Buat SATU Section Utama
-local MainSection = UpgradeTab:Section({
+-- [2] Buat Folder Penyimpanan Sementara (Agar halaman yang mati benar-benar hilang)
+local PageStorage = Instance.new("Folder")
+PageStorage.Name = "PageStorage"
+PageStorage.Parent = Window.UIElements.Main -- Simpan di dalam Window agar aman
+
+-- ============================================================================
+-- SECTION 1: NAVIGASI (TOMBOL KATEGORI)
+-- ============================================================================
+local NavSection = UpgradeTab:Section({
     Title = "Stats Upgrade Manager",
     TextSize = 18
 })
 
--- ============================================================================
--- LOGIC PENGATURAN ELEMEN
--- ============================================================================
-
--- Tabel untuk menyimpan elemen berdasarkan kategorinya
-local Categories = {
-    Yen = {},
-    Token = {},
-    Rank = {},
-    Trainer = {},
-    Mastery = {},
-    Settings = {}
-}
-
--- Fungsi Helper: Membuat elemen dan otomatis memasukkannya ke tabel kategori
--- (Ini supaya kita tidak perlu manual set Visible satu-satu)
-local function AddElement(categoryName, element)
-    if Categories[categoryName] then
-        table.insert(Categories[categoryName], element)
-        
-        -- Sembunyikan elemen saat pertama dibuat (default hidden)
-        if element.ElementFrame then
-            element.ElementFrame.Visible = false
-        end
-    end
-    return element
+-- PENTING: Set LayoutOrder NavSection ke angka kecil (misal -1)
+-- Agar dia SELALU di atas, meskipun halaman di bawahnya ganti-ganti.
+if NavSection.UIElements.Main then
+    NavSection.UIElements.Main.LayoutOrder = -1
 end
 
--- Fungsi Callback: Dipanggil saat tombol kategori dipencet
-local function OnCategoryChanged(selectedCategory)
-    for catName, elements in pairs(Categories) do
-        -- Jika nama kategori cocok, set Visible = true, jika tidak false
-        local isVisible = (catName == selectedCategory)
+-- ============================================================================
+-- SECTION 2: HALAMAN KONTEN (MULTI SECTIONS)
+-- ============================================================================
+local Pages = {}
+
+-- Halaman YEN
+Pages.Yen = UpgradeTab:Section({ Title = "Yen Upgrades", Opened = true })
+Pages.Yen:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" })
+Pages.Yen:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" })
+Pages.Yen:Space({Columns=1}) -- Spacer
+
+-- Halaman TOKEN
+Pages.Token = UpgradeTab:Section({ Title = "Token Upgrades", Opened = true })
+Pages.Token:Toggle({ Title = "Critical Hit", Desc = "Cost: 5 Tokens", Callback = function() end })
+Pages.Token:Button({ Title = "Buy Tokens", Icon = "shopping-cart", Callback = function() end })
+Pages.Token:Space({Columns=1})
+
+-- Halaman RANK
+Pages.Rank = UpgradeTab:Section({ Title = "Rank Info", Opened = true })
+Pages.Rank:Paragraph({ Title = "Current Rank", Desc = "S-Class" })
+Pages.Rank:Space({Columns=1})
+
+-- Halaman TRAINER
+Pages.Trainer = UpgradeTab:Section({ Title = "Trainer", Opened = true })
+Pages.Trainer:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima"} })
+Pages.Trainer:Space({Columns=1})
+
+-- Halaman MASTERY
+Pages.Mastery = UpgradeTab:Section({ Title = "Weapon Mastery", Opened = true })
+Pages.Mastery:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 })
+Pages.Mastery:Space({Columns=1})
+
+-- Halaman SETTINGS
+Pages.Settings = UpgradeTab:Section({ Title = "Settings", Opened = true })
+Pages.Settings:Toggle({ Title = "Auto Farm", Value = false })
+Pages.Settings:Toggle({ Title = "Auto Rank Up", Value = false })
+Pages.Settings:Space({Columns=1})
+
+-- ============================================================================
+-- LOGIC: INITIAL SETUP
+-- ============================================================================
+
+-- 1. Sembunyikan Header Judul untuk semua halaman agar rapi
+for _, section in pairs(Pages) do
+    if section.UIElements.Main and section.UIElements.Top then
+        section.UIElements.Top.Visible = false
+        section.UIElements.Top.Size = UDim2.new(0,0,0,0)
         
-        for _, elem in ipairs(elements) do
-            if elem.ElementFrame then
-                elem.ElementFrame.Visible = isVisible
+        if section.UIElements.Content then
+            section.UIElements.Content.Position = UDim2.new(0,0,0,0)
+        end
+    end
+end
+
+-- 2. FUNGSI GANTI HALAMAN (METODE STORAGE)
+-- Ini solusi agar layout tertutup sempurna
+local function SwitchPage(pageName)
+    for name, section in pairs(Pages) do
+        if section.UIElements and section.UIElements.Main then
+            if name == pageName then
+                -- TAMPILKAN: Pindahkan dari Storage ke dalam Tab
+                section.UIElements.Main.Parent = UpgradeTab.UIElements.ContainerFrame
+                section.UIElements.Main.Visible = true
+            else
+                -- SEMBUNYIKAN: Pindahkan ke Storage Folder
+                -- Ini memaksa Layout untuk recalculate size, jadi tidak ada celah kosong
+                section.UIElements.Main.Parent = PageStorage
+                section.UIElements.Main.Visible = false
             end
         end
     end
 end
 
 -- ============================================================================
--- 1. TOMBOL KATEGORI (HORIZONTAL SCROLL)
+-- IMPLEMENTASI KATEGORI
 -- ============================================================================
 
-MainSection:Category({
+NavSection:Category({
     Title = "Select Category",
-    Default = "Yen", -- Kategori awal yang aktif
+    Default = "Yen",
     Options = {
-        {Title="Yen", Icon="coins"},
-        {Title="Token", Icon="layers"},
-        {Title="Rank", Icon="shield"},
-        {Title="Trainer", Icon="sword"},
-        {Title="Mastery", Icon="book"},
-        {Title="Settings", Icon="settings"},
+        { Title = "Yen", Icon = "coins" },
+        { Title = "Token", Icon = "layers" },
+        { Title = "Rank", Icon = "shield" },
+        { Title = "Trainer", Icon = "sword" },
+        { Title = "Mastery", Icon = "book" },
+        { Title = "Settings", Icon = "settings" },
     },
-    Callback = OnCategoryChanged -- Panggil fungsi update saat diklik
+    Callback = function(selected)
+        SwitchPage(selected)
+    end
 })
 
--- Spacer agar tidak terlalu mepet dengan tombol kategori
-MainSection:Space({Columns=1})
-
--- ============================================================================
--- 2. ISI KONTEN (DIMASUKKAN KE DALAM MAIN SECTION)
--- ============================================================================
-
--- [KATEGORI: YEN]
-AddElement("Yen", MainSection:Paragraph({ Title = "Yen Upgrades", Desc = "Upgrade stats using Yen currency" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" }))
-
--- [KATEGORI: TOKEN]
-AddElement("Token", MainSection:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" }))
-AddElement("Token", MainSection:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" }))
-AddElement("Token", MainSection:Button({ Title = "Buy Tokens", Icon = "shopping-cart" }))
-
--- [KATEGORI: RANK]
-AddElement("Rank", MainSection:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" }))
-AddElement("Rank", MainSection:Button({ Title = "Rank Up", Icon = "arrow-up-circle" }))
-
--- [KATEGORI: TRAINER]
-AddElement("Trainer", MainSection:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" }))
-AddElement("Trainer", MainSection:Button({ Title = "Train Now", Icon = "sword" }))
-
--- [KATEGORI: MASTERY]
-AddElement("Mastery", MainSection:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 }))
-AddElement("Mastery", MainSection:Slider({ Title = "Magic Mastery", Min = 0, Max = 100, Default = 0 }))
-
--- [KATEGORI: SETTINGS]
-AddElement("Settings", MainSection:Toggle({ Title = "Auto Farm", Value = false }))
-AddElement("Settings", MainSection:Toggle({ Title = "Auto Rank Up", Value = false }))
-
-
--- ============================================================================
--- 3. INISIALISASI
--- ============================================================================
-
--- Panggil sekali secara manual agar kategori default ("Yen") muncul saat script jalan
-OnCategoryChanged("Yen")
+-- Set halaman awal
+SwitchPage("Yen")
 
 Window:SelectTab(UpgradeTab.Index)
