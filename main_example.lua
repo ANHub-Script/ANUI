@@ -1390,91 +1390,84 @@ do
 		});
 	end;
 end;
--- [1] Buat Tab Baru Khusus Upgrade
+-- Pastikan library sudah dimuat
+-- local ANUI = ...
+-- local Window = ...
+
 local UpgradeTab = Window:Tab({
     Title = "Upgrade System",
-    Icon = "hammer" -- Ikon palu
+    Icon = "hammer"
 })
 
--- [2] Buat Section untuk Menampung Tombol Kategori
-local ManagerSection = UpgradeTab:Section({
+-- 1. Section UTAMA untuk Navigasi (Tombol Kategori)
+local NavSection = UpgradeTab:Section({
     Title = "Stats Upgrade Manager",
     TextSize = 18
 })
 
--- ============================================================================
--- LOGIKA SISTEM HALAMAN (PAGE SWITCHING)
--- ============================================================================
-
--- Kita siapkan tabel untuk menyimpan referensi Section/Halaman
+-- 2. Tabel untuk menyimpan Halaman
 local Pages = {}
 
--- [Halaman 1: Yen]
--- Kita buat Section terpisah untuk konten Yen
-local YenPage = UpgradeTab:Section({ Title = "Yen Upgrades" })
-Pages["Yen"] = YenPage -- Simpan ke tabel Pages
+-- Buat Halaman (Section) satu per satu
+Pages.Yen = UpgradeTab:Section({ Title = "Yen Upgrades" })
+Pages.Yen:Toggle({ Title = "Luck Upgrade", Desc = "Cost: 100 Yen", Callback = function() end })
+Pages.Yen:Toggle({ Title = "Damage Upgrade", Desc = "Cost: 250 Yen", Callback = function() end })
 
-YenPage:Toggle({ Title = "Luck [0/20]", Desc = "Cost: 29.12K | Buff: +5% Luck", Callback = function(v) end })
-YenPage:Toggle({ Title = "Yen Multiplier [0/12]", Desc = "Cost: 50K | Buff: +1.5x Yen", Callback = function(v) end })
+Pages.Token = UpgradeTab:Section({ Title = "Token Upgrades" })
+Pages.Token:Toggle({ Title = "Critical Hit", Desc = "Cost: 5 Tokens", Callback = function() end })
+Pages.Token:Button({ Title = "Buy Tokens", Icon = "shopping-cart", Callback = function() end })
 
--- [Halaman 2: Token]
-local TokenPage = UpgradeTab:Section({ Title = "Token Upgrades" })
-Pages["Token"] = TokenPage
+Pages.Rank = UpgradeTab:Section({ Title = "Rank Info" })
+Pages.Rank:Paragraph({ Title = "Current Rank", Desc = "S-Class" })
 
-TokenPage:Toggle({ Title = "Critical Chance [0/25]", Desc = "Cost: 1 Token | Buff: +2%", Callback = function(v) end })
-TokenPage:Button({ Title = "Buy More Tokens", Icon = "shopping-cart", Callback = function() end })
+Pages.Trainer = UpgradeTab:Section({ Title = "Trainer" })
+Pages.Trainer:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima"} })
 
--- [Halaman 3: Rank]
-local RankPage = UpgradeTab:Section({ Title = "Rank Information" })
-Pages["Rank"] = RankPage
+-- Halaman tambahan untuk tes Scroll
+Pages.Mastery = UpgradeTab:Section({ Title = "Weapon Mastery" })
+Pages.Mastery:Slider({ Title = "Mastery Level", Min = 0, Max = 100, Default = 10 })
 
-RankPage:Paragraph({ Title = "Current Rank", Desc = "S-Class Hunter\nNext Rank: SS-Class (Need 1M Power)" })
-RankPage:Button({ Title = "Rank Up!", Icon = "arrow-up", Callback = function() end })
+Pages.Settings = UpgradeTab:Section({ Title = "Settings" })
+Pages.Settings:Toggle({ Title = "Auto Upgrade", Value = false })
 
--- [Halaman 4: Trainer]
-local TrainerPage = UpgradeTab:Section({ Title = "Trainer" })
-Pages["Trainer"] = TrainerPage
-
-TrainerPage:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" })
-
--- FUNGSI UNTUK MENGGANTI HALAMAN
-local function SwitchPage(selectedCategory)
+-- 3. Fungsi Ganti Halaman
+local function SwitchPage(pageName)
     for name, section in pairs(Pages) do
-        -- Cek apakah section memiliki frame utama (UIElements.Main)
         if section.UIElements and section.UIElements.Main then
-            -- Jika nama cocok dengan yang dipilih, tampilkan (True). Jika tidak, sembunyikan (False).
-            section.UIElements.Main.Visible = (name == selectedCategory)
+            -- Hanya tampilkan section yang namanya cocok
+            section.UIElements.Main.Visible = (name == pageName)
         end
     end
 end
 
--- Matikan semua halaman dulu, lalu nyalakan halaman default (Yen)
+-- Matikan semua halaman dulu, kecuali default (Yen)
 SwitchPage("Yen")
 
--- ============================================================================
--- IMPLEMENTASI ELEMEN CATEGORY (NATIVE)
--- ============================================================================
-
--- Sekarang kita panggil elemen Category yang sudah Anda buat
-ManagerSection:Category({
-    Title = "Select Resource",
-    Default = "Yen", -- Halaman awal yang aktif
+-- 4. Panggil Element CATEGORY
+NavSection:Category({
+    Title = "Select Category",
+    Default = "Yen",
     Options = {
         { Title = "Yen", Icon = "coins" },
         { Title = "Token", Icon = "layers" },
         { Title = "Rank", Icon = "shield" },
         { Title = "Trainer", Icon = "sword" },
-        -- Tambahan untuk tes scroll
-        { Title = "Mastery", Icon = "book" },
+        { Title = "Mastery", Icon = "book" }, 
         { Title = "Settings", Icon = "settings" },
     },
     Callback = function(selected)
-        -- Ini callback pemanggilan pagenya
-        print("Membuka halaman:", selected)
         SwitchPage(selected)
     end
 })
 
--- Pilih tab Upgrade agar langsung terlihat saat dijalankan
-Window:SelectTab(1)
+-- Sembunyikan Header Judul Section Halaman (Opsional, agar lebih rapi)
+for _, section in pairs(Pages) do
+    if section.UIElements.Main and section.UIElements.Main.Top then
+        section.UIElements.Main.Top.Visible = false
+        section.UIElements.Main.Top.Size = UDim2.new(0,0,0,0)
+        section.UIElements.Main.Content.Position = UDim2.new(0,0,0,0)
+    end
+end
+
+Window:SelectTab(UpgradeTab.Index)
 -- Window:SelectTab(1)

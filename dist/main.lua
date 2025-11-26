@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.83  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.84  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.83",
+    "version": "1.0.84",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8837,7 +8837,6 @@ Expandable=false,
 
 local am
 
-
 function al.SetIcon(an,ao)
 al.Icon=ao or nil
 if am then am:Destroy()end
@@ -8872,7 +8871,6 @@ ImageTransparency=.7,
 })
 })
 
-
 if al.Icon then
 al:SetIcon(al.Icon)
 end
@@ -8887,18 +8885,10 @@ ThemeTag={
 TextColor3="Text",
 },
 FontFace=Font.new(aa.Font,al.FontWeight),
-
-
 Text=al.Title,
-Size=UDim2.new(
-1,
-0,
-0,
-0
-),
+Size=UDim2.new(1,0,0,0),
 TextWrapped=true,
 })
-
 
 local function UpdateTitleSize()
 local ap=0
@@ -8916,7 +8906,7 @@ local ap,aq=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 Parent=ak.Parent,
-ClipsDescendants=true,
+ClipsDescendants=false,
 AutomaticSize="Y",
 ImageTransparency=al.Box and.93 or 1,
 ThemeTag={
@@ -8967,6 +8957,8 @@ VerticalAlignment="Top",
 
 
 al.UIElements.Main=ap
+al.UIElements.Content=ap.Content
+al.UIElements.Top=ap.Top
 
 local ar=ak.ElementsModule
 
@@ -8978,7 +8970,6 @@ UpdateTitleSize()
 end
 end,ar,ak.UIScale,ak.Tab)
 
-
 UpdateTitleSize()
 
 function al.SetTitle(as,at)
@@ -8989,7 +8980,6 @@ function al.Destroy(as)
 for at,au in next,al.Elements do
 au:Destroy()
 end
-
 ap:Destroy()
 end
 
@@ -9043,10 +9033,8 @@ al:Open()
 end
 end)
 
-
 function al.UpdateShape(as,at)
 if ak.Window.NewElements then
-
 if aq then
 aq:SetType"Squircle"
 end
