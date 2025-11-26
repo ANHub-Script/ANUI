@@ -204,7 +204,39 @@ do
 	Window:Tab({
 		Profile = MakeProfile({
 			Title = "AdityaNugraha",
-			Desc = "Admin"
+			Desc = "Admin",
+	Badges = {
+		{
+			Icon = "geist:logo-discord",
+			Desc = "Join ANHUB Discord",
+			Callback = function()
+				setclipboard("https://discord.gg/cy6uMRmeZ")
+				if ANUI then
+					ANUI:Notify({
+						Title = "Discord",
+						Content = "Invite link copied to clipboard!",
+						Icon = "copy",
+						Duration = 3
+					})
+				end
+			end
+		},
+		{
+			Icon = "youtube",
+			Desc = "Subscribe to YouTube",
+			Callback = function()
+				setclipboard("https://youtube.com/...")
+				if ANUI then
+					ANUI:Notify({
+						Title = "YouTube",
+						Content = "Channel link copied!",
+						Icon = "check",
+						Duration = 3
+					})
+				end
+			end
+		}
+	}
 		}),
 		SidebarProfile = true -- AKTIFKAN MODE SIDEBAR CARD
 	})
@@ -242,7 +274,7 @@ do
 		Title = "Toggle",
 		Icon = "arrow-left-right",
 		Profile = MakeProfile({ Title = "Toggle Settings", Desc = "Configure toggles" }),
-		SidebarProfile = false
+		SidebarProfile = false,
 	});
 	
 	ToggleTab:Paragraph({
@@ -386,7 +418,10 @@ end;
 do
 	local ButtonTab = ElementsSection:Tab({
 		Title = "Button",
-		Icon = "mouse-pointer-click"
+		Icon = "mouse-pointer-click",
+		Profile = MakeProfile({ Title = "Toggle Settings", Desc = "Configure toggles" }),
+		SidebarProfile = false,
+		Sticky = false
 	});
 	ButtonTab:Paragraph({
 		Title = "Button Examples",

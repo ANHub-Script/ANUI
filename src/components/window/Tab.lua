@@ -57,7 +57,10 @@ function TabModule.New(Config, UIScale)
     }
 
     local IsSidebarCard = Tab.Profile and Tab.SidebarProfile
-    local HasContentProfile = Tab.Profile 
+    local HasContentProfile = Tab.Profile
+    
+    -- [STICKY LOGIC] Default true jika tidak didefinisikan
+    local IsProfileSticky = HasContentProfile and (Tab.Profile.Sticky ~= false)
     
     if IsSidebarCard then
         Tab.Locked = true
@@ -211,13 +214,12 @@ function TabModule.New(Config, UIScale)
             end
         end
         
-        -- [FITUR BARU: SIDEBAR BADGES]
+        -- [SIDEBAR BADGES]
         if Tab.Profile.Badges then
              local SidebarBadgeContainer = New("Frame", {
                 Name = "SidebarBadgeContainer",
                 Size = UDim2.new(0, 0, 0, 24), 
                 AutomaticSize = Enum.AutomaticSize.X,
-                -- Pojok kanan bawah Banner + Padding
                 Position = UDim2.new(1, -6, 0, BannerH - 4), 
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
@@ -234,13 +236,12 @@ function TabModule.New(Config, UIScale)
             
             for _, badge in ipairs(Tab.Profile.Badges) do
                 local BadgeIcon = badge.Icon or "help-circle"
-                -- Sidebar badge biasanya tidak pakai title karena sempit, tapi kita support
                 local HasTitle = badge.Title ~= nil 
                 
                 local BadgeWrapper = New("Frame", {
                     Name = "BadgeWrapper",
                     BackgroundTransparency = 1,
-                    Size = UDim2.new(0, 0, 0, 24), -- Ukuran lebih kecil (24px)
+                    Size = UDim2.new(0, 0, 0, 24),
                     AutomaticSize = Enum.AutomaticSize.X,
                     Parent = SidebarBadgeContainer,
                 })
@@ -270,9 +271,8 @@ function TabModule.New(Config, UIScale)
                     })
                 })
 
-                -- Icon
                 local IconFrame = Creator.Image(BadgeIcon, "BadgeIcon", 0, Window.Folder, "Badge", false)
-                IconFrame.Size = UDim2.new(0, 14, 0, 14) -- Icon 14px
+                IconFrame.Size = UDim2.new(0, 14, 0, 14)
                 IconFrame.BackgroundTransparency = 1
                 IconFrame.Parent = Content
                 
@@ -283,11 +283,10 @@ function TabModule.New(Config, UIScale)
                     RealImage.BackgroundTransparency = 1
                 end
                 
-                -- Title
                 if HasTitle then
                     New("TextLabel", {
                         Text = badge.Title,
-                        TextSize = 11, -- Font lebih kecil
+                        TextSize = 11,
                         FontFace = Font.new(Creator.Font, Enum.FontWeight.SemiBold),
                         TextColor3 = Color3.new(1,1,1),
                         BackgroundTransparency = 1,
@@ -297,7 +296,6 @@ function TabModule.New(Config, UIScale)
                     })
                 end
                 
-                -- Click Area
                 local ClickArea = New("TextButton", {
                     Size = UDim2.new(1, 0, 1, 0),
                     BackgroundTransparency = 1,
@@ -319,7 +317,6 @@ function TabModule.New(Config, UIScale)
                      Tween(BadgeBG, 0.1, {ImageTransparency = 0.4}):Play()
                 end)
                 
-                -- Tooltip Logic
                 if badge.Desc then
                     local ToolTip
                     local hoverTimer
@@ -455,7 +452,8 @@ function TabModule.New(Config, UIScale)
         ContentSizeOffset = ContentSizeOffset - ContentOffsetY
     end
 
-    if HasContentProfile then
+    -- [OFFSET HANYA JIKA STICKY]
+    if HasContentProfile and IsProfileSticky then
         ContentOffsetY = ContentOffsetY + ProfileHeight
         ContentSizeOffset = ContentSizeOffset - ProfileHeight
     end
@@ -546,11 +544,19 @@ function TabModule.New(Config, UIScale)
         local ProfileHeader = New("Frame", {
             Name = "ProfileHeader",
             Size = UDim2.new(1, 0, 0, ProfileHeight),
+            -- Posisi awal (akan diabaikan UIListLayout jika tidak sticky)
             Position = UDim2.new(0, 0, 0, Tab.ShowTabTitle and ((Window.UIPadding*2.4)+12) or 0),
             BackgroundTransparency = 1,
-            Parent = Tab.UIElements.ContainerFrameCanvas,
             ZIndex = 2
         })
+
+        -- [LOGIKA STICKY PARENTING]
+        if IsProfileSticky and not IsSidebarCard then
+            ProfileHeader.Parent = Tab.UIElements.ContainerFrameCanvas -- Statis
+        else
+            ProfileHeader.Parent = Tab.UIElements.ContainerFrame -- Ikut Scroll
+            ProfileHeader.LayoutOrder = -999 -- Paling atas di list
+        end
 
         local Banner = Creator.NewRoundFrame(12, "Squircle", {
             Size = UDim2.new(1, 0, 0, BannerHeight), 
@@ -567,11 +573,12 @@ function TabModule.New(Config, UIScale)
             BannerImg.Parent = Banner
         end
         
-        -- [FITUR BARU: BADGES DALAM KONTEN]
+        -- [BADGES KONTEN]
         if Tab.Profile.Badges then
             local BadgeContainer = New("Frame", {
                 Name = "BadgeContainer",
-                Size = UDim2.new(1, 0, 0, 28),
+                Size = UDim2.new(0, 0, 0, 28),
+                AutomaticSize = Enum.AutomaticSize.X,
                 Position = UDim2.new(1, -8, 1, -8), 
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
