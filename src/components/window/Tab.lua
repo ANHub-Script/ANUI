@@ -65,7 +65,7 @@ function TabModule.New(Config, UIScale)
     Tab.UIElements.Main = Creator.NewRoundFrame(Tab.UICorner, "Squircle", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1,-7,0,0),
-        AutomaticSize = "Y", -- Default Auto Size
+        AutomaticSize = "Y", 
         Parent = Config.Parent,
         ThemeTag = {
             ImageColor3 = "TabBackground",
@@ -140,7 +140,7 @@ function TabModule.New(Config, UIScale)
     local Icon2
 
     -- [LOGIKA ICON BIASA]
-    if Tab.Icon and not Tab.Profile then -- Skip icon biasa jika Profile aktif
+    if Tab.Icon and not Tab.Profile then 
         Icon = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed, "TabIcon")
         Icon.Size = UDim2.new(0,16,0,16)
         Icon.Parent = Tab.UIElements.Main.Frame
@@ -175,7 +175,7 @@ function TabModule.New(Config, UIScale)
         Tab.UIElements.Image = Image
     end
 
-    -- [ANUI FITUR BARU] SIDEBAR PROFILE BUTTON
+    -- [ANUI FITUR BARU] SIDEBAR PROFILE BUTTON (FIXED URL SUPPORT)
     if Tab.Profile then
         -- 1. Hapus elemen default
         local Layout = Tab.UIElements.Main.Frame:FindFirstChild("UIListLayout")
@@ -191,15 +191,24 @@ function TabModule.New(Config, UIScale)
         
         -- 3. Buat Banner (Di tombol Sidebar)
         local BannerH = 40
-        local Banner = New("ImageLabel", {
-            Name = "Banner",
-            Size = UDim2.new(1, 0, 0, BannerH),
-            BackgroundTransparency = 1,
-            Image = Tab.Profile.Banner or "",
-            ScaleType = Enum.ScaleType.Crop,
-            Parent = Tab.UIElements.Main.Frame,
-            ZIndex = 1
-        })
+        
+        if Tab.Profile.Banner then
+            -- [FIX] Gunakan Creator.Image agar URL HTTP bekerja
+            local BannerFrame = Creator.Image(
+                Tab.Profile.Banner, "SidebarBanner", 0, Window.Folder, "ProfileBanner", false
+            )
+            BannerFrame.Size = UDim2.new(1, 0, 0, BannerH)
+            BannerFrame.Position = UDim2.new(0, 0, 0, 0)
+            BannerFrame.BackgroundTransparency = 1
+            BannerFrame.Parent = Tab.UIElements.Main.Frame
+            BannerFrame.ZIndex = 1
+            
+            -- Pastikan gambarnya crop
+            if BannerFrame:FindFirstChild("ImageLabel") then
+                BannerFrame.ImageLabel.ScaleType = Enum.ScaleType.Crop
+                BannerFrame.ImageLabel.Size = UDim2.fromScale(1, 1)
+            end
+        end
         
         -- 4. Buat Avatar (Di tombol Sidebar)
         local AvatarS = 34
@@ -212,21 +221,35 @@ function TabModule.New(Config, UIScale)
             ZIndex = 2
         })
         
-        -- Gambar Avatar
-        local AvatarImg = New("ImageLabel", {
-            Size = UDim2.fromScale(1, 1),
-            Image = Tab.Profile.Avatar or "",
-            BackgroundTransparency = 1,
-            Parent = AvatarContainer
-        }, {
-            New("UICorner", { CornerRadius = UDim.new(1, 0) }),
-            New("UIStroke", { -- Border agar terpisah dari banner
+        -- Avatar Image (Gunakan Creator.Image juga untuk support URL)
+        if Tab.Profile.Avatar then
+             local AvatarImg = Creator.Image(
+                Tab.Profile.Avatar, "SidebarAvatar", 0, Window.Folder, "ProfileAvatar", false
+            )
+            AvatarImg.Size = UDim2.fromScale(1, 1)
+            AvatarImg.Parent = AvatarContainer
+            AvatarImg.BackgroundTransparency = 1
+            
+            -- [FIX] Bikin Bulat Sempurna
+            local ImgLabel = AvatarImg:FindFirstChild("ImageLabel")
+            if ImgLabel then
+                ImgLabel.Size = UDim2.fromScale(1, 1)
+                ImgLabel.BackgroundTransparency = 1
+                local OldCorner = ImgLabel:FindFirstChildOfClass("UICorner")
+                if OldCorner then OldCorner:Destroy() end
+                New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ImgLabel })
+            end
+            
+            -- Border (Stroke) di container utama
+            New("UIStroke", { 
+                Parent = AvatarContainer,
                 Thickness = 2.5,
-                ThemeTag = { Color = "Background" }, -- Warna mengikuti background window
+                ThemeTag = { Color = "TabBackground" }, -- Warna mengikuti background tombol tab
                 Transparency = 0,
                 ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             })
-        })
+            New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = AvatarContainer })
+        end
 
         -- Status Dot
         if Tab.Profile.Status then
@@ -241,7 +264,7 @@ function TabModule.New(Config, UIScale)
                 New("UICorner", { CornerRadius = UDim.new(1, 0) }),
                 New("UIStroke", { 
                     Thickness = 2, 
-                    ThemeTag = { Color = "Background" } 
+                    ThemeTag = { Color = "TabBackground" } 
                 })
             })
         end
