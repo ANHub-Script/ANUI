@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.91  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.92  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.91",
+    "version": "1.0.92",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8837,6 +8837,7 @@ Expandable=false,
 
 local am
 
+
 function al.SetIcon(an,ao)
 al.Icon=ao or nil
 if am then am:Destroy()end
@@ -8871,6 +8872,7 @@ ImageTransparency=.7,
 })
 })
 
+
 if al.Icon then
 al:SetIcon(al.Icon)
 end
@@ -8885,10 +8887,18 @@ ThemeTag={
 TextColor3="Text",
 },
 FontFace=Font.new(aa.Font,al.FontWeight),
+
+
 Text=al.Title,
-Size=UDim2.new(1,0,0,0),
+Size=UDim2.new(
+1,
+0,
+0,
+0
+),
 TextWrapped=true,
 })
+
 
 local function UpdateTitleSize()
 local ap=0
@@ -8901,11 +8911,12 @@ end
 ao.Size=UDim2.new(1,ap,0,0)
 end
 
-local ap,aq=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
+
+local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 Parent=ak.Parent,
-ClipsDescendants=false,
+ClipsDescendants=true,
 AutomaticSize="Y",
 ImageTransparency=al.Box and.93 or 1,
 ThemeTag={
@@ -8952,36 +8963,47 @@ Padding=UDim.new(0,ak.Tab.Gap),
 VerticalAlignment="Top",
 }),
 })
-},true,true)
+})
 
-al.UIElements.Main=ap
-al.UIElements.Top=ap.Top
-al.UIElements.Content=ap.Content
 
-local ar=ak.ElementsModule
 
-ar.Load(al,ap.Content,ar.Elements,ak.Window,ak.ANUI,function()
+
+
+
+
+local aq=ak.ElementsModule
+
+aq.Load(al,ap.Content,aq.Elements,ak.Window,ak.ANUI,function()
 if not al.Expandable then
 al.Expandable=true
 an.Visible=true
 UpdateTitleSize()
 end
-end,ar,ak.UIScale,ak.Tab)
+end,aq,ak.UIScale,ak.Tab)
+
 
 UpdateTitleSize()
 
-function al.SetTitle(as,at)
-ao.Text=at
+function al.SetTitle(ar,as)
+ao.Text=as
 end
 
-function al.Destroy(as)
-for at,au in next,al.Elements do
-au:Destroy()
+function al.Destroy(ar)
+for as,at in next,al.Elements do
+at:Destroy()
 end
+
+
+
+
+
+
+
+
 ap:Destroy()
 end
 
-function al.Open(as)
+function al.Open(ar)
 if al.Expandable then
 al.Opened=true
 af(ap,0.33,{
@@ -8991,7 +9013,7 @@ Size=UDim2.new(1,0,0,al.HeaderSize+(ap.Content.AbsoluteSize.Y/ak.UIScale))
 af(an.ImageLabel,0.1,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
-function al.Close(as)
+function al.Close(ar)
 if al.Expandable then
 al.Opened=false
 af(ap,0.26,{
@@ -9020,6 +9042,14 @@ end)
 task.spawn(function()
 task.wait(0.02)
 if al.Expandable then
+
+
+
+
+
+
+
+
 ap.Size=UDim2.new(1,0,0,al.HeaderSize)
 ap.AutomaticSize="None"
 ap.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
@@ -9029,15 +9059,8 @@ end
 if al.Opened then
 al:Open()
 end
-end)
 
-function al.UpdateShape(as,at)
-if ak.Window.NewElements then
-if aq then
-aq:SetType"Squircle"
-end
-end
-end
+end)
 
 return al.__type,al
 end

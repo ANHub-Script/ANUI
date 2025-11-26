@@ -1390,16 +1390,35 @@ do
 		});
 	end;
 end;
+local SettingsTab = Window:Tab({
+	Title = "Settings",
+	Icon = "settings-2"
+});
+local ConfigSection = SettingsTab:Section({
+	Title = "Config Manager",
+	Icon = "save",
+	Opened = true
+});
+local ConfigName = "ANConfig";
+SettingsTab:Input({
+	Title = "Config Name",
+	Placeholder = "ANConfig",
+	Flag = "ConfigName_Input",
+	Callback = function(txt)
+		ConfigName = txt;
+	end
+});
 -- [1] Buat Tab Baru
 local UpgradeTab = Window:Tab({
     Title = "Upgrade System",
     Icon = "hammer"
 })
 
--- [2] Buat Folder Penyimpanan Sementara (Agar halaman yang mati benar-benar hilang)
+-- [2] Buat Folder Penyimpanan Sementara
+-- Folder ini berguna untuk menyimpan Section yang sedang tidak aktif agar tidak memakan tempat di layout
 local PageStorage = Instance.new("Folder")
 PageStorage.Name = "PageStorage"
-PageStorage.Parent = Window.UIElements.Main -- Simpan di dalam Window agar aman
+PageStorage.Parent = Window.UIElements.Main -- Simpan di dalam Window agar aman dan tidak terhapus
 
 -- ============================================================================
 -- SECTION 1: NAVIGASI (TOMBOL KATEGORI)
@@ -1409,8 +1428,7 @@ local NavSection = UpgradeTab:Section({
     TextSize = 18
 })
 
--- PENTING: Set LayoutOrder NavSection ke angka kecil (misal -1)
--- Agar dia SELALU di atas, meskipun halaman di bawahnya ganti-ganti.
+-- PENTING: Pastikan Navigasi selalu di urutan paling atas
 if NavSection.UIElements.Main then
     NavSection.UIElements.Main.LayoutOrder = -1
 end
@@ -1454,33 +1472,33 @@ Pages.Settings:Toggle({ Title = "Auto Rank Up", Value = false })
 Pages.Settings:Space({Columns=1})
 
 -- ============================================================================
--- LOGIC: INITIAL SETUP
+-- LOGIC: SETUP & GANTI HALAMAN
 -- ============================================================================
 
--- 1. Sembunyikan Header Judul untuk semua halaman agar rapi
+-- 1. Sembunyikan Header Judul Section Halaman (Opsional, agar terlihat menyatu)
 for _, section in pairs(Pages) do
     if section.UIElements.Main and section.UIElements.Top then
         section.UIElements.Top.Visible = false
         section.UIElements.Top.Size = UDim2.new(0,0,0,0)
         
+        -- Geser konten ke atas untuk mengisi bekas header
         if section.UIElements.Content then
             section.UIElements.Content.Position = UDim2.new(0,0,0,0)
         end
     end
 end
 
--- 2. FUNGSI GANTI HALAMAN (METODE STORAGE)
--- Ini solusi agar layout tertutup sempurna
+-- 2. FUNGSI GANTI HALAMAN (FIX LAYOUT BUG)
 local function SwitchPage(pageName)
     for name, section in pairs(Pages) do
         if section.UIElements and section.UIElements.Main then
             if name == pageName then
-                -- TAMPILKAN: Pindahkan dari Storage ke dalam Tab
+                -- TAMPILKAN: Pindahkan kembali ke dalam Tab (ContainerFrame)
                 section.UIElements.Main.Parent = UpgradeTab.UIElements.ContainerFrame
                 section.UIElements.Main.Visible = true
             else
                 -- SEMBUNYIKAN: Pindahkan ke Storage Folder
-                -- Ini memaksa Layout untuk recalculate size, jadi tidak ada celah kosong
+                -- Ini memaksa UIListLayout untuk menghapus celah kosong sepenuhnya
                 section.UIElements.Main.Parent = PageStorage
                 section.UIElements.Main.Visible = false
             end
@@ -1508,7 +1526,7 @@ NavSection:Category({
     end
 })
 
--- Set halaman awal
+-- Set halaman awal saat script dijalankan
 SwitchPage("Yen")
 
 Window:SelectTab(UpgradeTab.Index)

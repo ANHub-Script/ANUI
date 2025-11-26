@@ -27,6 +27,7 @@ function Element:New(Config)
     }
     
     local Icon
+
     
     function Section:SetIcon(i)
         Section.Icon = i or nil
@@ -62,6 +63,7 @@ function Element:New(Config)
         })
     })
     
+    
     if Section.Icon then
         Section:SetIcon(Section.Icon)
     end
@@ -76,10 +78,18 @@ function Element:New(Config)
             TextColor3 = "Text",
         },
         FontFace = Font.new(Creator.Font, Section.FontWeight),
+        --Parent = Config.Parent,
+        --Size = UDim2.new(1,0,0,0),
         Text = Section.Title,
-        Size = UDim2.new(1, 0, 0, 0),
+        Size = UDim2.new(
+            1, 
+            0,
+            0,
+            0
+        ),
         TextWrapped = true,
     })
+
     
     local function UpdateTitleSize()
         local offset = 0
@@ -92,11 +102,12 @@ function Element:New(Config)
         TitleFrame.Size = UDim2.new(1, offset, 0, 0)
     end
     
-    local Main, MainTable = Creator.NewRoundFrame(Config.Window.ElementConfig.UICorner, "Squircle", {
+    
+    local Main = Creator.NewRoundFrame(Config.Window.ElementConfig.UICorner, "Squircle", {
         Size = UDim2.new(1,0,0,0),
         BackgroundTransparency = 1,
         Parent = Config.Parent,
-        ClipsDescendants = false, -- [FIX] Agar tidak terpotong
+        ClipsDescendants = true,
         AutomaticSize = "Y",
         ImageTransparency = Section.Box and .93 or 1,
         ThemeTag = {
@@ -143,11 +154,13 @@ function Element:New(Config)
                 VerticalAlignment = "Top",
             }),
         })
-    }, true, true)
+    })
 
-    Section.UIElements.Main = Main 
-    Section.UIElements.Top = Main.Top 
-    Section.UIElements.Content = Main.Content 
+    -- Section.UIElements.Main:GetPropertyChangedSignal("TextBounds"):Connect(function()
+    --     Section.UIElements.Main.Size = UDim2.new(1,0,0,Section.UIElements.Main.TextBounds.Y)
+    -- end)
+    
+    
     
     local ElementsModule = Config.ElementsModule
     
@@ -159,6 +172,7 @@ function Element:New(Config)
         end
     end, ElementsModule, Config.UIScale, Config.Tab)
     
+    
     UpdateTitleSize()
     
     function Section:SetTitle(Title)
@@ -169,6 +183,14 @@ function Element:New(Config)
         for _,element in next, Section.Elements do
             element:Destroy()
         end
+        
+        -- Section.UIElements.Main.AutomaticSize = "None"
+        -- Section.UIElements.Main.Size = UDim2.new(1,0,0,Section.UIElements.Main.TextBounds.Y)
+        
+        -- Tween(Section.UIElements.Main, .1, {TextTransparency = 1}):Play()
+        -- task.wait(.1)
+        -- Tween(Section.UIElements.Main, .15, {Size = UDim2.new(1,0,0,0)}, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
+        
         Main:Destroy()
     end
     
@@ -211,6 +233,14 @@ function Element:New(Config)
     task.spawn(function()
         task.wait(0.02)
         if Section.Expandable then
+            -- New("UIPadding", {
+            --     PaddingTop = UDim.new(0,4),
+            --     PaddingLeft = UDim.new(0,Section.Padding),
+            --     PaddingRight = UDim.new(0,Section.Padding),
+            --     PaddingBottom = UDim.new(0,2),
+                
+            --     Parent = Main.Top,
+            -- })
             Main.Size = UDim2.new(1,0,0,Section.HeaderSize)
             Main.AutomaticSize = "None"
             Main.Top.Size = UDim2.new(1,0,0,Section.HeaderSize)
@@ -220,16 +250,9 @@ function Element:New(Config)
         if Section.Opened then
             Section:Open()
         end
+        
     end)
     
-    function Section:UpdateShape(Tab)
-        if Config.Window.NewElements then
-             if MainTable then
-                MainTable:SetType("Squircle")
-             end
-        end
-    end
-
     return Section.__type, Section
 end
 
