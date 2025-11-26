@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.62  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.63  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -522,9 +522,10 @@ local A=0
 
 
 local B=14
+
 if v.TextSize then
 local C=tonumber(v.TextSize)
-if C then
+if C and C>0 then
 B=C
 end
 end
@@ -544,6 +545,7 @@ end
 F.BackgroundTransparency=1
 F.AutomaticSize=Enum.AutomaticSize.XY
 F.Size=UDim2.new(0,0,0,0)
+F.TextSize=B
 
 local G=p.New("TextLabel",F,{})
 G.Text=C
@@ -1947,7 +1949,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.62",
+    "version": "1.0.63",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
