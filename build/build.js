@@ -73,7 +73,8 @@ function autoCommit(version) {
   }
 
   const msg = `build: ANUI v${version}`;
-  res = runGit(['commit', '-S', '-m', msg], { stdio: 'inherit' });
+  // GUNAKAN --no-gpg-sign AGAR TIDAK ERROR DI WINDOWS/CI YANG GPG-NYA BERMASALAH
+  res = runGit(['commit', '--no-gpg-sign', '-m', msg], { stdio: 'inherit' });
   if (res.status !== 0) {
     console.error(`${E}[ × ]${R} git commit gagal (mungkin tidak ada perubahan baru?)`);
     return;

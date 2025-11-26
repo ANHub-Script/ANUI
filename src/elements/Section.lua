@@ -156,6 +156,8 @@ function Element:New(Config)
         })
     })
 
+    Section.ElementFrame = Main
+
     -- Section.UIElements.Main:GetPropertyChangedSignal("TextBounds"):Connect(function()
     --     Section.UIElements.Main.Size = UDim2.new(1,0,0,Section.UIElements.Main.TextBounds.Y)
     -- end)
