@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.82  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.83  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.82",
+    "version": "1.0.83",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8912,7 +8912,7 @@ ao.Size=UDim2.new(1,ap,0,0)
 end
 
 
-local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
+local ap,aq=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 Parent=ak.Parent,
@@ -8963,47 +8963,37 @@ Padding=UDim.new(0,ak.Tab.Gap),
 VerticalAlignment="Top",
 }),
 })
-})
+},true,true)
 
 
+al.UIElements.Main=ap
 
+local ar=ak.ElementsModule
 
-
-
-
-local aq=ak.ElementsModule
-
-aq.Load(al,ap.Content,aq.Elements,ak.Window,ak.ANUI,function()
+ar.Load(al,ap.Content,ar.Elements,ak.Window,ak.ANUI,function()
 if not al.Expandable then
 al.Expandable=true
 an.Visible=true
 UpdateTitleSize()
 end
-end,aq,ak.UIScale,ak.Tab)
+end,ar,ak.UIScale,ak.Tab)
 
 
 UpdateTitleSize()
 
-function al.SetTitle(ar,as)
-ao.Text=as
+function al.SetTitle(as,at)
+ao.Text=at
 end
 
-function al.Destroy(ar)
-for as,at in next,al.Elements do
-at:Destroy()
+function al.Destroy(as)
+for at,au in next,al.Elements do
+au:Destroy()
 end
-
-
-
-
-
-
-
 
 ap:Destroy()
 end
 
-function al.Open(ar)
+function al.Open(as)
 if al.Expandable then
 al.Opened=true
 af(ap,0.33,{
@@ -9013,7 +9003,7 @@ Size=UDim2.new(1,0,0,al.HeaderSize+(ap.Content.AbsoluteSize.Y/ak.UIScale))
 af(an.ImageLabel,0.1,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
-function al.Close(ar)
+function al.Close(as)
 if al.Expandable then
 al.Opened=false
 af(ap,0.26,{
@@ -9042,14 +9032,6 @@ end)
 task.spawn(function()
 task.wait(0.02)
 if al.Expandable then
-
-
-
-
-
-
-
-
 ap.Size=UDim2.new(1,0,0,al.HeaderSize)
 ap.AutomaticSize="None"
 ap.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
@@ -9059,8 +9041,17 @@ end
 if al.Opened then
 al:Open()
 end
-
 end)
+
+
+function al.UpdateShape(as,at)
+if ak.Window.NewElements then
+
+if aq then
+aq:SetType"Squircle"
+end
+end
+end
 
 return al.__type,al
 end
@@ -9253,14 +9244,10 @@ local am=ae("ScrollingFrame",{
 Size=UDim2.new(1,0,0,45),
 BackgroundTransparency=1,
 ScrollingDirection=Enum.ScrollingDirection.X,
-ScrollBarThickness=2,
-ScrollBarImageTransparency=0.5,
+ScrollBarThickness=0,
 CanvasSize=UDim2.new(0,0,0,0),
 AutomaticCanvasSize=Enum.AutomaticSize.X,
 Parent=ak.Parent,
-ThemeTag={
-ScrollBarImageColor3="Text",
-}
 },{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
@@ -9282,28 +9269,19 @@ for ap,aq in pairs(an)do
 local ar=(ap==ao)
 
 
-local as=ar and"Toggle"or"Button"
-local at="Text"
+local as=aa.Theme
 
 
+local at=aa.GetThemeProperty(ar and"Toggle"or"Button",as)
+local au=aa.GetThemeProperty("Text",as)
 
-local au=aa.GetThemeProperty(as,aa.Theme)
-local av=aa.GetThemeProperty(at,aa.Theme)
+local av=ar and 0 or 0.5
 
-
-local aw=ar and 0 or 0.4
-
-af(aq.Background,0.2,{ImageColor3=au}):Play()
-af(aq.Title,0.2,{
-TextTransparency=aw,
-TextColor3=av
-}):Play()
+af(aq.Background,0.2,{ImageColor3=at}):Play()
+af(aq.Title,0.2,{TextTransparency=av,TextColor3=au}):Play()
 
 if aq.Icon then
-af(aq.Icon.ImageLabel,0.2,{
-ImageTransparency=aw,
-ImageColor3=av
-}):Play()
+af(aq.Icon.ImageLabel,0.2,{ImageTransparency=av,ImageColor3=au}):Play()
 end
 end
 end
@@ -9325,9 +9303,7 @@ LayoutOrder=ao
 
 local at=aa.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,0,1,0),
-ThemeTag={
-ImageColor3="Button",
-},
+ThemeTag={ImageColor3="Button"},
 Name="Background",
 Parent=as
 },{
@@ -9348,7 +9324,7 @@ if ar then
 au=aa.Image(ar,"Icon",0,ak.Window.Folder,"Icon",false)
 au.Size=UDim2.new(0,18,0,18)
 au.BackgroundTransparency=1
-au.ImageLabel.ImageTransparency=0.4
+au.ImageLabel.ImageTransparency=0.5
 au.Parent=at
 end
 
@@ -9358,10 +9334,8 @@ FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
 TextSize=14,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-ThemeTag={
-TextColor3="Text"
-},
-TextTransparency=0.4,
+ThemeTag={TextColor3="Text"},
+TextTransparency=0.5,
 Parent=at
 })
 

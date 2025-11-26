@@ -103,7 +103,7 @@ function Element:New(Config)
     end
     
     
-    local Main = Creator.NewRoundFrame(Config.Window.ElementConfig.UICorner, "Squircle", {
+    local Main, MainTable = Creator.NewRoundFrame(Config.Window.ElementConfig.UICorner, "Squircle", {
         Size = UDim2.new(1,0,0,0),
         BackgroundTransparency = 1,
         Parent = Config.Parent,
@@ -154,13 +154,10 @@ function Element:New(Config)
                 VerticalAlignment = "Top",
             }),
         })
-    })
+    }, true, true) -- Return Wrapper Table
 
-    -- Section.UIElements.Main:GetPropertyChangedSignal("TextBounds"):Connect(function()
-    --     Section.UIElements.Main.Size = UDim2.new(1,0,0,Section.UIElements.Main.TextBounds.Y)
-    -- end)
-    
-    
+    -- PENTING: Simpan referensi Frame Utama agar bisa diakses (Visible = true/false)
+    Section.UIElements.Main = Main 
     
     local ElementsModule = Config.ElementsModule
     
@@ -183,13 +180,6 @@ function Element:New(Config)
         for _,element in next, Section.Elements do
             element:Destroy()
         end
-        
-        -- Section.UIElements.Main.AutomaticSize = "None"
-        -- Section.UIElements.Main.Size = UDim2.new(1,0,0,Section.UIElements.Main.TextBounds.Y)
-        
-        -- Tween(Section.UIElements.Main, .1, {TextTransparency = 1}):Play()
-        -- task.wait(.1)
-        -- Tween(Section.UIElements.Main, .15, {Size = UDim2.new(1,0,0,0)}, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
         
         Main:Destroy()
     end
@@ -233,14 +223,6 @@ function Element:New(Config)
     task.spawn(function()
         task.wait(0.02)
         if Section.Expandable then
-            -- New("UIPadding", {
-            --     PaddingTop = UDim.new(0,4),
-            --     PaddingLeft = UDim.new(0,Section.Padding),
-            --     PaddingRight = UDim.new(0,Section.Padding),
-            --     PaddingBottom = UDim.new(0,2),
-                
-            --     Parent = Main.Top,
-            -- })
             Main.Size = UDim2.new(1,0,0,Section.HeaderSize)
             Main.AutomaticSize = "None"
             Main.Top.Size = UDim2.new(1,0,0,Section.HeaderSize)
@@ -250,9 +232,18 @@ function Element:New(Config)
         if Section.Opened then
             Section:Open()
         end
-        
     end)
     
+    -- Update Shape Logic untuk tema baru
+    function Section:UpdateShape(Tab)
+        if Config.Window.NewElements then
+            -- Section biasanya berdiri sendiri, jadi bisa tetap Squircle atau logic lain
+             if MainTable then
+                MainTable:SetType("Squircle")
+             end
+        end
+    end
+
     return Section.__type, Section
 end
 

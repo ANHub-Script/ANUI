@@ -16,19 +16,15 @@ function Element:New(Config)
         UIElements = {},
     }
 
-    -- 1. Container Utama (ScrollingFrame)
+    -- 1. Container Scroll Horizontal
     local MainFrame = New("ScrollingFrame", {
         Size = UDim2.new(1, 0, 0, 45),
         BackgroundTransparency = 1,
-        ScrollingDirection = Enum.ScrollingDirection.X,
-        ScrollBarThickness = 2,
-        ScrollBarImageTransparency = 0.5,
+        ScrollingDirection = Enum.ScrollingDirection.X, -- Scroll Horizontal
+        ScrollBarThickness = 0, -- Sembunyikan scrollbar
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.X,
         Parent = Config.Parent,
-        ThemeTag = {
-            ScrollBarImageColor3 = "Text",
-        }
     }, {
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
@@ -44,34 +40,25 @@ function Element:New(Config)
 
     local ButtonObjects = {}
     
-    -- Fungsi Update Visual
+    -- Fungsi Update Visual (Warna Aktif/Mati)
     local function UpdateVisuals(selectedName)
         for name, objs in pairs(ButtonObjects) do
             local isActive = (name == selectedName)
             
-            -- Menentukan key warna berdasarkan status aktif
-            local targetColorKey = isActive and "Toggle" or "Button" -- Menggunakan "Toggle" (Hijau) untuk aktif
-            local targetTextColorKey = "Text"
+            -- Ambil tema global dari Creator untuk menghindari error nil
+            local Theme = Creator.Theme
             
-            -- [PERBAIKAN DI SINI]
-            -- Menggunakan Creator.Theme alih-alih Config.Window.Theme
-            local ColorVal = Creator.GetThemeProperty(targetColorKey, Creator.Theme)
-            local TextColorVal = Creator.GetThemeProperty(targetTextColorKey, Creator.Theme)
+            -- Tentukan key warna: "Toggle" (Hijau/Aktif) atau "Button" (Abu/Mati)
+            local ColorVal = Creator.GetThemeProperty(isActive and "Toggle" or "Button", Theme)
+            local TextColorVal = Creator.GetThemeProperty("Text", Theme)
             
-            -- Transparansi teks/icon
-            local targetTextTransparency = isActive and 0 or 0.4
+            local TargetTransparency = isActive and 0 or 0.5
 
             Tween(objs.Background, 0.2, {ImageColor3 = ColorVal}):Play()
-            Tween(objs.Title, 0.2, {
-                TextTransparency = targetTextTransparency,
-                TextColor3 = TextColorVal
-            }):Play()
+            Tween(objs.Title, 0.2, {TextTransparency = TargetTransparency, TextColor3 = TextColorVal}):Play()
             
             if objs.Icon then
-                Tween(objs.Icon.ImageLabel, 0.2, {
-                    ImageTransparency = targetTextTransparency,
-                    ImageColor3 = TextColorVal
-                }):Play()
+                Tween(objs.Icon.ImageLabel, 0.2, {ImageTransparency = TargetTransparency, ImageColor3 = TextColorVal}):Play()
             end
         end
     end
@@ -93,9 +80,7 @@ function Element:New(Config)
 
         local Background = Creator.NewRoundFrame(8, "Squircle", {
             Size = UDim2.new(1, 0, 1, 0),
-            ThemeTag = {
-                ImageColor3 = "Button",
-            },
+            ThemeTag = { ImageColor3 = "Button" },
             Name = "Background",
             Parent = ButtonFrame
         }, {
@@ -116,7 +101,7 @@ function Element:New(Config)
             IconObj = Creator.Image(OptIcon, "Icon", 0, Config.Window.Folder, "Icon", false)
             IconObj.Size = UDim2.new(0, 18, 0, 18)
             IconObj.BackgroundTransparency = 1
-            IconObj.ImageLabel.ImageTransparency = 0.4
+            IconObj.ImageLabel.ImageTransparency = 0.5
             IconObj.Parent = Background
         end
 
@@ -126,10 +111,8 @@ function Element:New(Config)
             TextSize = 14,
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.XY,
-            ThemeTag = {
-                TextColor3 = "Text"
-            },
-            TextTransparency = 0.4,
+            ThemeTag = { TextColor3 = "Text" },
+            TextTransparency = 0.5,
             Parent = Background
         })
 
@@ -148,7 +131,7 @@ function Element:New(Config)
         end)
     end
 
-    -- Set Default Active
+    -- Set Default Active saat pertama kali load
     if Category.Default then
         UpdateVisuals(Category.Default)
     elseif Category.Options[1] then
