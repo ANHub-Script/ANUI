@@ -133,7 +133,7 @@ end;
 do
 	local AboutTab = Window:Tab({
 		Title = "About ANUI",
-		Image = "rbxassetid://84366761557806"
+		Image = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12"
 	});
 	local AboutSection = AboutTab:Section({
 		Title = "About ANUI",

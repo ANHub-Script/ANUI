@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.43  |  2025-11-25  |  Roblox UI Library for scripts
+    v1.0.45  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.43",
+    "version": "1.0.45",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9382,8 +9382,6 @@ local al=a.load'u'.New
 
 
 
-
-
 local am={
 
 
@@ -9415,6 +9413,10 @@ Image=an.Image,
 IconThemed=an.IconThemed,
 Locked=an.Locked,
 ShowTabTitle=an.ShowTabTitle,
+
+
+Profile=an.Profile,
+
 Selected=false,
 Index=nil,
 Parent=an.Parent,
@@ -9539,10 +9541,6 @@ ap.IconThemed
 at.Size=UDim2.new(0,16,0,16)
 at.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
 ar=-30
-
-
-
-
 end
 
 if ap.Image then
@@ -9597,8 +9595,131 @@ HorizontalAlignment="Center",
 })
 
 
+if ap.Profile then
+local au=170
+local av=100
+local aw=70
 
 
+local ax=ah("Frame",{
+Name="ProfileHeader",
+Size=UDim2.new(1,0,0,au),
+BackgroundTransparency=1,
+Parent=ap.UIElements.ContainerFrame,
+LayoutOrder=-999
+})
+
+
+local ay=af.NewRoundFrame(12,"Squircle",{
+Size=UDim2.new(1,0,0,av),
+Position=UDim2.new(0.5,0,0,0),
+AnchorPoint=Vector2.new(0.5,0),
+ImageColor3=Color3.fromRGB(30,30,30),
+Parent=ax,
+ClipsDescendants=true
+})
+
+if ap.Profile.Banner then
+local az=af.Image(
+ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false
+)
+az.Size=UDim2.new(1,0,1,0)
+az.ScaleType=Enum.ScaleType.Crop
+az.Parent=ay
+end
+
+
+local az=ah("Frame",{
+Size=UDim2.new(0,aw,0,aw),
+Position=UDim2.new(0,14,0,av-(aw/2)+5),
+BackgroundTransparency=1,
+Parent=ax,
+ZIndex=2
+})
+
+
+ah("UIStroke",{
+Parent=az,
+Thickness=4,
+ThemeTag={
+Color="WindowBackground"
+},
+Transparency=0
+})
+
+ah("UICorner",{
+CornerRadius=UDim.new(1,0),
+Parent=az
+})
+
+
+if ap.Profile.Avatar then
+local aA=af.Image(
+ap.Profile.Avatar,"Avatar",0,Window.Folder,"ProfileAvatar",false
+)
+aA.Size=UDim2.new(1,0,1,0)
+aA.Parent=az
+
+ah("UICorner",{
+CornerRadius=UDim.new(1,0),
+Parent=aA.ImageLabel
+})
+end
+
+
+if ap.Profile.Status then
+ah("Frame",{
+Size=UDim2.new(0,18,0,18),
+Position=UDim2.new(1,-2,1,-2),
+AnchorPoint=Vector2.new(1,1),
+BackgroundColor3=Color3.fromHex"#23a559",
+Parent=az,
+ZIndex=3
+},{
+ah("UICorner",{CornerRadius=UDim.new(1,0)}),
+ah("UIStroke",{
+Thickness=3,
+ThemeTag={
+Color="WindowBackground"
+}
+})
+})
+end
+
+
+local aA=ah("TextLabel",{
+Text=ap.Profile.Title or ap.Title,
+TextSize=22,
+FontFace=Font.new(af.Font,Enum.FontWeight.Bold),
+ThemeTag={
+TextColor3="Text"
+},
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.XY,
+Position=UDim2.new(0,14+aw+12,0,av+6),
+TextXAlignment=Enum.TextXAlignment.Left,
+Parent=ax
+})
+
+
+if ap.Profile.Desc then
+ah("TextLabel",{
+Text=ap.Profile.Desc,
+TextSize=14,
+FontFace=Font.new(af.Font,Enum.FontWeight.Regular),
+ThemeTag={
+TextColor3="Text"
+},
+TextTransparency=0.4,
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.XY,
+Position=UDim2.new(0,0,1,2),
+AnchorPoint=Vector2.new(0,0),
+TextXAlignment=Enum.TextXAlignment.Left,
+Parent=aA
+})
+end
+end
 
 ap.UIElements.ContainerFrameCanvas=ah("Frame",{
 Size=UDim2.new(1,0,1,0),

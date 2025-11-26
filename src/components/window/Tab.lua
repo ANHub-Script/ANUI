@@ -10,8 +10,6 @@ local Tween = Creator.Tween
 local CreateToolTip = require("../ui/Tooltip").New
 local CreateScrollSlider = require("../ui/ScrollSlider").New
 
-
-
 local Window, ANUI, UIScale
 
 local TabModule = {
@@ -45,6 +43,10 @@ function TabModule.New(Config, UIScale)
         IconThemed = Config.IconThemed,
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
+        
+        -- [ANUI Modification] Property Profile Baru
+        Profile = Config.Profile,
+        
         Selected = false,
         Index = nil,
         Parent = Config.Parent,
@@ -169,10 +171,6 @@ function TabModule.New(Config, UIScale)
         Icon2.Size = UDim2.new(0,16,0,16)
         Icon2.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
         TextOffset = -30
-        
-        --Icon2.Parent = Tab.UIElements.Main.Frame
-        --Tab.UIElements.Main.Frame.TextLabel.Size = UDim2.new(1,-30,0,0)
-        --Tab.UIElements.Icon = Icon
 	end
 	
 	if Tab.Image then
@@ -226,9 +224,132 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- Tab.UIElements.ContainerFrame.UIListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-    --     Tab.UIElements.ContainerFrame.CanvasSize = UDim2.new(0,0,0,Tab.UIElements.ContainerFrame.UIListLayout.AbsoluteContentSize.Y+Window.UIPadding*2)
-    -- end)
+    -- [ANUI Modification] Implementasi Profile Header
+    if Tab.Profile then
+        local ProfileHeight = 170 
+        local BannerHeight = 100  
+        local AvatarSize = 70     
+
+        -- Container Header
+        local ProfileHeader = New("Frame", {
+            Name = "ProfileHeader",
+            Size = UDim2.new(1, 0, 0, ProfileHeight),
+            BackgroundTransparency = 1,
+            Parent = Tab.UIElements.ContainerFrame,
+            LayoutOrder = -999 -- Pastikan selalu paling atas
+        })
+
+        -- Banner Image
+        local Banner = Creator.NewRoundFrame(12, "Squircle", {
+            Size = UDim2.new(1, 0, 0, BannerHeight), 
+            Position = UDim2.new(0.5, 0, 0, 0),
+            AnchorPoint = Vector2.new(0.5, 0),
+            ImageColor3 = Color3.fromRGB(30, 30, 30), 
+            Parent = ProfileHeader,
+            ClipsDescendants = true
+        })
+
+        if Tab.Profile.Banner then
+            local BannerImg = Creator.Image(
+                Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false
+            )
+            BannerImg.Size = UDim2.new(1, 0, 1, 0)
+            BannerImg.ScaleType = Enum.ScaleType.Crop
+            BannerImg.Parent = Banner
+        end
+
+        -- Avatar Container
+        local AvatarContainer = New("Frame", {
+            Size = UDim2.new(0, AvatarSize, 0, AvatarSize),
+            Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
+            BackgroundTransparency = 1,
+            Parent = ProfileHeader,
+            ZIndex = 2
+        })
+
+        -- Stroke untuk efek potongan
+        local AvatarStroke = New("UIStroke", {
+            Parent = AvatarContainer,
+            Thickness = 4,
+            ThemeTag = {
+                Color = "WindowBackground" 
+            },
+            Transparency = 0
+        })
+        
+        local AvatarMask = New("UICorner", {
+            CornerRadius = UDim.new(1, 0),
+            Parent = AvatarContainer
+        })
+
+        -- Avatar Image
+        if Tab.Profile.Avatar then
+            local AvatarImg = Creator.Image(
+                Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false
+            )
+            AvatarImg.Size = UDim2.new(1, 0, 1, 0)
+            AvatarImg.Parent = AvatarContainer
+            
+            local ImgCorner = New("UICorner", {
+                CornerRadius = UDim.new(1, 0),
+                Parent = AvatarImg.ImageLabel
+            })
+        end
+
+        -- Status Dot
+        if Tab.Profile.Status then
+            local StatusDot = New("Frame", {
+                Size = UDim2.new(0, 18, 0, 18),
+                Position = UDim2.new(1, -2, 1, -2),
+                AnchorPoint = Vector2.new(1, 1),
+                BackgroundColor3 = Color3.fromHex("#23a559"),
+                Parent = AvatarContainer,
+                ZIndex = 3
+            }, {
+                New("UICorner", { CornerRadius = UDim.new(1, 0) }),
+                New("UIStroke", { 
+                    Thickness = 3, 
+                    ThemeTag = {
+                        Color = "WindowBackground"
+                    }
+                })
+            })
+        end
+
+        -- Username Title
+        local TitleLabel = New("TextLabel", {
+            Text = Tab.Profile.Title or Tab.Title,
+            TextSize = 22,
+            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+            ThemeTag = {
+                TextColor3 = "Text"
+            },
+            BackgroundTransparency = 1,
+            AutomaticSize = Enum.AutomaticSize.XY,
+            Position = UDim2.new(0, 14 + AvatarSize + 12, 0, BannerHeight + 6), 
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = ProfileHeader
+        })
+        
+        -- Description
+        if Tab.Profile.Desc then
+            local DescLabel = New("TextLabel", {
+                Text = Tab.Profile.Desc,
+                TextSize = 14,
+                FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
+                ThemeTag = {
+                    TextColor3 = "Text"
+                },
+                TextTransparency = 0.4,
+                BackgroundTransparency = 1,
+                AutomaticSize = Enum.AutomaticSize.XY,
+                Position = UDim2.new(0, 0, 1, 2),
+                AnchorPoint = Vector2.new(0, 0),
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = TitleLabel 
+            })
+        end
+    end
     
     Tab.UIElements.ContainerFrameCanvas = New("Frame", {
         Size = UDim2.new(1,0,1,0),
