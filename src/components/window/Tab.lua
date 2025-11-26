@@ -42,8 +42,9 @@ function TabModule.New(Config, UIScale)
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
         
-        -- [ANUI] Property Profile
+        -- [ANUI] Property Profile & Filter Baru
         Profile = Config.Profile,
+        SidebarProfile = Config.SidebarProfile, -- Boolean: Jika true, sidebar jadi kartu & locked
         
         Selected = false,
         Index = nil,
@@ -56,6 +57,14 @@ function TabModule.New(Config, UIScale)
         Gap = Window.NewElements and 1 or 6,
     }
     
+    -- Helper Variable untuk Cek Mode
+    local IsSidebarCard = Tab.Profile and Tab.SidebarProfile
+    
+    -- Jika mode SidebarProfile aktif, otomatis kunci tab
+    if IsSidebarCard then
+        Tab.Locked = true
+    end
+
     TabModule.TabCount = TabModule.TabCount + 1
     
     local TabIndex = TabModule.TabCount
@@ -102,7 +111,7 @@ function TabModule.New(Config, UIScale)
             },
             ImageTransparency = 1,
             Name = "Frame",
-            ClipsDescendants = true, -- Penting untuk memotong banner
+            ClipsDescendants = true, 
         }, {
             New("UIListLayout", {
                 SortOrder = "LayoutOrder",
@@ -140,7 +149,8 @@ function TabModule.New(Config, UIScale)
     local Icon2
 
     -- [LOGIKA ICON BIASA]
-    if Tab.Icon and not Tab.Profile then 
+    -- Hanya tampil jika BUKAN Mode Sidebar Card
+    if Tab.Icon and not IsSidebarCard then 
         Icon = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed, "TabIcon")
         Icon.Size = UDim2.new(0,16,0,16)
         Icon.Parent = Tab.UIElements.Main.Frame
@@ -156,7 +166,8 @@ function TabModule.New(Config, UIScale)
     end
     
     -- [LOGIKA IMAGE BESAR (Existing)]
-    if Tab.Image and not Tab.Profile then
+    -- Hanya tampil jika BUKAN Mode Sidebar Card
+    if Tab.Image and not IsSidebarCard then
         local Image = Creator.Image(Tab.Image, Tab.Title, Tab.UICorner, Window.Folder, "TabImage", false)
         Image.Size = UDim2.new(1,0,0,100)
         Image.Parent = Tab.UIElements.Main.Frame
@@ -175,8 +186,9 @@ function TabModule.New(Config, UIScale)
         Tab.UIElements.Image = Image
     end
 
-    -- [ANUI FITUR BARU] SIDEBAR PROFILE BUTTON (FIXED URL SUPPORT)
-    if Tab.Profile then
+    -- [LOGIKA SIDEBAR PROFILE CARD]
+    -- Hanya tampil jika SidebarProfile = true
+    if IsSidebarCard then
         -- 1. Hapus elemen default
         local Layout = Tab.UIElements.Main.Frame:FindFirstChild("UIListLayout")
         if Layout then Layout:Destroy() end
@@ -187,13 +199,11 @@ function TabModule.New(Config, UIScale)
         
         -- 2. Atur Ukuran & Style
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
-        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 85) -- Tinggi Button Profile
+        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 85)
         
-        -- 3. Buat Banner (Di tombol Sidebar)
+        -- 3. Buat Banner
         local BannerH = 40
-        
         if Tab.Profile.Banner then
-            -- [FIX] Gunakan Creator.Image agar URL HTTP bekerja
             local BannerFrame = Creator.Image(
                 Tab.Profile.Banner, "SidebarBanner", 0, Window.Folder, "ProfileBanner", false
             )
@@ -203,14 +213,13 @@ function TabModule.New(Config, UIScale)
             BannerFrame.Parent = Tab.UIElements.Main.Frame
             BannerFrame.ZIndex = 1
             
-            -- Pastikan gambarnya crop
             if BannerFrame:FindFirstChild("ImageLabel") then
                 BannerFrame.ImageLabel.ScaleType = Enum.ScaleType.Crop
                 BannerFrame.ImageLabel.Size = UDim2.fromScale(1, 1)
             end
         end
         
-        -- 4. Buat Avatar (Di tombol Sidebar)
+        -- 4. Buat Avatar
         local AvatarS = 34
         local AvatarContainer = New("Frame", {
             Name = "Avatar",
@@ -221,7 +230,6 @@ function TabModule.New(Config, UIScale)
             ZIndex = 2
         })
         
-        -- Avatar Image (Gunakan Creator.Image juga untuk support URL)
         if Tab.Profile.Avatar then
              local AvatarImg = Creator.Image(
                 Tab.Profile.Avatar, "SidebarAvatar", 0, Window.Folder, "ProfileAvatar", false
@@ -230,7 +238,6 @@ function TabModule.New(Config, UIScale)
             AvatarImg.Parent = AvatarContainer
             AvatarImg.BackgroundTransparency = 1
             
-            -- [FIX] Bikin Bulat Sempurna
             local ImgLabel = AvatarImg:FindFirstChild("ImageLabel")
             if ImgLabel then
                 ImgLabel.Size = UDim2.fromScale(1, 1)
@@ -240,18 +247,16 @@ function TabModule.New(Config, UIScale)
                 New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ImgLabel })
             end
             
-            -- Border (Stroke) di container utama
             New("UIStroke", { 
                 Parent = AvatarContainer,
                 Thickness = 2.5,
-                ThemeTag = { Color = "TabBackground" }, -- Warna mengikuti background tombol tab
+                ThemeTag = { Color = "TabBackground" },
                 Transparency = 0,
                 ApplyStrokeMode = Enum.ApplyStrokeMode.Border
             })
             New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = AvatarContainer })
         end
 
-        -- Status Dot
         if Tab.Profile.Status then
              New("Frame", {
                 Size = UDim2.new(0, 10, 0, 10),
@@ -269,7 +274,7 @@ function TabModule.New(Config, UIScale)
             })
         end
 
-        -- 5. Teks (Username & Desc)
+        -- 5. Teks
         local TextC = New("Frame", {
             Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH),
             Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH),
@@ -332,7 +337,8 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [HEADER PROFIL DALAM KONTEN] (Sama seperti sebelumnya, sudah difix)
+    -- [HEADER PROFIL DALAM KONTEN]
+    -- Selalu tampil jika Tab.Profile ada (meskipun SidebarProfile=false)
     if Tab.Profile then
         local ProfileHeight = 170 
         local BannerHeight = 100  
@@ -511,8 +517,8 @@ function TabModule.New(Config, UIScale)
     local MouseConn
     local IsHovering = false
     
-    -- ToolTip (Hanya aktif jika BUKAN Profile Tab, karena Profile Tab sudah besar)
-    if Tab.Desc and not Tab.Profile then
+    -- ToolTip (Hanya aktif jika BUKAN Profile Tab)
+    if Tab.Desc and not IsSidebarCard then
         Creator.AddSignal(Tab.UIElements.Main.InputBegan, function()
             IsHovering = true
             hoverTimer = task.spawn(function()
@@ -538,7 +544,7 @@ function TabModule.New(Config, UIScale)
         end
     end)
     Creator.AddSignal(Tab.UIElements.Main.InputEnded, function()
-        if Tab.Desc and not Tab.Profile then
+        if Tab.Desc and not IsSidebarCard then
             IsHovering = false
             if hoverTimer then task.cancel(hoverTimer) hoverTimer = nil end
             if MouseConn then MouseConn:Disconnect() MouseConn = nil end
@@ -679,7 +685,7 @@ function TabModule:SelectTab(TabIndex)
                 Tween(TabObject.UIElements.Main, 0.15, {ImageTransparency = 1}):Play()
                 Tween(TabObject.UIElements.Main.Outline, 0.15, {ImageTransparency = 1}):Play()
                 
-                -- [FIX] Jika Profile Tab, kita tidak punya TextLabel biasa, jadi cek dulu
+                -- [FIX] Jika Profile Tab, TextLabel biasa sudah dihapus
                 if TabObject.UIElements.Main.Frame:FindFirstChild("TextLabel") then
                      Tween(TabObject.UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0.3}):Play()
                 end

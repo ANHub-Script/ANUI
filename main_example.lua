@@ -131,8 +131,10 @@ local function tableToClipboard(luau_table, indent)
 	return jsonString;
 end;
 
+do
+
 -- TAB DENGAN PROFIL
-local ProfileTab = Window:Tab({
+local AboutTab = Window:Tab({
     Title = "User Info", -- Judul Tab di Sidebar
     Icon = "user",       -- Ikon Tab di Sidebar
     
@@ -151,12 +153,6 @@ local ProfileTab = Window:Tab({
         Status = true 
     }
 })
-
-do
-	local AboutTab = Window:Tab({
-		Title = "About ANUI",
-		Image = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12"
-	});
 	local AboutSection = AboutTab:Section({
 		Title = "About ANUI",
 		Opened = true

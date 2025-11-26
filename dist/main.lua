@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.51  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.52  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.51",
+    "version": "1.0.52",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9414,6 +9414,7 @@ ShowTabTitle=an.ShowTabTitle,
 
 
 Profile=an.Profile,
+SidebarProfile=an.SidebarProfile,
 
 Selected=false,
 Index=nil,
@@ -9426,10 +9427,18 @@ UICorner=Window.UICorner-(Window.UIPadding/2),
 Gap=Window.NewElements and 1 or 6,
 }
 
+
+local aq=ap.Profile and ap.SidebarProfile
+
+
+if aq then
+ap.Locked=true
+end
+
 am.TabCount=am.TabCount+1
 
-local aq=am.TabCount
-ap.Index=aq
+local ar=am.TabCount
+ap.Index=ar
 
 
 ap.UIElements.Main=af.NewRoundFrame(ap.UICorner,"Squircle",{
@@ -9505,33 +9514,35 @@ PaddingBottom=UDim.new(0,2+(Window.UIPadding/2)),
 }),
 },true)
 
-local ar=0
-local as
+local as=0
 local at
+local au
 
 
-if ap.Icon and not ap.Profile then
-as=af.Image(ap.Icon,ap.Icon..":"..ap.Title,0,Window.Folder,ap.__type,true,ap.IconThemed,"TabIcon")
-as.Size=UDim2.new(0,16,0,16)
-as.Parent=ap.UIElements.Main.Frame
-as.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
-ap.UIElements.Main.Frame.TextLabel.Size=UDim2.new(1,-30,0,0)
-ar=-30
-ap.UIElements.Icon=as
 
-at=af.Image(ap.Icon,ap.Icon..":"..ap.Title,0,Window.Folder,ap.__type,true,ap.IconThemed)
+if ap.Icon and not aq then
+at=af.Image(ap.Icon,ap.Icon..":"..ap.Title,0,Window.Folder,ap.__type,true,ap.IconThemed,"TabIcon")
 at.Size=UDim2.new(0,16,0,16)
+at.Parent=ap.UIElements.Main.Frame
 at.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
-ar=-30
+ap.UIElements.Main.Frame.TextLabel.Size=UDim2.new(1,-30,0,0)
+as=-30
+ap.UIElements.Icon=at
+
+au=af.Image(ap.Icon,ap.Icon..":"..ap.Title,0,Window.Folder,ap.__type,true,ap.IconThemed)
+au.Size=UDim2.new(0,16,0,16)
+au.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
+as=-30
 end
 
 
-if ap.Image and not ap.Profile then
-local au=af.Image(ap.Image,ap.Title,ap.UICorner,Window.Folder,"TabImage",false)
-au.Size=UDim2.new(1,0,0,100)
-au.Parent=ap.UIElements.Main.Frame
-au.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
-au.LayoutOrder=-1
+
+if ap.Image and not aq then
+local av=af.Image(ap.Image,ap.Title,ap.UICorner,Window.Folder,"TabImage",false)
+av.Size=UDim2.new(1,0,0,100)
+av.Parent=ap.UIElements.Main.Frame
+av.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
+av.LayoutOrder=-1
 
 ap.UIElements.Main.Frame.UIListLayout.FillDirection="Vertical"
 ap.UIElements.Main.Frame.UIListLayout.Padding=UDim.new(0,0)
@@ -9542,85 +9553,79 @@ ap.UIElements.Main.Frame.UIPadding.PaddingLeft=UDim.new(0,0)
 ap.UIElements.Main.Frame.UIPadding.PaddingRight=UDim.new(0,0)
 ap.UIElements.Main.Frame.UIPadding.PaddingBottom=UDim.new(0,0)
 
-ap.UIElements.Image=au
+ap.UIElements.Image=av
 end
 
 
-if ap.Profile then
 
-local au=ap.UIElements.Main.Frame:FindFirstChild"UIListLayout"
-if au then au:Destroy()end
-local av=ap.UIElements.Main.Frame:FindFirstChild"UIPadding"
+if aq then
+
+local av=ap.UIElements.Main.Frame:FindFirstChild"UIListLayout"
 if av then av:Destroy()end
-local aw=ap.UIElements.Main.Frame:FindFirstChild"TextLabel"
+local aw=ap.UIElements.Main.Frame:FindFirstChild"UIPadding"
 if aw then aw:Destroy()end
+local ax=ap.UIElements.Main.Frame:FindFirstChild"TextLabel"
+if ax then ax:Destroy()end
 
 
 ap.UIElements.Main.Frame.AutomaticSize=Enum.AutomaticSize.None
 ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,85)
 
 
-local ax=40
-
+local ay=40
 if ap.Profile.Banner then
-
-local ay=af.Image(
+local az=af.Image(
 ap.Profile.Banner,"SidebarBanner",0,Window.Folder,"ProfileBanner",false
 )
-ay.Size=UDim2.new(1,0,0,ax)
-ay.Position=UDim2.new(0,0,0,0)
-ay.BackgroundTransparency=1
-ay.Parent=ap.UIElements.Main.Frame
-ay.ZIndex=1
+az.Size=UDim2.new(1,0,0,ay)
+az.Position=UDim2.new(0,0,0,0)
+az.BackgroundTransparency=1
+az.Parent=ap.UIElements.Main.Frame
+az.ZIndex=1
 
-
-if ay:FindFirstChild"ImageLabel"then
-ay.ImageLabel.ScaleType=Enum.ScaleType.Crop
-ay.ImageLabel.Size=UDim2.fromScale(1,1)
+if az:FindFirstChild"ImageLabel"then
+az.ImageLabel.ScaleType=Enum.ScaleType.Crop
+az.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
 
 
-local ay=34
-local az=ah("Frame",{
+local az=34
+local aA=ah("Frame",{
 Name="Avatar",
-Size=UDim2.new(0,ay,0,ay),
-Position=UDim2.new(0,10,0,ax-(ay/2)),
+Size=UDim2.new(0,az,0,az),
+Position=UDim2.new(0,10,0,ay-(az/2)),
 BackgroundTransparency=1,
 Parent=ap.UIElements.Main.Frame,
 ZIndex=2
 })
 
-
 if ap.Profile.Avatar then
-local aA=af.Image(
+local aB=af.Image(
 ap.Profile.Avatar,"SidebarAvatar",0,Window.Folder,"ProfileAvatar",false
 )
-aA.Size=UDim2.fromScale(1,1)
-aA.Parent=az
-aA.BackgroundTransparency=1
-
-
-local aB=aA:FindFirstChild"ImageLabel"
-if aB then
 aB.Size=UDim2.fromScale(1,1)
+aB.Parent=aA
 aB.BackgroundTransparency=1
-local d=aB:FindFirstChildOfClass"UICorner"
-if d then d:Destroy()end
-ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=aB})
+
+local d=aB:FindFirstChild"ImageLabel"
+if d then
+d.Size=UDim2.fromScale(1,1)
+d.BackgroundTransparency=1
+local e=d:FindFirstChildOfClass"UICorner"
+if e then e:Destroy()end
+ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=d})
 end
 
-
 ah("UIStroke",{
-Parent=az,
+Parent=aA,
 Thickness=2.5,
 ThemeTag={Color="TabBackground"},
 Transparency=0,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border
 })
-ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=az})
+ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=aA})
 end
-
 
 if ap.Profile.Status then
 ah("Frame",{
@@ -9628,7 +9633,7 @@ Size=UDim2.new(0,10,0,10),
 Position=UDim2.new(1,0,1,0),
 AnchorPoint=Vector2.new(1,1),
 BackgroundColor3=Color3.fromHex"#23a559",
-Parent=az,
+Parent=aA,
 ZIndex=3
 },{
 ah("UICorner",{CornerRadius=UDim.new(1,0)}),
@@ -9641,8 +9646,8 @@ end
 
 
 ah("Frame",{
-Size=UDim2.new(1,-(10+ay+8),1,-ax),
-Position=UDim2.new(0,10+ay+8,0,ax),
+Size=UDim2.new(1,-(10+az+8),1,-ay),
+Position=UDim2.new(0,10+az+8,0,ay),
 BackgroundTransparency=1,
 Parent=ap.UIElements.Main.Frame,
 ZIndex=2
@@ -9703,64 +9708,65 @@ HorizontalAlignment="Center",
 })
 
 
-if ap.Profile then
-local au=170
-local av=100
-local aw=70
 
-local ax=ah("Frame",{
+if ap.Profile then
+local av=170
+local aw=100
+local ax=70
+
+local ay=ah("Frame",{
 Name="ProfileHeader",
-Size=UDim2.new(1,0,0,au),
+Size=UDim2.new(1,0,0,av),
 BackgroundTransparency=1,
 Parent=ap.UIElements.ContainerFrame,
 LayoutOrder=-999
 })
 
-local ay=af.NewRoundFrame(12,"Squircle",{
-Size=UDim2.new(1,0,0,av),
+local az=af.NewRoundFrame(12,"Squircle",{
+Size=UDim2.new(1,0,0,aw),
 Position=UDim2.new(0.5,0,0,0),
 AnchorPoint=Vector2.new(0.5,0),
 ImageColor3=Color3.fromRGB(30,30,30),
-Parent=ax,
+Parent=ay,
 ClipsDescendants=true
 })
 
 if ap.Profile.Banner then
-local az=af.Image(ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false)
-az.Size=UDim2.new(1,0,1,0)
-az.Parent=ay
+local aA=af.Image(ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false)
+aA.Size=UDim2.new(1,0,1,0)
+aA.Parent=az
 end
 
-local az=ah("Frame",{
-Size=UDim2.new(0,aw,0,aw),
-Position=UDim2.new(0,14,0,av-(aw/2)+5),
+local aA=ah("Frame",{
+Size=UDim2.new(0,ax,0,ax),
+Position=UDim2.new(0,14,0,aw-(ax/2)+5),
 BackgroundTransparency=1,
-Parent=ax,
+Parent=ay,
 ZIndex=2
 })
 
 ah("UIStroke",{
-Parent=az,
+Parent=aA,
 Thickness=4,
 ThemeTag={Color="WindowBackground"},
 Transparency=0,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 })
-ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=az})
+ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=aA})
 
 if ap.Profile.Avatar then
-local aA=af.Image(ap.Profile.Avatar,"Avatar",0,Window.Folder,"ProfileAvatar",false)
-aA.Size=UDim2.fromScale(1,1)
-aA.BackgroundTransparency=1
-aA.Parent=az
-
-local aB=aA:FindFirstChild"ImageLabel"
-if aB then
+local aB=af.Image(ap.Profile.Avatar,"Avatar",0,Window.Folder,"ProfileAvatar",false)
 aB.Size=UDim2.fromScale(1,1)
 aB.BackgroundTransparency=1
-local d=aB:FindFirstChildOfClass"UICorner"
-if d then d:Destroy()end
-ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=aB})
+aB.Parent=aA
+
+local d=aB:FindFirstChild"ImageLabel"
+if d then
+d.Size=UDim2.fromScale(1,1)
+d.BackgroundTransparency=1
+local e=d:FindFirstChildOfClass"UICorner"
+if e then e:Destroy()end
+ah("UICorner",{CornerRadius=UDim.new(1,0),Parent=d})
 end
 end
 
@@ -9770,7 +9776,7 @@ Size=UDim2.new(0,18,0,18),
 Position=UDim2.new(1,-3,1,-3),
 AnchorPoint=Vector2.new(1,1),
 BackgroundColor3=Color3.fromHex"#23a559",
-Parent=az,
+Parent=aA,
 ZIndex=3
 },{
 ah("UICorner",{CornerRadius=UDim.new(1,0)}),
@@ -9778,16 +9784,16 @@ ah("UIStroke",{Thickness=3,ThemeTag={Color="WindowBackground"}})
 })
 end
 
-local aA=ah("TextLabel",{
+local aB=ah("TextLabel",{
 Text=ap.Profile.Title or ap.Title,
 TextSize=22,
 FontFace=Font.new(af.Font,Enum.FontWeight.Bold),
 ThemeTag={TextColor3="Text"},
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-Position=UDim2.new(0,14+aw+14,0,av+2),
+Position=UDim2.new(0,14+ax+14,0,aw+2),
 TextXAlignment=Enum.TextXAlignment.Left,
-Parent=ax
+Parent=ay
 })
 
 if ap.Profile.Desc then
@@ -9802,7 +9808,7 @@ AutomaticSize=Enum.AutomaticSize.XY,
 Position=UDim2.new(0,0,1,3),
 AnchorPoint=Vector2.new(0,0),
 TextXAlignment=Enum.TextXAlignment.Left,
-Parent=aA
+Parent=aB
 })
 end
 end
@@ -9821,7 +9827,7 @@ BackgroundTransparency=1,
 Visible=ap.ShowTabTitle or false,
 Name="TabTitle"
 },{
-at,
+au,
 ah("TextLabel",{
 Text=ap.Title,
 ThemeTag={
@@ -9829,7 +9835,7 @@ TextColor3="Text"
 },
 TextSize=20,
 TextTransparency=.1,
-Size=UDim2.new(1,-ar,1,0),
+Size=UDim2.new(1,-as,1,0),
 FontFace=Font.new(af.Font,Enum.FontWeight.SemiBold),
 TextTruncate="AtEnd",
 RichText=true,
@@ -9861,14 +9867,14 @@ Visible=ap.ShowTabTitle or false,
 })
 })
 
-am.Containers[aq]=ap.UIElements.ContainerFrameCanvas
-am.Tabs[aq]=ap
+am.Containers[ar]=ap.UIElements.ContainerFrameCanvas
+am.Tabs[ar]=ap
 
 ap.ContainerFrame=ContainerFrameCanvas
 
 af.AddSignal(ap.UIElements.Main.MouseButton1Click,function()
 if not ap.Locked then
-am:SelectTab(aq)
+am:SelectTab(ar)
 end
 end)
 
@@ -9876,27 +9882,27 @@ if Window.ScrollBarEnabled then
 al(ap.UIElements.ContainerFrame,ap.UIElements.ContainerFrameCanvas,Window,3)
 end
 
-local au
 local av
 local aw
-local ax=false
+local ax
+local ay=false
 
 
-if ap.Desc and not ap.Profile then
+if ap.Desc and not aq then
 af.AddSignal(ap.UIElements.Main.InputBegan,function()
-ax=true
-av=task.spawn(function()
+ay=true
+aw=task.spawn(function()
 task.wait(0.35)
-if ax and not au then
-au=ak(ap.Desc,am.ToolTipParent)
+if ay and not av then
+av=ak(ap.Desc,am.ToolTipParent)
 local function updatePosition()
-if au then
-au.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
+if av then
+av.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
 end
 end
 updatePosition()
-aw=ae.Move:Connect(updatePosition)
-au:Open()
+ax=ae.Move:Connect(updatePosition)
+av:Open()
 end
 end)
 end)
@@ -9908,11 +9914,11 @@ aj(ap.UIElements.Main.Frame,0.08,{ImageTransparency=.97}):Play()
 end
 end)
 af.AddSignal(ap.UIElements.Main.InputEnded,function()
-if ap.Desc and not ap.Profile then
-ax=false
-if av then task.cancel(av)av=nil end
-if aw then aw:Disconnect()aw=nil end
-if au then au:Close()au=nil end
+if ap.Desc and not aq then
+ay=false
+if aw then task.cancel(aw)aw=nil end
+if ax then ax:Disconnect()ax=nil end
+if av then av:Close()av=nil end
 end
 
 if not ap.Locked then
@@ -9922,14 +9928,14 @@ end)
 
 
 
-function ap.ScrollToTheElement(ay,az)
+function ap.ScrollToTheElement(az,aA)
 ap.UIElements.ContainerFrame.ScrollingEnabled=false
 aj(ap.UIElements.ContainerFrame,.45,
 {
 CanvasPosition=Vector2.new(
 0,
 
-ap.Elements[az].ElementFrame.AbsolutePosition.Y
+ap.Elements[aA].ElementFrame.AbsolutePosition.Y
 -ap.UIElements.ContainerFrame.AbsolutePosition.Y
 -ap.UIElements.ContainerFrame.UIPadding.PaddingTop.Offset
 )
@@ -9940,8 +9946,8 @@ Enum.EasingStyle.Quint,Enum.EasingDirection.Out
 task.spawn(function()
 task.wait(.48)
 
-if ap.Elements[az].Highlight then
-ap.Elements[az]:Highlight()
+if ap.Elements[aA].Highlight then
+ap.Elements[aA]:Highlight()
 ap.UIElements.ContainerFrame.ScrollingEnabled=true
 end
 end)
@@ -9949,48 +9955,48 @@ end)
 return ap
 end
 
-local ay=a.load'T'
-ay.Load(ap,ap.UIElements.ContainerFrame,ay.Elements,Window,ANUI,nil,ay,ao)
+local az=a.load'T'
+az.Load(ap,ap.UIElements.ContainerFrame,az.Elements,Window,ANUI,nil,az,ao)
 
-function ap.LockAll(az)
-for aA,aB in next,Window.AllElements do
-if aB.Tab and aB.Tab.Index and aB.Tab.Index==ap.Index and aB.Lock then
-aB:Lock()
-end
-end
-end
-function ap.UnlockAll(az)
-for aA,aB in next,Window.AllElements do
-if aB.Tab and aB.Tab.Index and aB.Tab.Index==ap.Index and aB.Unlock then
-aB:Unlock()
-end
-end
-end
-function ap.GetLocked(az)
-local aA={}
+function ap.LockAll(aA)
 for aB,d in next,Window.AllElements do
-if d.Tab and d.Tab.Index and d.Tab.Index==ap.Index and d.Locked==true then
-table.insert(aA,d)
+if d.Tab and d.Tab.Index and d.Tab.Index==ap.Index and d.Lock then
+d:Lock()
 end
 end
-return aA
 end
-function ap.GetUnlocked(az)
-local aA={}
+function ap.UnlockAll(aA)
 for aB,d in next,Window.AllElements do
-if d.Tab and d.Tab.Index and d.Tab.Index==ap.Index and d.Locked==false then
-table.insert(aA,d)
+if d.Tab and d.Tab.Index and d.Tab.Index==ap.Index and d.Unlock then
+d:Unlock()
 end
 end
-return aA
+end
+function ap.GetLocked(aA)
+local aB={}
+for d,e in next,Window.AllElements do
+if e.Tab and e.Tab.Index and e.Tab.Index==ap.Index and e.Locked==true then
+table.insert(aB,e)
+end
+end
+return aB
+end
+function ap.GetUnlocked(aA)
+local aB={}
+for d,e in next,Window.AllElements do
+if e.Tab and e.Tab.Index and e.Tab.Index==ap.Index and e.Locked==false then
+table.insert(aB,e)
+end
+end
+return aB
 end
 
-function ap.Select(az)
+function ap.Select(aA)
 return am:SelectTab(ap.Index)
 end
 
 task.spawn(function()
-local az=ah("Frame",{
+local aA=ah("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,1,-Window.UIElements.Main.Main.Topbar.AbsoluteSize.Y),
 Parent=ap.UIElements.ContainerFrame
@@ -10026,10 +10032,10 @@ FontFace=Font.new(af.Font,Enum.FontWeight.Medium),
 })
 })
 
-local aA
-aA=af.AddSignal(ap.UIElements.ContainerFrame.ChildAdded,function()
-az.Visible=false
-aA:Disconnect()
+local aB
+aB=af.AddSignal(ap.UIElements.ContainerFrame.ChildAdded,function()
+aA.Visible=false
+aB:Disconnect()
 end)
 end)
 
