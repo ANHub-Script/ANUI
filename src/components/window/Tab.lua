@@ -13,8 +13,6 @@ local CreateScrollSlider = require("../ui/ScrollSlider").New
 local Window, ANUI, UIScale
 
 local TabModule = {
-    --Window = nil,
-    --ANUI = nil,
     Tabs = {}, 
     Containers = {},
     SelectedTab = nil,
@@ -44,7 +42,7 @@ function TabModule.New(Config, UIScale)
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
         
-        -- [ANUI Modification] Property Profile Baru
+        -- [ANUI] Property Profile
         Profile = Config.Profile,
         
         Selected = false,
@@ -63,10 +61,11 @@ function TabModule.New(Config, UIScale)
     local TabIndex = TabModule.TabCount
     Tab.Index = TabIndex
     
+    -- 1. MEMBUAT TOMBOL SIDEBAR UTAMA
     Tab.UIElements.Main = Creator.NewRoundFrame(Tab.UICorner, "Squircle", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1,-7,0,0),
-        AutomaticSize = "Y",
+        AutomaticSize = "Y", -- Default Auto Size
         Parent = Config.Parent,
         ThemeTag = {
             ImageColor3 = "TabBackground",
@@ -78,7 +77,7 @@ function TabModule.New(Config, UIScale)
             ThemeTag = {
                 ImageColor3 = "Text",
             },
-            ImageTransparency = 1, -- .85  
+            ImageTransparency = 1, 
             Name = "Outline"
         }, {
             New("UIGradient", {
@@ -101,8 +100,9 @@ function TabModule.New(Config, UIScale)
             ThemeTag = {
                 ImageColor3 = "Text",
             },
-            ImageTransparency = 1, -- .95
+            ImageTransparency = 1,
             Name = "Frame",
+            ClipsDescendants = true, -- Penting untuk memotong banner
         }, {
             New("UIListLayout", {
                 SortOrder = "LayoutOrder",
@@ -139,49 +139,25 @@ function TabModule.New(Config, UIScale)
     local Icon
     local Icon2
 
-    if Tab.Icon then
-        Icon = Creator.Image(
-            Tab.Icon,
-            Tab.Icon .. ":" .. Tab.Title,
-            0,
-            Window.Folder,
-            Tab.__type,
-            true,
-            Tab.IconThemed,
-            "TabIcon"
-        )
+    -- [LOGIKA ICON BIASA]
+    if Tab.Icon and not Tab.Profile then -- Skip icon biasa jika Profile aktif
+        Icon = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed, "TabIcon")
         Icon.Size = UDim2.new(0,16,0,16)
         Icon.Parent = Tab.UIElements.Main.Frame
         Icon.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
         Tab.UIElements.Main.Frame.TextLabel.Size = UDim2.new(1,-30,0,0)
         TextOffset = -30
-        
         Tab.UIElements.Icon = Icon
         
-        
-        Icon2 = Creator.Image(
-            Tab.Icon,
-            Tab.Icon .. ":" .. Tab.Title,
-            0,
-            Window.Folder,
-            Tab.__type,
-            true,
-            Tab.IconThemed
-        )
+        Icon2 = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed)
         Icon2.Size = UDim2.new(0,16,0,16)
         Icon2.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
         TextOffset = -30
     end
     
-    if Tab.Image then
-        local Image = Creator.Image(
-            Tab.Image,
-            Tab.Title,
-            Tab.UICorner,
-            Window.Folder,
-            "TabImage",
-            false
-        )
+    -- [LOGIKA IMAGE BESAR (Existing)]
+    if Tab.Image and not Tab.Profile then
+        local Image = Creator.Image(Tab.Image, Tab.Title, Tab.UICorner, Window.Folder, "TabImage", false)
         Image.Size = UDim2.new(1,0,0,100)
         Image.Parent = Tab.UIElements.Main.Frame
         Image.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
@@ -198,7 +174,117 @@ function TabModule.New(Config, UIScale)
         
         Tab.UIElements.Image = Image
     end
+
+    -- [ANUI FITUR BARU] SIDEBAR PROFILE BUTTON
+    if Tab.Profile then
+        -- 1. Hapus elemen default
+        local Layout = Tab.UIElements.Main.Frame:FindFirstChild("UIListLayout")
+        if Layout then Layout:Destroy() end
+        local Padding = Tab.UIElements.Main.Frame:FindFirstChild("UIPadding")
+        if Padding then Padding:Destroy() end
+        local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
+        if DefLabel then DefLabel:Destroy() end
+        
+        -- 2. Atur Ukuran & Style
+        Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
+        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 85) -- Tinggi Button Profile
+        
+        -- 3. Buat Banner (Di tombol Sidebar)
+        local BannerH = 40
+        local Banner = New("ImageLabel", {
+            Name = "Banner",
+            Size = UDim2.new(1, 0, 0, BannerH),
+            BackgroundTransparency = 1,
+            Image = Tab.Profile.Banner or "",
+            ScaleType = Enum.ScaleType.Crop,
+            Parent = Tab.UIElements.Main.Frame,
+            ZIndex = 1
+        })
+        
+        -- 4. Buat Avatar (Di tombol Sidebar)
+        local AvatarS = 34
+        local AvatarContainer = New("Frame", {
+            Name = "Avatar",
+            Size = UDim2.new(0, AvatarS, 0, AvatarS),
+            Position = UDim2.new(0, 10, 0, BannerH - (AvatarS/2)),
+            BackgroundTransparency = 1,
+            Parent = Tab.UIElements.Main.Frame,
+            ZIndex = 2
+        })
+        
+        -- Gambar Avatar
+        local AvatarImg = New("ImageLabel", {
+            Size = UDim2.fromScale(1, 1),
+            Image = Tab.Profile.Avatar or "",
+            BackgroundTransparency = 1,
+            Parent = AvatarContainer
+        }, {
+            New("UICorner", { CornerRadius = UDim.new(1, 0) }),
+            New("UIStroke", { -- Border agar terpisah dari banner
+                Thickness = 2.5,
+                ThemeTag = { Color = "Background" }, -- Warna mengikuti background window
+                Transparency = 0,
+                ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+            })
+        })
+
+        -- Status Dot
+        if Tab.Profile.Status then
+             New("Frame", {
+                Size = UDim2.new(0, 10, 0, 10),
+                Position = UDim2.new(1, 0, 1, 0),
+                AnchorPoint = Vector2.new(1, 1),
+                BackgroundColor3 = Color3.fromHex("#23a559"),
+                Parent = AvatarContainer,
+                ZIndex = 3
+            }, {
+                New("UICorner", { CornerRadius = UDim.new(1, 0) }),
+                New("UIStroke", { 
+                    Thickness = 2, 
+                    ThemeTag = { Color = "Background" } 
+                })
+            })
+        end
+
+        -- 5. Teks (Username & Desc)
+        local TextC = New("Frame", {
+            Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH),
+            Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH),
+            BackgroundTransparency = 1,
+            Parent = Tab.UIElements.Main.Frame,
+            ZIndex = 2
+        }, {
+            New("UIListLayout", {
+                VerticalAlignment = Enum.VerticalAlignment.Center,
+                Padding = UDim.new(0, 0)
+            }),
+            New("TextLabel", {
+                Text = Tab.Profile.Title or Tab.Title,
+                TextSize = 14,
+                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                ThemeTag = { TextColor3 = "TabTitle" },
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, 0, 0, 16),
+                TextXAlignment = Enum.TextXAlignment.Left,
+                TextTruncate = Enum.TextTruncate.AtEnd,
+                TextTransparency = not Tab.Locked and 0 or .7,
+            }),
+            New("TextLabel", {
+                Text = Tab.Profile.Desc or "User",
+                TextSize = 11,
+                FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
+                ThemeTag = { TextColor3 = "Text" },
+                TextTransparency = 0.5,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, 0, 0, 12),
+                TextXAlignment = Enum.TextXAlignment.Left,
+                TextTruncate = Enum.TextTruncate.AtEnd
+            })
+        })
+    end
     
+    
+    -- 2. CONTAINER KONTEN TAB
     Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
         Size = UDim2.new(1,0,1,Tab.ShowTabTitle and -((Window.UIPadding*2.4)+12) or 0),
         BackgroundTransparency = 1,
@@ -208,7 +294,6 @@ function TabModule.New(Config, UIScale)
         AnchorPoint = Vector2.new(0,1),
         Position = UDim2.new(0,0,1,0),
         AutomaticCanvasSize = "Y",
-        --Visible = false,
         ScrollingDirection = "Y",
     }, {
         New("UIPadding", {
@@ -224,22 +309,20 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [ANUI Modification] Implementasi Profile Header (FIXED V3)
+    -- [HEADER PROFIL DALAM KONTEN] (Sama seperti sebelumnya, sudah difix)
     if Tab.Profile then
         local ProfileHeight = 170 
         local BannerHeight = 100  
         local AvatarSize = 70     
 
-        -- Container Header
         local ProfileHeader = New("Frame", {
             Name = "ProfileHeader",
             Size = UDim2.new(1, 0, 0, ProfileHeight),
             BackgroundTransparency = 1,
             Parent = Tab.UIElements.ContainerFrame,
-            LayoutOrder = -999 -- Pastikan selalu paling atas
+            LayoutOrder = -999
         })
 
-        -- Banner Image
         local Banner = Creator.NewRoundFrame(12, "Squircle", {
             Size = UDim2.new(1, 0, 0, BannerHeight), 
             Position = UDim2.new(0.5, 0, 0, 0),
@@ -250,14 +333,11 @@ function TabModule.New(Config, UIScale)
         })
 
         if Tab.Profile.Banner then
-            local BannerImg = Creator.Image(
-                Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false
-            )
+            local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
             BannerImg.Parent = Banner
         end
 
-        -- Avatar Container (Wadah Lingkaran)
         local AvatarContainer = New("Frame", {
             Size = UDim2.new(0, AvatarSize, 0, AvatarSize),
             Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
@@ -266,54 +346,33 @@ function TabModule.New(Config, UIScale)
             ZIndex = 2
         })
 
-        -- Stroke (Border Tebal)
-        local AvatarStroke = New("UIStroke", {
+        New("UIStroke", {
             Parent = AvatarContainer,
             Thickness = 4,
-            ThemeTag = {
-                Color = "WindowBackground" 
-            },
+            ThemeTag = { Color = "WindowBackground" },
             Transparency = 0,
             ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
         })
-        
-        -- Masking Wadah (Agar container jadi bulat)
-        local AvatarMask = New("UICorner", {
-            CornerRadius = UDim.new(1, 0),
-            Parent = AvatarContainer
-        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = AvatarContainer })
 
-        -- Avatar Image
         if Tab.Profile.Avatar then
-            local AvatarImg = Creator.Image(
-                Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false
-            )
+            local AvatarImg = Creator.Image(Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false)
             AvatarImg.Size = UDim2.fromScale(1, 1)
             AvatarImg.BackgroundTransparency = 1
             AvatarImg.Parent = AvatarContainer
             
-            -- [FIX AVATAR BULAT]
-            -- Kita ambil langsung ImageLabel di dalamnya dan paksa jadi bulat
             local ImgLabel = AvatarImg:FindFirstChild("ImageLabel")
             if ImgLabel then
                 ImgLabel.Size = UDim2.fromScale(1, 1)
                 ImgLabel.BackgroundTransparency = 1
-                
-                -- Hapus UICorner bawaan dari Creator.Image (yang membuatnya kotak/sedikit rounded)
                 local OldCorner = ImgLabel:FindFirstChildOfClass("UICorner")
                 if OldCorner then OldCorner:Destroy() end
-
-                -- Tambahkan UICorner baru yang bulat sempurna (1, 0)
-                New("UICorner", {
-                    CornerRadius = UDim.new(1, 0),
-                    Parent = ImgLabel
-                })
+                New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ImgLabel })
             end
         end
 
-        -- Status Dot
         if Tab.Profile.Status then
-            local StatusDot = New("Frame", {
+            New("Frame", {
                 Size = UDim2.new(0, 18, 0, 18),
                 Position = UDim2.new(1, -3, 1, -3), 
                 AnchorPoint = Vector2.new(1, 1),
@@ -322,45 +381,31 @@ function TabModule.New(Config, UIScale)
                 ZIndex = 3
             }, {
                 New("UICorner", { CornerRadius = UDim.new(1, 0) }),
-                New("UIStroke", { 
-                    Thickness = 3, 
-                    ThemeTag = {
-                        Color = "WindowBackground"
-                    }
-                })
+                New("UIStroke", { Thickness = 3, ThemeTag = { Color = "WindowBackground" } })
             })
         end
 
-        -- Username Title
         local TitleLabel = New("TextLabel", {
             Text = Tab.Profile.Title or Tab.Title,
             TextSize = 22,
             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-            ThemeTag = {
-                TextColor3 = "Text"
-            },
+            ThemeTag = { TextColor3 = "Text" },
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.XY,
-            -- [FIX POSISI TITLE] Naikkan posisi Y agar lebih dekat ke banner
-            -- Sebelumnya BannerHeight + 6, sekarang BannerHeight + 2
             Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 2), 
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = ProfileHeader
         })
         
-        -- Description / Bio
         if Tab.Profile.Desc then
-            local DescLabel = New("TextLabel", {
+            New("TextLabel", {
                 Text = Tab.Profile.Desc,
                 TextSize = 13,
                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
-                ThemeTag = {
-                    TextColor3 = "Text"
-                },
+                ThemeTag = { TextColor3 = "Text" },
                 TextTransparency = 0.4,
                 BackgroundTransparency = 1,
                 AutomaticSize = Enum.AutomaticSize.XY,
-                -- [FIX JARAK DESC] Tambahkan padding Y (3px) agar tidak menempel Title
                 Position = UDim2.new(0, 0, 1, 3), 
                 AnchorPoint = Vector2.new(0, 0),
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -443,31 +488,25 @@ function TabModule.New(Config, UIScale)
     local MouseConn
     local IsHovering = false
     
-        
-    -- ToolTip
-    if Tab.Desc then
-        
-        
+    -- ToolTip (Hanya aktif jika BUKAN Profile Tab, karena Profile Tab sudah besar)
+    if Tab.Desc and not Tab.Profile then
         Creator.AddSignal(Tab.UIElements.Main.InputBegan, function()
             IsHovering = true
             hoverTimer = task.spawn(function()
                 task.wait(0.35)
                 if IsHovering and not ToolTip then
                     ToolTip = CreateToolTip(Tab.Desc, TabModule.ToolTipParent)
-        
                     local function updatePosition()
                         if ToolTip then
                             ToolTip.Container.Position = UDim2.new(0, Mouse.X, 0, Mouse.Y - 20)
                         end
                     end
-        
                     updatePosition()
                     MouseConn = Mouse.Move:Connect(updatePosition)
                     ToolTip:Open()
                 end
             end)
         end)
-        
     end
     
     Creator.AddSignal(Tab.UIElements.Main.MouseEnter, function()
@@ -476,20 +515,11 @@ function TabModule.New(Config, UIScale)
         end
     end)
     Creator.AddSignal(Tab.UIElements.Main.InputEnded, function()
-        if Tab.Desc then
+        if Tab.Desc and not Tab.Profile then
             IsHovering = false
-            if hoverTimer then
-                task.cancel(hoverTimer)
-                hoverTimer = nil
-            end
-            if MouseConn then
-                MouseConn:Disconnect()
-                MouseConn = nil
-            end
-            if ToolTip then
-                ToolTip:Close()
-                ToolTip = nil
-            end
+            if hoverTimer then task.cancel(hoverTimer) hoverTimer = nil end
+            if MouseConn then MouseConn:Disconnect() MouseConn = nil end
+            if ToolTip then ToolTip:Close() ToolTip = nil end
         end
         
         if not Tab.Locked then
@@ -526,18 +556,10 @@ function TabModule.New(Config, UIScale)
         return Tab
     end
     
-    
-    
-    -- yo
-    
     local ElementsModule = require("../../elements/Init")
-    
     ElementsModule.Load(Tab, Tab.UIElements.ContainerFrame, ElementsModule.Elements, Window, ANUI, nil, ElementsModule, UIScale)
     
-    
-    
     function Tab:LockAll()
-        --print("LockAll called, number of elements: " .. #self.Elements)
         for _, element in next, Window.AllElements do
             if element.Tab and element.Tab.Index and element.Tab.Index == Tab.Index and element.Lock then 
                 element:Lock()
@@ -553,24 +575,20 @@ function TabModule.New(Config, UIScale)
     end
     function Tab:GetLocked()
         local LockedElements = {}
-        
         for _, element in next, Window.AllElements do
             if element.Tab and element.Tab.Index and element.Tab.Index == Tab.Index and element.Locked == true then 
                 table.insert(LockedElements, element)
             end
         end
-        
         return LockedElements
     end
     function Tab:GetUnlocked()
         local UnlockedElements = {}
-        
         for _, element in next, Window.AllElements do
             if element.Tab and element.Tab.Index and element.Tab.Index == Tab.Index and element.Locked == false then 
                 table.insert(UnlockedElements, element)
             end
         end
-        
         return UnlockedElements
     end
     
@@ -615,10 +633,6 @@ function TabModule.New(Config, UIScale)
             })
         })
         
-        -- Empty.TextLabel:GetPropertyChangedSignal("TextBounds"):Connect(function()
-        --     Empty.TextLabel.Size = UDim2.new(0,Empty.TextLabel.TextBounds.X,0,Empty.TextLabel.TextBounds.Y)
-        -- end)
-        
         local CreationConn
         CreationConn = Creator.AddSignal(Tab.UIElements.ContainerFrame.ChildAdded, function()
             Empty.Visible = false
@@ -641,7 +655,12 @@ function TabModule:SelectTab(TabIndex)
             if not TabObject.Locked then
                 Tween(TabObject.UIElements.Main, 0.15, {ImageTransparency = 1}):Play()
                 Tween(TabObject.UIElements.Main.Outline, 0.15, {ImageTransparency = 1}):Play()
-                Tween(TabObject.UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0.3}):Play()
+                
+                -- [FIX] Jika Profile Tab, kita tidak punya TextLabel biasa, jadi cek dulu
+                if TabObject.UIElements.Main.Frame:FindFirstChild("TextLabel") then
+                     Tween(TabObject.UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0.3}):Play()
+                end
+                
                 if TabObject.UIElements.Icon then
                     Tween(TabObject.UIElements.Icon.ImageLabel, 0.15, {ImageTransparency = 0.4}):Play()
                 end
@@ -650,12 +669,15 @@ function TabModule:SelectTab(TabIndex)
         end
         Tween(TabModule.Tabs[TabIndex].UIElements.Main, 0.15, {ImageTransparency = 0.95}):Play()
         Tween(TabModule.Tabs[TabIndex].UIElements.Main.Outline, 0.15, {ImageTransparency = 0.85}):Play()
-        Tween(TabModule.Tabs[TabIndex].UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0}):Play()
+        
+        if TabModule.Tabs[TabIndex].UIElements.Main.Frame:FindFirstChild("TextLabel") then
+             Tween(TabModule.Tabs[TabIndex].UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0}):Play()
+        end
+
         if TabModule.Tabs[TabIndex].UIElements.Icon then
             Tween(TabModule.Tabs[TabIndex].UIElements.Icon.ImageLabel, 0.15, {ImageTransparency = 0.1}):Play()
         end
         TabModule.Tabs[TabIndex].Selected = true
-        
         
         task.spawn(function()
             for _, ContainerObject in next, TabModule.Containers do
