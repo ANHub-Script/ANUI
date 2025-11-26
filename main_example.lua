@@ -1476,5 +1476,5 @@ ManagerSection:Category({
 })
 
 -- Pilih tab Upgrade agar langsung terlihat saat dijalankan
-Window:SelectTab(UpgradeTab.Index)
+Window:SelectTab(1)
 -- Window:SelectTab(1)

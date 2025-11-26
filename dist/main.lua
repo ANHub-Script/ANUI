@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.81  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.82  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.81",
+    "version": "1.0.82",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9249,7 +9249,6 @@ UIElements={},
 }
 
 
-
 local am=ae("ScrollingFrame",{
 Size=UDim2.new(1,0,0,45),
 BackgroundTransparency=1,
@@ -9275,7 +9274,6 @@ PaddingRight=UDim.new(0,2),
 })
 })
 
-
 local an={}
 
 
@@ -9284,25 +9282,28 @@ for ap,aq in pairs(an)do
 local ar=(ap==ao)
 
 
-local as=ar and"Accent"or"Button"
-local at=ar and"Text"or"Text"
-local au=ar and 0 or 0.4
+local as=ar and"Toggle"or"Button"
+local at="Text"
 
 
 
+local au=aa.GetThemeProperty(as,aa.Theme)
+local av=aa.GetThemeProperty(at,aa.Theme)
 
 
+local aw=ar and 0 or 0.4
 
-
-
-local av=aa.GetThemeProperty(as,ak.Window.Theme)
-aa.GetThemeProperty(at,ak.Window.Theme)
-
-af(aq.Background,0.2,{ImageColor3=av}):Play()
-af(aq.Title,0.2,{TextTransparency=au}):Play()
+af(aq.Background,0.2,{ImageColor3=au}):Play()
+af(aq.Title,0.2,{
+TextTransparency=aw,
+TextColor3=av
+}):Play()
 
 if aq.Icon then
-af(aq.Icon.ImageLabel,0.2,{ImageTransparency=au}):Play()
+af(aq.Icon.ImageLabel,0.2,{
+ImageTransparency=aw,
+ImageColor3=av
+}):Play()
 end
 end
 end
@@ -9322,7 +9323,6 @@ Parent=am,
 LayoutOrder=ao
 })
 
-
 local at=aa.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ThemeTag={
@@ -9330,23 +9330,18 @@ ImageColor3="Button",
 },
 Name="Background",
 Parent=as
-})
-
-
+},{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
 VerticalAlignment=Enum.VerticalAlignment.Center,
 Padding=UDim.new(0,6),
 HorizontalAlignment=Enum.HorizontalAlignment.Center,
-Parent=at
-})
-
+}),
 ae("UIPadding",{
 PaddingLeft=UDim.new(0,12),
 PaddingRight=UDim.new(0,12),
-Parent=at
 })
-
+})
 
 local au
 if ar then
@@ -9356,7 +9351,6 @@ au.BackgroundTransparency=1
 au.ImageLabel.ImageTransparency=0.4
 au.Parent=at
 end
-
 
 local av=ae("TextLabel",{
 Text=aq,
@@ -9371,7 +9365,6 @@ TextTransparency=0.4,
 Parent=at
 })
 
-
 an[aq]={
 Frame=as,
 Background=at,
@@ -9379,10 +9372,8 @@ Title=av,
 Icon=au
 }
 
-
 aa.AddSignal(as.MouseButton1Click,function()
 UpdateVisuals(aq)
-
 if al.Callback then
 al.Callback(aq)
 end
@@ -9393,7 +9384,6 @@ end
 if al.Default then
 UpdateVisuals(al.Default)
 elseif al.Options[1]then
-
 local ao=al.Options[1]
 local ap=(type(ao)=="table"and ao.Title)or ao
 UpdateVisuals(ap)
