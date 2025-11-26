@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.57  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.58  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -64,7 +64,6 @@ ToggleBar="White",
 Checkbox="Button",
 CheckboxIcon="White",
 }end function a.b()
-
 local b=(cloneref or clonereference or function(b)return b end)
 
 local d=b(game:GetService"RunService")
@@ -497,7 +496,112 @@ function p.AddIcons(r,u)
 return l.AddIcons(r,u)
 end
 
+
+
+function p.ParseRichText(r,u,v)
+
+if not r or not string.find(r,"%[emoji:.+%]")then
+
+return p.New("TextLabel",v,{})
+end
+
+
+local x=Instance.new"Frame"
+x.Name="RichTextContainer"
+x.BackgroundTransparency=1
+
+x.Size=v.Size or UDim2.new(1,0,0,0)
+x.AutomaticSize=Enum.AutomaticSize.XY
+
+
+
+
+
+
+local z=Instance.new"UIListLayout"
+z.FillDirection=Enum.FillDirection.Horizontal
+z.VerticalAlignment=Enum.VerticalAlignment.Center
+z.SortOrder=Enum.SortOrder.LayoutOrder
+z.Padding=UDim.new(0,2)
+z.Parent=x
+
+local A=0
+
+
+local function addText(B)
+if B==""then return end
+A=A+1
+local C=p.New("TextLabel",v,{})
+C.Text=B
+C.Parent=x
+C.LayoutOrder=A
+C.AutomaticSize=Enum.AutomaticSize.XY
+C.Size=UDim2.new(0,0,0,0)
+C.BackgroundTransparency=1
+end
+
+
+local function addImage(B)
+A=A+1
+local C=v.TextSize or 14
+
+
+local F=p.Image(B,"Emoji",0,"Temp","RichText",true)
+
+
+F.Size=UDim2.new(0,C+4,0,C+4)
+F.BackgroundTransparency=1
+F.LayoutOrder=A
+F.Parent=x
+
+
+if v.ThemeTag and v.ThemeTag.TextColor3 then
+local G=F:FindFirstChild"ImageLabel"
+if G then
+p.AddThemeObject(G,{ImageColor3=v.ThemeTag.TextColor3})
+end
+end
+end
+
+
+local B=1
+for C,F,G in string.gmatch(r,"()%[emoji:(.-)%]()")do
+
+local H=string.sub(r,B,C-1)
+addText(H)
+
+
+addImage(G)
+
+B=F+1
+end
+
+
+local C=string.sub(r,B)
+addText(C)
+
+return x
+end
+
 function p.New(r,u,v)
+
+if r=="TextLabel"and u and u.Text and string.find(u.Text,"%[emoji:.+%]")then
+local x=p.ParseRichText(u.Text,nil,u)
+
+
+if u.Parent then
+x.Parent=u.Parent
+end
+
+
+for z,A in next,v or{}do
+A.Parent=x
+end
+
+return x
+end
+
+
 local x=Instance.new(r)
 
 for z,A in next,p.DefaultProperties[r]or{}do
@@ -1091,7 +1195,6 @@ end
 
 
 return p end function a.c()
-
 local aa={}
 
 
@@ -1843,7 +1946,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.57",
+    "version": "1.0.58",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
