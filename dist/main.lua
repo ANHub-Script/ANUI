@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.80  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.81  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.80",
+    "version": "1.0.81",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9230,6 +9230,180 @@ end
 
 return af end function a.T()
 
+local aa=a.load'b'
+local ae=aa.New
+local af=aa.Tween
+
+local ah={}
+
+function ah.New(aj,ak)
+local al={
+__type="Category",
+Title=ak.Title,
+Desc=ak.Desc,
+Options=ak.Options or{},
+Default=ak.Default,
+Callback=ak.Callback or function()end,
+Parent=ak.Parent,
+UIElements={},
+}
+
+
+
+local am=ae("ScrollingFrame",{
+Size=UDim2.new(1,0,0,45),
+BackgroundTransparency=1,
+ScrollingDirection=Enum.ScrollingDirection.X,
+ScrollBarThickness=2,
+ScrollBarImageTransparency=0.5,
+CanvasSize=UDim2.new(0,0,0,0),
+AutomaticCanvasSize=Enum.AutomaticSize.X,
+Parent=ak.Parent,
+ThemeTag={
+ScrollBarImageColor3="Text",
+}
+},{
+ae("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+SortOrder=Enum.SortOrder.LayoutOrder,
+Padding=UDim.new(0,8),
+VerticalAlignment=Enum.VerticalAlignment.Center,
+}),
+ae("UIPadding",{
+PaddingLeft=UDim.new(0,2),
+PaddingRight=UDim.new(0,2),
+})
+})
+
+
+local an={}
+
+
+local function UpdateVisuals(ao)
+for ap,aq in pairs(an)do
+local ar=(ap==ao)
+
+
+local as=ar and"Accent"or"Button"
+local at=ar and"Text"or"Text"
+local au=ar and 0 or 0.4
+
+
+
+
+
+
+
+
+local av=aa.GetThemeProperty(as,ak.Window.Theme)
+aa.GetThemeProperty(at,ak.Window.Theme)
+
+af(aq.Background,0.2,{ImageColor3=av}):Play()
+af(aq.Title,0.2,{TextTransparency=au}):Play()
+
+if aq.Icon then
+af(aq.Icon.ImageLabel,0.2,{ImageTransparency=au}):Play()
+end
+end
+end
+
+
+for ao,ap in ipairs(al.Options)do
+local aq=(type(ap)=="table"and ap.Title)or ap
+local ar=(type(ap)=="table"and ap.Icon)or nil
+
+local as=ae("TextButton",{
+AutoButtonColor=false,
+Size=UDim2.new(0,0,0,32),
+AutomaticSize=Enum.AutomaticSize.X,
+BackgroundTransparency=1,
+Text="",
+Parent=am,
+LayoutOrder=ao
+})
+
+
+local at=aa.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,0,1,0),
+ThemeTag={
+ImageColor3="Button",
+},
+Name="Background",
+Parent=as
+})
+
+
+ae("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+VerticalAlignment=Enum.VerticalAlignment.Center,
+Padding=UDim.new(0,6),
+HorizontalAlignment=Enum.HorizontalAlignment.Center,
+Parent=at
+})
+
+ae("UIPadding",{
+PaddingLeft=UDim.new(0,12),
+PaddingRight=UDim.new(0,12),
+Parent=at
+})
+
+
+local au
+if ar then
+au=aa.Image(ar,"Icon",0,ak.Window.Folder,"Icon",false)
+au.Size=UDim2.new(0,18,0,18)
+au.BackgroundTransparency=1
+au.ImageLabel.ImageTransparency=0.4
+au.Parent=at
+end
+
+
+local av=ae("TextLabel",{
+Text=aq,
+FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
+TextSize=14,
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.XY,
+ThemeTag={
+TextColor3="Text"
+},
+TextTransparency=0.4,
+Parent=at
+})
+
+
+an[aq]={
+Frame=as,
+Background=at,
+Title=av,
+Icon=au
+}
+
+
+aa.AddSignal(as.MouseButton1Click,function()
+UpdateVisuals(aq)
+
+if al.Callback then
+al.Callback(aq)
+end
+end)
+end
+
+
+if al.Default then
+UpdateVisuals(al.Default)
+elseif al.Options[1]then
+
+local ao=al.Options[1]
+local ap=(type(ao)=="table"and ao.Title)or ao
+UpdateVisuals(ap)
+end
+
+al.ElementFrame=am
+return al.__type,al
+end
+
+return ah end function a.U()
 return{
 Elements={
 Paragraph=a.load'A',
@@ -9246,6 +9420,7 @@ Divider=a.load'I',
 Space=a.load'Q',
 Image=a.load'R',
 Group=a.load'S',
+Category=a.load'T'
 
 },
 Load=function(aa,ae,af,ah,aj,ak,al,am,an)
@@ -9366,7 +9541,7 @@ end
 end
 end,
 
-}end function a.U()
+}end function a.V()
 
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
@@ -10261,7 +10436,7 @@ end)
 return ap
 end
 
-local f=a.load'T'
+local f=a.load'U'
 f.Load(ap,ap.UIElements.ContainerFrame,f.Elements,Window,ANUI,nil,f,ao)
 
 function ap.LockAll(g)
@@ -10396,7 +10571,7 @@ am.OnChangeFunc(ao)
 end
 end
 
-return am end function a.V()
+return am end function a.W()
 local aa={}
 
 
@@ -10404,7 +10579,7 @@ local ae=a.load'b'
 local af=ae.New
 local ah=ae.Tween
 
-local aj=a.load'U'
+local aj=a.load'V'
 
 function aa.New(ak,al,am,an,ao)
 local ap={
@@ -10572,7 +10747,7 @@ return ap
 end
 
 
-return aa end function a.W()
+return aa end function a.X()
 return{
 Tab="table-of-contents",
 Paragraph="type",
@@ -10584,7 +10759,7 @@ Input="text-cursor-input",
 Dropdown="chevrons-up-down",
 Code="terminal",
 Colorpicker="palette",
-}end function a.X()
+}end function a.Y()
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 aa(game:GetService"UserInputService")
@@ -10608,7 +10783,7 @@ Radius=22,
 Width=400,
 MaxHeight=380,
 
-Icons=a.load'W'
+Icons=a.load'X'
 }
 
 
@@ -11111,7 +11286,7 @@ an:Open()
 return an
 end
 
-return ae end function a.Y()
+return ae end function a.Z()
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 local ae=aa(game:GetService"UserInputService")
@@ -12460,8 +12635,8 @@ as:EditOpenButton(as.OpenButton)
 end
 
 
-local r=a.load'U'
-local u=a.load'V'
+local r=a.load'V'
+local u=a.load'W'
 local v=r.Init(as,ar.ANUI,ar.Parent.Parent.ToolTips)
 v:OnChange(function(x)as.CurrentTab=x end)
 
@@ -12832,7 +13007,7 @@ end)
 
 
 if not as.HideSearchBar then
-local F=a.load'X'
+local F=a.load'Y'
 local G=false
 
 
@@ -13142,7 +13317,7 @@ aa:SetLanguage(ao.Language)
 
 
 function aa.CreateWindow(aw,ax)
-local ay=a.load'Y'
+local ay=a.load'Z'
 
 if not isfolder"ANUI"then
 makefolder"ANUI"

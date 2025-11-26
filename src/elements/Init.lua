@@ -14,6 +14,7 @@ return {
         Space       = require("./Space"),
         Image       = require("./Image"),
         Group       = require("./Group"),
+        Category    = require("./Category")
         --Video       = require("./Video"),
     },
     Load = function(tbl, Container, Elements, Window, ANUI, OnElementCreateFunction, ElementsModule, UIScale, Tab)
