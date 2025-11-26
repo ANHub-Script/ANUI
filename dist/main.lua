@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.67  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.68  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.67",
+    "version": "1.0.68",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9719,7 +9719,6 @@ Visible=false,
 Parent=Window.UIElements.MainBar,
 ZIndex=5,
 },{
-
 ah("Frame",{
 Size=UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
 BackgroundTransparency=1,
@@ -9799,7 +9798,7 @@ end
 if ap.Profile.Badges then
 local e=ah("Frame",{
 Name="BadgeContainer",
-Size=UDim2.new(1,0,0,24),
+Size=UDim2.new(1,0,0,28),
 Position=UDim2.new(1,-8,1,-8),
 AnchorPoint=Vector2.new(1,1),
 BackgroundTransparency=1,
@@ -9810,56 +9809,122 @@ ah("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
 HorizontalAlignment=Enum.HorizontalAlignment.Right,
 VerticalAlignment=Enum.VerticalAlignment.Center,
-Padding=UDim.new(0,5)
+Padding=UDim.new(0,6)
 })
 })
 
 for f,g in ipairs(ap.Profile.Badges)do
 local h=g.Icon or"help-circle"
+local j=g.Title~=nil
 
 
-local j=ah("TextButton",{
+local l=ah("TextButton",{
 Size=UDim2.new(0,28,0,28),
+AutomaticSize=j and Enum.AutomaticSize.X or Enum.AutomaticSize.None,
 BackgroundTransparency=1,
 Text="",
 Parent=e
 },{
+
 af.NewRoundFrame(6,"Squircle",{
 ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
 Size=UDim2.new(1,0,1,0),
 Name="BG"
+}),
+
+ah("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+VerticalAlignment=Enum.VerticalAlignment.Center,
+HorizontalAlignment=Enum.HorizontalAlignment.Center,
+Padding=UDim.new(0,4)
+}),
+
+ah("UIPadding",{
+PaddingLeft=UDim.new(0,j and 6 or 0),
+PaddingRight=UDim.new(0,j and 8 or 0),
 })
 })
 
 
-local l=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
-l.Size=UDim2.new(0,18,0,18)
-l.Position=UDim2.new(0.5,0,0.5,0)
-l.AnchorPoint=Vector2.new(0.5,0.5)
-l.BackgroundTransparency=1
-l.Parent=j
-
-
-local m=l:FindFirstChild"ImageLabel"or l:FindFirstChild"VideoFrame"
-if m then
-m.Size=UDim2.fromScale(1,1)
-m.ImageColor3=Color3.new(1,1,1)
+local m=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
+m.Size=UDim2.new(0,16,0,16)
 m.BackgroundTransparency=1
+m.LayoutOrder=1
+m.Parent=l
+
+
+local p=m:FindFirstChild"ImageLabel"or m:FindFirstChild"VideoFrame"
+if p then
+p.Size=UDim2.fromScale(1,1)
+p.ImageColor3=Color3.new(1,1,1)
+p.BackgroundTransparency=1
+end
+
+
+if j then
+ah("TextLabel",{
+Text=g.Title,
+TextSize=12,
+FontFace=Font.new(af.Font,Enum.FontWeight.SemiBold),
+TextColor3=Color3.new(1,1,1),
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.X,
+Size=UDim2.new(0,0,1,0),
+LayoutOrder=2,
+Parent=l
+})
 end
 
 if g.Callback then
-af.AddSignal(j.MouseButton1Click,function()
+af.AddSignal(l.MouseButton1Click,function()
 g.Callback()
 end)
 end
 
-af.AddSignal(j.MouseEnter,function()
-aj(j.BG,0.1,{ImageTransparency=0.2}):Play()
+
+af.AddSignal(l.MouseEnter,function()
+aj(l.BG,0.1,{ImageTransparency=0.2}):Play()
 end)
-af.AddSignal(j.MouseLeave,function()
-aj(j.BG,0.1,{ImageTransparency=0.4}):Play()
+af.AddSignal(l.MouseLeave,function()
+aj(l.BG,0.1,{ImageTransparency=0.4}):Play()
 end)
+
+
+if g.Desc then
+local r
+local u
+local v
+local x=false
+
+
+af.AddSignal(l.MouseEnter,function()
+x=true
+u=task.spawn(function()
+task.wait(0.35)
+if x and not r then
+r=ak(g.Desc,am.ToolTipParent)
+
+local function updatePosition()
+if r then
+r.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
+end
+end
+updatePosition()
+v=ae.Move:Connect(updatePosition)
+r:Open()
+end
+end)
+end)
+
+
+af.AddSignal(l.MouseLeave,function()
+x=false
+if u then task.cancel(u)u=nil end
+if v then v:Disconnect()v=nil end
+if r then r:Close()r=nil end
+end)
+end
 end
 end
 

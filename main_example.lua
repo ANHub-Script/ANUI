@@ -155,13 +155,13 @@ local UserTab = Window:Tab({
         Avatar = "rbxassetid://84366761557806",
         Badges = {
             {
-                Icon = "logo-whats-app", -- Nama icon Lucide atau rbxassetid
+                Icon = "geist:logo-discord", -- Nama icon Lucide atau rbxassetid
                 Callback = function()
                     setclipboard("https://youtube.com")
                 end
             },
             {
-                Icon = "logo-vue", -- Icon Discord
+                Icon = "rbxassetid://84366761557806", -- Icon Discord
                 Callback = function()
                     setclipboard("https://discord.gg/...")
                 end
