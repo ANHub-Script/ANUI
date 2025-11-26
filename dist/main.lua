@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.56  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.57  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.56",
+    "version": "1.0.57",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9638,18 +9638,19 @@ ThemeTag={Color="TabBackground"}
 })
 end
 
+
 ah("Frame",{
-Size=UDim2.new(1,-(10+aA+8),1,-az),
-Position=UDim2.new(0,10+aA+8,0,az),
+Size=UDim2.new(1,-(10+aA+8),1,-az-6),
+
+Position=UDim2.new(0,10+aA+8,0,az+5),
 BackgroundTransparency=1,
 Parent=ap.UIElements.Main.Frame,
 ZIndex=2
 },{
 ah("UIListLayout",{
-VerticalAlignment=Enum.VerticalAlignment.Center,
+VerticalAlignment=Enum.VerticalAlignment.Top,
 Padding=UDim.new(0,2)
 }),
-
 ah("TextLabel",{
 Text=ap.Profile.Title or ap.Title,
 TextSize=16,
@@ -9678,7 +9679,6 @@ end
 
 local aw=0
 local ax=0
-
 
 local ay=150
 
@@ -9776,11 +9776,9 @@ if ar then
 local az=100
 local aA=70
 
-
 local aB=ah("Frame",{
 Name="ProfileHeader",
 Size=UDim2.new(1,0,0,ay),
-
 Position=UDim2.new(0,0,0,ap.ShowTabTitle and((Window.UIPadding*2.4)+12)or 0),
 BackgroundTransparency=1,
 Parent=ap.UIElements.ContainerFrameCanvas,
@@ -9894,7 +9892,6 @@ LayoutOrder=2
 end
 end
 
-
 ap.UIElements.ContainerFrame.Parent=ap.UIElements.ContainerFrameCanvas
 
 am.Containers[as]=ap.UIElements.ContainerFrameCanvas
@@ -9916,7 +9913,6 @@ local az
 local aA
 local aB
 local d=false
-
 
 if ap.Desc and not aq then
 af.AddSignal(ap.UIElements.Main.InputBegan,function()
@@ -10084,6 +10080,7 @@ for ap,aq in next,am.Tabs do
 if not aq.Locked then
 aj(aq.UIElements.Main,0.15,{ImageTransparency=1}):Play()
 aj(aq.UIElements.Main.Outline,0.15,{ImageTransparency=1}):Play()
+
 
 if aq.UIElements.Main.Frame:FindFirstChild"TextLabel"then
 aj(aq.UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0.3}):Play()

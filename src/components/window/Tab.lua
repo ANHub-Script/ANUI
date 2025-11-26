@@ -182,7 +182,7 @@ function TabModule.New(Config, UIScale)
         Tab.UIElements.Image = Image
     end
 
-    -- [SIDEBAR PROFILE CARD - DIPERBESAR]
+    -- [SIDEBAR PROFILE CARD]
     if IsSidebarCard then
         local Layout = Tab.UIElements.Main.Frame:FindFirstChild("UIListLayout")
         if Layout then Layout:Destroy() end
@@ -191,12 +191,12 @@ function TabModule.New(Config, UIScale)
         local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
         if DefLabel then DefLabel:Destroy() end
         
-        -- [EDIT] Perbesar Tinggi Kartu
+        -- Ukuran Kartu
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
-        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 120) -- Naik dari 96 ke 120
+        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 120)
         
-        -- [EDIT] Perbesar Banner
-        local BannerH = 55 -- Naik dari 40 ke 55
+        -- Ukuran Banner
+        local BannerH = 55
         if Tab.Profile.Banner then
             local BannerFrame = Creator.Image(
                 Tab.Profile.Banner, "SidebarBanner", 0, Window.Folder, "ProfileBanner", false
@@ -213,8 +213,8 @@ function TabModule.New(Config, UIScale)
             end
         end
         
-        -- [EDIT] Perbesar Avatar
-        local AvatarS = 46 -- Naik dari 34 ke 46
+        -- Ukuran Avatar
+        local AvatarS = 46
         local AvatarContainer = New("Frame", {
             Name = "Avatar",
             Size = UDim2.new(0, AvatarS, 0, AvatarS),
@@ -253,7 +253,7 @@ function TabModule.New(Config, UIScale)
 
         if Tab.Profile.Status then
              New("Frame", {
-                Size = UDim2.new(0, 12, 0, 12), -- Naik sedikit
+                Size = UDim2.new(0, 12, 0, 12),
                 Position = UDim2.new(1, 0, 1, 0),
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundColor3 = Color3.fromHex("#23a559"),
@@ -268,21 +268,22 @@ function TabModule.New(Config, UIScale)
             })
         end
 
+        -- [FIX TEXT SIDEBAR]
         local TextC = New("Frame", {
-            Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH),
-            Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH),
+            Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH - 6), -- Tinggi sisa
+            -- Posisi tepat di bawah Banner + Padding 5px
+            Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH + 5), 
             BackgroundTransparency = 1,
             Parent = Tab.UIElements.Main.Frame,
             ZIndex = 2
         }, {
             New("UIListLayout", {
-                VerticalAlignment = Enum.VerticalAlignment.Center,
-                Padding = UDim.new(0, 2)
+                VerticalAlignment = Enum.VerticalAlignment.Top, -- Ubah ke TOP agar menempel di bawah banner
+                Padding = UDim.new(0, 2) -- Jarak antar Title dan Desc
             }),
-            -- [EDIT] Perbesar Font
             New("TextLabel", {
                 Text = Tab.Profile.Title or Tab.Title,
-                TextSize = 16, -- Naik dari 14 ke 16
+                TextSize = 16,
                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
                 ThemeTag = { TextColor3 = "TabTitle" },
                 BackgroundTransparency = 1,
@@ -293,7 +294,7 @@ function TabModule.New(Config, UIScale)
             }),
             New("TextLabel", {
                 Text = Tab.Profile.Desc or "User",
-                TextSize = 13, -- Naik dari 11 ke 13
+                TextSize = 13,
                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
                 ThemeTag = { TextColor3 = "Text" },
                 TextTransparency = 0.5,
@@ -309,8 +310,7 @@ function TabModule.New(Config, UIScale)
     local ContentOffsetY = 0
     local ContentSizeOffset = 0
     
-    -- [EDIT] Kurangi tinggi header agar jarak ke konten lebih dekat (Tighter Gap)
-    local ProfileHeight = 150 -- Turun dari 170 ke 150 agar gap mengecil
+    local ProfileHeight = 150 
     
     if Tab.ShowTabTitle then
         ContentOffsetY = ((Window.UIPadding*2.4)+12)
@@ -322,7 +322,7 @@ function TabModule.New(Config, UIScale)
         ContentSizeOffset = ContentSizeOffset - ProfileHeight
     end
     
-    -- 3. CONTAINER KONTEN TAB (SCROLLER)
+    -- 3. CONTAINER KONTEN TAB
     Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
         Size = UDim2.new(1, 0, 1, ContentSizeOffset), 
         Position = UDim2.new(0, 0, 0, ContentOffsetY), 
@@ -346,7 +346,7 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- 4. WRAPPER UNTUK KONTEN (CANVAS)
+    -- 4. WRAPPER UNTUK KONTEN
     Tab.UIElements.ContainerFrameCanvas = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         BackgroundTransparency = 1,
@@ -406,11 +406,9 @@ function TabModule.New(Config, UIScale)
         local BannerHeight = 100  
         local AvatarSize = 70     
         
-        -- Profile Header (Static)
         local ProfileHeader = New("Frame", {
             Name = "ProfileHeader",
             Size = UDim2.new(1, 0, 0, ProfileHeight),
-            -- Posisikan di bawah Tab Title jika ada
             Position = UDim2.new(0, 0, 0, Tab.ShowTabTitle and ((Window.UIPadding*2.4)+12) or 0),
             BackgroundTransparency = 1,
             Parent = Tab.UIElements.ContainerFrameCanvas,
@@ -524,7 +522,6 @@ function TabModule.New(Config, UIScale)
         end
     end
 
-    -- Parent Scroller ke Canvas
     Tab.UIElements.ContainerFrame.Parent = Tab.UIElements.ContainerFrameCanvas
     
     TabModule.Containers[TabIndex] = Tab.UIElements.ContainerFrameCanvas
@@ -547,7 +544,6 @@ function TabModule.New(Config, UIScale)
     local MouseConn
     local IsHovering = false
     
-    -- ToolTip (Hanya aktif jika BUKAN Profile Tab)
     if Tab.Desc and not IsSidebarCard then
         Creator.AddSignal(Tab.UIElements.Main.InputBegan, function()
             IsHovering = true
@@ -715,6 +711,7 @@ function TabModule:SelectTab(TabIndex)
                 Tween(TabObject.UIElements.Main, 0.15, {ImageTransparency = 1}):Play()
                 Tween(TabObject.UIElements.Main.Outline, 0.15, {ImageTransparency = 1}):Play()
                 
+                -- [FIX] Jika Profile Tab, TextLabel biasa sudah dihapus
                 if TabObject.UIElements.Main.Frame:FindFirstChild("TextLabel") then
                      Tween(TabObject.UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0.3}):Play()
                 end
