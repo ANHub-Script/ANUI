@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.86  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.87  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.86",
+    "version": "1.0.87",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8837,7 +8837,6 @@ Expandable=false,
 
 local am
 
-
 function al.SetIcon(an,ao)
 al.Icon=ao or nil
 if am then am:Destroy()end
@@ -8872,7 +8871,6 @@ ImageTransparency=.7,
 })
 })
 
-
 if al.Icon then
 al:SetIcon(al.Icon)
 end
@@ -8887,18 +8885,10 @@ ThemeTag={
 TextColor3="Text",
 },
 FontFace=Font.new(aa.Font,al.FontWeight),
-
-
 Text=al.Title,
-Size=UDim2.new(
-1,
-0,
-0,
-0
-),
+Size=UDim2.new(1,0,0,0),
 TextWrapped=true,
 })
-
 
 local function UpdateTitleSize()
 local ap=0
@@ -8911,12 +8901,11 @@ end
 ao.Size=UDim2.new(1,ap,0,0)
 end
 
-
-local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
+local ap,aq=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 Parent=ak.Parent,
-ClipsDescendants=true,
+ClipsDescendants=false,
 AutomaticSize="Y",
 ImageTransparency=al.Box and.93 or 1,
 ThemeTag={
@@ -8963,47 +8952,36 @@ Padding=UDim.new(0,ak.Tab.Gap),
 VerticalAlignment="Top",
 }),
 })
-})
+},true,true)
 
+al.UIElements.Main=ap
+al.UIElements.Top=ap.Top
+al.UIElements.Content=ap.Content
 
+local ar=ak.ElementsModule
 
-
-
-
-
-local aq=ak.ElementsModule
-
-aq.Load(al,ap.Content,aq.Elements,ak.Window,ak.ANUI,function()
+ar.Load(al,ap.Content,ar.Elements,ak.Window,ak.ANUI,function()
 if not al.Expandable then
 al.Expandable=true
 an.Visible=true
 UpdateTitleSize()
 end
-end,aq,ak.UIScale,ak.Tab)
-
+end,ar,ak.UIScale,ak.Tab)
 
 UpdateTitleSize()
 
-function al.SetTitle(ar,as)
-ao.Text=as
+function al.SetTitle(as,at)
+ao.Text=at
 end
 
-function al.Destroy(ar)
-for as,at in next,al.Elements do
-at:Destroy()
+function al.Destroy(as)
+for at,au in next,al.Elements do
+au:Destroy()
 end
-
-
-
-
-
-
-
-
 ap:Destroy()
 end
 
-function al.Open(ar)
+function al.Open(as)
 if al.Expandable then
 al.Opened=true
 af(ap,0.33,{
@@ -9013,7 +8991,7 @@ Size=UDim2.new(1,0,0,al.HeaderSize+(ap.Content.AbsoluteSize.Y/ak.UIScale))
 af(an.ImageLabel,0.1,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
-function al.Close(ar)
+function al.Close(as)
 if al.Expandable then
 al.Opened=false
 af(ap,0.26,{
@@ -9042,14 +9020,6 @@ end)
 task.spawn(function()
 task.wait(0.02)
 if al.Expandable then
-
-
-
-
-
-
-
-
 ap.Size=UDim2.new(1,0,0,al.HeaderSize)
 ap.AutomaticSize="None"
 ap.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
@@ -9059,8 +9029,15 @@ end
 if al.Opened then
 al:Open()
 end
-
 end)
+
+function al.UpdateShape(as,at)
+if ak.Window.NewElements then
+if aq then
+aq:SetType"Squircle"
+end
+end
+end
 
 return al.__type,al
 end
@@ -9249,14 +9226,21 @@ UIElements={},
 }
 
 
-local am=ae("ScrollingFrame",{
+local am=ae("Frame",{
 Size=UDim2.new(1,0,0,45),
+BackgroundTransparency=1,
+Parent=ak.Parent,
+})
+
+
+local an=ae("ScrollingFrame",{
+Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 ScrollingDirection=Enum.ScrollingDirection.X,
 ScrollBarThickness=0,
 CanvasSize=UDim2.new(0,0,0,0),
 AutomaticCanvasSize=Enum.AutomaticSize.X,
-Parent=ak.Parent,
+Parent=am,
 },{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
@@ -9270,51 +9254,45 @@ PaddingRight=UDim.new(0,2),
 })
 })
 
-local an={}
+local ao={}
 
+local function UpdateVisuals(ap)
+for aq,ar in pairs(ao)do
+local as=(aq==ap)
+local at=aa.Theme
 
-local function UpdateVisuals(ao)
-for ap,aq in pairs(an)do
-local ar=(ap==ao)
+local au=aa.GetThemeProperty(as and"Toggle"or"Button",at)
+local av=aa.GetThemeProperty("Text",at)
+local aw=as and 0 or 0.5
 
+af(ar.Background,0.2,{ImageColor3=au}):Play()
+af(ar.Title,0.2,{TextTransparency=aw,TextColor3=av}):Play()
 
-local as=aa.Theme
-
-
-local at=aa.GetThemeProperty(ar and"Toggle"or"Button",as)
-local au=aa.GetThemeProperty("Text",as)
-
-local av=ar and 0 or 0.5
-
-af(aq.Background,0.2,{ImageColor3=at}):Play()
-af(aq.Title,0.2,{TextTransparency=av,TextColor3=au}):Play()
-
-if aq.Icon then
-af(aq.Icon.ImageLabel,0.2,{ImageTransparency=av,ImageColor3=au}):Play()
+if ar.Icon then
+af(ar.Icon.ImageLabel,0.2,{ImageTransparency=aw,ImageColor3=av}):Play()
 end
 end
 end
 
+for ap,aq in ipairs(al.Options)do
+local ar=(type(aq)=="table"and aq.Title)or aq
+local as=(type(aq)=="table"and aq.Icon)or nil
 
-for ao,ap in ipairs(al.Options)do
-local aq=(type(ap)=="table"and ap.Title)or ap
-local ar=(type(ap)=="table"and ap.Icon)or nil
-
-local as=ae("TextButton",{
+local at=ae("TextButton",{
 AutoButtonColor=false,
 Size=UDim2.new(0,0,0,32),
 AutomaticSize=Enum.AutomaticSize.X,
 BackgroundTransparency=1,
 Text="",
-Parent=am,
-LayoutOrder=ao
+Parent=an,
+LayoutOrder=ap
 })
 
-local at=aa.NewRoundFrame(8,"Squircle",{
+local au=aa.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ThemeTag={ImageColor3="Button"},
 Name="Background",
-Parent=as
+Parent=at
 },{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
@@ -9328,49 +9306,49 @@ PaddingRight=UDim.new(0,12),
 })
 })
 
-local au
-if ar then
-au=aa.Image(ar,"Icon",0,ak.Window.Folder,"Icon",false)
-au.Size=UDim2.new(0,18,0,18)
-au.BackgroundTransparency=1
-au.ImageLabel.ImageTransparency=0.5
-au.Parent=at
+local av
+if as then
+av=aa.Image(as,"Icon",0,ak.Window.Folder,"Icon",false)
+av.Size=UDim2.new(0,18,0,18)
+av.BackgroundTransparency=1
+av.ImageLabel.ImageTransparency=0.5
+av.Parent=au
 end
 
-local av=ae("TextLabel",{
-Text=aq,
+local aw=ae("TextLabel",{
+Text=ar,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
 TextSize=14,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.5,
-Parent=at
+Parent=au
 })
 
-an[aq]={
-Frame=as,
-Background=at,
-Title=av,
-Icon=au
+ao[ar]={
+Frame=at,
+Background=au,
+Title=aw,
+Icon=av
 }
 
-aa.AddSignal(as.MouseButton1Click,function()
-UpdateVisuals(aq)
+aa.AddSignal(at.MouseButton1Click,function()
+UpdateVisuals(ar)
 if al.Callback then
-al.Callback(aq)
+al.Callback(ar)
 end
 end)
 end
 
-
 if al.Default then
 UpdateVisuals(al.Default)
 elseif al.Options[1]then
-local ao=al.Options[1]
-local ap=(type(ao)=="table"and ao.Title)or ao
-UpdateVisuals(ap)
+local ap=al.Options[1]
+local aq=(type(ap)=="table"and ap.Title)or ap
+UpdateVisuals(aq)
 end
+
 
 al.ElementFrame=am
 return al.__type,al

@@ -16,15 +16,22 @@ function Element:New(Config)
         UIElements = {},
     }
 
-    -- 1. Container Scroll Horizontal
+    -- [FIX] 1. Wrapper Frame (Penting agar Section mendeteksi tinggi elemen ini)
+    local WrapperFrame = New("Frame", {
+        Size = UDim2.new(1, 0, 0, 45), -- Tinggi Fix 45px
+        BackgroundTransparency = 1,
+        Parent = Config.Parent,
+    })
+
+    -- 2. Container Scroll (Dimasukkan ke dalam Wrapper)
     local MainFrame = New("ScrollingFrame", {
-        Size = UDim2.new(1, 0, 0, 45),
+        Size = UDim2.new(1, 0, 1, 0), -- Mengisi Wrapper
         BackgroundTransparency = 1,
         ScrollingDirection = Enum.ScrollingDirection.X, -- Scroll Horizontal
         ScrollBarThickness = 0, -- Sembunyikan scrollbar
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.X,
-        Parent = Config.Parent,
+        Parent = WrapperFrame, -- Parent ke Wrapper
     }, {
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
@@ -40,18 +47,13 @@ function Element:New(Config)
 
     local ButtonObjects = {}
     
-    -- Fungsi Update Visual (Warna Aktif/Mati)
     local function UpdateVisuals(selectedName)
         for name, objs in pairs(ButtonObjects) do
             local isActive = (name == selectedName)
-            
-            -- Ambil tema global dari Creator untuk menghindari error nil
             local Theme = Creator.Theme
             
-            -- Tentukan key warna: "Toggle" (Hijau/Aktif) atau "Button" (Abu/Mati)
             local ColorVal = Creator.GetThemeProperty(isActive and "Toggle" or "Button", Theme)
             local TextColorVal = Creator.GetThemeProperty("Text", Theme)
-            
             local TargetTransparency = isActive and 0 or 0.5
 
             Tween(objs.Background, 0.2, {ImageColor3 = ColorVal}):Play()
@@ -63,7 +65,6 @@ function Element:New(Config)
         end
     end
 
-    -- 2. Loop Membuat Tombol
     for i, option in ipairs(Category.Options) do
         local OptName = (type(option) == "table" and option.Title) or option
         local OptIcon = (type(option) == "table" and option.Icon) or nil
@@ -131,7 +132,6 @@ function Element:New(Config)
         end)
     end
 
-    -- Set Default Active saat pertama kali load
     if Category.Default then
         UpdateVisuals(Category.Default)
     elseif Category.Options[1] then
@@ -140,7 +140,8 @@ function Element:New(Config)
         UpdateVisuals(firstName)
     end
     
-    Category.ElementFrame = MainFrame
+    -- [PENTING] Gunakan WrapperFrame sebagai referensi utama
+    Category.ElementFrame = WrapperFrame 
     return Category.__type, Category
 end
 

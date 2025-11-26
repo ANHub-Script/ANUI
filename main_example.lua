@@ -1395,79 +1395,57 @@ local UpgradeTab = Window:Tab({
     Icon = "hammer"
 })
 
--- 1. Section Navigasi (Kategori)
+-- 1. Section untuk Tombol Kategori (Header)
 local NavSection = UpgradeTab:Section({
     Title = "Stats Upgrade Manager",
     TextSize = 18
 })
 
--- 2. Buat Tabel untuk Halaman
+-- 2. Buat Halaman Konten
 local Pages = {}
 
--- Halaman YEN
-Pages.Yen = UpgradeTab:Section({ Title = "Yen Upgrades", Opened = true })
-Pages.Yen:Toggle({ Title = "Luck Upgrade", Desc = "Cost: 100 Yen", Callback = function() end })
-Pages.Yen:Toggle({ Title = "Damage Upgrade", Desc = "Cost: 250 Yen", Callback = function() end })
--- Tambahkan Space di akhir agar bagian bawah tidak terlihat mepet/terpotong
-Pages.Yen:Space({ Columns = 1 }) 
+Pages.Yen = UpgradeTab:Section({ Title = "Yen", Opened = true })
+Pages.Yen:Toggle({ Title = "Luck Upgrade", Desc = "100 Yen", Callback = function() end })
+Pages.Yen:Space({Columns=1}) -- Spacer
 
--- Halaman TOKEN
-Pages.Token = UpgradeTab:Section({ Title = "Token Upgrades", Opened = true })
-Pages.Token:Toggle({ Title = "Critical Hit", Desc = "Cost: 5 Tokens", Callback = function() end })
-Pages.Token:Button({ Title = "Buy Tokens", Icon = "shopping-cart", Callback = function() end })
-Pages.Token:Space({ Columns = 1 }) 
+Pages.Token = UpgradeTab:Section({ Title = "Token", Opened = true })
+Pages.Token:Toggle({ Title = "Crit Chance", Desc = "5 Tokens", Callback = function() end })
+Pages.Token:Space({Columns=1})
 
--- Halaman RANK
-Pages.Rank = UpgradeTab:Section({ Title = "Rank Info", Opened = true })
-Pages.Rank:Paragraph({ Title = "Current Rank", Desc = "S-Class" })
-Pages.Rank:Space({ Columns = 1 }) 
+Pages.Rank = UpgradeTab:Section({ Title = "Rank", Opened = true })
+Pages.Rank:Paragraph({ Title = "Info", Desc = "Current: S-Class" })
+Pages.Rank:Space({Columns=1})
 
--- Halaman TRAINER
-Pages.Trainer = UpgradeTab:Section({ Title = "Trainer", Opened = true })
-Pages.Trainer:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima"} })
-Pages.Trainer:Space({ Columns = 1 }) 
+-- Sembunyikan Judul Section agar rapi
+for _, section in pairs(Pages) do
+    if section.UIElements.Main and section.UIElements.Top then
+        section.UIElements.Top.Visible = false
+        section.UIElements.Top.Size = UDim2.new(0,0,0,0)
+        section.UIElements.Content.Position = UDim2.new(0,0,0,0)
+    end
+end
 
-
--- 3. FUNGSI GANTI HALAMAN
+-- Fungsi Ganti Halaman
 local function SwitchPage(pageName)
     for name, section in pairs(Pages) do
-        if section.UIElements and section.UIElements.Main then
-            -- Tampilkan/Sembunyikan seluruh Section
+        if section.UIElements.Main then
             section.UIElements.Main.Visible = (name == pageName)
         end
     end
 end
 
--- 4. INITIAL SETUP (PENTING)
--- Sembunyikan Header (Judul) dari setiap halaman konten agar terlihat menyatu
-for _, section in pairs(Pages) do
-    if section.UIElements.Top then
-        section.UIElements.Top.Visible = false -- Sembunyikan tombol expand/collapse
-        section.UIElements.Top.Size = UDim2.new(0,0,0,0) -- Nol-kan ukurannya
-    end
-    
-    if section.UIElements.Content then
-        -- Reset posisi content agar naik ke atas menggantikan header
-        section.UIElements.Content.Position = UDim2.new(0,0,0,0) 
-    end
-end
-
--- Panggil sekali untuk set halaman awal
 SwitchPage("Yen")
 
--- 5. Panggil Category Element
+-- 3. Panggil Category
 NavSection:Category({
-    Title = "Select Category",
+    Title = "Category",
     Default = "Yen",
     Options = {
-        { Title = "Yen", Icon = "coins" },
-        { Title = "Token", Icon = "layers" },
-        { Title = "Rank", Icon = "shield" },
-        { Title = "Trainer", Icon = "sword" },
+        {Title="Yen", Icon="coins"},
+        {Title="Token", Icon="layers"},
+        {Title="Rank", Icon="shield"}
     },
-    Callback = function(selected)
-        SwitchPage(selected)
-    end
+    Callback = SwitchPage
 })
 
 Window:SelectTab(UpgradeTab.Index)
