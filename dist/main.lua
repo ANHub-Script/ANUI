@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.61  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.62  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -497,7 +497,9 @@ return l.AddIcons(r,u)
 end
 
 
+
 function p.ParseRichText(r,u,v)
+v=v or{}
 
 if not r or type(r)~="string"or not string.find(r,"%[emoji:.+%]")then
 return p.New("TextLabel",v,{})
@@ -519,79 +521,72 @@ z.Parent=x
 local A=0
 
 
-local B=v.TextSize
-local C=14
-if type(B)=="number"then
-C=B
-elseif type(B)=="string"then
-C=tonumber(B)or 14
+local B=14
+if v.TextSize then
+local C=tonumber(v.TextSize)
+if C then
+B=C
+end
 end
 
-local function addText(F)
-if F==""then return end
+local function addText(C)
+if C==""then return end
 A=A+1
 
 
-local G={}
-if v then
-for H,J in pairs(v)do
-if H~="Text"and H~="Parent"then
-G[H]=J
+local F={}
+for G,H in pairs(v)do
+if G~="Text"and G~="Parent"then
+F[G]=H
 end
 end
-end
 
+F.BackgroundTransparency=1
+F.AutomaticSize=Enum.AutomaticSize.XY
+F.Size=UDim2.new(0,0,0,0)
 
-G.BackgroundTransparency=1
-G.AutomaticSize=Enum.AutomaticSize.XY
-G.Size=UDim2.new(0,0,0,0)
-
-
-local H=p.New("TextLabel",G,{})
-H.Text=F
-H.Parent=x
-H.LayoutOrder=A
-end
-
-local function addImage(F)
-A=A+1
-
-local G=p.Image(F,"Emoji",0,"Temp","RichText",true)
-
-
-local H=tonumber(C)or 14
-local J=H+4
-
-G.Size=UDim2.new(0,J,0,J)
-G.BackgroundTransparency=1
-G.LayoutOrder=A
+local G=p.New("TextLabel",F,{})
+G.Text=C
 G.Parent=x
+G.LayoutOrder=A
+end
+
+local function addImage(C)
+A=A+1
+
+local F=p.Image(C,"Emoji",0,"Temp","RichText",true)
+
+
+local G=B+4
+
+F.Size=UDim2.new(0,G,0,G)
+F.BackgroundTransparency=1
+F.LayoutOrder=A
+F.Parent=x
 
 if v.ThemeTag and v.ThemeTag.TextColor3 then
-local L=G:FindFirstChild"ImageLabel"
-if L then
-p.AddThemeObject(L,{ImageColor3=v.ThemeTag.TextColor3})
+local H=F:FindFirstChild"ImageLabel"
+if H then
+p.AddThemeObject(H,{ImageColor3=v.ThemeTag.TextColor3})
 end
 end
 end
 
-local F=1
-
-for G,H,J in string.gmatch(r,"()%[emoji:(.-)%]()")do
-local L=string.sub(r,F,G-1)
-addText(L)
-addImage(J)
-F=H+1
+local C=1
+for F,G,H in string.gmatch(r,"()%[emoji:(.-)%]()")do
+local J=string.sub(r,C,F-1)
+addText(J)
+addImage(H)
+C=G+1
 end
 
-local G=string.sub(r,F)
-addText(G)
+local F=string.sub(r,C)
+addText(F)
 
 return x
 end
 
 function p.New(r,u,v)
-
 
 if r=="TextLabel"and u and type(u.Text)=="string"and string.find(u.Text,"%[emoji:.+%]")then
 local x=p.ParseRichText(u.Text,nil,u)
@@ -1952,7 +1947,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.61",
+    "version": "1.0.62",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
