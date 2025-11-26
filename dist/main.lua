@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.58  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.59  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -497,26 +497,16 @@ return l.AddIcons(r,u)
 end
 
 
-
 function p.ParseRichText(r,u,v)
-
 if not r or not string.find(r,"%[emoji:.+%]")then
-
 return p.New("TextLabel",v,{})
 end
-
 
 local x=Instance.new"Frame"
 x.Name="RichTextContainer"
 x.BackgroundTransparency=1
-
 x.Size=v.Size or UDim2.new(1,0,0,0)
 x.AutomaticSize=Enum.AutomaticSize.XY
-
-
-
-
-
 
 local z=Instance.new"UIListLayout"
 z.FillDirection=Enum.FillDirection.Horizontal
@@ -527,33 +517,39 @@ z.Parent=x
 
 local A=0
 
-
 local function addText(B)
 if B==""then return end
 A=A+1
-local C=p.New("TextLabel",v,{})
-C.Text=B
-C.Parent=x
-C.LayoutOrder=A
-C.AutomaticSize=Enum.AutomaticSize.XY
-C.Size=UDim2.new(0,0,0,0)
-C.BackgroundTransparency=1
+
+
+local C={}
+for F,G in pairs(v)do
+if F~="Text"and F~="Parent"then
+C[F]=G
+end
 end
 
+C.BackgroundTransparency=1
+C.AutomaticSize=Enum.AutomaticSize.XY
+
+
+local F=p.New("TextLabel",C,{})
+F.Text=B
+F.Parent=x
+F.LayoutOrder=A
+F.Size=UDim2.new(0,0,0,0)
+end
 
 local function addImage(B)
 A=A+1
 local C=v.TextSize or 14
 
-
 local F=p.Image(B,"Emoji",0,"Temp","RichText",true)
-
 
 F.Size=UDim2.new(0,C+4,0,C+4)
 F.BackgroundTransparency=1
 F.LayoutOrder=A
 F.Parent=x
-
 
 if v.ThemeTag and v.ThemeTag.TextColor3 then
 local G=F:FindFirstChild"ImageLabel"
@@ -563,19 +559,15 @@ end
 end
 end
 
-
 local B=1
 for C,F,G in string.gmatch(r,"()%[emoji:(.-)%]()")do
-
 local H=string.sub(r,B,C-1)
 addText(H)
-
 
 addImage(G)
 
 B=F+1
 end
-
 
 local C=string.sub(r,B)
 addText(C)
@@ -588,11 +580,9 @@ function p.New(r,u,v)
 if r=="TextLabel"and u and u.Text and string.find(u.Text,"%[emoji:.+%]")then
 local x=p.ParseRichText(u.Text,nil,u)
 
-
 if u.Parent then
 x.Parent=u.Parent
 end
-
 
 for z,A in next,v or{}do
 A.Parent=x
@@ -1946,7 +1936,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.58",
+    "version": "1.0.59",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

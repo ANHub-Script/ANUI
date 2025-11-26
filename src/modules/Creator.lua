@@ -431,64 +431,60 @@ function Creator.AddIcons(packName, iconsData)
 end
 
 -- [ANUI Modification] Fungsi Parser Rich Text dengan Gambar
--- Mengubah string "[emoji:name]" menjadi gambar inline
 function Creator.ParseRichText(Text, Parent, Properties)
-    -- Cek apakah teks mengandung pola [emoji:...]
     if not Text or not string.find(Text, "%[emoji:.+%]") then
-        -- Jika tidak, kembalikan TextLabel biasa
         return Creator.New("TextLabel", Properties, {})
     end
 
-    -- Container untuk menampung Teks dan Gambar
     local Container = Instance.new("Frame")
     Container.Name = "RichTextContainer"
     Container.BackgroundTransparency = 1
-    -- Mengambil size dari properties jika ada, atau default
     Container.Size = Properties.Size or UDim2.new(1, 0, 0, 0)
     Container.AutomaticSize = Enum.AutomaticSize.XY
     
-    -- Layout: Flow Horizontal dengan Wrapping
-    -- Karena UIListLayout tidak support wrapping teks+gambar dengan sempurna, 
-    -- kita gunakan pendekatan simpel horizontal dulu. 
-    -- Untuk wrapping kompleks butuh UIGridLayout atau custom kalkulasi, 
-    -- tapi untuk "nama [img] nama", UIListLayout Horizontal sudah cukup.
     local Layout = Instance.new("UIListLayout")
     Layout.FillDirection = Enum.FillDirection.Horizontal
     Layout.VerticalAlignment = Enum.VerticalAlignment.Center
     Layout.SortOrder = Enum.SortOrder.LayoutOrder
-    Layout.Padding = UDim.new(0, 2) -- Jarak antar teks dan gambar
+    Layout.Padding = UDim.new(0, 2)
     Layout.Parent = Container
     
     local Order = 0
     
-    -- Fungsi helper untuk membuat TextLabel potongan
     local function addText(str)
         if str == "" then return end
         Order = Order + 1
-        local Label = Creator.New("TextLabel", Properties, {})
+        
+        -- [FIX STACK OVERFLOW] Salin properti dan HAPUS Text agar tidak rekursif
+        local CleanProps = {}
+        for k, v in pairs(Properties) do
+            if k ~= "Text" and k ~= "Parent" then
+                CleanProps[k] = v
+            end
+        end
+        
+        CleanProps.BackgroundTransparency = 1
+        CleanProps.AutomaticSize = Enum.AutomaticSize.XY
+        
+        -- Panggil New dengan properti yang sudah "bersih" dari [emoji:...]
+        local Label = Creator.New("TextLabel", CleanProps, {})
         Label.Text = str
         Label.Parent = Container
         Label.LayoutOrder = Order
-        Label.AutomaticSize = Enum.AutomaticSize.XY
-        Label.Size = UDim2.new(0, 0, 0, 0) -- Biarkan autosize bekerja
-        Label.BackgroundTransparency = 1
+        Label.Size = UDim2.new(0, 0, 0, 0)
     end
 
-    -- Fungsi helper untuk membuat ImageLabel
     local function addImage(imgId)
         Order = Order + 1
         local ImgSize = Properties.TextSize or 14
         
-        -- Cek apakah ini icon library atau rbxassetid
         local ImgFrame = Creator.Image(imgId, "Emoji", 0, "Temp", "RichText", true)
         
-        -- Sesuaikan properti gambar
-        ImgFrame.Size = UDim2.new(0, ImgSize + 4, 0, ImgSize + 4) -- Sedikit lebih besar dari teks
+        ImgFrame.Size = UDim2.new(0, ImgSize + 4, 0, ImgSize + 4) 
         ImgFrame.BackgroundTransparency = 1
         ImgFrame.LayoutOrder = Order
         ImgFrame.Parent = Container
         
-        -- Jika properti teks punya warna tema, terapkan ke gambar juga (opsional)
         if Properties.ThemeTag and Properties.ThemeTag.TextColor3 then
             local ImgLabel = ImgFrame:FindFirstChild("ImageLabel")
             if ImgLabel then
@@ -497,20 +493,16 @@ function Creator.ParseRichText(Text, Parent, Properties)
         end
     end
 
-    -- Parsing Loop
     local lastPos = 1
     for startPos, endPos, content in string.gmatch(Text, "()%[emoji:(.-)%]()") do
-        -- Tambahkan teks sebelum emoji
         local preText = string.sub(Text, lastPos, startPos - 1)
         addText(preText)
         
-        -- Tambahkan emoji
         addImage(content)
         
         lastPos = endPos + 1
     end
     
-    -- Tambahkan sisa teks setelah emoji terakhir
     local postText = string.sub(Text, lastPos)
     addText(postText)
 
@@ -522,12 +514,10 @@ function Creator.New(Name, Properties, Children)
     if Name == "TextLabel" and Properties and Properties.Text and string.find(Properties.Text, "%[emoji:.+%]") then
         local Container = Creator.ParseRichText(Properties.Text, nil, Properties)
         
-        -- Terapkan parent jika ada di Properties (meski biasanya di parameter ke-3, tapi jaga-jaga)
         if Properties.Parent then
             Container.Parent = Properties.Parent
         end
         
-        -- Handle Children
         for _, Child in next, Children or {} do
             Child.Parent = Container
         end
