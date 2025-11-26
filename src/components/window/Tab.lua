@@ -578,7 +578,8 @@ function TabModule.New(Config, UIScale)
                 RealImage.Size = UDim2.fromScale(1, 1) -- Memaksa gambar memenuhi frame pembungkus
                 RealImage.BackgroundTransparency = 1
                 RealImage.ScaleType = Enum.ScaleType.Crop -- Memotong gambar agar pas (Zoom to Fill)
-                -- Jika ingin gambar terlihat utuh (mungkin ada gap kosong), ubah ke Enum.ScaleType.Fit
+                RealImage.AnchorPoint = Vector2.new(0.5, 0.5)
+                RealImage.Position = UDim2.fromScale(0.5, 0.5)
             end
         end
         
