@@ -571,6 +571,15 @@ function TabModule.New(Config, UIScale)
             local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
             BannerImg.Parent = Banner
+            
+            -- [PERBAIKAN] Auto Fit / Crop Logic
+            local RealImage = BannerImg:FindFirstChild("ImageLabel")
+            if RealImage then
+                RealImage.Size = UDim2.fromScale(1, 1) -- Memaksa gambar memenuhi frame pembungkus
+                RealImage.BackgroundTransparency = 1
+                RealImage.ScaleType = Enum.ScaleType.Crop -- Memotong gambar agar pas (Zoom to Fill)
+                -- Jika ingin gambar terlihat utuh (mungkin ada gap kosong), ubah ke Enum.ScaleType.Fit
+            end
         end
         
         -- [BADGES KONTEN]

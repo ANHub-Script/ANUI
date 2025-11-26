@@ -10,7 +10,8 @@ lerna-debug.log*
 node_modules
 updater
 game
-script
+docs
+# script
 docs-website
 dist-ssr
 *.local
