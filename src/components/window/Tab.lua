@@ -191,8 +191,9 @@ function TabModule.New(Config, UIScale)
         local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
         if DefLabel then DefLabel:Destroy() end
         
+        -- [FIX SIZE] Diperbesar sedikit dari 85 ke 96
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
-        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 85)
+        Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 96)
         
         local BannerH = 40
         if Tab.Profile.Banner then
@@ -302,7 +303,7 @@ function TabModule.New(Config, UIScale)
     end
     
     
-    -- 2. CONTAINER KONTEN TAB
+    -- 2. CONTAINER KONTEN TAB (SCROLLER)
     Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
         Size = UDim2.new(1,0,1,Tab.ShowTabTitle and -((Window.UIPadding*2.4)+12) or 0),
         BackgroundTransparency = 1,
@@ -327,133 +328,7 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [HEADER PROFIL DALAM KONTEN (FIXED TUMPANG TINDIH)]
-    if Tab.Profile then
-        local ProfileHeight = 170 
-        local BannerHeight = 100  
-        local AvatarSize = 70     
-
-        local ProfileHeader = New("Frame", {
-            Name = "ProfileHeader",
-            Size = UDim2.new(1, 0, 0, ProfileHeight),
-            BackgroundTransparency = 1,
-            Parent = Tab.UIElements.ContainerFrame,
-            LayoutOrder = -999
-        })
-
-        local Banner = Creator.NewRoundFrame(12, "Squircle", {
-            Size = UDim2.new(1, 0, 0, BannerHeight), 
-            Position = UDim2.new(0.5, 0, 0, 0),
-            AnchorPoint = Vector2.new(0.5, 0),
-            ImageColor3 = Color3.fromRGB(30, 30, 30), 
-            Parent = ProfileHeader,
-            ClipsDescendants = true
-        })
-
-        if Tab.Profile.Banner then
-            local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
-            BannerImg.Size = UDim2.new(1, 0, 1, 0)
-            BannerImg.Parent = Banner
-        end
-
-        local AvatarContainer = New("Frame", {
-            Size = UDim2.new(0, AvatarSize, 0, AvatarSize),
-            Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
-            BackgroundTransparency = 1,
-            Parent = ProfileHeader,
-            ZIndex = 2
-        })
-
-        New("UIStroke", {
-            Parent = AvatarContainer,
-            Thickness = 4,
-            ThemeTag = { Color = "WindowBackground" },
-            Transparency = 0,
-            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-        })
-        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = AvatarContainer })
-
-        if Tab.Profile.Avatar then
-            local AvatarImg = Creator.Image(Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false)
-            AvatarImg.Size = UDim2.fromScale(1, 1)
-            AvatarImg.BackgroundTransparency = 1
-            AvatarImg.Parent = AvatarContainer
-            
-            local ImgLabel = AvatarImg:FindFirstChild("ImageLabel")
-            if ImgLabel then
-                ImgLabel.Size = UDim2.fromScale(1, 1)
-                ImgLabel.BackgroundTransparency = 1
-                local OldCorner = ImgLabel:FindFirstChildOfClass("UICorner")
-                if OldCorner then OldCorner:Destroy() end
-                New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ImgLabel })
-            end
-        end
-
-        if Tab.Profile.Status then
-            New("Frame", {
-                Size = UDim2.new(0, 18, 0, 18),
-                Position = UDim2.new(1, -3, 1, -3), 
-                AnchorPoint = Vector2.new(1, 1),
-                BackgroundColor3 = Color3.fromHex("#23a559"),
-                Parent = AvatarContainer,
-                ZIndex = 3
-            }, {
-                New("UICorner", { CornerRadius = UDim.new(1, 0) }),
-                New("UIStroke", { Thickness = 3, ThemeTag = { Color = "WindowBackground" } })
-            })
-        end
-
-        -- [FIX UTAMA: Container Teks dengan UIListLayout]
-        -- Kita gunakan Frame baru untuk menampung Title dan Desc
-        local TextContainer = New("Frame", {
-            Name = "TextContainer",
-            BackgroundTransparency = 1,
-            AutomaticSize = Enum.AutomaticSize.Y,
-            Size = UDim2.new(1, -(14 + AvatarSize + 14), 0, 0), -- Sisa lebar di kanan avatar
-            -- Posisi di kanan avatar, sedikit di bawah banner
-            Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 6), 
-            Parent = ProfileHeader
-        }, {
-            -- UIListLayout akan otomatis mengatur jarak antara Title dan Desc
-            New("UIListLayout", {
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 2), -- Jarak 2 pixel antara Title dan Desc
-                FillDirection = Enum.FillDirection.Vertical,
-                VerticalAlignment = Enum.VerticalAlignment.Top,
-                HorizontalAlignment = Enum.HorizontalAlignment.Left
-            })
-        })
-
-        -- Title (Username)
-        local TitleLabel = New("TextLabel", {
-            Text = Tab.Profile.Title or Tab.Title,
-            TextSize = 22,
-            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-            ThemeTag = { TextColor3 = "Text" },
-            BackgroundTransparency = 1,
-            AutomaticSize = Enum.AutomaticSize.XY,
-            TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = TextContainer, -- Masukkan ke TextContainer
-            LayoutOrder = 1
-        })
-        
-        -- Description (Bio)
-        if Tab.Profile.Desc then
-            New("TextLabel", {
-                Text = Tab.Profile.Desc,
-                TextSize = 13,
-                FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
-                ThemeTag = { TextColor3 = "Text" },
-                TextTransparency = 0.4,
-                BackgroundTransparency = 1,
-                AutomaticSize = Enum.AutomaticSize.XY,
-                TextXAlignment = Enum.TextXAlignment.Left,
-                Parent = TextContainer, -- Masukkan ke TextContainer
-                LayoutOrder = 2
-            })
-        end
-    end
-    
+    -- 3. WRAPPER UNTUK KONTEN (CANVAS)
     Tab.UIElements.ContainerFrameCanvas = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         BackgroundTransparency = 1,
@@ -461,7 +336,7 @@ function TabModule.New(Config, UIScale)
         Parent = Window.UIElements.MainBar,
         ZIndex = 5,
     }, {
-        Tab.UIElements.ContainerFrame,
+        -- Tab.UIElements.ContainerFrame akan di-parent di bawah setelah logika profile
         New("Frame", {
             Size = UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
             BackgroundTransparency = 1,
@@ -507,6 +382,138 @@ function TabModule.New(Config, UIScale)
             Visible = Tab.ShowTabTitle or false,
         })
     })
+
+    -- [FIX LOGIKA HEADER: STATIC / NON-STICKY]
+    if Tab.Profile then
+        local ProfileHeight = 170 
+        local BannerHeight = 100  
+        local AvatarSize = 70     
+
+        -- [FIX] Sesuaikan Scroller agar TIDAK tertutup header
+        -- Kita ubah posisi Scroller turun ke bawah, dan kurangi tingginya
+        Tab.UIElements.ContainerFrame.Position = UDim2.new(0, 0, 0, ProfileHeight)
+        Tab.UIElements.ContainerFrame.Size = UDim2.new(1, 0, 1, -ProfileHeight)
+
+        -- Buat Header
+        local ProfileHeader = New("Frame", {
+            Name = "ProfileHeader",
+            Size = UDim2.new(1, 0, 0, ProfileHeight),
+            BackgroundTransparency = 1,
+            -- [FIX] Parent ke Canvas (Wrapper), BUKAN Scroller
+            -- Ini membuat header 'diam' di atas saat scroller digerakkan
+            Parent = Tab.UIElements.ContainerFrameCanvas,
+            ZIndex = 2
+        })
+
+        local Banner = Creator.NewRoundFrame(12, "Squircle", {
+            Size = UDim2.new(1, 0, 0, BannerHeight), 
+            Position = UDim2.new(0.5, 0, 0, 0),
+            AnchorPoint = Vector2.new(0.5, 0),
+            ImageColor3 = Color3.fromRGB(30, 30, 30), 
+            Parent = ProfileHeader,
+            ClipsDescendants = true
+        })
+
+        if Tab.Profile.Banner then
+            local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
+            BannerImg.Size = UDim2.new(1, 0, 1, 0)
+            BannerImg.Parent = Banner
+        end
+
+        local AvatarContainer = New("Frame", {
+            Size = UDim2.new(0, AvatarSize, 0, AvatarSize),
+            Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
+            BackgroundTransparency = 1,
+            Parent = ProfileHeader,
+            ZIndex = 3
+        })
+
+        New("UIStroke", {
+            Parent = AvatarContainer,
+            Thickness = 4,
+            ThemeTag = { Color = "WindowBackground" },
+            Transparency = 0,
+            ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+        })
+        New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = AvatarContainer })
+
+        if Tab.Profile.Avatar then
+            local AvatarImg = Creator.Image(Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false)
+            AvatarImg.Size = UDim2.fromScale(1, 1)
+            AvatarImg.BackgroundTransparency = 1
+            AvatarImg.Parent = AvatarContainer
+            
+            local ImgLabel = AvatarImg:FindFirstChild("ImageLabel")
+            if ImgLabel then
+                ImgLabel.Size = UDim2.fromScale(1, 1)
+                ImgLabel.BackgroundTransparency = 1
+                local OldCorner = ImgLabel:FindFirstChildOfClass("UICorner")
+                if OldCorner then OldCorner:Destroy() end
+                New("UICorner", { CornerRadius = UDim.new(1, 0), Parent = ImgLabel })
+            end
+        end
+
+        if Tab.Profile.Status then
+            New("Frame", {
+                Size = UDim2.new(0, 18, 0, 18),
+                Position = UDim2.new(1, -3, 1, -3), 
+                AnchorPoint = Vector2.new(1, 1),
+                BackgroundColor3 = Color3.fromHex("#23a559"),
+                Parent = AvatarContainer,
+                ZIndex = 3
+            }, {
+                New("UICorner", { CornerRadius = UDim.new(1, 0) }),
+                New("UIStroke", { Thickness = 3, ThemeTag = { Color = "WindowBackground" } })
+            })
+        end
+
+        local TextContainer = New("Frame", {
+            Name = "TextContainer",
+            BackgroundTransparency = 1,
+            AutomaticSize = Enum.AutomaticSize.Y,
+            Size = UDim2.new(1, -(14 + AvatarSize + 14), 0, 0),
+            Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 2), 
+            Parent = ProfileHeader
+        }, {
+            New("UIListLayout", {
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0, 2), 
+                FillDirection = Enum.FillDirection.Vertical,
+                VerticalAlignment = Enum.VerticalAlignment.Top,
+                HorizontalAlignment = Enum.HorizontalAlignment.Left
+            })
+        })
+
+        local TitleLabel = New("TextLabel", {
+            Text = Tab.Profile.Title or Tab.Title,
+            TextSize = 22,
+            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+            ThemeTag = { TextColor3 = "Text" },
+            BackgroundTransparency = 1,
+            AutomaticSize = Enum.AutomaticSize.XY,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = TextContainer,
+            LayoutOrder = 1
+        })
+        
+        if Tab.Profile.Desc then
+            New("TextLabel", {
+                Text = Tab.Profile.Desc,
+                TextSize = 13,
+                FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
+                ThemeTag = { TextColor3 = "Text" },
+                TextTransparency = 0.4,
+                BackgroundTransparency = 1,
+                AutomaticSize = Enum.AutomaticSize.XY,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = TextContainer,
+                LayoutOrder = 2
+            })
+        end
+    end
+
+    -- Parent Scroller ke Canvas (WAJIB di akhir)
+    Tab.UIElements.ContainerFrame.Parent = Tab.UIElements.ContainerFrameCanvas
     
     TabModule.Containers[TabIndex] = Tab.UIElements.ContainerFrameCanvas
     TabModule.Tabs[TabIndex] = Tab
