@@ -1390,60 +1390,72 @@ do
 		});
 	end;
 end;
--- Pastikan library sudah dimuat
--- local ANUI = ...
--- local Window = ...
-
 local UpgradeTab = Window:Tab({
     Title = "Upgrade System",
     Icon = "hammer"
 })
 
--- 1. Section UTAMA untuk Navigasi (Tombol Kategori)
+-- 1. Section Navigasi (Kategori)
 local NavSection = UpgradeTab:Section({
     Title = "Stats Upgrade Manager",
     TextSize = 18
 })
 
--- 2. Tabel untuk menyimpan Halaman
+-- 2. Buat Tabel untuk Halaman
 local Pages = {}
 
--- Buat Halaman (Section) satu per satu
-Pages.Yen = UpgradeTab:Section({ Title = "Yen Upgrades" })
+-- Halaman YEN
+Pages.Yen = UpgradeTab:Section({ Title = "Yen Upgrades", Opened = true })
 Pages.Yen:Toggle({ Title = "Luck Upgrade", Desc = "Cost: 100 Yen", Callback = function() end })
 Pages.Yen:Toggle({ Title = "Damage Upgrade", Desc = "Cost: 250 Yen", Callback = function() end })
+-- Tambahkan Space di akhir agar bagian bawah tidak terlihat mepet/terpotong
+Pages.Yen:Space({ Columns = 1 }) 
 
-Pages.Token = UpgradeTab:Section({ Title = "Token Upgrades" })
+-- Halaman TOKEN
+Pages.Token = UpgradeTab:Section({ Title = "Token Upgrades", Opened = true })
 Pages.Token:Toggle({ Title = "Critical Hit", Desc = "Cost: 5 Tokens", Callback = function() end })
 Pages.Token:Button({ Title = "Buy Tokens", Icon = "shopping-cart", Callback = function() end })
+Pages.Token:Space({ Columns = 1 }) 
 
-Pages.Rank = UpgradeTab:Section({ Title = "Rank Info" })
+-- Halaman RANK
+Pages.Rank = UpgradeTab:Section({ Title = "Rank Info", Opened = true })
 Pages.Rank:Paragraph({ Title = "Current Rank", Desc = "S-Class" })
+Pages.Rank:Space({ Columns = 1 }) 
 
-Pages.Trainer = UpgradeTab:Section({ Title = "Trainer" })
+-- Halaman TRAINER
+Pages.Trainer = UpgradeTab:Section({ Title = "Trainer", Opened = true })
 Pages.Trainer:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima"} })
+Pages.Trainer:Space({ Columns = 1 }) 
 
--- Halaman tambahan untuk tes Scroll
-Pages.Mastery = UpgradeTab:Section({ Title = "Weapon Mastery" })
-Pages.Mastery:Slider({ Title = "Mastery Level", Min = 0, Max = 100, Default = 10 })
 
-Pages.Settings = UpgradeTab:Section({ Title = "Settings" })
-Pages.Settings:Toggle({ Title = "Auto Upgrade", Value = false })
-
--- 3. Fungsi Ganti Halaman
+-- 3. FUNGSI GANTI HALAMAN
 local function SwitchPage(pageName)
     for name, section in pairs(Pages) do
         if section.UIElements and section.UIElements.Main then
-            -- Hanya tampilkan section yang namanya cocok
+            -- Tampilkan/Sembunyikan seluruh Section
             section.UIElements.Main.Visible = (name == pageName)
         end
     end
 end
 
--- Matikan semua halaman dulu, kecuali default (Yen)
+-- 4. INITIAL SETUP (PENTING)
+-- Sembunyikan Header (Judul) dari setiap halaman konten agar terlihat menyatu
+for _, section in pairs(Pages) do
+    if section.UIElements.Top then
+        section.UIElements.Top.Visible = false -- Sembunyikan tombol expand/collapse
+        section.UIElements.Top.Size = UDim2.new(0,0,0,0) -- Nol-kan ukurannya
+    end
+    
+    if section.UIElements.Content then
+        -- Reset posisi content agar naik ke atas menggantikan header
+        section.UIElements.Content.Position = UDim2.new(0,0,0,0) 
+    end
+end
+
+-- Panggil sekali untuk set halaman awal
 SwitchPage("Yen")
 
--- 4. Panggil Element CATEGORY
+-- 5. Panggil Category Element
 NavSection:Category({
     Title = "Select Category",
     Default = "Yen",
@@ -1452,22 +1464,10 @@ NavSection:Category({
         { Title = "Token", Icon = "layers" },
         { Title = "Rank", Icon = "shield" },
         { Title = "Trainer", Icon = "sword" },
-        { Title = "Mastery", Icon = "book" }, 
-        { Title = "Settings", Icon = "settings" },
     },
     Callback = function(selected)
         SwitchPage(selected)
     end
 })
 
--- Sembunyikan Header Judul Section Halaman (Opsional, agar lebih rapi)
-for _, section in pairs(Pages) do
-    if section.UIElements.Main and section.UIElements.Main.Top then
-        section.UIElements.Main.Top.Visible = false
-        section.UIElements.Main.Top.Size = UDim2.new(0,0,0,0)
-        section.UIElements.Main.Content.Position = UDim2.new(0,0,0,0)
-    end
-end
-
 Window:SelectTab(UpgradeTab.Index)
--- Window:SelectTab(1)
