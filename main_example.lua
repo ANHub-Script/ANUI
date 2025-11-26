@@ -152,7 +152,21 @@ local UserTab = Window:Tab({
         Title = "User Settings",
         Desc = "Manage your account",
         Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-        Avatar = "rbxassetid://84366761557806"
+        Avatar = "rbxassetid://84366761557806",
+        Badges = {
+            {
+                Icon = "logo-whats-app", -- Nama icon Lucide atau rbxassetid
+                Callback = function()
+                    setclipboard("https://youtube.com")
+                end
+            },
+            {
+                Icon = "logo-vue", -- Icon Discord
+                Callback = function()
+                    setclipboard("https://discord.gg/...")
+                end
+            }
+        }
     },
     SidebarProfile = false -- MATIKAN MODE SIDEBAR CARD (Jadi tombol biasa)
 })

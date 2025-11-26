@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.66  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.67  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.66",
+    "version": "1.0.67",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9719,6 +9719,7 @@ Visible=false,
 Parent=Window.UIElements.MainBar,
 ZIndex=5,
 },{
+
 ah("Frame",{
 Size=UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
 BackgroundTransparency=1,
@@ -9796,7 +9797,6 @@ end
 
 
 if ap.Profile.Badges then
-
 local e=ah("Frame",{
 Name="BadgeContainer",
 Size=UDim2.new(1,0,0,24),
@@ -9814,7 +9814,6 @@ Padding=UDim.new(0,5)
 })
 })
 
-
 for f,g in ipairs(ap.Profile.Badges)do
 local h=g.Icon or"help-circle"
 
@@ -9825,35 +9824,35 @@ BackgroundTransparency=1,
 Text="",
 Parent=e
 },{
-
 af.NewRoundFrame(6,"Squircle",{
 ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
 Size=UDim2.new(1,0,1,0),
 Name="BG"
-}),
-
-af.Image(h,"Badge",0,Window.Folder,"Badge",true)
+})
 })
 
 
-local l=j:FindFirstChild"ImageLabel"or j:FindFirstChild"VideoFrame"
-if l then
-l.Size=UDim2.new(0,16,0,16)
+local l=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
+l.Size=UDim2.new(0,18,0,18)
 l.Position=UDim2.new(0.5,0,0.5,0)
 l.AnchorPoint=Vector2.new(0.5,0.5)
 l.BackgroundTransparency=1
-l.ImageColor3=Color3.new(1,1,1)
 l.Parent=j
-end
 
+
+local m=l:FindFirstChild"ImageLabel"or l:FindFirstChild"VideoFrame"
+if m then
+m.Size=UDim2.fromScale(1,1)
+m.ImageColor3=Color3.new(1,1,1)
+m.BackgroundTransparency=1
+end
 
 if g.Callback then
 af.AddSignal(j.MouseButton1Click,function()
 g.Callback()
 end)
 end
-
 
 af.AddSignal(j.MouseEnter,function()
 aj(j.BG,0.1,{ImageTransparency=0.2}):Play()
