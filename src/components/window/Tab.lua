@@ -445,8 +445,7 @@ function TabModule.New(Config, UIScale)
     local ContentOffsetY = 0
     local ContentSizeOffset = 0
     
-    -- [PERUBAHAN] Mengubah tinggi profil agar banner lebih terlihat (Default 55 -> 120)
-    local ProfileHeight = 120
+    local ProfileHeight = 150 
     
     if Tab.ShowTabTitle then
         ContentOffsetY = ((Window.UIPadding*2.4)+12)
@@ -539,10 +538,7 @@ function TabModule.New(Config, UIScale)
 
     -- [HEADER PROFIL DALAM KONTEN]
     if HasContentProfile then
-        -- [PERUBAHAN] Sesuaikan BannerHeight dengan ProfileHeight
-        local BannerHeight = ProfileHeight - 50 -- (Contoh: 120 - 50 = 70px visible banner)
-        if BannerHeight < 100 then BannerHeight = 100 end -- Minimal 100px agar gambar tidak gepeng
-
+        local BannerHeight = 100  
         local AvatarSize = 70     
         
         local ProfileHeader = New("Frame", {
@@ -575,18 +571,6 @@ function TabModule.New(Config, UIScale)
             local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
             BannerImg.Parent = Banner
-            
-            -- [PERBAIKAN] Memaksa gambar mengikuti ukuran (Stretch/Crop)
-            local RealImage = BannerImg:FindFirstChild("ImageLabel")
-            if RealImage then
-                RealImage.Size = UDim2.fromScale(1, 1)
-                RealImage.BackgroundTransparency = 1
-                -- [OPSI] Gunakan Enum.ScaleType.Stretch jika ingin MEMAKSA gambar pas ke kotak (bisa gepeng)
-                -- [OPSI] Gunakan Enum.ScaleType.Crop jika ingin gambar penuh tanpa gepeng (terpotong)
-                RealImage.ScaleType = Enum.ScaleType.Stretch 
-                RealImage.AnchorPoint = Vector2.new(0.5, 0.5)
-                RealImage.Position = UDim2.fromScale(0.5, 0.5)
-            end
         end
         
         -- [BADGES KONTEN]
