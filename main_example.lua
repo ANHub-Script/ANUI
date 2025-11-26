@@ -170,7 +170,14 @@ local OtherSection = Window:Section({
 do
 	local ToggleTab = ElementsSection:Tab({
 		Title = "Toggle",
-		Icon = "arrow-left-right"
+		Icon = "arrow-left-right",
+    Profile = { -- Profile data untuk header di dalam konten
+        Title = "User Settings",
+        Desc = "Manage your account",
+        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
+        Avatar = "rbxassetid://84366761557806"
+    },
+    SidebarProfile = false -- MATIKAN MODE SIDEBAR CARD (Jadi tombol biasa)
 	});
 	ToggleTab:Paragraph({
 		Title = "Toggle Examples",

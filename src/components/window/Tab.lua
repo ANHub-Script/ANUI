@@ -42,7 +42,6 @@ function TabModule.New(Config, UIScale)
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
         
-        -- [ANUI] Property Profile
         Profile = Config.Profile,
         SidebarProfile = Config.SidebarProfile, 
         
@@ -58,6 +57,7 @@ function TabModule.New(Config, UIScale)
     }
 
     local IsSidebarCard = Tab.Profile and Tab.SidebarProfile
+    local HasContentProfile = Tab.Profile 
     
     if IsSidebarCard then
         Tab.Locked = true
@@ -68,7 +68,7 @@ function TabModule.New(Config, UIScale)
     local TabIndex = TabModule.TabCount
     Tab.Index = TabIndex
     
-    -- 1. MEMBUAT TOMBOL SIDEBAR UTAMA
+    -- 1. MEMBUAT TOMBOL SIDEBAR
     Tab.UIElements.Main = Creator.NewRoundFrame(Tab.UICorner, "Squircle", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1,-7,0,0),
@@ -146,7 +146,7 @@ function TabModule.New(Config, UIScale)
     local Icon
     local Icon2
 
-    -- [LOGIKA ICON BIASA]
+    -- [ICON BIASA]
     if Tab.Icon and not IsSidebarCard then 
         Icon = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed, "TabIcon")
         Icon.Size = UDim2.new(0,16,0,16)
@@ -162,7 +162,7 @@ function TabModule.New(Config, UIScale)
         TextOffset = -30
     end
     
-    -- [LOGIKA IMAGE BESAR]
+    -- [IMAGE BESAR]
     if Tab.Image and not IsSidebarCard then
         local Image = Creator.Image(Tab.Image, Tab.Title, Tab.UICorner, Window.Folder, "TabImage", false)
         Image.Size = UDim2.new(1,0,0,100)
@@ -191,7 +191,6 @@ function TabModule.New(Config, UIScale)
         local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
         if DefLabel then DefLabel:Destroy() end
         
-        -- [FIX SIZE] Diperbesar sedikit dari 85 ke 96
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
         Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 96)
         
@@ -302,16 +301,32 @@ function TabModule.New(Config, UIScale)
         })
     end
     
+    -- [FIX PENTING] Menghitung Offset Y untuk ContainerFrame
+    local ContentOffsetY = 0
+    local ContentSizeOffset = 0
+    local ProfileHeight = 170 -- Tinggi Header Profile
+    
+    -- Jika ada ShowTabTitle (Judul Tab di atas konten), kita harus geser konten ke bawah
+    if Tab.ShowTabTitle then
+        ContentOffsetY = ((Window.UIPadding*2.4)+12)
+        ContentSizeOffset = ContentSizeOffset - ContentOffsetY
+    end
+
+    -- Jika ada Profile Header (dan bukan mode SidebarCard), kita harus geser konten LEBIH jauh ke bawah
+    if HasContentProfile then
+        ContentOffsetY = ContentOffsetY + ProfileHeight
+        ContentSizeOffset = ContentSizeOffset - ProfileHeight
+    end
     
     -- 2. CONTAINER KONTEN TAB (SCROLLER)
+    -- Disini kita menerapkan posisi dinamis agar tidak tertutup header
     Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
-        Size = UDim2.new(1,0,1,Tab.ShowTabTitle and -((Window.UIPadding*2.4)+12) or 0),
+        Size = UDim2.new(1, 0, 1, ContentSizeOffset), -- Kurangi tinggi sebesar header
+        Position = UDim2.new(0, 0, 0, ContentOffsetY), -- Geser ke bawah sebesar header
         BackgroundTransparency = 1,
         ScrollBarThickness = 0,
         ElasticBehavior = "Never",
         CanvasSize = UDim2.new(0,0,0,0),
-        AnchorPoint = Vector2.new(0,1),
-        Position = UDim2.new(0,0,1,0),
         AutomaticCanvasSize = "Y",
         ScrollingDirection = "Y",
     }, {
@@ -336,7 +351,7 @@ function TabModule.New(Config, UIScale)
         Parent = Window.UIElements.MainBar,
         ZIndex = 5,
     }, {
-        -- Tab.UIElements.ContainerFrame akan di-parent di bawah setelah logika profile
+        -- Header Tab Title (Jika diaktifkan)
         New("Frame", {
             Size = UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
             BackgroundTransparency = 1,
@@ -372,7 +387,7 @@ function TabModule.New(Config, UIScale)
                 VerticalAlignment = "Center",
             })
         }),
-        New("Frame", {
+        New("Frame", { -- Garis pemisah Tab Title
             Size = UDim2.new(1,0,0,1),
             BackgroundTransparency = .9,
             ThemeTag = {
@@ -383,24 +398,18 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [FIX LOGIKA HEADER: STATIC / NON-STICKY]
-    if Tab.Profile then
-        local ProfileHeight = 170 
+    -- [HEADER PROFIL DALAM KONTEN]
+    if HasContentProfile then
         local BannerHeight = 100  
         local AvatarSize = 70     
-
-        -- [FIX] Sesuaikan Scroller agar TIDAK tertutup header
-        -- Kita ubah posisi Scroller turun ke bawah, dan kurangi tingginya
-        Tab.UIElements.ContainerFrame.Position = UDim2.new(0, 0, 0, ProfileHeight)
-        Tab.UIElements.ContainerFrame.Size = UDim2.new(1, 0, 1, -ProfileHeight)
-
-        -- Buat Header
+        
+        -- Header ini di-parent ke CANVAS (bukan scroller), jadi statis
         local ProfileHeader = New("Frame", {
             Name = "ProfileHeader",
             Size = UDim2.new(1, 0, 0, ProfileHeight),
+            -- Jika Tab Title aktif, Header Profile harus di bawahnya
+            Position = UDim2.new(0, 0, 0, Tab.ShowTabTitle and ((Window.UIPadding*2.4)+12) or 0),
             BackgroundTransparency = 1,
-            -- [FIX] Parent ke Canvas (Wrapper), BUKAN Scroller
-            -- Ini membuat header 'diam' di atas saat scroller digerakkan
             Parent = Tab.UIElements.ContainerFrameCanvas,
             ZIndex = 2
         })
@@ -425,7 +434,7 @@ function TabModule.New(Config, UIScale)
             Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
             BackgroundTransparency = 1,
             Parent = ProfileHeader,
-            ZIndex = 3
+            ZIndex = 2
         })
 
         New("UIStroke", {
