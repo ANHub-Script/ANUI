@@ -419,9 +419,9 @@ do
 	local ButtonTab = ElementsSection:Tab({
 		Title = "Button",
 		Icon = "mouse-pointer-click",
-		Profile = MakeProfile({ Title = "Toggle Settings", Desc = "Configure toggles" }),
+		Profile = MakeProfile({ Title = "Toggle Settings", Desc = "Configure toggles",
+		Sticky = false}),
 		SidebarProfile = false,
-		Sticky = false
 	});
 	ButtonTab:Paragraph({
 		Title = "Button Examples",
