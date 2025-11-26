@@ -46,7 +46,7 @@ local BaseProfile = {
 					ANUI:Notify({
 						Title = "Discord",
 						Content = "Invite link copied to clipboard!",
-						Icon = "copy",
+						Icon = "geist:logo-discord",
 						Duration = 3
 					})
 				end
@@ -56,12 +56,12 @@ local BaseProfile = {
 			Icon = "youtube",
 			Desc = "Subscribe to YouTube",
 			Callback = function()
-				setclipboard("https://youtube.com/...")
+				setclipboard("https://www.youtube.com/@ANHubRoblox")
 				if ANUI then
 					ANUI:Notify({
 						Title = "YouTube",
 						Content = "Channel link copied!",
-						Icon = "check",
+						Icon = "youtube",
 						Duration = 3
 					})
 				end
