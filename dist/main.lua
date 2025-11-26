@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.68  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.69  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.68",
+    "version": "1.0.69",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9798,7 +9798,8 @@ end
 if ap.Profile.Badges then
 local e=ah("Frame",{
 Name="BadgeContainer",
-Size=UDim2.new(1,0,0,28),
+Size=UDim2.new(0,0,0,28),
+AutomaticSize=Enum.AutomaticSize.X,
 Position=UDim2.new(1,-8,1,-8),
 AnchorPoint=Vector2.new(1,1),
 BackgroundTransparency=1,
@@ -9818,47 +9819,52 @@ local h=g.Icon or"help-circle"
 local j=g.Title~=nil
 
 
-local l=ah("TextButton",{
-Size=UDim2.new(0,28,0,28),
-AutomaticSize=j and Enum.AutomaticSize.X or Enum.AutomaticSize.None,
+local l=ah("Frame",{
+Name="BadgeWrapper",
 BackgroundTransparency=1,
-Text="",
-Parent=e
-},{
+Size=UDim2.new(0,0,0,28),
+AutomaticSize=Enum.AutomaticSize.X,
+Parent=e,
+})
 
-af.NewRoundFrame(6,"Squircle",{
+
+local m=af.NewRoundFrame(6,"Squircle",{
 ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
 Size=UDim2.new(1,0,1,0),
-Name="BG"
-}),
+Name="BG",
+Parent=l
+})
 
+
+local p=ah("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+Parent=l
+},{
 ah("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
 VerticalAlignment=Enum.VerticalAlignment.Center,
 HorizontalAlignment=Enum.HorizontalAlignment.Center,
 Padding=UDim.new(0,4)
 }),
-
 ah("UIPadding",{
-PaddingLeft=UDim.new(0,j and 6 or 0),
-PaddingRight=UDim.new(0,j and 8 or 0),
+PaddingLeft=UDim.new(0,j and 8 or 5),
+PaddingRight=UDim.new(0,j and 8 or 5),
 })
 })
 
 
-local m=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
-m.Size=UDim2.new(0,16,0,16)
-m.BackgroundTransparency=1
-m.LayoutOrder=1
-m.Parent=l
+local r=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
+r.Size=UDim2.new(0,16,0,16)
+r.BackgroundTransparency=1
+r.Parent=p
 
-
-local p=m:FindFirstChild"ImageLabel"or m:FindFirstChild"VideoFrame"
-if p then
-p.Size=UDim2.fromScale(1,1)
-p.ImageColor3=Color3.new(1,1,1)
-p.BackgroundTransparency=1
+local u=r:FindFirstChild"ImageLabel"or r:FindFirstChild"VideoFrame"
+if u then
+u.Size=UDim2.fromScale(1,1)
+u.ImageColor3=Color3.new(1,1,1)
+u.BackgroundTransparency=1
 end
 
 
@@ -9869,60 +9875,65 @@ TextSize=12,
 FontFace=Font.new(af.Font,Enum.FontWeight.SemiBold),
 TextColor3=Color3.new(1,1,1),
 BackgroundTransparency=1,
-AutomaticSize=Enum.AutomaticSize.X,
-Size=UDim2.new(0,0,1,0),
+AutomaticSize=Enum.AutomaticSize.XY,
 LayoutOrder=2,
-Parent=l
+Parent=p
 })
 end
 
+
+local v=ah("TextButton",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+Text="",
+ZIndex=10,
+Parent=l
+})
+
 if g.Callback then
-af.AddSignal(l.MouseButton1Click,function()
+af.AddSignal(v.MouseButton1Click,function()
 g.Callback()
 end)
 end
 
 
-af.AddSignal(l.MouseEnter,function()
-aj(l.BG,0.1,{ImageTransparency=0.2}):Play()
+af.AddSignal(v.MouseEnter,function()
+aj(m,0.1,{ImageTransparency=0.2}):Play()
 end)
-af.AddSignal(l.MouseLeave,function()
-aj(l.BG,0.1,{ImageTransparency=0.4}):Play()
+af.AddSignal(v.MouseLeave,function()
+aj(m,0.1,{ImageTransparency=0.4}):Play()
 end)
 
 
 if g.Desc then
-local r
-local u
-local v
-local x=false
+local x
+local z
+local A
+local B=false
 
-
-af.AddSignal(l.MouseEnter,function()
-x=true
-u=task.spawn(function()
+af.AddSignal(v.MouseEnter,function()
+B=true
+z=task.spawn(function()
 task.wait(0.35)
-if x and not r then
-r=ak(g.Desc,am.ToolTipParent)
-
+if B and not x then
+x=ak(g.Desc,am.ToolTipParent)
 local function updatePosition()
-if r then
-r.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
+if x then
+x.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
 end
 end
 updatePosition()
-v=ae.Move:Connect(updatePosition)
-r:Open()
+A=ae.Move:Connect(updatePosition)
+x:Open()
 end
 end)
 end)
 
-
-af.AddSignal(l.MouseLeave,function()
-x=false
-if u then task.cancel(u)u=nil end
-if v then v:Disconnect()v=nil end
-if r then r:Close()r=nil end
+af.AddSignal(v.MouseLeave,function()
+B=false
+if z then task.cancel(z)z=nil end
+if A then A:Disconnect()A=nil end
+if x then x:Close()x=nil end
 end)
 end
 end

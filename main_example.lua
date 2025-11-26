@@ -155,9 +155,23 @@ local UserTab = Window:Tab({
         Avatar = "rbxassetid://84366761557806",
         Badges = {
             {
-                Icon = "geist:logo-discord", -- Nama icon Lucide atau rbxassetid
+                Icon = "geist:logo-discord", -- Ikon YouTube
+                Title = "ANHUB Roblox",
+                Desc = "Click For Copy Link discord",
                 Callback = function()
-                    setclipboard("https://youtube.com")
+                    -- 1. Salin Link ke Clipboard
+                    setclipboard("https://discord.gg/cy6uMRmeZ")
+                    
+                    -- 2. Tampilkan Notifikasi (Opsional, agar user tahu)
+                    -- Pastikan variable 'ANUI' bisa diakses di sini
+                    if ANUI then
+                        ANUI:Notify({
+                            Title = "Copy Link Discord!",
+                            Content = "Discord link copied to clipboard.",
+                            Icon = "geist:logo-discord",
+                            Duration = 3
+                        })
+                    end
                 end
             },
             {
