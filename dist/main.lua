@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.55  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.56  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.55",
+    "version": "1.0.56",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9561,10 +9561,12 @@ if ax then ax:Destroy()end
 local ay=ap.UIElements.Main.Frame:FindFirstChild"TextLabel"
 if ay then ay:Destroy()end
 
-ap.UIElements.Main.Frame.AutomaticSize=Enum.AutomaticSize.None
-ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,96)
 
-local az=40
+ap.UIElements.Main.Frame.AutomaticSize=Enum.AutomaticSize.None
+ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,120)
+
+
+local az=55
 if ap.Profile.Banner then
 local aA=af.Image(
 ap.Profile.Banner,"SidebarBanner",0,Window.Folder,"ProfileBanner",false
@@ -9581,7 +9583,8 @@ aA.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
 
-local aA=34
+
+local aA=46
 local aB=ah("Frame",{
 Name="Avatar",
 Size=UDim2.new(0,aA,0,aA),
@@ -9620,7 +9623,7 @@ end
 
 if ap.Profile.Status then
 ah("Frame",{
-Size=UDim2.new(0,10,0,10),
+Size=UDim2.new(0,12,0,12),
 Position=UDim2.new(1,0,1,0),
 AnchorPoint=Vector2.new(1,1),
 BackgroundColor3=Color3.fromHex"#23a559",
@@ -9644,27 +9647,28 @@ ZIndex=2
 },{
 ah("UIListLayout",{
 VerticalAlignment=Enum.VerticalAlignment.Center,
-Padding=UDim.new(0,0)
+Padding=UDim.new(0,2)
 }),
+
 ah("TextLabel",{
 Text=ap.Profile.Title or ap.Title,
-TextSize=14,
+TextSize=16,
 FontFace=Font.new(af.Font,Enum.FontWeight.Bold),
 ThemeTag={TextColor3="TabTitle"},
 BackgroundTransparency=1,
-Size=UDim2.new(1,0,0,16),
+Size=UDim2.new(1,0,0,18),
 TextXAlignment=Enum.TextXAlignment.Left,
 TextTruncate=Enum.TextTruncate.AtEnd,
 TextTransparency=not ap.Locked and 0 or.7,
 }),
 ah("TextLabel",{
 Text=ap.Profile.Desc or"User",
-TextSize=11,
+TextSize=13,
 FontFace=Font.new(af.Font,Enum.FontWeight.Regular),
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.5,
 BackgroundTransparency=1,
-Size=UDim2.new(1,0,0,12),
+Size=UDim2.new(1,0,0,14),
 TextXAlignment=Enum.TextXAlignment.Left,
 TextTruncate=Enum.TextTruncate.AtEnd
 })
@@ -9674,20 +9678,19 @@ end
 
 local aw=0
 local ax=0
-local ay=170
 
+
+local ay=150
 
 if ap.ShowTabTitle then
 aw=((Window.UIPadding*2.4)+12)
 ax=ax-aw
 end
 
-
 if ar then
 aw=aw+ay
 ax=ax-ay
 end
-
 
 
 ap.UIElements.ContainerFrame=ah("ScrollingFrame",{
@@ -10081,7 +10084,6 @@ for ap,aq in next,am.Tabs do
 if not aq.Locked then
 aj(aq.UIElements.Main,0.15,{ImageTransparency=1}):Play()
 aj(aq.UIElements.Main.Outline,0.15,{ImageTransparency=1}):Play()
-
 
 if aq.UIElements.Main.Frame:FindFirstChild"TextLabel"then
 aj(aq.UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0.3}):Play()
