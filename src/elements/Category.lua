@@ -16,21 +16,23 @@ function Element:New(Config)
         UIElements = {},
     }
 
-    -- [FIX] Wrapper Frame untuk mencegah layout glitch
+    -- [FIX UTAMA] Wrapper Frame agar Section mendeteksi tinggi elemen ini
+    -- Tanpa ini, AutomaticSize Section akan menganggap Category tingginya 0
     local WrapperFrame = New("Frame", {
-        Size = UDim2.new(1, 0, 0, 45),
+        Size = UDim2.new(1, 0, 0, 45), -- Tinggi Fix 45px
         BackgroundTransparency = 1,
         Parent = Config.Parent,
     })
 
+    -- Container Scroll (Dimasukkan ke dalam Wrapper)
     local MainFrame = New("ScrollingFrame", {
-        Size = UDim2.new(1, 0, 1, 0),
+        Size = UDim2.new(1, 0, 1, 0), -- Mengisi Wrapper
         BackgroundTransparency = 1,
-        ScrollingDirection = Enum.ScrollingDirection.X,
-        ScrollBarThickness = 0,
+        ScrollingDirection = Enum.ScrollingDirection.X, -- Scroll Horizontal
+        ScrollBarThickness = 0, -- Sembunyikan scrollbar
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.X,
-        Parent = WrapperFrame,
+        Parent = WrapperFrame, 
     }, {
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
@@ -49,8 +51,6 @@ function Element:New(Config)
     local function UpdateVisuals(selectedName)
         for name, objs in pairs(ButtonObjects) do
             local isActive = (name == selectedName)
-            
-            -- [FIX] Menggunakan Creator.Theme agar tidak error nil
             local Theme = Creator.Theme
             
             local ColorVal = Creator.GetThemeProperty(isActive and "Toggle" or "Button", Theme)
@@ -141,7 +141,8 @@ function Element:New(Config)
         UpdateVisuals(firstName)
     end
     
-    Category.ElementFrame = WrapperFrame
+    -- Return WrapperFrame agar Section menganggap ini elemen yang valid
+    Category.ElementFrame = WrapperFrame 
     return Category.__type, Category
 end
 
