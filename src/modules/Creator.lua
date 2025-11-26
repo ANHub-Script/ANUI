@@ -476,7 +476,8 @@ function Creator.ParseRichText(Text, Parent, Properties)
 
     local function addImage(imgId)
         Order = Order + 1
-        local ImgSize = Properties.TextSize or 14
+        -- [FIX ERROR ARITMATIKA] Paksa konversi ke angka, default 14
+        local ImgSize = tonumber(Properties.TextSize) or 14
         
         local ImgFrame = Creator.Image(imgId, "Emoji", 0, "Temp", "RichText", true)
         

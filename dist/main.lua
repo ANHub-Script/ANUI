@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.59  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.60  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -542,7 +542,8 @@ end
 
 local function addImage(B)
 A=A+1
-local C=v.TextSize or 14
+
+local C=tonumber(v.TextSize)or 14
 
 local F=p.Image(B,"Emoji",0,"Temp","RichText",true)
 
@@ -1936,7 +1937,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.59",
+    "version": "1.0.60",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
