@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.69  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.70  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.69",
+    "version": "1.0.70",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9581,6 +9581,149 @@ aA.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
 
+
+if ap.Profile.Badges then
+local aA=ah("Frame",{
+Name="SidebarBadgeContainer",
+Size=UDim2.new(0,0,0,24),
+AutomaticSize=Enum.AutomaticSize.X,
+
+Position=UDim2.new(1,-6,0,az-4),
+AnchorPoint=Vector2.new(1,1),
+BackgroundTransparency=1,
+Parent=ap.UIElements.Main.Frame,
+ZIndex=5
+},{
+ah("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+HorizontalAlignment=Enum.HorizontalAlignment.Right,
+VerticalAlignment=Enum.VerticalAlignment.Center,
+Padding=UDim.new(0,4)
+})
+})
+
+for aB,d in ipairs(ap.Profile.Badges)do
+local e=d.Icon or"help-circle"
+
+local f=d.Title~=nil
+
+local g=ah("Frame",{
+Name="BadgeWrapper",
+BackgroundTransparency=1,
+Size=UDim2.new(0,0,0,24),
+AutomaticSize=Enum.AutomaticSize.X,
+Parent=aA,
+})
+
+local h=af.NewRoundFrame(6,"Squircle",{
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+Size=UDim2.new(1,0,1,0),
+Name="BG",
+Parent=g
+})
+
+local j=ah("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+Parent=g
+},{
+ah("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+VerticalAlignment=Enum.VerticalAlignment.Center,
+HorizontalAlignment=Enum.HorizontalAlignment.Center,
+Padding=UDim.new(0,4)
+}),
+ah("UIPadding",{
+PaddingLeft=UDim.new(0,f and 6 or 4),
+PaddingRight=UDim.new(0,f and 6 or 4),
+})
+})
+
+
+local l=af.Image(e,"BadgeIcon",0,Window.Folder,"Badge",false)
+l.Size=UDim2.new(0,14,0,14)
+l.BackgroundTransparency=1
+l.Parent=j
+
+local m=l:FindFirstChild"ImageLabel"or l:FindFirstChild"VideoFrame"
+if m then
+m.Size=UDim2.fromScale(1,1)
+m.ImageColor3=Color3.new(1,1,1)
+m.BackgroundTransparency=1
+end
+
+
+if f then
+ah("TextLabel",{
+Text=d.Title,
+TextSize=11,
+FontFace=Font.new(af.Font,Enum.FontWeight.SemiBold),
+TextColor3=Color3.new(1,1,1),
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.XY,
+LayoutOrder=2,
+Parent=j
+})
+end
+
+
+local p=ah("TextButton",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+Text="",
+ZIndex=10,
+Parent=g
+})
+
+if d.Callback then
+af.AddSignal(p.MouseButton1Click,function()
+d.Callback()
+end)
+end
+
+af.AddSignal(p.MouseEnter,function()
+aj(h,0.1,{ImageTransparency=0.2}):Play()
+end)
+af.AddSignal(p.MouseLeave,function()
+aj(h,0.1,{ImageTransparency=0.4}):Play()
+end)
+
+
+if d.Desc then
+local r
+local u
+local v
+local x=false
+
+af.AddSignal(p.MouseEnter,function()
+x=true
+u=task.spawn(function()
+task.wait(0.35)
+if x and not r then
+r=ak(d.Desc,am.ToolTipParent)
+local function updatePosition()
+if r then
+r.Container.Position=UDim2.new(0,ae.X,0,ae.Y-20)
+end
+end
+updatePosition()
+v=ae.Move:Connect(updatePosition)
+r:Open()
+end
+end)
+end)
+
+af.AddSignal(p.MouseLeave,function()
+x=false
+if u then task.cancel(u)u=nil end
+if v then v:Disconnect()v=nil end
+if r then r:Close()r=nil end
+end)
+end
+end
+end
+
 local aA=46
 local aB=ah("Frame",{
 Name="Avatar",
@@ -9798,8 +9941,7 @@ end
 if ap.Profile.Badges then
 local e=ah("Frame",{
 Name="BadgeContainer",
-Size=UDim2.new(0,0,0,28),
-AutomaticSize=Enum.AutomaticSize.X,
+Size=UDim2.new(1,0,0,28),
 Position=UDim2.new(1,-8,1,-8),
 AnchorPoint=Vector2.new(1,1),
 BackgroundTransparency=1,
@@ -9818,7 +9960,6 @@ for f,g in ipairs(ap.Profile.Badges)do
 local h=g.Icon or"help-circle"
 local j=g.Title~=nil
 
-
 local l=ah("Frame",{
 Name="BadgeWrapper",
 BackgroundTransparency=1,
@@ -9827,7 +9968,6 @@ AutomaticSize=Enum.AutomaticSize.X,
 Parent=e,
 })
 
-
 local m=af.NewRoundFrame(6,"Squircle",{
 ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
@@ -9835,7 +9975,6 @@ Size=UDim2.new(1,0,1,0),
 Name="BG",
 Parent=l
 })
-
 
 local p=ah("Frame",{
 Size=UDim2.new(1,0,1,0),
@@ -9854,7 +9993,6 @@ PaddingRight=UDim.new(0,j and 8 or 5),
 })
 })
 
-
 local r=af.Image(h,"BadgeIcon",0,Window.Folder,"Badge",false)
 r.Size=UDim2.new(0,16,0,16)
 r.BackgroundTransparency=1
@@ -9866,7 +10004,6 @@ u.Size=UDim2.fromScale(1,1)
 u.ImageColor3=Color3.new(1,1,1)
 u.BackgroundTransparency=1
 end
-
 
 if j then
 ah("TextLabel",{
@@ -9880,7 +10017,6 @@ LayoutOrder=2,
 Parent=p
 })
 end
-
 
 local v=ah("TextButton",{
 Size=UDim2.new(1,0,1,0),
@@ -9896,14 +10032,12 @@ g.Callback()
 end)
 end
 
-
 af.AddSignal(v.MouseEnter,function()
 aj(m,0.1,{ImageTransparency=0.2}):Play()
 end)
 af.AddSignal(v.MouseLeave,function()
 aj(m,0.1,{ImageTransparency=0.4}):Play()
 end)
-
 
 if g.Desc then
 local x

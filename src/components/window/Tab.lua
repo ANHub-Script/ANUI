@@ -211,6 +211,149 @@ function TabModule.New(Config, UIScale)
             end
         end
         
+        -- [FITUR BARU: SIDEBAR BADGES]
+        if Tab.Profile.Badges then
+             local SidebarBadgeContainer = New("Frame", {
+                Name = "SidebarBadgeContainer",
+                Size = UDim2.new(0, 0, 0, 24), 
+                AutomaticSize = Enum.AutomaticSize.X,
+                -- Pojok kanan bawah Banner + Padding
+                Position = UDim2.new(1, -6, 0, BannerH - 4), 
+                AnchorPoint = Vector2.new(1, 1),
+                BackgroundTransparency = 1,
+                Parent = Tab.UIElements.Main.Frame, 
+                ZIndex = 5
+            }, {
+                New("UIListLayout", {
+                    FillDirection = Enum.FillDirection.Horizontal,
+                    HorizontalAlignment = Enum.HorizontalAlignment.Right,
+                    VerticalAlignment = Enum.VerticalAlignment.Center,
+                    Padding = UDim.new(0, 4)
+                })
+            })
+            
+            for _, badge in ipairs(Tab.Profile.Badges) do
+                local BadgeIcon = badge.Icon or "help-circle"
+                -- Sidebar badge biasanya tidak pakai title karena sempit, tapi kita support
+                local HasTitle = badge.Title ~= nil 
+                
+                local BadgeWrapper = New("Frame", {
+                    Name = "BadgeWrapper",
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(0, 0, 0, 24), -- Ukuran lebih kecil (24px)
+                    AutomaticSize = Enum.AutomaticSize.X,
+                    Parent = SidebarBadgeContainer,
+                })
+
+                local BadgeBG = Creator.NewRoundFrame(6, "Squircle", {
+                    ImageColor3 = Color3.new(0,0,0),
+                    ImageTransparency = 0.4,
+                    Size = UDim2.new(1, 0, 1, 0),
+                    Name = "BG",
+                    Parent = BadgeWrapper
+                })
+                
+                local Content = New("Frame", {
+                    Size = UDim2.new(1, 0, 1, 0),
+                    BackgroundTransparency = 1,
+                    Parent = BadgeWrapper
+                }, {
+                    New("UIListLayout", {
+                        FillDirection = Enum.FillDirection.Horizontal,
+                        VerticalAlignment = Enum.VerticalAlignment.Center,
+                        HorizontalAlignment = Enum.HorizontalAlignment.Center,
+                        Padding = UDim.new(0, 4)
+                    }),
+                    New("UIPadding", {
+                        PaddingLeft = UDim.new(0, HasTitle and 6 or 4),
+                        PaddingRight = UDim.new(0, HasTitle and 6 or 4),
+                    })
+                })
+
+                -- Icon
+                local IconFrame = Creator.Image(BadgeIcon, "BadgeIcon", 0, Window.Folder, "Badge", false)
+                IconFrame.Size = UDim2.new(0, 14, 0, 14) -- Icon 14px
+                IconFrame.BackgroundTransparency = 1
+                IconFrame.Parent = Content
+                
+                local RealImage = IconFrame:FindFirstChild("ImageLabel") or IconFrame:FindFirstChild("VideoFrame")
+                if RealImage then
+                    RealImage.Size = UDim2.fromScale(1, 1)
+                    RealImage.ImageColor3 = Color3.new(1, 1, 1)
+                    RealImage.BackgroundTransparency = 1
+                end
+                
+                -- Title
+                if HasTitle then
+                    New("TextLabel", {
+                        Text = badge.Title,
+                        TextSize = 11, -- Font lebih kecil
+                        FontFace = Font.new(Creator.Font, Enum.FontWeight.SemiBold),
+                        TextColor3 = Color3.new(1,1,1),
+                        BackgroundTransparency = 1,
+                        AutomaticSize = Enum.AutomaticSize.XY,
+                        LayoutOrder = 2,
+                        Parent = Content
+                    })
+                end
+                
+                -- Click Area
+                local ClickArea = New("TextButton", {
+                    Size = UDim2.new(1, 0, 1, 0),
+                    BackgroundTransparency = 1,
+                    Text = "",
+                    ZIndex = 10,
+                    Parent = BadgeWrapper
+                })
+
+                if badge.Callback then
+                    Creator.AddSignal(ClickArea.MouseButton1Click, function()
+                        badge.Callback()
+                    end)
+                end
+                
+                Creator.AddSignal(ClickArea.MouseEnter, function()
+                     Tween(BadgeBG, 0.1, {ImageTransparency = 0.2}):Play()
+                end)
+                Creator.AddSignal(ClickArea.MouseLeave, function()
+                     Tween(BadgeBG, 0.1, {ImageTransparency = 0.4}):Play()
+                end)
+                
+                -- Tooltip Logic
+                if badge.Desc then
+                    local ToolTip
+                    local hoverTimer
+                    local MouseConn
+                    local IsHoveringBadge = false
+                    
+                    Creator.AddSignal(ClickArea.MouseEnter, function()
+                        IsHoveringBadge = true
+                        hoverTimer = task.spawn(function()
+                            task.wait(0.35) 
+                            if IsHoveringBadge and not ToolTip then
+                                ToolTip = CreateToolTip(badge.Desc, TabModule.ToolTipParent)
+                                local function updatePosition()
+                                    if ToolTip then
+                                        ToolTip.Container.Position = UDim2.new(0, Mouse.X, 0, Mouse.Y - 20)
+                                    end
+                                end
+                                updatePosition()
+                                MouseConn = Mouse.Move:Connect(updatePosition)
+                                ToolTip:Open()
+                            end
+                        end)
+                    end)
+                    
+                    Creator.AddSignal(ClickArea.MouseLeave, function()
+                        IsHoveringBadge = false
+                        if hoverTimer then task.cancel(hoverTimer) hoverTimer = nil end
+                        if MouseConn then MouseConn:Disconnect() MouseConn = nil end
+                        if ToolTip then ToolTip:Close() ToolTip = nil end
+                    end)
+                end
+            end
+        end
+        
         local AvatarS = 46
         local AvatarContainer = New("Frame", {
             Name = "Avatar",
@@ -424,12 +567,11 @@ function TabModule.New(Config, UIScale)
             BannerImg.Parent = Banner
         end
         
-        -- [FITUR BARU: BADGES DALAM BANNER (FIXED LAYOUT)]
+        -- [FITUR BARU: BADGES DALAM KONTEN]
         if Tab.Profile.Badges then
             local BadgeContainer = New("Frame", {
                 Name = "BadgeContainer",
-                Size = UDim2.new(0, 0, 0, 28), -- Auto size X
-                AutomaticSize = Enum.AutomaticSize.X,
+                Size = UDim2.new(1, 0, 0, 28),
                 Position = UDim2.new(1, -8, 1, -8), 
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundTransparency = 1,
@@ -448,7 +590,6 @@ function TabModule.New(Config, UIScale)
                 local BadgeIcon = badge.Icon or "help-circle"
                 local HasTitle = badge.Title ~= nil 
                 
-                -- [FIX] Wrapper Frame agar ukuran stabil
                 local BadgeWrapper = New("Frame", {
                     Name = "BadgeWrapper",
                     BackgroundTransparency = 1,
@@ -457,7 +598,6 @@ function TabModule.New(Config, UIScale)
                     Parent = BadgeContainer,
                 })
 
-                -- [FIX] Background sebagai Frame biasa (bukan parent button)
                 local BadgeBG = Creator.NewRoundFrame(6, "Squircle", {
                     ImageColor3 = Color3.new(0,0,0),
                     ImageTransparency = 0.4,
@@ -466,7 +606,6 @@ function TabModule.New(Config, UIScale)
                     Parent = BadgeWrapper
                 })
                 
-                -- [FIX] Container Konten (Icon + Text)
                 local Content = New("Frame", {
                     Size = UDim2.new(1, 0, 1, 0),
                     BackgroundTransparency = 1,
@@ -479,12 +618,11 @@ function TabModule.New(Config, UIScale)
                         Padding = UDim.new(0, 4)
                     }),
                     New("UIPadding", {
-                        PaddingLeft = UDim.new(0, HasTitle and 8 or 5), -- Padding kiri kanan
+                        PaddingLeft = UDim.new(0, HasTitle and 8 or 5), 
                         PaddingRight = UDim.new(0, HasTitle and 8 or 5),
                     })
                 })
 
-                -- Icon
                 local IconFrame = Creator.Image(BadgeIcon, "BadgeIcon", 0, Window.Folder, "Badge", false)
                 IconFrame.Size = UDim2.new(0, 16, 0, 16)
                 IconFrame.BackgroundTransparency = 1
@@ -497,7 +635,6 @@ function TabModule.New(Config, UIScale)
                     RealImage.BackgroundTransparency = 1
                 end
                 
-                -- Title
                 if HasTitle then
                     New("TextLabel", {
                         Text = badge.Title,
@@ -511,7 +648,6 @@ function TabModule.New(Config, UIScale)
                     })
                 end
                 
-                -- [FIX] Tombol Overlay Transparan untuk Interaksi
                 local ClickArea = New("TextButton", {
                     Size = UDim2.new(1, 0, 1, 0),
                     BackgroundTransparency = 1,
@@ -526,7 +662,6 @@ function TabModule.New(Config, UIScale)
                     end)
                 end
                 
-                -- Hover Effect
                 Creator.AddSignal(ClickArea.MouseEnter, function()
                      Tween(BadgeBG, 0.1, {ImageTransparency = 0.2}):Play()
                 end)
@@ -534,7 +669,6 @@ function TabModule.New(Config, UIScale)
                      Tween(BadgeBG, 0.1, {ImageTransparency = 0.4}):Play()
                 end)
                 
-                -- Tooltip
                 if badge.Desc then
                     local ToolTip
                     local hoverTimer

@@ -1,4 +1,5 @@
 local ANUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua"))();
+
 local Window = ANUI:CreateWindow({
 	Title = ".an hub | ANUI Library",
 	Author = "by .an • AdityaNugraha",
@@ -17,6 +18,7 @@ local Window = ANUI:CreateWindow({
 		Color = ColorSequence.new(Color3.fromHex("#30FF6A"), Color3.fromHex("#e7ff2f"))
 	}
 });
+
 do
 	Window:Tag({
 		Title = "v" .. ANUI.Version,
@@ -24,8 +26,69 @@ do
 		Color = Color3.fromHex("#1c1c1c")
 	});
 end;
-do
-end;
+
+-- ============================================================================
+-- GLOBAL PROFILE CONFIGURATION
+-- Konfigurasi profil utama disimpan di sini agar tidak perlu ditulis ulang
+-- ============================================================================
+local BaseProfile = {
+	Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
+	Avatar = "rbxassetid://84366761557806",
+	Status = true,
+	Badges = {
+		{
+			Icon = "geist:logo-discord",
+			Title = "Discord",
+			Desc = "Join ANHUB Discord",
+			Callback = function()
+				setclipboard("https://discord.gg/cy6uMRmeZ")
+				if ANUI then
+					ANUI:Notify({
+						Title = "Discord",
+						Content = "Invite link copied to clipboard!",
+						Icon = "copy",
+						Duration = 3
+					})
+				end
+			end
+		},
+		{
+			Icon = "youtube",
+			Desc = "Subscribe to YouTube",
+			Callback = function()
+				setclipboard("https://youtube.com/...")
+				if ANUI then
+					ANUI:Notify({
+						Title = "YouTube",
+						Content = "Channel link copied!",
+						Icon = "check",
+						Duration = 3
+					})
+				end
+			end
+		}
+	}
+}
+
+-- Fungsi Helper untuk menggabungkan BaseProfile dengan Data Custom (Title/Desc)
+local function MakeProfile(customData)
+	local profile = {}
+	-- Copy data dasar
+	for k, v in pairs(BaseProfile) do
+		profile[k] = v
+	end
+	-- Timpa dengan data custom jika ada
+	if customData then
+		for k, v in pairs(customData) do
+			profile[k] = v
+		end
+	end
+	return profile
+end
+
+-- ============================================================================
+-- UTILITIES
+-- ============================================================================
 local function parseJSON(luau_table, indent, level, visited)
 	indent = indent or 2;
 	level = level or 0;
@@ -131,61 +194,39 @@ local function tableToClipboard(luau_table, indent)
 	return jsonString;
 end;
 
-do
--- 1. SIDEBAR CARD (Hanya Hiasan, Tidak Bisa Diklik)
-Window:Tab({
-    Profile = {
-        Title = "AdityaNugraha",
-        Desc = "Admin",
-        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-        Avatar = "rbxassetid://84366761557806",
-        Status = true
-    },
-    SidebarProfile = true -- AKTIFKAN MODE SIDEBAR CARD
-})
+-- ============================================================================
+-- UI IMPLEMENTATION
+-- ============================================================================
 
--- 2. TAB BIASA (Isinya ada Profil Header Besar)
-local UserTab = Window:Tab({
-    Title = "Example Profile Content",
-    Icon = "user",
-    Profile = { -- Profile data untuk header di dalam konten
-        Title = "User Settings",
-        Desc = "Manage your account",
-        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-        Avatar = "rbxassetid://84366761557806",
-        Badges = {
-            {
-                Icon = "geist:logo-discord", -- Ikon YouTube
-                Title = "ANHUB Roblox",
-                Desc = "Click For Copy Link discord",
-                Callback = function()
-                    -- 1. Salin Link ke Clipboard
-                    setclipboard("https://discord.gg/cy6uMRmeZ")
-                    
-                    -- 2. Tampilkan Notifikasi (Opsional, agar user tahu)
-                    -- Pastikan variable 'ANUI' bisa diakses di sini
-                    if ANUI then
-                        ANUI:Notify({
-                            Title = "Copy Link Discord!",
-                            Content = "Discord link copied to clipboard.",
-                            Icon = "geist:logo-discord",
-                            Duration = 3
-                        })
-                    end
-                end
-            },
-            {
-                Icon = "rbxassetid://84366761557806", -- Icon Discord
-                Callback = function()
-                    setclipboard("https://discord.gg/...")
-                end
-            }
-        }
-    },
-    SidebarProfile = false -- MATIKAN MODE SIDEBAR CARD (Jadi tombol biasa)
-})
-UserTab:Button({ Title = "Change Password", Callback = function() end })
+do
+	-- 1. SIDEBAR CARD (Hanya Hiasan, Tidak Bisa Diklik)
+	-- Menggunakan MakeProfile agar lebih ringkas
+	Window:Tab({
+		Profile = MakeProfile({
+			Title = "AdityaNugraha",
+			Desc = "Admin"
+		}),
+		SidebarProfile = true -- AKTIFKAN MODE SIDEBAR CARD
+	})
+
+	-- 2. TAB BIASA (Isinya ada Profil Header Besar)
+	local UserTab = Window:Tab({
+		Title = "Example Profile Content",
+		Icon = "user",
+		
+		-- Menggunakan MakeProfile lagi, kali ini untuk header konten
+		Profile = MakeProfile({
+			Title = "User Settings",
+			Desc = "Manage your account details here"
+		}),
+		
+		SidebarProfile = false -- Mode Tab Biasa
+	})
+	
+	UserTab:Button({ Title = "Change Password", Callback = function() end })
+	UserTab:Button({ Title = "Log Out", Icon = "log-out", Callback = function() end })
 end;
+
 local ElementsSection = Window:Section({
 	Title = "Elements"
 });
@@ -195,18 +236,15 @@ local ConfigUsageSection = Window:Section({
 local OtherSection = Window:Section({
 	Title = "Other"
 });
+
 do
 	local ToggleTab = ElementsSection:Tab({
 		Title = "Toggle",
 		Icon = "arrow-left-right",
-    Profile = { -- Profile data untuk header di dalam konten
-        Title = "User Settings",
-        Desc = "Manage your account",
-        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-        Avatar = "rbxassetid://84366761557806"
-    },
-    SidebarProfile = false -- MATIKAN MODE SIDEBAR CARD (Jadi tombol biasa)
+		Profile = MakeProfile({ Title = "Toggle Settings", Desc = "Configure toggles" }),
+		SidebarProfile = false
 	});
+	
 	ToggleTab:Paragraph({
 		Title = "Toggle Examples",
 		Desc = "This tab showcases all supported Toggle features: classic toggle with animated drag, checkbox variant, per-item icons and icon sizing, default values, locking, global callbacks, and programmatic updates (Set, SetTitle, SetDesc)."
@@ -344,6 +382,7 @@ do
 		end
 	});
 end;
+
 do
 	local ButtonTab = ElementsSection:Tab({
 		Title = "Button",
@@ -463,6 +502,7 @@ do
 		end
 	});
 end;
+
 do
 	local GroupTab = ElementsSection:Tab({
 		Title = "Groups",
@@ -640,6 +680,7 @@ do
 		});
 	end;
 end;
+
 do
 	local InputTab = ElementsSection:Tab({
 		Title = "Input",
@@ -682,6 +723,7 @@ do
 		Locked = true
 	});
 end;
+
 do
 	local DropdownTab = ElementsSection:Tab({
 		Title = "Dropdown",
@@ -823,9 +865,9 @@ do
 				Icon = "file-text"
 			}
 		},
-  SearchBarEnabled = true,
-  Callback = function(option) print("Selected:", option.Title) end
-})
+		SearchBarEnabled = true,
+		Callback = function(option) print("Selected:", option.Title) end
+	})
 	DropdownTab:Space();
 	DropdownTab:Dropdown({
 		Title = "Multi-Select",
