@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.64  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.65  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -64,6 +64,7 @@ ToggleBar="White",
 Checkbox="Button",
 CheckboxIcon="White",
 }end function a.b()
+
 local b=(cloneref or clonereference or function(b)return b end)
 
 local d=b(game:GetService"RunService")
@@ -496,118 +497,7 @@ function p.AddIcons(r,u)
 return l.AddIcons(r,u)
 end
 
-
-
-local function GetSafeNumber(r,u)
-u=u or 14
-if type(r)=="number"then return r end
-if type(r)=="string"then
-local v=tonumber(r)
-return v or u
-end
-return u
-end
-
-
-function p.ParseRichText(r,u,v)
-v=v or{}
-
-if not r or type(r)~="string"or not string.find(r,"%[emoji:.+%]")then
-return p.New("TextLabel",v,{})
-end
-
-local x=Instance.new"Frame"
-x.Name="RichTextContainer"
-x.BackgroundTransparency=1
-x.Size=v.Size or UDim2.new(1,0,0,0)
-x.AutomaticSize=Enum.AutomaticSize.XY
-
-local z=Instance.new"UIListLayout"
-z.FillDirection=Enum.FillDirection.Horizontal
-z.VerticalAlignment=Enum.VerticalAlignment.Center
-z.SortOrder=Enum.SortOrder.LayoutOrder
-z.Padding=UDim.new(0,2)
-z.Parent=x
-
-local A=0
-
-
-local B=GetSafeNumber(v.TextSize,14)
-
-local function addText(C)
-if C==""then return end
-A=A+1
-
-local F={}
-for G,H in pairs(v)do
-if G~="Text"and G~="Parent"then
-F[G]=H
-end
-end
-
-F.BackgroundTransparency=1
-F.AutomaticSize=Enum.AutomaticSize.XY
-F.Size=UDim2.new(0,0,0,0)
-F.TextSize=B
-
-local G=p.New("TextLabel",F,{})
-G.Text=C
-G.Parent=x
-G.LayoutOrder=A
-end
-
-local function addImage(C)
-A=A+1
-
-local F=p.Image(C,"Emoji",0,"Temp","RichText",true)
-
-
-local G=B+4
-
-F.Size=UDim2.new(0,G,0,G)
-F.BackgroundTransparency=1
-F.LayoutOrder=A
-F.Parent=x
-
-if v.ThemeTag and v.ThemeTag.TextColor3 then
-local H=F:FindFirstChild"ImageLabel"
-if H then
-p.AddThemeObject(H,{ImageColor3=v.ThemeTag.TextColor3})
-end
-end
-end
-
-local C=1
-for F,G,H in string.gmatch(r,"()%[emoji:(.-)%]()")do
-local J=string.sub(r,C,F-1)
-addText(J)
-addImage(H)
-C=G+1
-end
-
-local F=string.sub(r,C)
-addText(F)
-
-return x
-end
-
 function p.New(r,u,v)
-
-if r=="TextLabel"and u and type(u.Text)=="string"and string.find(u.Text,"%[emoji:.+%]")then
-local x=p.ParseRichText(u.Text,nil,u)
-
-if u.Parent then
-x.Parent=u.Parent
-end
-
-for z,A in next,v or{}do
-A.Parent=x
-end
-
-return x
-end
-
-
 local x=Instance.new(r)
 
 for z,A in next,p.DefaultProperties[r]or{}do
@@ -838,8 +728,8 @@ return nil
 end
 
 function p.ConvertGifToMp4(v,x,z,A)
-local B="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"local C=
-x.."/"..z.."-"..A..".mp4"
+local B="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+local C=x.."/"..z.."-"..A..".mp4"
 if not B then return nil end
 local F=h:JSONEncode{
 tasks={
@@ -891,7 +781,65 @@ end
 if N then break end
 end
 if not N then return nil end
-local O=DownloadFile(N,targetWebm)
+local O=DownloadFile(N,C)
+return O
+end
+
+function p.ConvertGifToWebm(v,x,z,A)
+local B="eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+local C=x.."/"..z.."-"..A..".webm"
+if not B then return nil end
+local F=h:JSONEncode{
+tasks={
+["import-1"]={operation="import/url",url=v},
+["convert-1"]={operation="convert",input="import-1",input_format="gif",output_format="webm",video_codec="vp9"},
+["export-1"]={operation="export/url",input="convert-1"}
+}
+}
+local G,H=pcall(function()
+return p.Request{
+Url="https://api.cloudconvert.com/v2/jobs",
+Method="POST",
+Headers={Authorization=
+"Bearer "..B,
+["Content-Type"]="application/json",Accept=
+"application/json",
+},
+Body=F,
+}
+end)
+if not G or not H or not H.Body then return nil end
+local J,L=pcall(function()return h:JSONDecode(H.Body)end)
+if not J or not L or not L.data or not L.data.id then return nil end
+local M=L.data.id
+local N
+for O=1,60 do
+task.wait(0.5)
+local P,Q=pcall(function()
+return p.Request{
+Url="https://api.cloudconvert.com/v2/jobs/"..M,
+Method="GET",
+Headers={Authorization=
+"Bearer "..B,Accept=
+"application/json",
+}
+}
+end)
+if P and Q and Q.Body then
+local R,S=pcall(function()return h:JSONDecode(Q.Body)end)
+if R and S and S.data and S.data.tasks then
+for T,U in pairs(S.data.tasks)do
+if U.operation=="export/url"and U.status=="finished"and U.result and U.result.files and U.result.files[1]and U.result.files[1].url then
+N=U.result.files[1].url
+break
+end
+end
+end
+end
+if N then break end
+end
+if not N then return nil end
+local O=DownloadFile(N,C)
 return O
 end
 
@@ -1143,6 +1091,7 @@ end
 
 
 return p end function a.c()
+
 local aa={}
 
 
@@ -1894,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.64",
+    "version": "1.0.65",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

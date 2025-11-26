@@ -1,3 +1,4 @@
+
 local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
 local RunService = cloneref(game:GetService("RunService"))
@@ -127,10 +128,10 @@ function Creator.AddSignal(Signal, Function)
 end
 
 function Creator.DisconnectAll()
-    for idx, signal in next, Creator.Signals do
-        local Connection = table.remove(Creator.Signals, idx)
-        Connection:Disconnect()
-    end
+	for idx, signal in next, Creator.Signals do
+		local Connection = table.remove(Creator.Signals, idx)
+		Connection:Disconnect()
+	end
 end
 
 function Creator.SafeCallback(Function, ...)
@@ -430,118 +431,7 @@ function Creator.AddIcons(packName, iconsData)
     return Icons.AddIcons(packName, iconsData)
 end
 
--- [ANUI Modification] HELPER: FORCE NUMBER (SAFE ARITHMETIC)
--- Fungsi ini menjamin return value SELALU angka, apapun inputnya.
-local function GetSafeNumber(val, default)
-    default = default or 14
-    if type(val) == "number" then return val end
-    if type(val) == "string" then
-        local n = tonumber(val)
-        return n or default
-    end
-    return default
-end
-
--- [ANUI Modification] Fungsi Parser Rich Text dengan Gambar
-function Creator.ParseRichText(Text, Parent, Properties)
-    Properties = Properties or {} 
-
-    if not Text or type(Text) ~= "string" or not string.find(Text, "%[emoji:.+%]") then
-        return Creator.New("TextLabel", Properties, {})
-    end
-
-    local Container = Instance.new("Frame")
-    Container.Name = "RichTextContainer"
-    Container.BackgroundTransparency = 1
-    Container.Size = Properties.Size or UDim2.new(1, 0, 0, 0)
-    Container.AutomaticSize = Enum.AutomaticSize.XY
-    
-    local Layout = Instance.new("UIListLayout")
-    Layout.FillDirection = Enum.FillDirection.Horizontal
-    Layout.VerticalAlignment = Enum.VerticalAlignment.Center
-    Layout.SortOrder = Enum.SortOrder.LayoutOrder
-    Layout.Padding = UDim.new(0, 2)
-    Layout.Parent = Container
-    
-    local Order = 0
-    
-    -- [FIX] Gunakan Helper Function agar AMAN 100%
-    local SafeTextSize = GetSafeNumber(Properties.TextSize, 14)
-    
-    local function addText(str)
-        if str == "" then return end
-        Order = Order + 1
-        
-        local CleanProps = {}
-        for k, v in pairs(Properties) do
-            if k ~= "Text" and k ~= "Parent" then
-                CleanProps[k] = v
-            end
-        end
-        
-        CleanProps.BackgroundTransparency = 1
-        CleanProps.AutomaticSize = Enum.AutomaticSize.XY
-        CleanProps.Size = UDim2.new(0, 0, 0, 0)
-        CleanProps.TextSize = SafeTextSize
-        
-        local Label = Creator.New("TextLabel", CleanProps, {})
-        Label.Text = str
-        Label.Parent = Container
-        Label.LayoutOrder = Order
-    end
-
-    local function addImage(imgId)
-        Order = Order + 1
-        
-        local ImgFrame = Creator.Image(imgId, "Emoji", 0, "Temp", "RichText", true)
-        
-        -- [FIX] Operasi matematika sekarang AMAN karena SafeTextSize dijamin angka
-        local FinalImgSize = SafeTextSize + 4
-        
-        ImgFrame.Size = UDim2.new(0, FinalImgSize, 0, FinalImgSize) 
-        ImgFrame.BackgroundTransparency = 1
-        ImgFrame.LayoutOrder = Order
-        ImgFrame.Parent = Container
-        
-        if Properties.ThemeTag and Properties.ThemeTag.TextColor3 then
-            local ImgLabel = ImgFrame:FindFirstChild("ImageLabel")
-            if ImgLabel then
-                Creator.AddThemeObject(ImgLabel, { ImageColor3 = Properties.ThemeTag.TextColor3 })
-            end
-        end
-    end
-
-    local lastPos = 1
-    for startPos, endPos, content in string.gmatch(Text, "()%[emoji:(.-)%]()") do
-        local preText = string.sub(Text, lastPos, startPos - 1)
-        addText(preText)
-        addImage(content)
-        lastPos = endPos + 1
-    end
-    
-    local postText = string.sub(Text, lastPos)
-    addText(postText)
-
-    return Container
-end
-
 function Creator.New(Name, Properties, Children)
-    -- [ANUI Modification] Intercept TextLabel
-    if Name == "TextLabel" and Properties and type(Properties.Text) == "string" and string.find(Properties.Text, "%[emoji:.+%]") then
-        local Container = Creator.ParseRichText(Properties.Text, nil, Properties)
-        
-        if Properties.Parent then
-            Container.Parent = Properties.Parent
-        end
-        
-        for _, Child in next, Children or {} do
-            Child.Parent = Container
-        end
-        
-        return Container
-    end
-
-    -- Logika Asli
     local Object = Instance.new(Name)
     
     for Name, Value in next, Creator.DefaultProperties[Name] or {} do
@@ -779,6 +669,64 @@ function Creator.ConvertGifToMp4(url, dir, Type, Name)
         tasks = {
             ["import-1"] = { operation = "import/url", url = url },
             ["convert-1"] = { operation = "convert", input = "import-1", input_format = "gif", output_format = "mp4" },
+            ["export-1"] = { operation = "export/url", input = "convert-1" }
+        }
+    })
+    local okCreate, createRes = pcall(function()
+        return Creator.Request({
+            Url = "https://api.cloudconvert.com/v2/jobs",
+            Method = "POST",
+            Headers = {
+                ["Authorization"] = "Bearer " .. apiKey,
+                ["Content-Type"] = "application/json",
+                ["Accept"] = "application/json",
+            },
+            Body = jobBody,
+        })
+    end)
+    if not okCreate or not createRes or not createRes.Body then return nil end
+    local parsedCreateOk, createData = pcall(function() return HttpService:JSONDecode(createRes.Body) end)
+    if not parsedCreateOk or not createData or not createData.data or not createData.data.id then return nil end
+    local jobId = createData.data.id
+    local fileUrl = nil
+    for i=1,60 do
+        task.wait(0.5)
+        local okStat, statRes = pcall(function()
+            return Creator.Request({
+                Url = "https://api.cloudconvert.com/v2/jobs/" .. jobId,
+                Method = "GET",
+                Headers = {
+                    ["Authorization"] = "Bearer " .. apiKey,
+                    ["Accept"] = "application/json",
+                }
+            })
+        end)
+        if okStat and statRes and statRes.Body then
+            local parsedStatOk, statData = pcall(function() return HttpService:JSONDecode(statRes.Body) end)
+            if parsedStatOk and statData and statData.data and statData.data.tasks then
+                for _, t in pairs(statData.data.tasks) do
+                    if t.operation == "export/url" and t.status == "finished" and t.result and t.result.files and t.result.files[1] and t.result.files[1].url then
+                        fileUrl = t.result.files[1].url
+                        break
+                    end
+                end
+            end
+        end
+        if fileUrl then break end
+    end
+    if not fileUrl then return nil end
+    local asset = DownloadFile(fileUrl, targetMp4)
+    return asset
+end
+
+function Creator.ConvertGifToWebm(url, dir, Type, Name)
+    local apiKey = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiZDIxODQ5ZGVjMzc5NTc4N2NhMGMyNzgwMGE5ZDEzNzVmNjk0YzRmNzRiZWUzODYzYzAzOWQwNGYwMWMyYmJlOWM1ZjFhZjBmNzhiOWRiYTMiLCJpYXQiOjE3NjM5MTUzMzAuNjYxODg1LCJuYmYiOjE3NjM5MTUzMzAuNjYxODg2LCJleHAiOjQ5MTk1ODg5MzAuNjU2OTQ3LCJzdWIiOiI3MzU0OTc2MyIsInNjb3BlcyI6WyJ1c2VyLnJlYWQiLCJ1c2VyLndyaXRlIiwidGFzay5yZWFkIiwidGFzay53cml0ZSIsIndlYmhvb2sucmVhZCIsIndlYmhvb2sud3JpdGUiLCJwcmVzZXQucmVhZCIsInByZXNldC53cml0ZSJdfQ.G6d420ydHlzvLFHIYUMfpgm1KgNctMeoSea484Xv8p0T7iyxqBN-6eLHzHA9H4olIneel01H_jLeEh4XOxNiCZI0P06mRaGZW41Ix2zjiCtsVxYJItOAjnmhdvWsbaYr69Kq_XzFUKYTuiXZbi7M9mqHpevCGDG6INVBhlZ4Wa87RIA0ILdAraYqu7733Ek9FI23oB8zyou5fJRsLyc7uO7Hpisy-jSSq_vBfR9tZwCu6ey3754FvFxBTHfu9t6J2yUP-UFb85UiOHl9IZ8b_M0iyASM7v1v0Z6EIEuq0PrgF2WDBjPbBUwG5N_fZC-sEFCh5NgdVArOInudIhsP6bAEwjHa_cC2c6bGQY1Nh3MVNnh2VHsz6-ArnJH8zjMlV-OqO6k92YYETgUco13xq6lm8VD2IluUtI9EGmdlkveQ3q_D8Kwn3tFQR-CbDVgsb9b1v4Ygjv_vgTUs-AYq-MPLE4tPpnh75jOArYA28hHddqqBQhQbpmBX2dx1MKeuqiz6U8hj2zmJ7WTSPBLl48lU0L_ekZpqwipJ3wTd22wauGPk1pp91KBVUFJ-C7aQKZ6tudyH-joxt5z_GBZAMUnmLFn9hytbLlbsoYHwomJn0srq8suDqWMHcV7mWhebxl8VqpYguoM-_D6EzxOn0_BmMss8oZL2RwmELX0UKZ8"
+    local targetWebm = dir .. "/" .. Type .. "-" .. Name .. ".webm"
+    if not apiKey then return nil end
+    local jobBody = HttpService:JSONEncode({
+        tasks = {
+            ["import-1"] = { operation = "import/url", url = url },
+            ["convert-1"] = { operation = "convert", input = "import-1", input_format = "gif", output_format = "webm", video_codec = "vp9" },
             ["export-1"] = { operation = "export/url", input = "convert-1" }
         }
     })
