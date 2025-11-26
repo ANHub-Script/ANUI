@@ -430,9 +430,10 @@ function Creator.AddIcons(packName, iconsData)
     return Icons.AddIcons(packName, iconsData)
 end
 
--- [ANUI Modification] Fungsi Parser Rich Text dengan Gambar
+-- [ANUI Modification] Fungsi Parser Rich Text dengan Gambar (SAFE MODE)
 function Creator.ParseRichText(Text, Parent, Properties)
-    if not Text or not string.find(Text, "%[emoji:.+%]") then
+    -- Validasi input awal
+    if not Text or type(Text) ~= "string" or not string.find(Text, "%[emoji:.+%]") then
         return Creator.New("TextLabel", Properties, {})
     end
 
@@ -451,37 +452,51 @@ function Creator.ParseRichText(Text, Parent, Properties)
     
     local Order = 0
     
+    -- Ambil ukuran teks dengan aman
+    local RawSize = Properties.TextSize
+    local ImgSize = 14 -- Default
+    if type(RawSize) == "number" then
+        ImgSize = RawSize
+    elseif type(RawSize) == "string" then
+        ImgSize = tonumber(RawSize) or 14
+    end
+    
     local function addText(str)
         if str == "" then return end
         Order = Order + 1
         
-        -- [FIX STACK OVERFLOW] Salin properti dan HAPUS Text agar tidak rekursif
+        -- [FIX RECURSION] Bersihkan properti, hapus Text dan Parent
         local CleanProps = {}
-        for k, v in pairs(Properties) do
-            if k ~= "Text" and k ~= "Parent" then
-                CleanProps[k] = v
+        if Properties then
+            for k, v in pairs(Properties) do
+                if k ~= "Text" and k ~= "Parent" then
+                    CleanProps[k] = v
+                end
             end
         end
         
+        -- Paksa properti dasar
         CleanProps.BackgroundTransparency = 1
         CleanProps.AutomaticSize = Enum.AutomaticSize.XY
+        CleanProps.Size = UDim2.new(0, 0, 0, 0)
         
-        -- Panggil New dengan properti yang sudah "bersih" dari [emoji:...]
+        -- Panggil New dengan properti yang AMAN (tidak mengandung [emoji:...])
         local Label = Creator.New("TextLabel", CleanProps, {})
         Label.Text = str
         Label.Parent = Container
         Label.LayoutOrder = Order
-        Label.Size = UDim2.new(0, 0, 0, 0)
     end
 
     local function addImage(imgId)
         Order = Order + 1
-        -- [FIX ERROR ARITMATIKA] Paksa konversi ke angka, default 14
-        local ImgSize = tonumber(Properties.TextSize) or 14
         
         local ImgFrame = Creator.Image(imgId, "Emoji", 0, "Temp", "RichText", true)
         
-        ImgFrame.Size = UDim2.new(0, ImgSize + 4, 0, ImgSize + 4) 
+        -- [FIX ARITHMETIC] Pastikan ImgSize adalah angka
+        local SizeNum = tonumber(ImgSize) or 14
+        local FinalSize = SizeNum + 4
+        
+        ImgFrame.Size = UDim2.new(0, FinalSize, 0, FinalSize) 
         ImgFrame.BackgroundTransparency = 1
         ImgFrame.LayoutOrder = Order
         ImgFrame.Parent = Container
@@ -495,12 +510,11 @@ function Creator.ParseRichText(Text, Parent, Properties)
     end
 
     local lastPos = 1
+    -- Parsing aman menggunakan pcall jika regex kompleks (meski ini sederhana)
     for startPos, endPos, content in string.gmatch(Text, "()%[emoji:(.-)%]()") do
         local preText = string.sub(Text, lastPos, startPos - 1)
         addText(preText)
-        
         addImage(content)
-        
         lastPos = endPos + 1
     end
     
@@ -512,7 +526,8 @@ end
 
 function Creator.New(Name, Properties, Children)
     -- [ANUI Modification] Intercept pembuatan TextLabel
-    if Name == "TextLabel" and Properties and Properties.Text and string.find(Properties.Text, "%[emoji:.+%]") then
+    -- Pastikan validasi ketat untuk menghindari loop
+    if Name == "TextLabel" and Properties and type(Properties.Text) == "string" and string.find(Properties.Text, "%[emoji:.+%]") then
         local Container = Creator.ParseRichText(Properties.Text, nil, Properties)
         
         if Properties.Parent then
