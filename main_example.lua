@@ -132,81 +132,31 @@ local function tableToClipboard(luau_table, indent)
 end;
 
 do
-
--- TAB DENGAN PROFIL
-local AboutTab = Window:Tab({
-    Title = "User Info", -- Judul Tab di Sidebar
-    Icon = "user",       -- Ikon Tab di Sidebar
-    
-    -- [FITUR BARU] Konfigurasi Profile Header
+-- 1. SIDEBAR CARD (Hanya Hiasan, Tidak Bisa Diklik)
+Window:Tab({
     Profile = {
-        Title  = "AdityaNugraha", -- Nama Besar (Username)
-        Desc   = "ANUI Developer | Full Stack", -- Deskripsi kecil di bawah nama (Bio)
-        
-        -- Gambar Banner (Bisa URL Link HTTP atau rbxassetid://)
+        Title = "AdityaNugraha",
+        Desc = "Admin",
         Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-        
-        -- Gambar Avatar (Foto Profil)
-        Avatar = "rbxassetid://84366761557806", 
-        
-        -- Status Online (Dot hijau di avatar)
-        Status = true 
-    }
+        Avatar = "rbxassetid://84366761557806",
+        Status = true
+    },
+    SidebarProfile = true -- AKTIFKAN MODE SIDEBAR CARD
 })
-	local AboutSection = AboutTab:Section({
-		Title = "About ANUI",
-		Opened = true
-	});
-	AboutSection:Image({
-		Image = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
-		AspectRatio = "16:9",
-		Radius = 9
-	});
-	AboutSection:Space({
-		Columns = 3
-	});
-	AboutSection:Section({
-		Title = "What is ANUI?",
-		TextSize = 24,
-		FontWeight = Enum.FontWeight.SemiBold
-	});
-	AboutSection:Space();
-	AboutSection:Section({
-		Title = "ANUI is a stylish, open-source UI (User Interface) library specifically designed for Roblox Script Hubs.\nDeveloped by AdityaNugraha (.an, Aditya).\nIt aims to provide developers with a modern, customizable, and easy-to-use toolkit for creating visually appealing interfaces within Roblox.\nThe project is primarily written in Lua (Luau), the scripting language used in Roblox.",
-		TextSize = 18,
-		TextTransparency = 0.35,
-		FontWeight = Enum.FontWeight.Medium
-	});
-	AboutTab:Space({
-		Columns = 4
-	});
-	AboutTab:Button({
-		Title = "Export ANUI JSON (copy)",
-		Color = Color3.fromHex("#a2ff30"),
-		Justify = "Center",
-		IconAlign = "Left",
-		Icon = "",
-		Callback = function()
-			tableToClipboard(ANUI);
-			ANUI:Notify({
-				Title = "ANUI JSON",
-				Content = "Copied to Clipboard!"
-			});
-		end
-	});
-	AboutTab:Space({
-		Columns = 1
-	});
-	AboutTab:Button({
-		Title = "Destroy Window",
-		Color = Color3.fromHex("#ff4830"),
-		Justify = "Center",
-		Icon = "shredder",
-		IconAlign = "Left",
-		Callback = function()
-			Window:Destroy();
-		end
-	});
+
+-- 2. TAB BIASA (Isinya ada Profil Header Besar)
+local UserTab = Window:Tab({
+    Title = "Example Profile Content",
+    Icon = "user",
+    Profile = { -- Profile data untuk header di dalam konten
+        Title = "User Settings",
+        Desc = "Manage your account",
+        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
+        Avatar = "rbxassetid://84366761557806"
+    },
+    SidebarProfile = false -- MATIKAN MODE SIDEBAR CARD (Jadi tombol biasa)
+})
+UserTab:Button({ Title = "Change Password", Callback = function() end })
 end;
 local ElementsSection = Window:Section({
 	Title = "Elements"

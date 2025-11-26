@@ -42,9 +42,9 @@ function TabModule.New(Config, UIScale)
         Locked = Config.Locked,
         ShowTabTitle = Config.ShowTabTitle,
         
-        -- [ANUI] Property Profile & Filter Baru
+        -- [ANUI] Property Profile
         Profile = Config.Profile,
-        SidebarProfile = Config.SidebarProfile, -- Boolean: Jika true, sidebar jadi kartu & locked
+        SidebarProfile = Config.SidebarProfile, 
         
         Selected = false,
         Index = nil,
@@ -56,15 +56,13 @@ function TabModule.New(Config, UIScale)
         
         Gap = Window.NewElements and 1 or 6,
     }
-    
-    -- Helper Variable untuk Cek Mode
+
     local IsSidebarCard = Tab.Profile and Tab.SidebarProfile
     
-    -- Jika mode SidebarProfile aktif, otomatis kunci tab
     if IsSidebarCard then
         Tab.Locked = true
     end
-
+    
     TabModule.TabCount = TabModule.TabCount + 1
     
     local TabIndex = TabModule.TabCount
@@ -149,7 +147,6 @@ function TabModule.New(Config, UIScale)
     local Icon2
 
     -- [LOGIKA ICON BIASA]
-    -- Hanya tampil jika BUKAN Mode Sidebar Card
     if Tab.Icon and not IsSidebarCard then 
         Icon = Creator.Image(Tab.Icon, Tab.Icon .. ":" .. Tab.Title, 0, Window.Folder, Tab.__type, true, Tab.IconThemed, "TabIcon")
         Icon.Size = UDim2.new(0,16,0,16)
@@ -165,8 +162,7 @@ function TabModule.New(Config, UIScale)
         TextOffset = -30
     end
     
-    -- [LOGIKA IMAGE BESAR (Existing)]
-    -- Hanya tampil jika BUKAN Mode Sidebar Card
+    -- [LOGIKA IMAGE BESAR]
     if Tab.Image and not IsSidebarCard then
         local Image = Creator.Image(Tab.Image, Tab.Title, Tab.UICorner, Window.Folder, "TabImage", false)
         Image.Size = UDim2.new(1,0,0,100)
@@ -186,10 +182,8 @@ function TabModule.New(Config, UIScale)
         Tab.UIElements.Image = Image
     end
 
-    -- [LOGIKA SIDEBAR PROFILE CARD]
-    -- Hanya tampil jika SidebarProfile = true
+    -- [SIDEBAR PROFILE CARD]
     if IsSidebarCard then
-        -- 1. Hapus elemen default
         local Layout = Tab.UIElements.Main.Frame:FindFirstChild("UIListLayout")
         if Layout then Layout:Destroy() end
         local Padding = Tab.UIElements.Main.Frame:FindFirstChild("UIPadding")
@@ -197,11 +191,9 @@ function TabModule.New(Config, UIScale)
         local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
         if DefLabel then DefLabel:Destroy() end
         
-        -- 2. Atur Ukuran & Style
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
         Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 85)
         
-        -- 3. Buat Banner
         local BannerH = 40
         if Tab.Profile.Banner then
             local BannerFrame = Creator.Image(
@@ -219,7 +211,6 @@ function TabModule.New(Config, UIScale)
             end
         end
         
-        -- 4. Buat Avatar
         local AvatarS = 34
         local AvatarContainer = New("Frame", {
             Name = "Avatar",
@@ -274,7 +265,6 @@ function TabModule.New(Config, UIScale)
             })
         end
 
-        -- 5. Teks
         local TextC = New("Frame", {
             Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH),
             Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH),
@@ -337,8 +327,7 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [HEADER PROFIL DALAM KONTEN]
-    -- Selalu tampil jika Tab.Profile ada (meskipun SidebarProfile=false)
+    -- [HEADER PROFIL DALAM KONTEN (FIXED TUMPANG TINDIH)]
     if Tab.Profile then
         local ProfileHeight = 170 
         local BannerHeight = 100  
@@ -414,6 +403,28 @@ function TabModule.New(Config, UIScale)
             })
         end
 
+        -- [FIX UTAMA: Container Teks dengan UIListLayout]
+        -- Kita gunakan Frame baru untuk menampung Title dan Desc
+        local TextContainer = New("Frame", {
+            Name = "TextContainer",
+            BackgroundTransparency = 1,
+            AutomaticSize = Enum.AutomaticSize.Y,
+            Size = UDim2.new(1, -(14 + AvatarSize + 14), 0, 0), -- Sisa lebar di kanan avatar
+            -- Posisi di kanan avatar, sedikit di bawah banner
+            Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 6), 
+            Parent = ProfileHeader
+        }, {
+            -- UIListLayout akan otomatis mengatur jarak antara Title dan Desc
+            New("UIListLayout", {
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0, 2), -- Jarak 2 pixel antara Title dan Desc
+                FillDirection = Enum.FillDirection.Vertical,
+                VerticalAlignment = Enum.VerticalAlignment.Top,
+                HorizontalAlignment = Enum.HorizontalAlignment.Left
+            })
+        })
+
+        -- Title (Username)
         local TitleLabel = New("TextLabel", {
             Text = Tab.Profile.Title or Tab.Title,
             TextSize = 22,
@@ -421,11 +432,12 @@ function TabModule.New(Config, UIScale)
             ThemeTag = { TextColor3 = "Text" },
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.XY,
-            Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 2), 
             TextXAlignment = Enum.TextXAlignment.Left,
-            Parent = ProfileHeader
+            Parent = TextContainer, -- Masukkan ke TextContainer
+            LayoutOrder = 1
         })
         
+        -- Description (Bio)
         if Tab.Profile.Desc then
             New("TextLabel", {
                 Text = Tab.Profile.Desc,
@@ -435,10 +447,9 @@ function TabModule.New(Config, UIScale)
                 TextTransparency = 0.4,
                 BackgroundTransparency = 1,
                 AutomaticSize = Enum.AutomaticSize.XY,
-                Position = UDim2.new(0, 0, 1, 3), 
-                AnchorPoint = Vector2.new(0, 0),
                 TextXAlignment = Enum.TextXAlignment.Left,
-                Parent = TitleLabel 
+                Parent = TextContainer, -- Masukkan ke TextContainer
+                LayoutOrder = 2
             })
         end
     end

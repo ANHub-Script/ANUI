@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.52  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.53  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.52",
+    "version": "1.0.53",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9427,9 +9427,7 @@ UICorner=Window.UICorner-(Window.UIPadding/2),
 Gap=Window.NewElements and 1 or 6,
 }
 
-
 local aq=ap.Profile and ap.SidebarProfile
-
 
 if aq then
 ap.Locked=true
@@ -9519,7 +9517,6 @@ local at
 local au
 
 
-
 if ap.Icon and not aq then
 at=af.Image(ap.Icon,ap.Icon..":"..ap.Title,0,Window.Folder,ap.__type,true,ap.IconThemed,"TabIcon")
 at.Size=UDim2.new(0,16,0,16)
@@ -9534,7 +9531,6 @@ au.Size=UDim2.new(0,16,0,16)
 au.ImageLabel.ImageTransparency=not ap.Locked and 0 or.7
 as=-30
 end
-
 
 
 if ap.Image and not aq then
@@ -9557,9 +9553,7 @@ ap.UIElements.Image=av
 end
 
 
-
 if aq then
-
 local av=ap.UIElements.Main.Frame:FindFirstChild"UIListLayout"
 if av then av:Destroy()end
 local aw=ap.UIElements.Main.Frame:FindFirstChild"UIPadding"
@@ -9567,10 +9561,8 @@ if aw then aw:Destroy()end
 local ax=ap.UIElements.Main.Frame:FindFirstChild"TextLabel"
 if ax then ax:Destroy()end
 
-
 ap.UIElements.Main.Frame.AutomaticSize=Enum.AutomaticSize.None
 ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,85)
-
 
 local ay=40
 if ap.Profile.Banner then
@@ -9588,7 +9580,6 @@ az.ImageLabel.ScaleType=Enum.ScaleType.Crop
 az.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
-
 
 local az=34
 local aA=ah("Frame",{
@@ -9643,7 +9634,6 @@ ThemeTag={Color="TabBackground"}
 })
 })
 end
-
 
 ah("Frame",{
 Size=UDim2.new(1,-(10+az+8),1,-ay),
@@ -9706,7 +9696,6 @@ Padding=UDim.new(0,ap.Gap),
 HorizontalAlignment="Center",
 })
 })
-
 
 
 if ap.Profile then
@@ -9784,17 +9773,40 @@ ah("UIStroke",{Thickness=3,ThemeTag={Color="WindowBackground"}})
 })
 end
 
-local aB=ah("TextLabel",{
+
+
+local aB=ah("Frame",{
+Name="TextContainer",
+BackgroundTransparency=1,
+AutomaticSize=Enum.AutomaticSize.Y,
+Size=UDim2.new(1,-(14+ax+14),0,0),
+
+Position=UDim2.new(0,14+ax+14,0,aw+6),
+Parent=ay
+},{
+
+ah("UIListLayout",{
+SortOrder=Enum.SortOrder.LayoutOrder,
+Padding=UDim.new(0,2),
+FillDirection=Enum.FillDirection.Vertical,
+VerticalAlignment=Enum.VerticalAlignment.Top,
+HorizontalAlignment=Enum.HorizontalAlignment.Left
+})
+})
+
+
+ah("TextLabel",{
 Text=ap.Profile.Title or ap.Title,
 TextSize=22,
 FontFace=Font.new(af.Font,Enum.FontWeight.Bold),
 ThemeTag={TextColor3="Text"},
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-Position=UDim2.new(0,14+ax+14,0,aw+2),
 TextXAlignment=Enum.TextXAlignment.Left,
-Parent=ay
+Parent=aB,
+LayoutOrder=1
 })
+
 
 if ap.Profile.Desc then
 ah("TextLabel",{
@@ -9805,10 +9817,9 @@ ThemeTag={TextColor3="Text"},
 TextTransparency=0.4,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-Position=UDim2.new(0,0,1,3),
-AnchorPoint=Vector2.new(0,0),
 TextXAlignment=Enum.TextXAlignment.Left,
-Parent=aB
+Parent=aB,
+LayoutOrder=2
 })
 end
 end
