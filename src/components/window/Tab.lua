@@ -224,7 +224,7 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [ANUI Modification] Implementasi Profile Header (FIXED)
+    -- [ANUI Modification] Implementasi Profile Header (FIXED V2)
     if Tab.Profile then
         local ProfileHeight = 170 
         local BannerHeight = 100  
@@ -254,32 +254,34 @@ function TabModule.New(Config, UIScale)
                 Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false
             )
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
-            -- [FIX] Menghapus ScaleType karena Creator.Image mengembalikan Frame, bukan ImageLabel
-            -- Creator.Image sudah otomatis mengatur ScaleType='Crop' pada anak ImageLabel-nya
+            -- Hapus ScaleType manual untuk mencegah error, Creator sudah menanganinya
             BannerImg.Parent = Banner
         end
 
-        -- Avatar Container
+        -- Avatar Container (Wadah Lingkaran)
         local AvatarContainer = New("Frame", {
             Size = UDim2.new(0, AvatarSize, 0, AvatarSize),
+            -- Posisi menimpa banner (naik sedikit dari bawah banner)
             Position = UDim2.new(0, 14, 0, BannerHeight - (AvatarSize / 2) + 5), 
             BackgroundTransparency = 1,
             Parent = ProfileHeader,
             ZIndex = 2
         })
 
-        -- Stroke untuk efek potongan
+        -- Stroke (Border Tebal) mengikuti warna background window agar terlihat terpotong
         local AvatarStroke = New("UIStroke", {
             Parent = AvatarContainer,
             Thickness = 4,
             ThemeTag = {
                 Color = "WindowBackground" 
             },
-            Transparency = 0
+            Transparency = 0,
+            ApplyStrokeMode = Enum.ApplyStrokeMode.Border, -- Pastikan border di luar/tengah
         })
         
+        -- Masking Wadah agar bulat
         local AvatarMask = New("UICorner", {
-            CornerRadius = UDim.new(1, 0),
+            CornerRadius = UDim.new(1, 0), -- 1,0 artinya bulat sempurna (lingkaran)
             Parent = AvatarContainer
         })
 
@@ -288,20 +290,28 @@ function TabModule.New(Config, UIScale)
             local AvatarImg = Creator.Image(
                 Tab.Profile.Avatar, "Avatar", 0, Window.Folder, "ProfileAvatar", false
             )
-            AvatarImg.Size = UDim2.new(1, 0, 1, 0)
+            -- Paksa Frame pembungkus memenuhi wadah
+            AvatarImg.Size = UDim2.fromScale(1, 1)
             AvatarImg.Parent = AvatarContainer
+            AvatarImg.BackgroundTransparency = 1
             
-            local ImgCorner = New("UICorner", {
-                CornerRadius = UDim.new(1, 0),
-                Parent = AvatarImg.ImageLabel -- Mengakses child ImageLabel
-            })
+            -- [FIX UTAMA] Paksa ImageLabel di dalamnya menjadi bulat dan memenuhi frame
+            if AvatarImg.ImageLabel then
+                AvatarImg.ImageLabel.Size = UDim2.fromScale(1, 1)
+                AvatarImg.ImageLabel.BackgroundTransparency = 1
+                
+                local ImgCorner = New("UICorner", {
+                    CornerRadius = UDim.new(1, 0), -- Bulat sempurna
+                    Parent = AvatarImg.ImageLabel
+                })
+            end
         end
 
-        -- Status Dot
+        -- Status Dot (Indikator Online)
         if Tab.Profile.Status then
             local StatusDot = New("Frame", {
                 Size = UDim2.new(0, 18, 0, 18),
-                Position = UDim2.new(1, -2, 1, -2),
+                Position = UDim2.new(1, -3, 1, -3), -- Sedikit digeser agar pas di pinggir lingkaran
                 AnchorPoint = Vector2.new(1, 1),
                 BackgroundColor3 = Color3.fromHex("#23a559"),
                 Parent = AvatarContainer,
@@ -327,16 +337,18 @@ function TabModule.New(Config, UIScale)
             },
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.XY,
-            Position = UDim2.new(0, 14 + AvatarSize + 12, 0, BannerHeight + 6), 
+            -- [FIX POSISI TEKS] Mengubah koordinat Y agar naik ke atas
+            -- Sebelumnya BannerHeight + 6, sekarang BannerHeight + 4
+            Position = UDim2.new(0, 14 + AvatarSize + 14, 0, BannerHeight + 4), 
             TextXAlignment = Enum.TextXAlignment.Left,
             Parent = ProfileHeader
         })
         
-        -- Description
+        -- Description / Bio
         if Tab.Profile.Desc then
             local DescLabel = New("TextLabel", {
                 Text = Tab.Profile.Desc,
-                TextSize = 14,
+                TextSize = 13, -- Sedikit diperkecil agar rapi
                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
                 ThemeTag = {
                     TextColor3 = "Text"
@@ -344,7 +356,8 @@ function TabModule.New(Config, UIScale)
                 TextTransparency = 0.4,
                 BackgroundTransparency = 1,
                 AutomaticSize = Enum.AutomaticSize.XY,
-                Position = UDim2.new(0, 0, 1, 2),
+                -- Posisi relatif di bawah Title
+                Position = UDim2.new(0, 0, 1, 0), 
                 AnchorPoint = Vector2.new(0, 0),
                 TextXAlignment = Enum.TextXAlignment.Left,
                 Parent = TitleLabel 

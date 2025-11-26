@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.46  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.47  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.46",
+    "version": "1.0.47",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9625,13 +9625,13 @@ ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false
 )
 az.Size=UDim2.new(1,0,1,0)
 
-
 az.Parent=ay
 end
 
 
 local az=ah("Frame",{
 Size=UDim2.new(0,aw,0,aw),
+
 Position=UDim2.new(0,14,0,av-(aw/2)+5),
 BackgroundTransparency=1,
 Parent=ax,
@@ -9645,8 +9645,10 @@ Thickness=4,
 ThemeTag={
 Color="WindowBackground"
 },
-Transparency=0
+Transparency=0,
+ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 })
+
 
 ah("UICorner",{
 CornerRadius=UDim.new(1,0),
@@ -9658,20 +9660,28 @@ if ap.Profile.Avatar then
 local aA=af.Image(
 ap.Profile.Avatar,"Avatar",0,Window.Folder,"ProfileAvatar",false
 )
-aA.Size=UDim2.new(1,0,1,0)
+
+aA.Size=UDim2.fromScale(1,1)
 aA.Parent=az
+aA.BackgroundTransparency=1
+
+
+if aA.ImageLabel then
+aA.ImageLabel.Size=UDim2.fromScale(1,1)
+aA.ImageLabel.BackgroundTransparency=1
 
 ah("UICorner",{
 CornerRadius=UDim.new(1,0),
 Parent=aA.ImageLabel
 })
 end
+end
 
 
 if ap.Profile.Status then
 ah("Frame",{
 Size=UDim2.new(0,18,0,18),
-Position=UDim2.new(1,-2,1,-2),
+Position=UDim2.new(1,-3,1,-3),
 AnchorPoint=Vector2.new(1,1),
 BackgroundColor3=Color3.fromHex"#23a559",
 Parent=az,
@@ -9697,7 +9707,9 @@ TextColor3="Text"
 },
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-Position=UDim2.new(0,14+aw+12,0,av+6),
+
+
+Position=UDim2.new(0,14+aw+14,0,av+4),
 TextXAlignment=Enum.TextXAlignment.Left,
 Parent=ax
 })
@@ -9706,7 +9718,7 @@ Parent=ax
 if ap.Profile.Desc then
 ah("TextLabel",{
 Text=ap.Profile.Desc,
-TextSize=14,
+TextSize=13,
 FontFace=Font.new(af.Font,Enum.FontWeight.Regular),
 ThemeTag={
 TextColor3="Text"
@@ -9714,7 +9726,8 @@ TextColor3="Text"
 TextTransparency=0.4,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-Position=UDim2.new(0,0,1,2),
+
+Position=UDim2.new(0,0,1,0),
 AnchorPoint=Vector2.new(0,0),
 TextXAlignment=Enum.TextXAlignment.Left,
 Parent=aA
