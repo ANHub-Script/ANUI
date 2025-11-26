@@ -130,6 +130,28 @@ local function tableToClipboard(luau_table, indent)
 	setclipboard(jsonString);
 	return jsonString;
 end;
+
+-- TAB DENGAN PROFIL
+local ProfileTab = Window:Tab({
+    Title = "User Info", -- Judul Tab di Sidebar
+    Icon = "user",       -- Ikon Tab di Sidebar
+    
+    -- [FITUR BARU] Konfigurasi Profile Header
+    Profile = {
+        Title  = "AdityaNugraha", -- Nama Besar (Username)
+        Desc   = "ANUI Developer | Full Stack", -- Deskripsi kecil di bawah nama (Bio)
+        
+        -- Gambar Banner (Bisa URL Link HTTP atau rbxassetid://)
+        Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
+        
+        -- Gambar Avatar (Foto Profil)
+        Avatar = "rbxassetid://84366761557806", 
+        
+        -- Status Online (Dot hijau di avatar)
+        Status = true 
+    }
+})
+
 do
 	local AboutTab = Window:Tab({
 		Title = "About ANUI",

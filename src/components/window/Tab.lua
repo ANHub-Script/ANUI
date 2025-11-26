@@ -60,9 +60,9 @@ function TabModule.New(Config, UIScale)
     
     TabModule.TabCount = TabModule.TabCount + 1
     
-	local TabIndex = TabModule.TabCount
-	Tab.Index = TabIndex
-	
+    local TabIndex = TabModule.TabCount
+    Tab.Index = TabIndex
+    
     Tab.UIElements.Main = Creator.NewRoundFrame(Tab.UICorner, "Squircle", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1,-7,0,0),
@@ -134,12 +134,12 @@ function TabModule.New(Config, UIScale)
             })
         }),
     }, true)
-	
-	local TextOffset = 0
-	local Icon
-	local Icon2
+    
+    local TextOffset = 0
+    local Icon
+    local Icon2
 
-	if Tab.Icon then
+    if Tab.Icon then
         Icon = Creator.Image(
             Tab.Icon,
             Tab.Icon .. ":" .. Tab.Title,
@@ -171,10 +171,10 @@ function TabModule.New(Config, UIScale)
         Icon2.Size = UDim2.new(0,16,0,16)
         Icon2.ImageLabel.ImageTransparency = not Tab.Locked and 0 or .7
         TextOffset = -30
-	end
-	
-	if Tab.Image then
-	    local Image = Creator.Image(
+    end
+    
+    if Tab.Image then
+        local Image = Creator.Image(
             Tab.Image,
             Tab.Title,
             Tab.UICorner,
@@ -197,9 +197,9 @@ function TabModule.New(Config, UIScale)
         Tab.UIElements.Main.Frame.UIPadding.PaddingBottom = UDim.new(0,0)
         
         Tab.UIElements.Image = Image
-	end
-	
-	Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
+    end
+    
+    Tab.UIElements.ContainerFrame = New("ScrollingFrame", {
         Size = UDim2.new(1,0,1,Tab.ShowTabTitle and -((Window.UIPadding*2.4)+12) or 0),
         BackgroundTransparency = 1,
         ScrollBarThickness = 0,
@@ -224,7 +224,7 @@ function TabModule.New(Config, UIScale)
         })
     })
 
-    -- [ANUI Modification] Implementasi Profile Header
+    -- [ANUI Modification] Implementasi Profile Header (FIXED)
     if Tab.Profile then
         local ProfileHeight = 170 
         local BannerHeight = 100  
@@ -254,7 +254,8 @@ function TabModule.New(Config, UIScale)
                 Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false
             )
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
-            BannerImg.ScaleType = Enum.ScaleType.Crop
+            -- [FIX] Menghapus ScaleType karena Creator.Image mengembalikan Frame, bukan ImageLabel
+            -- Creator.Image sudah otomatis mengatur ScaleType='Crop' pada anak ImageLabel-nya
             BannerImg.Parent = Banner
         end
 
@@ -292,7 +293,7 @@ function TabModule.New(Config, UIScale)
             
             local ImgCorner = New("UICorner", {
                 CornerRadius = UDim.new(1, 0),
-                Parent = AvatarImg.ImageLabel
+                Parent = AvatarImg.ImageLabel -- Mengakses child ImageLabel
             })
         end
 
@@ -406,27 +407,27 @@ function TabModule.New(Config, UIScale)
     })
     
     TabModule.Containers[TabIndex] = Tab.UIElements.ContainerFrameCanvas
-	TabModule.Tabs[TabIndex] = Tab
-	
-	Tab.ContainerFrame = ContainerFrameCanvas
-	
-	Creator.AddSignal(Tab.UIElements.Main.MouseButton1Click, function()
-	    if not Tab.Locked then
-	        TabModule:SelectTab(TabIndex)
-	    end
-	end)
-	
-	if Window.ScrollBarEnabled then
+    TabModule.Tabs[TabIndex] = Tab
+    
+    Tab.ContainerFrame = ContainerFrameCanvas
+    
+    Creator.AddSignal(Tab.UIElements.Main.MouseButton1Click, function()
+        if not Tab.Locked then
+            TabModule:SelectTab(TabIndex)
+        end
+    end)
+    
+    if Window.ScrollBarEnabled then
         CreateScrollSlider(Tab.UIElements.ContainerFrame, Tab.UIElements.ContainerFrameCanvas, Window, 3)
-	end
+    end
 
-	local ToolTip
+    local ToolTip
     local hoverTimer
     local MouseConn
     local IsHovering = false
     
         
-	-- ToolTip
+    -- ToolTip
     if Tab.Desc then
         
         
@@ -507,11 +508,11 @@ function TabModule.New(Config, UIScale)
         
         return Tab
     end
-	
     
     
-	-- yo
-	
+    
+    -- yo
+    
     local ElementsModule = require("../../elements/Init")
     
     ElementsModule.Load(Tab, Tab.UIElements.ContainerFrame, ElementsModule.Elements, Window, ANUI, nil, ElementsModule, UIScale)
@@ -560,7 +561,7 @@ function TabModule.New(Config, UIScale)
         return TabModule:SelectTab(Tab.Index)
     end
     
-	task.spawn(function()
+    task.spawn(function()
         local Empty = New("Frame", {
             BackgroundTransparency = 1,
             Size = UDim2.new(1,0,1,-Window.UIElements.Main.Main.Topbar.AbsoluteSize.Y),
@@ -606,9 +607,9 @@ function TabModule.New(Config, UIScale)
             Empty.Visible = false
             CreationConn:Disconnect()
         end)
-	end)
-	
-	return Tab
+    end)
+    
+    return Tab
 end
 
 function TabModule:OnChange(func)
