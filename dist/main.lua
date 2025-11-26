@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.65  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.66  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.65",
+    "version": "1.0.66",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9561,10 +9561,8 @@ if ax then ax:Destroy()end
 local ay=ap.UIElements.Main.Frame:FindFirstChild"TextLabel"
 if ay then ay:Destroy()end
 
-
 ap.UIElements.Main.Frame.AutomaticSize=Enum.AutomaticSize.None
 ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,120)
-
 
 local az=55
 if ap.Profile.Banner then
@@ -9582,7 +9580,6 @@ aA.ImageLabel.ScaleType=Enum.ScaleType.Crop
 aA.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
-
 
 local aA=46
 local aB=ah("Frame",{
@@ -9638,10 +9635,8 @@ ThemeTag={Color="TabBackground"}
 })
 end
 
-
 ah("Frame",{
 Size=UDim2.new(1,-(10+aA+8),1,-az-6),
-
 Position=UDim2.new(0,10+aA+8,0,az+5),
 BackgroundTransparency=1,
 Parent=ap.UIElements.Main.Frame,
@@ -9724,7 +9719,6 @@ Visible=false,
 Parent=Window.UIElements.MainBar,
 ZIndex=5,
 },{
-
 ah("Frame",{
 Size=UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
 BackgroundTransparency=1,
@@ -9798,6 +9792,76 @@ if ap.Profile.Banner then
 local e=af.Image(ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false)
 e.Size=UDim2.new(1,0,1,0)
 e.Parent=d
+end
+
+
+if ap.Profile.Badges then
+
+local e=ah("Frame",{
+Name="BadgeContainer",
+Size=UDim2.new(1,0,0,24),
+Position=UDim2.new(1,-8,1,-8),
+AnchorPoint=Vector2.new(1,1),
+BackgroundTransparency=1,
+Parent=d,
+ZIndex=5
+},{
+ah("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+HorizontalAlignment=Enum.HorizontalAlignment.Right,
+VerticalAlignment=Enum.VerticalAlignment.Center,
+Padding=UDim.new(0,5)
+})
+})
+
+
+for f,g in ipairs(ap.Profile.Badges)do
+local h=g.Icon or"help-circle"
+
+
+local j=ah("TextButton",{
+Size=UDim2.new(0,28,0,28),
+BackgroundTransparency=1,
+Text="",
+Parent=e
+},{
+
+af.NewRoundFrame(6,"Squircle",{
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+Size=UDim2.new(1,0,1,0),
+Name="BG"
+}),
+
+af.Image(h,"Badge",0,Window.Folder,"Badge",true)
+})
+
+
+local l=j:FindFirstChild"ImageLabel"or j:FindFirstChild"VideoFrame"
+if l then
+l.Size=UDim2.new(0,16,0,16)
+l.Position=UDim2.new(0.5,0,0.5,0)
+l.AnchorPoint=Vector2.new(0.5,0.5)
+l.BackgroundTransparency=1
+l.ImageColor3=Color3.new(1,1,1)
+l.Parent=j
+end
+
+
+if g.Callback then
+af.AddSignal(j.MouseButton1Click,function()
+g.Callback()
+end)
+end
+
+
+af.AddSignal(j.MouseEnter,function()
+aj(j.BG,0.1,{ImageTransparency=0.2}):Play()
+end)
+af.AddSignal(j.MouseLeave,function()
+aj(j.BG,0.1,{ImageTransparency=0.4}):Play()
+end)
+end
 end
 
 local e=ah("Frame",{
@@ -10080,7 +10144,6 @@ for ap,aq in next,am.Tabs do
 if not aq.Locked then
 aj(aq.UIElements.Main,0.15,{ImageTransparency=1}):Play()
 aj(aq.UIElements.Main.Outline,0.15,{ImageTransparency=1}):Play()
-
 
 if aq.UIElements.Main.Frame:FindFirstChild"TextLabel"then
 aj(aq.UIElements.Main.Frame.TextLabel,0.15,{TextTransparency=0.3}):Play()

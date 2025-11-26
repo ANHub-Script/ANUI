@@ -191,11 +191,9 @@ function TabModule.New(Config, UIScale)
         local DefLabel = Tab.UIElements.Main.Frame:FindFirstChild("TextLabel")
         if DefLabel then DefLabel:Destroy() end
         
-        -- Ukuran Kartu
         Tab.UIElements.Main.Frame.AutomaticSize = Enum.AutomaticSize.None
         Tab.UIElements.Main.Frame.Size = UDim2.new(1, 0, 0, 120)
         
-        -- Ukuran Banner
         local BannerH = 55
         if Tab.Profile.Banner then
             local BannerFrame = Creator.Image(
@@ -213,7 +211,6 @@ function TabModule.New(Config, UIScale)
             end
         end
         
-        -- Ukuran Avatar
         local AvatarS = 46
         local AvatarContainer = New("Frame", {
             Name = "Avatar",
@@ -268,18 +265,16 @@ function TabModule.New(Config, UIScale)
             })
         end
 
-        -- [FIX TEXT SIDEBAR]
         local TextC = New("Frame", {
-            Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH - 6), -- Tinggi sisa
-            -- Posisi tepat di bawah Banner + Padding 5px
+            Size = UDim2.new(1, -(10 + AvatarS + 8), 1, -BannerH - 6),
             Position = UDim2.new(0, 10 + AvatarS + 8, 0, BannerH + 5), 
             BackgroundTransparency = 1,
             Parent = Tab.UIElements.Main.Frame,
             ZIndex = 2
         }, {
             New("UIListLayout", {
-                VerticalAlignment = Enum.VerticalAlignment.Top, -- Ubah ke TOP agar menempel di bawah banner
-                Padding = UDim.new(0, 2) -- Jarak antar Title dan Desc
+                VerticalAlignment = Enum.VerticalAlignment.Top,
+                Padding = UDim.new(0, 2)
             }),
             New("TextLabel", {
                 Text = Tab.Profile.Title or Tab.Title,
@@ -354,7 +349,6 @@ function TabModule.New(Config, UIScale)
         Parent = Window.UIElements.MainBar,
         ZIndex = 5,
     }, {
-        -- Header Tab Title
         New("Frame", {
             Size = UDim2.new(1,0,0,((Window.UIPadding*2.4)+12)),
             BackgroundTransparency = 1,
@@ -390,7 +384,7 @@ function TabModule.New(Config, UIScale)
                 VerticalAlignment = "Center",
             })
         }),
-        New("Frame", { -- Garis pemisah
+        New("Frame", { 
             Size = UDim2.new(1,0,0,1),
             BackgroundTransparency = .9,
             ThemeTag = {
@@ -428,6 +422,76 @@ function TabModule.New(Config, UIScale)
             local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
             BannerImg.Parent = Banner
+        end
+        
+        -- [FITUR BARU: BADGES DALAM BANNER]
+        if Tab.Profile.Badges then
+             -- Container untuk badges (Pojok Kanan Bawah Banner)
+            local BadgeContainer = New("Frame", {
+                Name = "BadgeContainer",
+                Size = UDim2.new(1, 0, 0, 24),
+                Position = UDim2.new(1, -8, 1, -8), -- Padding dari pojok kanan bawah
+                AnchorPoint = Vector2.new(1, 1),
+                BackgroundTransparency = 1,
+                Parent = Banner, -- Parent ke Banner
+                ZIndex = 5
+            }, {
+                New("UIListLayout", {
+                    FillDirection = Enum.FillDirection.Horizontal,
+                    HorizontalAlignment = Enum.HorizontalAlignment.Right,
+                    VerticalAlignment = Enum.VerticalAlignment.Center,
+                    Padding = UDim.new(0, 5) -- Jarak antar icon
+                })
+            })
+            
+            -- Loop badges
+            for _, badge in ipairs(Tab.Profile.Badges) do
+                local BadgeIcon = badge.Icon or "help-circle"
+                
+                -- Buat Button Kecil
+                local BadgeBtn = New("TextButton", {
+                    Size = UDim2.new(0, 28, 0, 28),
+                    BackgroundTransparency = 1,
+                    Text = "",
+                    Parent = BadgeContainer
+                }, {
+                    -- Background gelap transparan
+                    Creator.NewRoundFrame(6, "Squircle", {
+                        ImageColor3 = Color3.new(0,0,0),
+                        ImageTransparency = 0.4,
+                        Size = UDim2.new(1,0,1,0),
+                        Name = "BG"
+                    }),
+                    -- Icon
+                    Creator.Image(BadgeIcon, "Badge", 0, Window.Folder, "Badge", true)
+                })
+                
+                -- Atur icon di tengah
+                local IconImg = BadgeBtn:FindFirstChild("ImageLabel") or BadgeBtn:FindFirstChild("VideoFrame")
+                if IconImg then
+                     IconImg.Size = UDim2.new(0, 16, 0, 16)
+                     IconImg.Position = UDim2.new(0.5, 0, 0.5, 0)
+                     IconImg.AnchorPoint = Vector2.new(0.5, 0.5)
+                     IconImg.BackgroundTransparency = 1
+                     IconImg.ImageColor3 = Color3.new(1,1,1)
+                     IconImg.Parent = BadgeBtn
+                end
+                
+                -- Callback (jika ada)
+                if badge.Callback then
+                    Creator.AddSignal(BadgeBtn.MouseButton1Click, function()
+                        badge.Callback()
+                    end)
+                end
+                
+                -- Efek Hover
+                Creator.AddSignal(BadgeBtn.MouseEnter, function()
+                     Tween(BadgeBtn.BG, 0.1, {ImageTransparency = 0.2}):Play()
+                end)
+                Creator.AddSignal(BadgeBtn.MouseLeave, function()
+                     Tween(BadgeBtn.BG, 0.1, {ImageTransparency = 0.4}):Play()
+                end)
+            end
         end
 
         local AvatarContainer = New("Frame", {
@@ -711,7 +775,6 @@ function TabModule:SelectTab(TabIndex)
                 Tween(TabObject.UIElements.Main, 0.15, {ImageTransparency = 1}):Play()
                 Tween(TabObject.UIElements.Main.Outline, 0.15, {ImageTransparency = 1}):Play()
                 
-                -- [FIX] Jika Profile Tab, TextLabel biasa sudah dihapus
                 if TabObject.UIElements.Main.Frame:FindFirstChild("TextLabel") then
                      Tween(TabObject.UIElements.Main.Frame.TextLabel, 0.15, {TextTransparency = 0.3}):Play()
                 end

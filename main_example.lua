@@ -183,13 +183,6 @@ do
 		Title = "Toggle Examples",
 		Desc = "This tab showcases all supported Toggle features: classic toggle with animated drag, checkbox variant, per-item icons and icon sizing, default values, locking, global callbacks, and programmatic updates (Set, SetTitle, SetDesc)."
 	});
-	ToggleTab:Toggle({
-		Title = "Toggle with [emoji:flame] Icon",
-		Desc = "This description also has [emoji:info] inline image this my log [emoji:rbxassetid://84366761557806] yo xD",
-		Callback = function(v)
-			print("Basic Toggle:", v);
-		end
-	})
 	ToggleTab:Space();
 	ToggleTab:Toggle({
 		Title = "Basic Toggle",
