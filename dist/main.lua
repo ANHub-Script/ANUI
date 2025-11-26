@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.47  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.48  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.47",
+    "version": "1.0.48",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9624,14 +9624,12 @@ local az=af.Image(
 ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false
 )
 az.Size=UDim2.new(1,0,1,0)
-
 az.Parent=ay
 end
 
 
 local az=ah("Frame",{
 Size=UDim2.new(0,aw,0,aw),
-
 Position=UDim2.new(0,14,0,av-(aw/2)+5),
 BackgroundTransparency=1,
 Parent=ax,
@@ -9660,19 +9658,25 @@ if ap.Profile.Avatar then
 local aA=af.Image(
 ap.Profile.Avatar,"Avatar",0,Window.Folder,"ProfileAvatar",false
 )
-
 aA.Size=UDim2.fromScale(1,1)
-aA.Parent=az
 aA.BackgroundTransparency=1
+aA.Parent=az
 
 
-if aA.ImageLabel then
-aA.ImageLabel.Size=UDim2.fromScale(1,1)
-aA.ImageLabel.BackgroundTransparency=1
+
+local aB=aA:FindFirstChild"ImageLabel"
+if aB then
+aB.Size=UDim2.fromScale(1,1)
+aB.BackgroundTransparency=1
+
+
+local d=aB:FindFirstChildOfClass"UICorner"
+if d then d:Destroy()end
+
 
 ah("UICorner",{
 CornerRadius=UDim.new(1,0),
-Parent=aA.ImageLabel
+Parent=aB
 })
 end
 end
@@ -9709,7 +9713,7 @@ BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
 
 
-Position=UDim2.new(0,14+aw+14,0,av+4),
+Position=UDim2.new(0,14+aw+14,0,av+2),
 TextXAlignment=Enum.TextXAlignment.Left,
 Parent=ax
 })
@@ -9727,7 +9731,7 @@ TextTransparency=0.4,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
 
-Position=UDim2.new(0,0,1,0),
+Position=UDim2.new(0,0,1,3),
 AnchorPoint=Vector2.new(0,0),
 TextXAlignment=Enum.TextXAlignment.Left,
 Parent=aA
