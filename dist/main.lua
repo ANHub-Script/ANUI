@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.78  |  2025-11-26  |  Roblox UI Library for scripts
+    v1.0.79  |  2025-11-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.78",
+    "version": "1.0.79",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -9815,7 +9815,8 @@ end
 local ax=0
 local ay=0
 
-local az=150
+
+local az=120
 
 if ap.ShowTabTitle then
 ax=((Window.UIPadding*2.4)+12)
@@ -9908,7 +9909,10 @@ Visible=ap.ShowTabTitle or false,
 
 
 if ar then
-local aA=100
+
+local aA=az-50
+if aA<100 then aA=100 end
+
 local aB=70
 
 local d=ah("Frame",{
@@ -9947,7 +9951,9 @@ local g=f:FindFirstChild"ImageLabel"
 if g then
 g.Size=UDim2.fromScale(1,1)
 g.BackgroundTransparency=1
-g.ScaleType=Enum.ScaleType.Crop
+
+
+g.ScaleType=Enum.ScaleType.Stretch
 g.AnchorPoint=Vector2.new(0.5,0.5)
 g.Position=UDim2.fromScale(0.5,0.5)
 end
