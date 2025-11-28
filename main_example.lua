@@ -1412,7 +1412,13 @@ local Categories = {
     Rank = {},
     Trainer = {},
     Mastery = {},
-    Settings = {}
+    Settings = {},
+    Extra1 = {},
+    Extra2 = {},
+    Extra3 = {},
+    Extra4 = {},
+    Extra5 = {},
+    Extra6 = {},
 }
 
 -- Fungsi Helper: Membuat elemen dan otomatis memasukkannya ke tabel kategori
@@ -1457,6 +1463,12 @@ MainSection:Category({
         {Title="Trainer", Icon="sword"},
         {Title="Mastery", Icon="book"},
         {Title="Settings", Icon="settings"},
+        {Title="Extra1", Icon="circle"},
+        {Title="Extra2", Icon="circle"},
+        {Title="Extra3", Icon="circle"},
+        {Title="Extra4", Icon="circle"},
+        {Title="Extra5", Icon="circle"},
+        {Title="Extra6", Icon="circle"},
     },
     Callback = OnCategoryChanged -- Panggil fungsi update saat diklik
 })
@@ -1465,49 +1477,42 @@ MainSection:Category({
 MainSection:Space({Columns=1})
 
 -- ============================================================================
--- 2. ISI KONTEN (MENGGUNAKAN SECTION TERPISAH UNTUK TIAP KATEGORI)
+-- 2. ISI KONTEN (SEMUA DALAM MAINSECTION)
 -- ============================================================================
 
-local CategorySections = {
-    Yen = UpgradeTab:Section({ Title = "Yen Upgrades" }),
-    Token = UpgradeTab:Section({ Title = "Token Upgrades" }),
-    Rank = UpgradeTab:Section({ Title = "Rank Information" }),
-    Trainer = UpgradeTab:Section({ Title = "Trainer Center" }),
-    Mastery = UpgradeTab:Section({ Title = "Mastery Skills" }),
-    Settings = UpgradeTab:Section({ Title = "Game Settings" })
-}
-
--- Register Sections agar bisa di-hide/show oleh AddElement
-for name, section in pairs(CategorySections) do
-    AddElement(name, section)
-end
-
 -- [KATEGORI: YEN]
-CategorySections.Yen:Paragraph({ Title = "Yen Upgrades", Desc = "Upgrade stats using Yen currency" })
-CategorySections.Yen:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" })
-CategorySections.Yen:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" })
-CategorySections.Yen:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" })
+AddElement("Yen", MainSection:Paragraph({ Title = "Yen Upgrades", Desc = "Upgrade stats using Yen currency" }))
+AddElement("Yen", MainSection:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" }))
+AddElement("Yen", MainSection:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" }))
+AddElement("Yen", MainSection:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" }))
 
 -- [KATEGORI: TOKEN]
-CategorySections.Token:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" })
-CategorySections.Token:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" })
-CategorySections.Token:Button({ Title = "Buy Tokens", Icon = "shopping-cart" })
+AddElement("Token", MainSection:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" }))
+AddElement("Token", MainSection:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" }))
+AddElement("Token", MainSection:Button({ Title = "Buy Tokens", Icon = "shopping-cart" }))
 
 -- [KATEGORI: RANK]
-CategorySections.Rank:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" })
-CategorySections.Rank:Button({ Title = "Rank Up", Icon = "arrow-up-circle" })
+AddElement("Rank", MainSection:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" }))
+AddElement("Rank", MainSection:Button({ Title = "Rank Up", Icon = "arrow-up-circle" }))
 
 -- [KATEGORI: TRAINER]
-CategorySections.Trainer:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" })
-CategorySections.Trainer:Button({ Title = "Train Now", Icon = "sword" })
+AddElement("Trainer", MainSection:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" }))
+AddElement("Trainer", MainSection:Button({ Title = "Train Now", Icon = "sword" }))
 
 -- [KATEGORI: MASTERY]
-CategorySections.Mastery:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 })
-CategorySections.Mastery:Slider({ Title = "Magic Mastery", Min = 0, Max = 100, Default = 0 })
+AddElement("Mastery", MainSection:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 }))
+AddElement("Mastery", MainSection:Slider({ Title = "Magic Mastery", Min = 0, Max = 100, Default = 0 }))
 
 -- [KATEGORI: SETTINGS]
-CategorySections.Settings:Toggle({ Title = "Auto Farm", Value = false })
-CategorySections.Settings:Toggle({ Title = "Auto Rank Up", Value = false })
+AddElement("Settings", MainSection:Toggle({ Title = "Auto Farm", Value = false }))
+AddElement("Settings", MainSection:Toggle({ Title = "Auto Rank Up", Value = false }))
+
+-- [KATEGORI: EXTRAS (TESTING SCROLL)]
+for i = 1, 6 do
+    local catName = "Extra" .. i
+    AddElement(catName, MainSection:Paragraph({ Title = catName .. " Content", Desc = "This is content for " .. catName }))
+    AddElement(catName, MainSection:Button({ Title = "Action " .. i, Icon = "zap" }))
+end
 
 
 -- ============================================================================
