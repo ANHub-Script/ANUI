@@ -1,4 +1,4 @@
-local ANUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua"))();
+local ANUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua?v="..math.random()))();
 
 local Window = ANUI:CreateWindow({
 	Title = ".an hub | ANUI Library",

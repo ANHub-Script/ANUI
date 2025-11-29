@@ -687,7 +687,7 @@ return function(Config)
     function Element.UpdateShape(Tab)
         if Config.Window.NewElements then
             local newShape
-            if Config.ParentConfig.ParentType == "Group" then
+            if Config.ParentConfig.ParentType == "Group" or Config.ParentConfig.ParentType == "Paragraph" then
                 newShape = "Squircle"
             else
                 newShape = getElementPosition(Tab.Elements, Element.Index)

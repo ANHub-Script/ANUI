@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.100  |  2025-11-29  |  Roblox UI Library for scripts
+    v1.0.101  |  2025-11-29  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.100",
+    "version": "1.0.101",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5670,7 +5670,7 @@ end
 function ag.UpdateShape(f)
 if af.Window.NewElements then
 local g
-if af.ParentConfig.ParentType=="Group"then
+if af.ParentConfig.ParentType=="Group"or af.ParentConfig.ParentType=="Paragraph"then
 g="Squircle"
 else
 g=getElementPosition(f.Elements,ag.Index)
