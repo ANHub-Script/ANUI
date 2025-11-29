@@ -1396,10 +1396,10 @@ local UpgradeTab = Window:Tab({
 })
 
 -- 1. Buat SATU Section Utama
-local MainSection = UpgradeTab:Section({
-    Title = "Stats Upgrade Manager",
-    TextSize = 18
-})
+-- local MainSection = UpgradeTab:Section({
+--     Title = "Stats Upgrade Manager",
+--     TextSize = 18
+-- })
 
 -- ============================================================================
 -- LOGIC PENGATURAN ELEMEN
@@ -1421,6 +1421,24 @@ local Categories = {
     Extra6 = {},
 }
 
+-- Fungsi Helper: Mendapatkan frame utama dari elemen
+local function GetElementFrame(element)
+    if element.ElementFrame then
+        return element.ElementFrame
+    elseif element.UIElements and element.UIElements.Main then
+        return element.UIElements.Main
+    end
+    
+    -- Coba cari property yang menyimpan object Element (seperti ParagraphFrame, ToggleFrame, dll)
+    for _, value in pairs(element) do
+        if type(value) == "table" and value.UIElements and value.UIElements.Main then
+            return value.UIElements.Main
+        end
+    end
+    
+    return nil
+end
+
 -- Fungsi Helper: Membuat elemen dan otomatis memasukkannya ke tabel kategori
 -- (Ini supaya kita tidak perlu manual set Visible satu-satu)
 local function AddElement(categoryName, element)
@@ -1428,8 +1446,9 @@ local function AddElement(categoryName, element)
         table.insert(Categories[categoryName], element)
         
         -- Sembunyikan elemen saat pertama dibuat (default hidden)
-        if element.ElementFrame then
-            element.ElementFrame.Visible = false
+        local frame = GetElementFrame(element)
+        if frame then
+            frame.Visible = false
         end
     end
     return element
@@ -1442,8 +1461,9 @@ local function OnCategoryChanged(selectedCategory)
         local isVisible = (catName == selectedCategory)
         
         for _, elem in ipairs(elements) do
-            if elem.ElementFrame then
-                elem.ElementFrame.Visible = isVisible
+            local frame = GetElementFrame(elem)
+            if frame then
+                frame.Visible = isVisible
             end
         end
     end
@@ -1453,7 +1473,7 @@ end
 -- 1. TOMBOL KATEGORI (HORIZONTAL SCROLL)
 -- ============================================================================
 
-MainSection:Category({
+UpgradeTab:Category({
     Title = "Select Category",
     Default = "Yen", -- Kategori awal yang aktif
     Options = {
@@ -1474,44 +1494,47 @@ MainSection:Category({
 })
 
 -- Spacer agar tidak terlalu mepet dengan tombol kategori
-MainSection:Space({Columns=1})
+UpgradeTab:Space({Columns=1})
 
 -- ============================================================================
--- 2. ISI KONTEN (SEMUA DALAM MAINSECTION)
+-- 2. ISI KONTEN (SEMUA DALAM PARAGRAF PER KATEGORI)
 -- ============================================================================
 
 -- [KATEGORI: YEN]
-AddElement("Yen", MainSection:Paragraph({ Title = "Yen Upgrades", Desc = "Upgrade stats using Yen currency" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" }))
-AddElement("Yen", MainSection:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" }))
+local YenGroup = AddElement("Yen", UpgradeTab:Paragraph({ Title = "Yen Upgrades", Desc = "Upgrade stats using Yen currency" }))
+YenGroup:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" })
+YenGroup:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" })
+YenGroup:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" })
 
 -- [KATEGORI: TOKEN]
-AddElement("Token", MainSection:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" }))
-AddElement("Token", MainSection:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" }))
-AddElement("Token", MainSection:Button({ Title = "Buy Tokens", Icon = "shopping-cart" }))
+local TokenGroup = AddElement("Token", UpgradeTab:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" }))
+TokenGroup:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" })
+TokenGroup:Button({ Title = "Buy Tokens", Icon = "shopping-cart" })
 
 -- [KATEGORI: RANK]
-AddElement("Rank", MainSection:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" }))
-AddElement("Rank", MainSection:Button({ Title = "Rank Up", Icon = "arrow-up-circle" }))
+local RankGroup = AddElement("Rank", UpgradeTab:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" }))
+RankGroup:Button({ Title = "Rank Up", Icon = "arrow-up-circle" })
 
 -- [KATEGORI: TRAINER]
-AddElement("Trainer", MainSection:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" }))
-AddElement("Trainer", MainSection:Button({ Title = "Train Now", Icon = "sword" }))
+local TrainerGroup = AddElement("Trainer", UpgradeTab:Paragraph({ Title = "Trainer Manager", Desc = "Select and train with masters" }))
+TrainerGroup:Dropdown({ Title = "Select Trainer", Values = {"Gojo", "Makima", "Yoriichi"}, Value = "Gojo" })
+TrainerGroup:Button({ Title = "Train Now", Icon = "sword" })
 
 -- [KATEGORI: MASTERY]
-AddElement("Mastery", MainSection:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 }))
-AddElement("Mastery", MainSection:Slider({ Title = "Magic Mastery", Min = 0, Max = 100, Default = 0 }))
+local MasteryGroup = AddElement("Mastery", UpgradeTab:Paragraph({ Title = "Mastery Skills", Desc = "Train your weapon mastery" }))
+MasteryGroup:Slider({ Title = "Sword Mastery", Min = 0, Max = 100, Default = 25 })
+MasteryGroup:Slider({ Title = "Magic Mastery", Min = 0, Max = 100, Default = 0 })
 
 -- [KATEGORI: SETTINGS]
-AddElement("Settings", MainSection:Toggle({ Title = "Auto Farm", Value = false }))
-AddElement("Settings", MainSection:Toggle({ Title = "Auto Rank Up", Value = false }))
+local SettingsGroup = AddElement("Settings", UpgradeTab:Paragraph({ Title = "Game Settings", Desc = "Manage automation" }))
+SettingsGroup:Toggle({ Title = "Auto Farm", Value = false })
+SettingsGroup:Toggle({ Title = "Auto Rank Up", Value = false })
 
 -- [KATEGORI: EXTRAS (TESTING SCROLL)]
 for i = 1, 6 do
     local catName = "Extra" .. i
-    AddElement(catName, MainSection:Paragraph({ Title = catName .. " Content", Desc = "This is content for " .. catName }))
-    AddElement(catName, MainSection:Button({ Title = "Action " .. i, Icon = "zap" }))
+    local ExtraGroup = AddElement(catName, UpgradeTab:Paragraph({ Title = catName .. " Content", Desc = "This is content for " .. catName }))
+    ExtraGroup:Button({ Title = "Action " .. i, Icon = "zap" })
 end
 
 

@@ -42,7 +42,22 @@ function Element:New(ElementConfig)
         end
     end  
       
-    return ParagraphModule.__type, ParagraphModule  
+    local ElementsModule = ElementConfig.ElementsModule
+    if ElementsModule then
+        ElementsModule.Load(
+            ParagraphModule, 
+            Paragraph.UIElements.Container, 
+            ElementsModule.Elements, 
+            ElementConfig.Window, 
+            ElementConfig.ANUI, 
+            nil, 
+            ElementsModule, 
+            ElementConfig.UIScale, 
+            ElementConfig.Tab
+        )
+    end
+
+    return ParagraphModule.__type, ParagraphModule
     
 end
 

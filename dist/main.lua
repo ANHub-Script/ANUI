@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.98  |  2025-11-28  |  Roblox UI Library for scripts
+    v1.0.99  |  2025-11-29  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.98",
+    "version": "1.0.99",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5736,6 +5736,21 @@ local al=ad(ak.Title,ak.Icon,ak.Callback,"White",ai,nil,nil,af.Window.NewElement
 al.Size=UDim2.new(1,0,0,38)
 
 end
+end
+
+local ai=af.ElementsModule
+if ai then
+ai.Load(
+ag,
+ah.UIElements.Container,
+ai.Elements,
+af.Window,
+af.ANUI,
+nil,
+ai,
+af.UIScale,
+af.Tab
+)
 end
 
 return ag.__type,ag
