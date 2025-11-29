@@ -39,6 +39,7 @@ function Element:New(Config)
         Index = Config.Index,
         ElementTable = Toggle,
         ParentConfig = Config,
+        ParentType = Config.ParentType,
     })
     
     local CanCallback = true
