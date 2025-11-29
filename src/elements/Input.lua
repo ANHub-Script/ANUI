@@ -41,6 +41,7 @@ function Element:New(Config)
         Window = Config.Window,
         ElementTable = Input,
         ParentConfig = Config,
+        ParentType = Config.ParentType,
     })
     
     local InputComponent = CreateInput(

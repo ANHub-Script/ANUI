@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.102  |  2025-11-29  |  Roblox UI Library for scripts
+    v1.0.103  |  2025-11-29  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.102",
+    "version": "1.0.103",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6403,6 +6403,7 @@ Index=ai.Index,
 Window=ai.Window,
 ElementTable=aj,
 ParentConfig=ai,
+ParentType=ai.ParentType,
 }
 
 aj.UIElements.SliderIcon=aa.NewRoundFrame(99,"Squircle",{
@@ -6617,6 +6618,7 @@ Index=aj.Index,
 Window=aj.Window,
 ElementTable=ak,
 ParentConfig=aj,
+ParentType=aj.ParentType,
 }
 
 ak.UIElements.Keybind=ah(ak.Value,nil,ak.KeybindFrame.UIElements.Main)
@@ -6768,6 +6770,7 @@ Index=ai.Index,
 Window=ai.Window,
 ElementTable=aj,
 ParentConfig=ai,
+ParentType=ai.ParentType,
 }
 
 local al=ag(
@@ -7592,6 +7595,7 @@ Index=an.Index,
 Window=an.Window,
 ElementTable=ao,
 ParentConfig=an,
+ParentType=an.ParentType,
 }
 
 

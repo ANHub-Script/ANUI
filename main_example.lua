@@ -1508,8 +1508,9 @@ YenGroup:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" })
 
 -- [KATEGORI: TOKEN]
 local TokenGroup = AddElement("Token", UpgradeTab:Paragraph({ Title = "Token Upgrades", Desc = "Special upgrades using Tokens" }))
-TokenGroup:Toggle({ Title = "Critical Hit [0/10]", Desc = "Cost: 5 Tokens | +2% Crit" })
-TokenGroup:Button({ Title = "Buy Tokens", Icon = "shopping-cart" })
+TokenGroup:Toggle({ Title = "Luck Upgrade [0/20]", Desc = "Cost: 100 Yen | +5% Luck" })
+TokenGroup:Toggle({ Title = "Damage Upgrade [0/50]", Desc = "Cost: 250 Yen | +10 Damage" })
+TokenGroup:Toggle({ Title = "Yen Multiplier", Desc = "Cost: 500 Yen | x1.5 Yen" })
 
 -- [KATEGORI: RANK]
 local RankGroup = AddElement("Rank", UpgradeTab:Paragraph({ Title = "Rank Information", Desc = "Current Rank: S-Class\nPower: 500,000" }))

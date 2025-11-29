@@ -39,6 +39,7 @@ function Element:New(Config)
         Window = Config.Window,
         ElementTable = Keybind,
         ParentConfig = Config,
+        ParentType = Config.ParentType,
     })
     
     Keybind.UIElements.Keybind = CreateLabel(Keybind.Value, nil, Keybind.KeybindFrame.UIElements.Main)
