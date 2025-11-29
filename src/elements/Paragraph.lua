@@ -16,7 +16,8 @@ function Element:New(ElementConfig)
         Title = ElementConfig.Title or "Paragraph",  
         Desc = ElementConfig.Desc or nil,  
         --Color = ElementConfig.Color,  
-        Locked = ElementConfig.Locked or false,  
+        Locked = ElementConfig.Locked or false,
+        Elements = {}
     }  
     local Paragraph = require("../components/window/Element")(ElementConfig)  
       
