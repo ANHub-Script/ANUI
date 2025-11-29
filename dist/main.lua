@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.103  |  2025-11-29  |  Roblox UI Library for scripts
+    v1.0.104  |  2025-11-29  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.103",
+    "version": "1.0.104",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -3111,7 +3111,9 @@ ac.Parent=aa(game:GetService"Lighting")
 end)
 
 if not ae then
+pcall(function()
 ac.Parent=aa(game:GetService"Workspace").CurrentCamera
+end)
 end
 end
 
@@ -5060,7 +5062,7 @@ end
 local function isDelimiter(ai)
 if ai==nil then return true end
 local aj=ai.__type
-return aj=="Divider"or aj=="Space"or aj=="Section"or aj=="Code"
+return aj=="Divider"or aj=="Space"or aj=="Section"or aj=="Code"or aj=="Paragraph"
 end
 
 if isDelimiter(af[ag])then

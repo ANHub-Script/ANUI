@@ -77,7 +77,7 @@ local function getElementPosition(elements, targetIndex)
     local function isDelimiter(el)
         if el == nil then return true end
         local t = el.__type
-        return t == "Divider" or t == "Space" or t == "Section" or t == "Code"
+        return t == "Divider" or t == "Space" or t == "Section" or t == "Code" or t == "Paragraph"
     end
 
     if isDelimiter(elements[targetIndex]) then

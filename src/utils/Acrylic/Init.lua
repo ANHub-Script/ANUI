@@ -27,7 +27,9 @@ function Acrylic.init()
 		end)
 		
 		if not success then
-			baseEffect.Parent = cloneref(game:GetService("Workspace")).CurrentCamera
+			pcall(function()
+				baseEffect.Parent = cloneref(game:GetService("Workspace")).CurrentCamera
+			end)
 		end
 	end
 

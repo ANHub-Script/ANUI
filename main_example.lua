@@ -32,7 +32,7 @@ end;
 -- Konfigurasi profil utama disimpan di sini agar tidak perlu ditulis ulang
 -- ============================================================================
 local BaseProfile = {
-	Banner = "https://repository-images.githubusercontent.com/1102442882/45a94316-35fc-48c3-9efc-ec4a904d8d12",
+	Banner = "rbxassetid://114772391775993",
 	Avatar = "rbxassetid://84366761557806",
 	Status = true,
 	Badges = {
