@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.107  |  2025-11-30  |  Roblox UI Library for scripts
+    v1.0.108  |  2025-11-30  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.107",
+    "version": "1.0.108",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -11532,6 +11532,13 @@ Position=UDim2.new(0,0,0,52),
 BackgroundTransparency=1,
 Visible=true,
 },{
+aj.NewRoundFrame(as.UICorner-(as.UIPadding/2),"Squircle",{
+Size=UDim2.new(1,0,1,0),
+ImageColor3=Color3.new(1,1,1),
+ZIndex=1,
+ImageTransparency=1,
+Name="SidebarBackdrop",
+}),
 ak("Frame",{
 Name="Content",
 BackgroundTransparency=1,
@@ -12328,15 +12335,16 @@ function as.CollapseSidebar(r)
 if as.SidebarCollapsed then return end
 as.SidebarCollapsed=true
 local u=as.User.Enabled and-94-(as.UIPadding*2)or-52
-al(as.UIElements.SideBarContainer,.24,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
-al(as.UIElements.MainBar,.24,{Size=UDim2.new(1,0,1,-52)},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
-task.delay(.25,function()
-al(as.UIElements.SideBarContainer,.12,{Size=UDim2.new(0,10,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
-al(as.UIElements.MainBar,.12,{Size=UDim2.new(1,-(10/(ar.ANUI.UIScale or 1)),1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
+al(as.UIElements.SideBarContainer,.32,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+al(as.UIElements.MainBar,.32,{Size=UDim2.new(1,0,1,-52)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+al(as.UIElements.SideBarContainer.SidebarBackdrop,.28,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+task.delay(.32,function()
+al(as.UIElements.SideBarContainer,.16,{Size=UDim2.new(0,8,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
+al(as.UIElements.MainBar,.16,{Size=UDim2.new(1,-(8/(ar.ANUI.UIScale or 1)),1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
 end)
-task.delay(.37,function()
-al(as.UIElements.SideBarContainer,.12,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
-al(as.UIElements.MainBar,.12,{Size=UDim2.new(1,0,1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
+task.delay(.48,function()
+al(as.UIElements.SideBarContainer,.16,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
+al(as.UIElements.MainBar,.16,{Size=UDim2.new(1,0,1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
 end)
 updateSidebarToggleIcon()
 end
@@ -12345,15 +12353,16 @@ function as.ExpandSidebar(r)
 if not as.SidebarCollapsed then return end
 as.SidebarCollapsed=false
 local u=as.User.Enabled and-94-(as.UIPadding*2)or-52
-al(as.UIElements.SideBarContainer,.26,{Size=UDim2.new(0,as.SideBarWidth,1,u)},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
-al(as.UIElements.MainBar,.26,{Size=UDim2.new(1,-as.SideBarWidth,1,-52)},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
-task.delay(.26,function()
-al(as.UIElements.SideBarContainer,.14,{Size=UDim2.new(0,as.SideBarWidth+12,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
-al(as.UIElements.MainBar,.14,{Size=UDim2.new(1,-(as.SideBarWidth+12),1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
+al(as.UIElements.SideBarContainer,.36,{Size=UDim2.new(0,as.SideBarWidth,1,u)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+al(as.UIElements.MainBar,.36,{Size=UDim2.new(1,-as.SideBarWidth,1,-52)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+al(as.UIElements.SideBarContainer.SidebarBackdrop,.30,{ImageTransparency=.95},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+task.delay(.36,function()
+al(as.UIElements.SideBarContainer,.18,{Size=UDim2.new(0,as.SideBarWidth+10,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
+al(as.UIElements.MainBar,.18,{Size=UDim2.new(1,-(as.SideBarWidth+10),1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
 end)
-task.delay(.40,function()
-al(as.UIElements.SideBarContainer,.14,{Size=UDim2.new(0,as.SideBarWidth,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
-al(as.UIElements.MainBar,.14,{Size=UDim2.new(1,-as.SideBarWidth,1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
+task.delay(.54,function()
+al(as.UIElements.SideBarContainer,.18,{Size=UDim2.new(0,as.SideBarWidth,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
+al(as.UIElements.MainBar,.18,{Size=UDim2.new(1,-as.SideBarWidth,1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()
 end)
 updateSidebarToggleIcon()
 end

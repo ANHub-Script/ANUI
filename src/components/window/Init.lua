@@ -240,6 +240,13 @@ return function(Config)
         BackgroundTransparency = 1,
         Visible = true,
     }, {
+        Creator.NewRoundFrame(Window.UICorner-(Window.UIPadding/2), "Squircle", {
+            Size = UDim2.new(1,0,1,0),
+            ImageColor3 = Color3.new(1,1,1),
+            ZIndex = 1,
+            ImageTransparency = 1,
+            Name = "SidebarBackdrop",
+        }),
         New("Frame", {
             Name = "Content",
             BackgroundTransparency = 1,
@@ -1036,15 +1043,16 @@ return function(Config)
         if Window.SidebarCollapsed then return end
         Window.SidebarCollapsed = true
         local heightOffset = Window.User.Enabled and -52 -42 -(Window.UIPadding*2) or -52
-        Tween(Window.UIElements.SideBarContainer, .24, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-        Tween(Window.UIElements.MainBar, .24, { Size = UDim2.new(1,0,1,-52) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-        task.delay(.25, function()
-            Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,10,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
-            Tween(Window.UIElements.MainBar, .12, { Size = UDim2.new(1,-(10/(Config.ANUI.UIScale or 1)),1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.SideBarContainer, .32, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.MainBar, .32, { Size = UDim2.new(1,0,1,-52) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.SideBarContainer.SidebarBackdrop, .28, { ImageTransparency = 1 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        task.delay(.32, function()
+            Tween(Window.UIElements.SideBarContainer, .16, { Size = UDim2.new(0,8,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+            Tween(Window.UIElements.MainBar, .16, { Size = UDim2.new(1,-(8/(Config.ANUI.UIScale or 1)),1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
         end)
-        task.delay(.37, function()
-            Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
-            Tween(Window.UIElements.MainBar, .12, { Size = UDim2.new(1,0,1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+        task.delay(.48, function()
+            Tween(Window.UIElements.SideBarContainer, .16, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+            Tween(Window.UIElements.MainBar, .16, { Size = UDim2.new(1,0,1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
         end)
         updateSidebarToggleIcon()
     end
@@ -1053,15 +1061,16 @@ return function(Config)
         if not Window.SidebarCollapsed then return end
         Window.SidebarCollapsed = false
         local heightOffset = Window.User.Enabled and -52 -42 -(Window.UIPadding*2) or -52
-        Tween(Window.UIElements.SideBarContainer, .26, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-        Tween(Window.UIElements.MainBar, .26, { Size = UDim2.new(1,-Window.SideBarWidth,1,-52) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-        task.delay(.26, function()
-            Tween(Window.UIElements.SideBarContainer, .14, { Size = UDim2.new(0,Window.SideBarWidth+12,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
-            Tween(Window.UIElements.MainBar, .14, { Size = UDim2.new(1,-(Window.SideBarWidth+12),1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.SideBarContainer, .36, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.MainBar, .36, { Size = UDim2.new(1,-Window.SideBarWidth,1,-52) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        Tween(Window.UIElements.SideBarContainer.SidebarBackdrop, .30, { ImageTransparency = .95 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        task.delay(.36, function()
+            Tween(Window.UIElements.SideBarContainer, .18, { Size = UDim2.new(0,Window.SideBarWidth+10,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+            Tween(Window.UIElements.MainBar, .18, { Size = UDim2.new(1,-(Window.SideBarWidth+10),1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
         end)
-        task.delay(.40, function()
-            Tween(Window.UIElements.SideBarContainer, .14, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
-            Tween(Window.UIElements.MainBar, .14, { Size = UDim2.new(1,-Window.SideBarWidth,1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+        task.delay(.54, function()
+            Tween(Window.UIElements.SideBarContainer, .18, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+            Tween(Window.UIElements.MainBar, .18, { Size = UDim2.new(1,-Window.SideBarWidth,1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
         end)
         updateSidebarToggleIcon()
     end
