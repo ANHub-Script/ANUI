@@ -1,29 +1,4 @@
 local ANUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua?v="..math.random()))();
--- local ANUI = require("./src/Init")
-
-local Window = ANUI:CreateWindow({
-    Title = "WindUI Sidebar Demo",
-    Icon = "geist:window",
-    Author = "Welcome to WindUI",
-    Folder = "WindUI_SidebarDemo",
-    Theme = "Dark",
-    SideBarWidth = 220,
-    HideSearchBar = false,
-    User = { Enabled = true, Anonymous = true },
-})
-
-local Section = Window:Section({ Title = "Home", Icon = "home" })
-local Tab = Section:Tab({ Title = "Welcome", Icon = "sparkles" })
-
-ANUI:Notify({ Title = "Sidebar", Content = "Use Topbar button to toggle Sidebar", Duration = 4 })
-
-task.delay(1.0, function()
-    Window:CollapseSidebar()
-end)
-
-task.delay(3.0, function()
-    Window:ExpandSidebar()
-end)
 
 local Window = ANUI:CreateWindow({
 	Title = ".an hub | ANUI Library",
