@@ -27,6 +27,13 @@ do
 	});
 end;
 
+task.delay(1.0, function()
+    Window:CollapseSidebar()
+end)
+
+task.delay(3.0, function()
+    Window:ExpandSidebar()
+end)
 -- ============================================================================
 -- GLOBAL PROFILE CONFIGURATION
 -- Konfigurasi profil utama disimpan di sini agar tidak perlu ditulis ulang

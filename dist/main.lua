@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.106  |  2025-11-30  |  Roblox UI Library for scripts
+    v1.0.107  |  2025-11-30  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.106",
+    "version": "1.0.107",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -11574,8 +11574,14 @@ PaddingBottom=UDim.new(0,as.UIPadding/2),
 })
 })
 
+local function getScaledSidebarWidth()
+return as.UIElements.SideBarContainer.AbsoluteSize.X/(ar.ANUI.UIScale or 1)
+end
+
+as.UIElements.MainBar.Size=UDim2.new(1,-as.SideBarWidth,1,-52)
+
 aj.AddSignal(as.UIElements.SideBarContainer:GetPropertyChangedSignal"AbsoluteSize",function()
-as.UIElements.MainBar.Size=UDim2.new(1,-as.UIElements.SideBarContainer.AbsoluteSize.X,1,-52)
+as.UIElements.MainBar.Size=UDim2.new(1,-getScaledSidebarWidth(),1,-52)
 end)
 
 local ay=ak("ImageLabel",{
@@ -12326,7 +12332,7 @@ al(as.UIElements.SideBarContainer,.24,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle
 al(as.UIElements.MainBar,.24,{Size=UDim2.new(1,0,1,-52)},Enum.EasingStyle.Quart,Enum.EasingDirection.Out):Play()
 task.delay(.25,function()
 al(as.UIElements.SideBarContainer,.12,{Size=UDim2.new(0,10,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
-al(as.UIElements.MainBar,.12,{Size=UDim2.new(1,-10,1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
+al(as.UIElements.MainBar,.12,{Size=UDim2.new(1,-(10/(ar.ANUI.UIScale or 1)),1,-52)},Enum.EasingStyle.Sine,Enum.EasingDirection.Out):Play()
 end)
 task.delay(.37,function()
 al(as.UIElements.SideBarContainer,.12,{Size=UDim2.new(0,0,1,u)},Enum.EasingStyle.Sine,Enum.EasingDirection.In):Play()

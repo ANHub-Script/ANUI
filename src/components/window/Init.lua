@@ -281,9 +281,15 @@ return function(Config)
             PaddingBottom = UDim.new(0,Window.UIPadding/2),
         })
     })
-
+    
+    local function getScaledSidebarWidth()
+        return Window.UIElements.SideBarContainer.AbsoluteSize.X / (Config.ANUI.UIScale or 1)
+    end
+    
+    Window.UIElements.MainBar.Size = UDim2.new(1, -Window.SideBarWidth, 1, -52)
+    
     Creator.AddSignal(Window.UIElements.SideBarContainer:GetPropertyChangedSignal("AbsoluteSize"), function()
-        Window.UIElements.MainBar.Size = UDim2.new(1, -Window.UIElements.SideBarContainer.AbsoluteSize.X, 1, -52)
+        Window.UIElements.MainBar.Size = UDim2.new(1, -getScaledSidebarWidth(), 1, -52)
     end)
     
     local Blur = New("ImageLabel", { -- Shadow
@@ -1034,7 +1040,7 @@ return function(Config)
         Tween(Window.UIElements.MainBar, .24, { Size = UDim2.new(1,0,1,-52) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
         task.delay(.25, function()
             Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,10,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
-            Tween(Window.UIElements.MainBar, .12, { Size = UDim2.new(1,-10,1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+            Tween(Window.UIElements.MainBar, .12, { Size = UDim2.new(1,-(10/(Config.ANUI.UIScale or 1)),1,-52) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
         end)
         task.delay(.37, function()
             Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
