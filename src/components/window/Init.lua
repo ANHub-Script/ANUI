@@ -281,6 +281,10 @@ return function(Config)
             PaddingBottom = UDim.new(0,Window.UIPadding/2),
         })
     })
+
+    Creator.AddSignal(Window.UIElements.SideBarContainer:GetPropertyChangedSignal("AbsoluteSize"), function()
+        Window.UIElements.MainBar.Size = UDim2.new(1, -Window.UIElements.SideBarContainer.AbsoluteSize.X, 1, -52)
+    end)
     
     local Blur = New("ImageLabel", { -- Shadow
         Image = "rbxassetid://8992230677",
@@ -1007,6 +1011,72 @@ return function(Config)
     
     
     
+    Window.SidebarCollapsed = false
+
+    local function updateSidebarToggleIcon()
+        local btnIcon = Window.UIElements.SidebarToggleButtonIcon
+        if btnIcon and btnIcon:FindFirstChild("ImageLabel") then
+            local iconName = Window.SidebarCollapsed and "chevrons-right" or "chevrons-left"
+            local icon = Creator.Icon(iconName)
+            if icon and icon[1] and icon[2] then
+                btnIcon.ImageLabel.Image = icon[1]
+                btnIcon.ImageLabel.ImageRectOffset = icon[2].ImageRectPosition
+                btnIcon.ImageLabel.ImageRectSize = icon[2].ImageRectSize
+            end
+        end
+    end
+
+    function Window:CollapseSidebar()
+        if Window.SidebarCollapsed then return end
+        Window.SidebarCollapsed = true
+        local heightOffset = Window.User.Enabled and -52 -42 -(Window.UIPadding*2) or -52
+        Tween(Window.UIElements.SideBarContainer, .24, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
+        task.delay(.25, function()
+            Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,10,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+        end)
+        task.delay(.37, function()
+            Tween(Window.UIElements.SideBarContainer, .12, { Size = UDim2.new(0,0,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+        end)
+        updateSidebarToggleIcon()
+    end
+
+    function Window:ExpandSidebar()
+        if not Window.SidebarCollapsed then return end
+        Window.SidebarCollapsed = false
+        local heightOffset = Window.User.Enabled and -52 -42 -(Window.UIPadding*2) or -52
+        Tween(Window.UIElements.SideBarContainer, .26, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
+        task.delay(.26, function()
+            Tween(Window.UIElements.SideBarContainer, .14, { Size = UDim2.new(0,Window.SideBarWidth+12,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.Out):Play()
+        end)
+        task.delay(.40, function()
+            Tween(Window.UIElements.SideBarContainer, .14, { Size = UDim2.new(0,Window.SideBarWidth,1,heightOffset) }, Enum.EasingStyle.Sine, Enum.EasingDirection.In):Play()
+        end)
+        updateSidebarToggleIcon()
+    end
+
+    function Window:ToggleSidebar(state)
+        if state == nil then
+            if Window.SidebarCollapsed then
+                Window:ExpandSidebar()
+            else
+                Window:CollapseSidebar()
+            end
+        else
+            if state then
+                Window:CollapseSidebar()
+            else
+                Window:ExpandSidebar()
+            end
+        end
+    end
+
+    local SidebarToggleButton = Window:CreateTopbarButton("Sidebar", "chevrons-left", function()
+        Window:ToggleSidebar()
+    end, 998)
+    Window.UIElements.SidebarToggleButton = SidebarToggleButton
+    Window.UIElements.SidebarToggleButtonIcon = SidebarToggleButton:FindFirstChild("WindowTopbarButtonIcon", true)
+    updateSidebarToggleIcon()
+
     Window:CreateTopbarButton("Minimize", "minus", function() 
         Window:Close()
         -- task.spawn(function()
