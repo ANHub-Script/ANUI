@@ -1164,6 +1164,63 @@ do
 			}
 		}
 	});
+	DropdownTab:Space();
+	DropdownTab:Dropdown({
+		Title = "Inventory / Card Style",
+		Desc = "Demonstrates using the Images property to render rich card items.",
+		ImageSize = UDim2.fromOffset(80, 80),
+		Values = {
+			{
+				Title = "Rare Items",
+				Desc = "Collection of rare items",
+				Images = {
+					{
+						Card = true,
+						Title = "World Box",
+						Quantity = "244x",
+						Image = "package",
+						Gradient = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromHex("#C042FF")),
+							ColorSequenceKeypoint.new(1, Color3.fromHex("#8E24AA"))
+						}
+					},
+					{
+						Card = true,
+						Title = "Golden Ticket",
+						Quantity = "72x",
+						Image = "ticket",
+						Gradient = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromHex("#FFD700")),
+							ColorSequenceKeypoint.new(1, Color3.fromHex("#FFA000"))
+						}
+					},
+					{
+						Card = true,
+						Title = "Zone Key",
+						Quantity = "3x",
+						Image = "key",
+						Gradient = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromHex("#29B6F6")),
+							ColorSequenceKeypoint.new(1, Color3.fromHex("#0288D1"))
+						}
+					},
+					{
+						Card = true,
+						Title = "Lost Amulet",
+						Quantity = "675x",
+						Image = "gem",
+						Gradient = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromHex("#29B6F6")),
+							ColorSequenceKeypoint.new(1, Color3.fromHex("#0288D1"))
+						}
+					},
+				}
+			}
+		},
+		Callback = function(v)
+			print("Card Dropdown Selected:", v.Title)
+		end
+	});
 end;
 
 do

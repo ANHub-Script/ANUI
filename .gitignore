@@ -12,6 +12,7 @@ updater
 RR
 docs
 # script
+ask
 docs-website
 dist-ssr
 *.local

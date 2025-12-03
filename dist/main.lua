@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.117  |  2025-12-03  |  Roblox UI Library for scripts
+    v1.0.118  |  2025-12-03  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.117",
+    "version": "1.0.118",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7262,22 +7262,108 @@ if ax.Images and#ax.Images>0 then
 local az=ax.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
 if az then
 for aA,aB in ipairs(ax.Images)do
-local d
-if typeof(aB)=="table"then
-d=aB.Image or aB.Icon or aB.Id or aB
-else
-d=aB
+local d=false
+if typeof(aB)=="table"and(aB.Quantity or aB.Gradient or aB.Card)then
+d=true
 end
-local e=aj.Image(
-d,
-tostring(d)..":"..ax.Name,
+
+if d then
+local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
+local f=aB.Title or ax.Name
+local g=aB.Quantity or""
+local h=aB.Image or""
+local j=aB.Gradient
+
+local l
+if typeof(j)=="ColorSequence"then
+l=j
+elseif typeof(j)=="Color3"then
+l=ColorSequence.new(j)
+else
+l=ColorSequence.new(Color3.fromRGB(80,80,80))
+end
+
+aj.NewRoundFrame(8,"Squircle",{
+Size=e,
+Parent=az,
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+},{
+ak("UIGradient",{
+Color=l,
+Rotation=45,
+}),
+ak("ImageLabel",{
+Image=h,
+Size=UDim2.new(0.65,0,0.65,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.45,0),
+BackgroundTransparency=1,
+ScaleType="Fit",
+ZIndex=2,
+}),
+ak("TextLabel",{
+Text=g,
+Size=UDim2.new(1,-8,0,20),
+Position=UDim2.new(0,4,0,2),
+BackgroundTransparency=1,
+TextXAlignment="Right",
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
+TextSize=14,
+TextStrokeTransparency=0.5,
+ZIndex=3,
+}),
+ak("Frame",{
+Size=UDim2.new(1,0,0,22),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=4,
+},{
+ak("TextLabel",{
+Text=f,
+Size=UDim2.new(1,-20,1,0),
+Position=UDim2.new(0,6,0,0),
+BackgroundTransparency=1,
+TextXAlignment="Left",
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
+TextSize=11,
+TextTruncate="AtEnd",
+}),
+ak("ImageLabel",{
+Image=aj.Icon"star"[1],
+ImageRectOffset=aj.Icon"star"[2].ImageRectPosition,
+ImageRectSize=aj.Icon"star"[2].ImageRectSize,
+Size=UDim2.new(0,12,0,12),
+AnchorPoint=Vector2.new(1,0.5),
+Position=UDim2.new(1,-4,0.5,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.fromRGB(255,255,255),
+})
+})
+})
+else
+local e
+if typeof(aB)=="table"then
+e=aB.Image or aB.Icon or aB.Id or aB
+else
+e=aB
+end
+local f=aj.Image(
+e,
+tostring(e)..":"..ax.Name,
 6,
 am.Window.Folder,
 "Dropdown",
 false
 )
-e.Size=an.ImageSize or UDim2.new(0,30,0,30)
-e.Parent=az
+f.Size=an.ImageSize or UDim2.new(0,30,0,30)
+f.Parent=az
+end
 end
 end
 end
