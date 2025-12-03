@@ -312,6 +312,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     New("Frame", {
                         Size = UDim2.new(1,0,1,0),
                         BackgroundTransparency = 1,
+                        Name = "Frame",
                     }, {
                         New("UIListLayout", {
                             Padding = UDim.new(0, Element.TabPadding),
