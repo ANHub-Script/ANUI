@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.113  |  2025-12-02  |  Roblox UI Library for scripts
+    v1.0.114  |  2025-12-03  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.113",
+    "version": "1.0.114",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6917,7 +6917,7 @@ Padding=UDim.new(0,ao.MenuPadding)
 ak("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,1,an.SearchBarEnabled and-ao.MenuPadding-ao.SearchBarHeight),
-
+Name="Frame",
 ClipsDescendants=true,
 LayoutOrder=999,
 },{

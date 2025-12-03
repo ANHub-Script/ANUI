@@ -49,7 +49,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 		New("Frame", {
 		    BackgroundTransparency = 1,
 		    Size = UDim2.new(1,0,1,Dropdown.SearchBarEnabled and -Element.MenuPadding-Element.SearchBarHeight ),
-		    --Name = "CanvasGroup",
+		    Name = "Frame",
 		    ClipsDescendants = true,
 		    LayoutOrder = 999,
 		}, {
