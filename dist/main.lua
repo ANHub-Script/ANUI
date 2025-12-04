@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.120  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.121  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.120",
+    "version": "1.0.121",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7178,7 +7178,8 @@ NumberSequenceKeypoint.new(1.0,0.1),
 }),
 }),
 ak("Frame",{
-Size=UDim2.new(1,0,1,0),
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
 BackgroundTransparency=1,
 Name="Frame",
 },{
@@ -7282,6 +7283,11 @@ elseif typeof(l)=="Color3"then
 m=l
 end
 
+
+local p=e.Y.Offset
+local r=math.clamp(math.floor(p*0.175),10,14)
+local u=math.clamp(math.floor(p*0.15),9,12)
+
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
@@ -7290,10 +7296,11 @@ ClipsDescendants=false,
 },{
 
 aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-5,1,-5),
+Size=UDim2.new(1,-4,1,-4),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.fromRGB(40,40,40),
+ImageColor3=Color3.fromRGB(30,30,30),
+ZIndex=2,
 ClipsDescendants=true,
 },{
 ak("ImageLabel",{
@@ -7303,38 +7310,38 @@ AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
-ZIndex=2,
+ZIndex=3,
 }),
 ak("TextLabel",{
 Text=g,
-Size=UDim2.new(0.5,-4,0,20),
+Size=UDim2.new(0.5,-4,0,r+6),
 Position=UDim2.new(0,6,0,4),
 BackgroundTransparency=1,
 TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=14,
+TextSize=r,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=3,
+ZIndex=4,
 }),
 ak("TextLabel",{
 Text=h,
-Size=UDim2.new(0.5,-4,0,20),
+Size=UDim2.new(0.5,-4,0,r+6),
 Position=UDim2.new(1,-6,0,4),
 AnchorPoint=Vector2.new(1,0),
 BackgroundTransparency=1,
 TextXAlignment="Right",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=14,
+TextSize=r,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=3,
+ZIndex=4,
 }),
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-8,0,32),
+Size=UDim2.new(1,-8,0,(u*2)+8),
 Position=UDim2.new(0.5,0,1,-4),
 AnchorPoint=Vector2.new(0.5,1),
 BackgroundTransparency=1,
@@ -7342,11 +7349,11 @@ TextXAlignment="Center",
 TextYAlignment="Bottom",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=12,
+TextSize=u,
 TextWrapped=true,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=4,
+ZIndex=5,
 }),
 })
 })
