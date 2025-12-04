@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.137  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.138  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.137",
+    "version": "1.0.138",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7236,7 +7236,6 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
-
 ak("ScrollingFrame",{
 Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
@@ -7295,6 +7294,16 @@ else
 m=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
+
+local p
+if typeof(l)=="ColorSequence"and l.Keypoints[1]then
+p=l.Keypoints[1].Value
+elseif typeof(l)=="Color3"then
+p=l
+else
+p=Color3.fromRGB(80,80,80)
+end
+
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
@@ -7304,7 +7313,7 @@ ClipsDescendants=true,
 
 ak("UIStroke",{
 Thickness=2,
-Color=Color3.new(1,1,1),
+Color=p,
 ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 Transparency=0,
 }),
@@ -7370,13 +7379,58 @@ ZIndex=4,
 
 ak("UICorner",{CornerRadius=UDim.new(0,8)}),
 
+
 ak("Frame",{
 Size=UDim2.new(1,0,0.5,0),
+Position=UDim2.new(0,0,0,0),
 BackgroundColor3=Color3.new(0,0,0),
 BackgroundTransparency=0,
 BorderSizePixel=0,
-Visible=false,
+ZIndex=3,
+
+
+
+
+
+
+BackgroundTransparency=0.4,
+
+
+
 }),
+
+
+
+
+
+}),
+
+
+ak("Frame",{
+Size=UDim2.new(1,0,0,20),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundTransparency=1,
+ZIndex=4,
+},{
+
+ak("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+},{
+ak("UICorner",{CornerRadius=UDim.new(0,8)}),
+}),
+
+ak("Frame",{
+Size=UDim2.new(1,0,0.5,0),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+}),
+
+
 ak("TextLabel",{
 Text=f,
 Size=UDim2.new(1,0,1,0),
@@ -7388,6 +7442,7 @@ FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=9,
 TextWrapped=true,
 TextTruncate="AtEnd",
+ZIndex=5,
 }),
 })
 })

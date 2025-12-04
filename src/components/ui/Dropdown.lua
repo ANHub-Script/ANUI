@@ -368,12 +368,11 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
-                            -- [UPDATED] ScrollingFrame untuk Card agar bisa digeser
                             New("ScrollingFrame", {
                                 Size = UDim2.new(1,0,0,70), 
                                 BackgroundTransparency = 1,
-                                AutomaticSize = Enum.AutomaticSize.None, -- Fixed height agar tidak glitch
-                                AutomaticCanvasSize = Enum.AutomaticSize.X, -- Scroll horizontal
+                                AutomaticSize = Enum.AutomaticSize.None,
+                                AutomaticCanvasSize = Enum.AutomaticSize.X,
                                 ScrollingDirection = Enum.ScrollingDirection.X,
                                 ScrollBarThickness = 0,
                                 CanvasSize = UDim2.new(0,0,0,0),
@@ -427,27 +426,37 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
                                 end
                                 
+                                -- [LOGIKA BARU] Mengambil warna untuk border dari warna pertama di Gradient
+                                local BorderColor
+                                if typeof(CardGradient) == "ColorSequence" and CardGradient.Keypoints[1] then
+                                    BorderColor = CardGradient.Keypoints[1].Value
+                                elseif typeof(CardGradient) == "Color3" then
+                                    BorderColor = CardGradient
+                                else
+                                    BorderColor = Color3.fromRGB(80, 80, 80)
+                                end
+                                
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
                                     Size = CardSize,
                                     Parent = imagesContainer,
                                     ImageColor3 = Color3.new(1, 1, 1),
                                     ClipsDescendants = true,
                                 }, {
-                                    -- [UPDATED] UIStroke sebagai pengganti Inner Shadow (Border Warna Putih agar terkena Gradient)
+                                    -- [FIX] BORDER: Menggunakan warna dari Gradient
                                     New("UIStroke", {
                                         Thickness = 2,
-                                        Color = Color3.new(1, 1, 1), -- Putih agar diwarnai oleh UIGradient
+                                        Color = BorderColor, 
                                         ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
                                         Transparency = 0,
                                     }),
                                     
-                                    -- Gradient Utama (Mewarnai Card + Border)
+                                    -- Gradient Utama
                                     New("UIGradient", {
                                         Color = GradientColor,
                                         Rotation = 45,
                                     }),
                                     
-                                    -- Background Image
+                                    -- Background Image Item
                                     New("ImageLabel", {
                                         Image = CardImage,
                                         Size = UDim2.new(0.65, 0, 0.65, 0),
@@ -489,26 +498,71 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         ZIndex = 3,
                                     }),
 
-                                    -- [UPDATED] Title Bar (Menyatu dengan Card - Squircle)
+                                    -- [FIX] Title Bar Menyatu (Teknik Patching)
                                     New("Frame", {
                                         Size = UDim2.new(1, 0, 0, 20),
                                         Position = UDim2.new(0, 0, 1, 0),
                                         AnchorPoint = Vector2.new(0, 1),
                                         BackgroundColor3 = Color3.new(0, 0, 0),
-                                        BackgroundTransparency = 0.4,
+                                        BackgroundTransparency = 0.4, -- Transparan Hitam
                                         BorderSizePixel = 0,
                                         ZIndex = 4,
                                     }, {
-                                        -- Menggunakan UICorner agar sudut bawah melengkung
-                                        New("UICorner", { CornerRadius = UDim.new(0, 8) }),
-                                        -- Frame Penutup untuk membuat bagian atas Title Bar tetap rata (agar menyatu dengan gambar di atasnya)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 0.5, 0),
+                                        -- Sudut Bawah Melengkung (rounded)
+                                        New("UICorner", { CornerRadius = UDim.new(0, 8) }), 
+                                        
+                                        -- Patching: Frame kotak untuk menutup lengkungan ATAS agar rata
+                                        New("Frame", { 
+                                            Size = UDim2.new(1, 0, 0.5, 0), -- Setengah bagian atas
+                                            Position = UDim2.new(0,0,0,0),
                                             BackgroundColor3 = Color3.new(0, 0, 0),
-                                            BackgroundTransparency = 0, -- Match parent logically, but visual hack
+                                            BackgroundTransparency = 0, -- Solid hitam
                                             BorderSizePixel = 0,
-                                            Visible = false, -- Optional: Set true if you want perfectly sharp top corners for title bar
+                                            ZIndex = 3, -- Di bawah TextLabel
+                                            -- Trik: Karena parent 0.4 transparan, child ini harus solid tapi warnanya sama
+                                            -- Tapi karena transparan, patching ini mungkin terlihat 'overlap'.
+                                            -- Cara terbaik: Buat frame ini backgroundtransparency = 1 jika ingin transparan
+                                            -- TAPI, karena kita ingin background hitam transparan yang RATA atasnya, 
+                                            -- Maka: Frame parent pakai UICorner, lalu Frame ini menutup sudut atas yang rounded.
+                                            -- Agar warnanya sama (0.4), Frame ini juga harus 0.4
+                                            BackgroundTransparency = 0.4, -- Samakan transparansi
+                                            -- Tapi menumpuk transparan akan jadi lebih gelap.
+                                            -- Solusi terbaik tanpa CanvasGroup: Biarkan saja rounded semua (pill) atau
+                                            -- Gunakan 2 Frame terpisah (Atas kotak, Bawah rounded).
                                         }),
+                                        -- Revisi Struktur Title Bar agar rapi tanpa overlap transparency:
+                                        -- Kita gunakan metode 2 Frame di dalam 'Images' loop ini agak ribet.
+                                        -- Kita gunakan solusi: Frame Parent Tranparan, di dalamnya ada 2 Frame background.
+                                        -- Frame 1 (Atas): Kotak, Hitam 0.4
+                                        -- Frame 2 (Bawah): Rounded, Hitam 0.4
+                                    }),
+
+                                    -- Title Bar yang Benar (Menggantikan Frame di atas)
+                                    New("Frame", {
+                                        Size = UDim2.new(1, 0, 0, 20),
+                                        Position = UDim2.new(0, 0, 1, 0),
+                                        AnchorPoint = Vector2.new(0, 1),
+                                        BackgroundTransparency = 1,
+                                        ZIndex = 4,
+                                    }, {
+                                        -- Bagian Bawah (Rounded)
+                                        New("Frame", {
+                                            Size = UDim2.new(1, 0, 1, 0),
+                                            BackgroundColor3 = Color3.new(0, 0, 0),
+                                            BackgroundTransparency = 0.4,
+                                            BorderSizePixel = 0,
+                                        }, {
+                                            New("UICorner", { CornerRadius = UDim.new(0, 8) }),
+                                        }),
+                                        -- Bagian Atas (Kotak - untuk menutupi round sudut atas)
+                                        New("Frame", {
+                                            Size = UDim2.new(1, 0, 0.5, 0), -- Tutupi setengah atas
+                                            BackgroundColor3 = Color3.new(0, 0, 0),
+                                            BackgroundTransparency = 0.4,
+                                            BorderSizePixel = 0,
+                                        }),
+                                        
+                                        -- Text Title
                                         New("TextLabel", {
                                             Text = CardTitle,
                                             Size = UDim2.new(1, 0, 1, 0), 
@@ -520,6 +574,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             TextSize = 9, 
                                             TextWrapped = true,
                                             TextTruncate = "AtEnd",
+                                            ZIndex = 5,
                                         }),
                                     })
                                 })
