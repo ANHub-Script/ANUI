@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.141  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.142  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.141",
+    "version": "1.0.142",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6889,10 +6889,8 @@ if not an.Callback then
 aq="Menu"
 end
 
-
-
 an.UIElements.UIListLayout=ak("UIListLayout",{
-Padding=UDim.new(0,ao.MenuPadding/4),
+Padding=UDim.new(0,ao.MenuPadding/1.5),
 FillDirection="Vertical",
 HorizontalAlignment="Center",
 })
@@ -7280,7 +7278,7 @@ d=true
 end
 
 if d then
-local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
+local e=aB.Size or an.ImageSize or UDim2.new(0,55,0,55)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
 local h=aB.Rate or""
@@ -7306,8 +7304,7 @@ else
 p=Color3.fromRGB(80,80,80)
 end
 
-
-local r=0
+local r=3
 
 
 

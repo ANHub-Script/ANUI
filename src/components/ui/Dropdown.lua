@@ -21,10 +21,8 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
-    -- [UPDATE] Mengurangi jarak antar list (Padding) agar lebih rapat
-    -- Sebelumnya: Element.MenuPadding/1.5 -> Sekarang: Element.MenuPadding/4
     Dropdown.UIElements.UIListLayout = New("UIListLayout", {
-        Padding = UDim.new(0, Element.MenuPadding/4), 
+        Padding = UDim.new(0,Element.MenuPadding/1.5),
         FillDirection = "Vertical",
         HorizontalAlignment = "Center",
     })
@@ -412,7 +410,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             end
                             
                             if isCard then
-                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 80, 0, 80)
+                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 55, 0, 55)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
                                 local CardRate = imageData.Rate or "" 
@@ -438,8 +436,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     BorderColor = Color3.fromRGB(80, 80, 80)
                                 end
                                 
-                                -- [UPDATE] Menghapus Border (set ketebalan jadi 0)
-                                local borderThickness = 0 -- Ketebalan border
+                                local borderThickness = 3 -- Ketebalan border
 
                                 -- [FIX STRUKTUR CARD] Menggunakan Layering untuk Border + Inner Shadow yang akurat
                                 
