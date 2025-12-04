@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.153  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.154  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.153",
+    "version": "1.0.154",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7766,185 +7766,20 @@ end
 
 
 function ao.SetMainImage(aq,ar)
-local as=ao.DropdownFrame.UIElements.Container
-local at=as and as:FindFirstChild"TitleFrame"
-
-if not at then return end
-
-
-local function clearOldIcon()
-for au,av in ipairs(at:GetChildren())do
-
-if av:IsA"Frame"and av.Name~="TitleFrame"and av.Name~="UIListLayout"and av.Name~="UIPadding"then
-av:Destroy()
-end
-end
-end
-
-
-local function updateTextSize(au)
-local av=at:FindFirstChild"TitleFrame"
-if av then
-
-av.Size=UDim2.new(1,-au,1,0)
-end
-end
-
-
-if type(ar)=="table"and ar.Card then
-
-clearOldIcon()
-
-
-local au=ar.Size or UDim2.new(0,45,0,45)
-local av=ar.Title or""
-local aw=ar.Quantity or""
-local ax=ar.Rate or""
-local ay=ar.Image or""
-local az=ar.Gradient
-
-
-local aA,aB
-if typeof(az)=="ColorSequence"then
-aA=az
-if az.Keypoints[1]then aB=az.Keypoints[1].Value end
-elseif typeof(az)=="Color3"then
-aA=ColorSequence.new(az)
-aB=az
-else
-
-aA=ColorSequence.new(Color3.fromRGB(80,80,80))
-aB=Color3.fromRGB(80,80,80)
-end
-
-local d=2
-
-
-ae.NewRoundFrame(8,"Squircle",{
-Size=au,
-Parent=at,
-ImageColor3=aB,
-ClipsDescendants=true,
-LayoutOrder=-1,
-Name="CardMainIcon"
-},{
-
-af("ImageLabel",{
-Image="rbxassetid://5554236805",
-ScaleType=Enum.ScaleType.Slice,
-SliceCenter=Rect.new(23,23,277,277),
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.6,
-ZIndex=2,
-}),
-
-
-ae.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-d*2,1,-d*2),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.new(1,1,1),
-ClipsDescendants=true,
-ZIndex=3,
-},{
-
-af("UIGradient",{
-Color=aA,
-Rotation=45,
-}),
-
-
-af("ImageLabel",{
-Image=ay,
-Size=UDim2.new(0.7,0,0.7,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.45,0),
-BackgroundTransparency=1,
-ScaleType="Fit",
-ZIndex=4,
-}),
-
-
-af("TextLabel",{
-Text=aw,
-Size=UDim2.new(0.5,0,0,10),
-Position=UDim2.new(0,3,0,1),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Left,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ae.Font,Enum.FontWeight.Bold),
-TextSize=9,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-
-
-af("TextLabel",{
-Text=ax,
-Size=UDim2.new(0.5,-3,0,10),
-Position=UDim2.new(1,-3,0,1),
-AnchorPoint=Vector2.new(1,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Right,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ae.Font,Enum.FontWeight.Bold),
-TextSize=9,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-
-
-af("Frame",{
-Size=UDim2.new(1,0,0,14),
-Position=UDim2.new(0,0,1,0),
-AnchorPoint=Vector2.new(0,1),
-BackgroundColor3=Color3.new(0,0,0),
-BackgroundTransparency=0.4,
-BorderSizePixel=0,
-ZIndex=6,
-},{
-af("TextLabel",{
-Text=av,
-Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0,0,0,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Center,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ae.Font,Enum.FontWeight.Bold),
-TextSize=8,
-TextWrapped=true,
-TextTruncate="AtEnd",
-ZIndex=7,
-}),
-})
-})
-})
-
-
-updateTextSize(au.X.Offset)
-
-else
-
 if ao.DropdownFrame and ao.DropdownFrame.SetImage then
 ao.DropdownFrame:SetImage(ar)
 
 
-local au
-for av,aw in ipairs(at:GetChildren())do
-if aw:IsA"Frame"and aw.Name~="TitleFrame"and aw.Name~="UIListLayout"and aw.Name~="UIPadding"then
-au=aw
-aw.LayoutOrder=-1
-break
-end
-end
 
+local as=ao.DropdownFrame.UIElements.Container
+local at=as and as:FindFirstChild"TitleFrame"
 
-if au then
-updateTextSize(au.Size.X.Offset)
+if at then
+for au,av in ipairs(at:GetChildren())do
+
+if av:IsA"Frame"and av.Name~="TitleFrame"and av.Name~="UIListLayout"then
+av.LayoutOrder=-1
+end
 end
 end
 end
