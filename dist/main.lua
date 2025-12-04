@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.132  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.133  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.132",
+    "version": "1.0.133",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7268,19 +7268,21 @@ d=true
 end
 
 if d then
-local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
+
+local e=aB.Size or an.ImageSize or UDim2.new(0,60,0,60)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
-local h=aB.Image or""
-local j=aB.Gradient
+local h=aB.Rate or""
+local j=aB.Image or""
+local l=aB.Gradient
 
-local l
-if typeof(j)=="ColorSequence"then
-l=j
-elseif typeof(j)=="Color3"then
-l=ColorSequence.new(j)
+local m
+if typeof(l)=="ColorSequence"then
+m=l
+elseif typeof(l)=="Color3"then
+m=ColorSequence.new(l)
 else
-l=ColorSequence.new(Color3.fromRGB(80,80,80))
+m=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
 aj.NewRoundFrame(8,"Squircle",{
@@ -7289,12 +7291,23 @@ Parent=az,
 ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 },{
+
+ak("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.5,
+ZIndex=2,
+}),
 ak("UIGradient",{
-Color=l,
+Color=m,
 Rotation=45,
 }),
 ak("ImageLabel",{
-Image=h,
+Image=j,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.45,0),
@@ -7302,18 +7315,36 @@ BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=2,
 }),
+
+
 ak("TextLabel",{
 Text=g,
-Size=UDim2.new(1,-8,0,20),
+Size=UDim2.new(0.5,0,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
-TextXAlignment="Right",
+TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=14,
+TextSize=10,
 TextStrokeTransparency=0.5,
 ZIndex=3,
 }),
+
+
+ak("TextLabel",{
+Text=h,
+Size=UDim2.new(0.5,-4,0,12),
+Position=UDim2.new(1,-4,0,2),
+AnchorPoint=Vector2.new(1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0.5,
+ZIndex=3,
+}),
+
 ak("Frame",{
 Size=UDim2.new(1,0,0,22),
 Position=UDim2.new(0,0,1,0),
@@ -7323,27 +7354,20 @@ BackgroundTransparency=0.4,
 BorderSizePixel=0,
 ZIndex=4,
 },{
+
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-20,1,0),
-Position=UDim2.new(0,6,0,0),
+Size=UDim2.new(1,-8,1,0),
+Position=UDim2.new(0,4,0,0),
 BackgroundTransparency=1,
-TextXAlignment="Left",
+TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=11,
+TextSize=9,
+TextWrapped=true,
 TextTruncate="AtEnd",
 }),
-ak("ImageLabel",{
-Image=aj.Icon"star"[1],
-ImageRectOffset=aj.Icon"star"[2].ImageRectPosition,
-ImageRectSize=aj.Icon"star"[2].ImageRectSize,
-Size=UDim2.new(0,12,0,12),
-AnchorPoint=Vector2.new(1,0.5),
-Position=UDim2.new(1,-4,0.5,0),
-BackgroundTransparency=1,
-ImageColor3=Color3.fromRGB(255,255,255),
-})
+
 })
 })
 else
@@ -7614,7 +7638,6 @@ return ar
 end
 
 return aa end function a.K()
-
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 aa(game:GetService"UserInputService")
