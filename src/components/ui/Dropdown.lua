@@ -310,8 +310,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         }),
                     }),
                     New("Frame", {
-                        Size = UDim2.new(1,0,0,0),
-                        AutomaticSize = "Y",
+                        Size = UDim2.new(1,0,1,0),
                         BackgroundTransparency = 1,
                         Name = "Frame",
                     }, {
@@ -369,24 +368,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
-                            New("ScrollingFrame", {
+                            New("Frame", {
                                 Size = UDim2.new(1,0,0,0),
                                 BackgroundTransparency = 1,
                                 AutomaticSize = "Y",
-                                AutomaticCanvasSize = "XY",
-                                ScrollingDirection = "X",
-                                ScrollBarThickness = 2,
-                                CanvasSize = UDim2.new(0,0,0,0),
                                 Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
                                 LayoutOrder = 3,
                                 Name = "Images",
                             }, {
-                                New("UIPadding", {
-                                    PaddingTop = UDim.new(0, 4),
-                                    PaddingBottom = UDim.new(0, 8),
-                                    PaddingLeft = UDim.new(0, 4),
-                                    PaddingRight = UDim.new(0, 4),
-                                }),
                                 New("UIListLayout", {
                                     FillDirection = "Horizontal",
                                     Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3),
@@ -417,7 +406,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local CardRate = imageData.Rate or ""
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
-                                local CardBackground = imageData.BackgroundColor or Color3.fromRGB(30, 30, 30)
                                 
                                 local BorderColor = Color3.fromRGB(60, 60, 60)
                                 if typeof(CardGradient) == "ColorSequence" then
@@ -426,33 +414,18 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     BorderColor = CardGradient
                                 end
                                 
-                                -- Adaptive Text Sizing
-                                local CardHeight = CardSize.Y.Offset
-                                local QuantitySize = math.clamp(math.floor(CardHeight * 0.175), 10, 14)
-                                local TitleSize = math.clamp(math.floor(CardHeight * 0.15), 9, 12)
-                                
-                                local CardContainer = New("Frame", {
-                                    Size = UDim2.new(CardSize.X.Scale, CardSize.X.Offset, CardSize.Y.Scale, CardSize.Y.Offset),
-                                    Parent = imagesContainer,
-                                    BackgroundTransparency = 1,
-                                })
-
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
-                                    Size = UDim2.new(1, 0, 1, 0),
-                                    Position = UDim2.new(0.5, 0, 0.5, 0),
-                                    AnchorPoint = Vector2.new(0.5, 0.5),
-                                    Parent = CardContainer,
+                                    Size = CardSize,
+                                    Parent = imagesContainer,
                                     ImageColor3 = BorderColor, -- Outer Frame acts as Border
                                     ClipsDescendants = false,
-                                    ZIndex = 2,
                                 }, {
                                     -- Inner Background Frame
                                     Creator.NewRoundFrame(8, "Squircle", {
-                                        Size = UDim2.new(1, -4, 1, -4), -- Subtract border thickness (2px * 2)
+                                        Size = UDim2.new(1, -5, 1, -5), -- Subtract border thickness (2.5px * 2)
                                         Position = UDim2.new(0.5, 0, 0.5, 0),
                                         AnchorPoint = Vector2.new(0.5, 0.5),
-                                        ImageColor3 = CardBackground,
-                                        ZIndex = 2,
+                                        ImageColor3 = Color3.fromRGB(40, 40, 40),
                                         ClipsDescendants = true,
                                     }, {
                                         New("ImageLabel", {
@@ -462,73 +435,38 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             Position = UDim2.new(0.5, 0, 0.5, 0),
                                             BackgroundTransparency = 1,
                                             ScaleType = "Fit",
-                                            ZIndex = 3,
-                                        }),
-                                        -- Inner Shadow (Left/Right)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 1, 0),
-                                            BackgroundTransparency = 1,
-                                            ZIndex = 4,
-                                        }, {
-                                            New("UIGradient", {
-                                                Color = ColorSequence.new(Color3.new(0,0,0)),
-                                                Transparency = NumberSequence.new({
-                                                    NumberSequenceKeypoint.new(0.0, 0.3),
-                                                    NumberSequenceKeypoint.new(0.2, 1.0),
-                                                    NumberSequenceKeypoint.new(0.8, 1.0),
-                                                    NumberSequenceKeypoint.new(1.0, 0.3),
-                                                }),
-                                                Rotation = 0,
-                                            })
-                                        }),
-                                        -- Inner Shadow (Top/Bottom)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 1, 0),
-                                            BackgroundTransparency = 1,
-                                            ZIndex = 4,
-                                        }, {
-                                            New("UIGradient", {
-                                                Color = ColorSequence.new(Color3.new(0,0,0)),
-                                                Transparency = NumberSequence.new({
-                                                    NumberSequenceKeypoint.new(0.0, 0.3),
-                                                    NumberSequenceKeypoint.new(0.2, 1.0),
-                                                    NumberSequenceKeypoint.new(0.8, 1.0),
-                                                    NumberSequenceKeypoint.new(1.0, 0.3),
-                                                }),
-                                                Rotation = 90,
-                                            })
+                                            ZIndex = 2,
                                         }),
                                         New("TextLabel", {
                                             Text = CardQuantity,
-                                            Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(0, 6, 0, 2),
+                                            Size = UDim2.new(0.5, -4, 0, 20),
+                                            Position = UDim2.new(0, 6, 0, 4),
                                             BackgroundTransparency = 1,
                                             TextXAlignment = "Left",
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = QuantitySize,
-                                            TextWrapped = true, -- Enable text wrapping
+                                            TextSize = 14,
                                             TextStrokeTransparency = 0,
                                             TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
+                                            ZIndex = 3,
                                         }),
                                         New("TextLabel", {
                                             Text = CardRate,
-                                            Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(1, -6, 0, 2),
+                                            Size = UDim2.new(0.5, -4, 0, 20),
+                                            Position = UDim2.new(1, -6, 0, 4),
                                             AnchorPoint = Vector2.new(1, 0),
                                             BackgroundTransparency = 1,
                                             TextXAlignment = "Right",
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = QuantitySize,
+                                            TextSize = 14,
                                             TextStrokeTransparency = 0,
                                             TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
+                                            ZIndex = 3,
                                         }),
                                         New("TextLabel", {
                                             Text = CardTitle,
-                                            Size = UDim2.new(1, -8, 0, (TitleSize * 2) + 8),
+                                            Size = UDim2.new(1, -8, 0, 32), -- Increased height for multi-line
                                             Position = UDim2.new(0.5, 0, 1, -4),
                                             AnchorPoint = Vector2.new(0.5, 1),
                                             BackgroundTransparency = 1,
@@ -536,11 +474,11 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             TextYAlignment = "Bottom",
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = TitleSize,
-                                            TextWrapped = true,
+                                            TextSize = 12,
+                                            TextWrapped = true, -- Enable wrapping
                                             TextStrokeTransparency = 0,
                                             TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
+                                            ZIndex = 4, -- Ensure above image
                                         }),
                                     })
                                 })

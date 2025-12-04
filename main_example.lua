@@ -1176,12 +1176,12 @@ do
 				Images = {
 					{
 						Card = true,
+						Size = UDim2.new(0, 60, 0, 60),
 						Title = "Clan Scroll Clan Scroll Clan Scroll",
 						Quantity = "x5",
 						Rate = "10%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(100, 100, 100)
+						Gradient = Color3.fromRGB(100, 100, 100)
 					},
 					{
 						Card = true,
@@ -1189,8 +1189,7 @@ do
 						Quantity = "x1",
 						Rate = "15%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(255, 215, 0), -- Yellow Border
-						BackgroundColor = Color3.fromRGB(255, 215, 0)
+						Gradient = Color3.fromRGB(255, 215, 0) -- Yellow Border
 					},
 					{
 						Card = true,
@@ -1198,8 +1197,7 @@ do
 						Quantity = "x1-125k",
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(255, 255, 255),
-						BackgroundColor = Color3.fromRGB(255, 255, 255)
+						Gradient = Color3.fromRGB(100, 100, 100)
 					},
 					{
 						Card = true,
@@ -1207,50 +1205,7 @@ do
 						Quantity = "x17",
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(100, 100, 100)
-					}
-				}
-			},
-			{
-				Title = "Biasa Items",
-				Desc = "Collection of rare items",
-				Images = {
-					{
-						Card = true,
-						Title = "Clan Scroll",
-						Quantity = "x5",
-						Rate = "10%",
-						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(100, 100, 100)
-					},
-					{
-						Card = true,
-						Title = "Doume",
-						Quantity = "x1",
-						Rate = "15%",
-						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(255, 215, 0), -- Yellow Border
-						BackgroundColor = Color3.fromRGB(255, 215, 0)
-					},
-					{
-						Card = true,
-						Title = "Coins",
-						Quantity = "x1-125k",
-						Rate = "100%",
-						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(255, 255, 255),
-						BackgroundColor = Color3.fromRGB(255, 255, 255)
-					},
-					{
-						Card = true,
-						Title = "Player Exp",
-						Quantity = "x17",
-						Rate = "100%",
-						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(100, 100, 100)
+						Gradient = Color3.fromRGB(100, 100, 100)
 					}
 				}
 			}
