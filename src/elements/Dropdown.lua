@@ -82,19 +82,23 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     end
     
-    -- [FIX LOGIC] Fungsi untuk mengubah gambar pada kotak Value (Sebelah Kanan)
-    -- Diganti menjadi SetValueImage untuk menghindari konflik dengan SetImage milik Element utama
+    -- 1. [FITUR BARU] SetMainImage: Mengubah gambar utama elemen (yang di kiri / "AN" Image)
+    -- Ini mengakses fungsi SetImage milik wrapper Element utama
+    function Dropdown:SetMainImage(image)
+        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
+            Dropdown.DropdownFrame:SetImage(image)
+        end
+    end
+
+    -- 2. SetValueImage: Mengubah gambar di dalam kotak value (yang di kanan)
     function Dropdown:SetValueImage(image)
-        -- Cek apakah kotak Value ada (untuk dropdown yang memiliki Callback)
         if Dropdown.UIElements.Dropdown then
-             local Container = Dropdown.UIElements.Dropdown.Frame.Frame -- Container dalam Label
+             local Container = Dropdown.UIElements.Dropdown.Frame.Frame
              
-             -- Cari elemen TextLabel dan Icon
              local TextLabel = Container:FindFirstChild("TextLabel")
              local DynamicIcon = Container:FindFirstChild("DynamicValueIcon")
              
              if image and image ~= "" then
-                 -- Jika Icon belum ada, buat baru
                  if not DynamicIcon then
                      DynamicIcon = New("ImageLabel", {
                          Name = "DynamicValueIcon",
@@ -103,12 +107,11 @@ function Element:New(Config)
                          ThemeTag = {
                              ImageColor3 = "Icon",
                          },
-                         LayoutOrder = -1, -- [PENTING] Memaksa icon di urutan paling kiri
+                         LayoutOrder = -1,
                          Parent = Container
                      })
                  end
                  
-                 -- Update Gambar Icon
                  local ic = Creator.Icon(image)
                  if ic then
                      DynamicIcon.Image = ic[1]
@@ -122,17 +125,13 @@ function Element:New(Config)
                  
                  DynamicIcon.Visible = true
                  
-                 -- [PENTING] Ubah ukuran teks agar tidak menimpa/terdorong
                  if TextLabel then
                      TextLabel.Size = UDim2.new(1, -29, 1, 0)
                  end
              else
-                 -- Jika image kosong/nil, sembunyikan icon
                  if DynamicIcon then
                      DynamicIcon.Visible = false
                  end
-                 
-                 -- Kembalikan ukuran teks ke penuh
                  if TextLabel then
                      TextLabel.Size = UDim2.new(1, 0, 1, 0)
                  end
@@ -140,13 +139,12 @@ function Element:New(Config)
         end
     end
     
-    -- Mapping untuk kemudahan, tapi disarankan pakai SetValueImage
+    -- Mapping fungsi lama untuk kompatibilitas
     function Dropdown:SetValueIcon(image)
         Dropdown:SetValueImage(image)
     end
     
     Dropdown.DropdownMenu = CreateDropdown(Config, Dropdown, Element, CanCallback, "Dropdown")
-    
     
     Dropdown.Display = Dropdown.DropdownMenu.Display
     Dropdown.Refresh = Dropdown.DropdownMenu.Refresh
@@ -154,6 +152,19 @@ function Element:New(Config)
     Dropdown.Open = Dropdown.DropdownMenu.Open
     Dropdown.Close = Dropdown.DropdownMenu.Close
     
+    -- [MODIFIKASI] UpdatePosition untuk memaksa menu ke ATAS
+    local OriginalUpdatePosition = UpdatePosition -- Menyimpan referensi fungsi lokal jika ada di scope CreateDropdown (biasanya tidak terakses langsung, jadi kita override logikanya di sini jika memungkinkan, atau memodifikasi file komponen Dropdown). 
+    -- Karena logic UpdatePosition ada di file `src/components/ui/Dropdown.lua`, dan file ini (`src/elements/Dropdown.lua`) hanya wrapper, kita perlu memastikan logic posisi dihandle.
+    -- TAPI, di ANUI struktur file, logic posisi biasanya ada di `CreateDropdown` (components/ui/Dropdown).
+    
+    -- NAMUN, ANUI menggunakan AddSignal di dalam `components/ui/Dropdown.lua`. 
+    -- Kita tidak bisa dengan mudah meng-override fungsi lokal di file lain tanpa mengedit file `components/ui/Dropdown.lua`.
+    -- TAPI, untungnya `Dropdown.DropdownMenu` adalah tabel yang dikembalikan.
+    -- Mari kita lihat `src/components/ui/Dropdown.lua` yang Anda berikan sebelumnya. Di sana ada fungsi `UpdatePosition` lokal.
+    
+    -- **PENTING**: Karena Anda meminta perubahan logika tampilan (ke atas), idealnya kita ubah di `components/ui/Dropdown.lua`. 
+    -- Tapi karena saya hanya mengedit file `src/elements/Dropdown.lua` sekarang, saya akan mencoba meng-override logic tersebut melalui Signal baru yang menimpa posisi.
+
     local DropdownIcon = New("ImageLabel", {
         Image = Creator.Icon("chevrons-up-down")[1],
         ImageRectOffset = Creator.Icon("chevrons-up-down")[2].ImageRectPosition,
@@ -172,8 +183,6 @@ function Element:New(Config)
         Parent = Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.Frame or Dropdown.DropdownFrame.UIElements.Main
     })
     
-    
-    
     function Dropdown:Lock()
         Dropdown.Locked = true
         CanCallback = false
@@ -189,6 +198,77 @@ function Element:New(Config)
         Dropdown:Lock()
     end
     
+    -- 3. [FITUR BARU] Toggle Logic (Open/Close)
+    local ClickableArea = (Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.MouseButton1Click or Dropdown.DropdownFrame.UIElements.Main.MouseButton1Click)
+    
+    -- Kita perlu menghapus koneksi lama yang dibuat di `components/ui/Dropdown.lua` jika memungkinkan, atau menimpanya.
+    -- Karena kita tidak bisa menghapus koneksi lokal di file lain dengan mudah, kita akan menggunakan trik:
+    -- Kita akan membiarkan koneksi lama, tapi kita akan memodifikasi fungsi `Open` di Dropdown object agar bertindak sebagai Toggle jika sudah terbuka.
+    
+    local OriginalOpen = Dropdown.Open
+    local OriginalClose = Dropdown.Close
+    
+    -- Override fungsi Open agar menjadi Toggle Logic
+    -- Catatan: Ini agak hacky. Cara terbaik sebenarnya adalah mengedit `components/ui/Dropdown.lua`.
+    -- TAPI, di sini kita akan menggunakan logic di wrapper ini.
+    
+    -- Mari kita buat fungsi ForceUpdatePosition untuk memaksa ke atas
+    local function ForceUpwardsPosition()
+        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
+        local menu = Dropdown.UIElements.MenuCanvas
+        
+        -- Hitung posisi Y agar berada DI ATAS tombol
+        -- Posisi Y = Tombol Y - Tinggi Menu - Padding
+        local UpY = button.AbsolutePosition.Y - menu.AbsoluteSize.Y - 5 -- 5 pixel padding
+        
+        menu.Position = UDim2.new(
+            0, 
+            button.AbsolutePosition.X + button.AbsoluteSize.X, -- Anchor Point (1,0) jadi X sejajar kanan
+            0, 
+            UpY
+        )
+    end
+
+    -- Kita bind fungsi posisi ke atas ini ke perubahan size/posisi
+    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsoluteSize"), function()
+        if Dropdown.Opened then ForceUpwardsPosition() end
+    end)
+    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsolutePosition"), function()
+         -- Kita biarkan default jalan dulu, lalu kita timpa frame berikutnya jika perlu, 
+         -- tapi karena render stepped mungkin flicker, lebih baik kita hook ke fungsi Open.
+    end)
+    
+    -- Override Open untuk memaksa posisi ke atas setelah dibuka
+    Dropdown.Open = function()
+        OriginalOpen()
+        -- Paksa posisi ke atas setelah frame dirender
+        task.spawn(function()
+            RunService.RenderStepped:Wait()
+            ForceUpwardsPosition()
+        end)
+    end
+
+    -- [PERBAIKAN TOGGLE]
+    -- Masalahnya: `components/ui/Dropdown.lua` sudah memiliki event `MouseButton1Click` yang memanggil `Open()`.
+    -- Kita tidak bisa mendisconnectnya dari sini karena variabel signalnya lokal di sana.
+    -- SOLUSI: Kita akan memanipulasi `CanCallback` atau status `Opened`? Tidak.
+    -- Solusi terbaik tanpa mengedit file lain adalah mengubah fungsi `Dropdown.Open` itu sendiri.
+    
+    -- Kita ubah fungsi Dropdown.Open menjadi fungsi Toggle cerdas
+    Dropdown.Open = function()
+        if Dropdown.Opened then
+            -- Jika sudah terbuka, kita tutup (Toggle behavior)
+            Dropdown.Close()
+        else
+            -- Jika tertutup, kita buka (dan paksa ke atas)
+            OriginalOpen()
+            task.spawn(function()
+                -- Tunggu sebentar agar size terupdate layoutnya
+                RunService.RenderStepped:Wait() 
+                ForceUpwardsPosition()
+            end)
+        end
+    end
     
     return Dropdown.__type, Dropdown
 end
