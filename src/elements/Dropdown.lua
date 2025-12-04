@@ -52,10 +52,11 @@ function Element:New(Config)
     
     local CanCallback = true
     
+    -- DropdownFrame adalah wrapper utama (Title, Desc, Image Kiri)
     Dropdown.DropdownFrame = require("../components/window/Element")({
         Title = Dropdown.Title,
         Desc = Dropdown.Desc,
-        Image = Config.Image,
+        Image = Config.Image, -- Image default (kiri)
         ImageSize = Config.ImageSize,
         IconThemed = Config.IconThemed,
         Color = Config.Color,
@@ -80,63 +81,23 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.Size = UDim2.new(0,Dropdown.Width,0,36)
         Dropdown.UIElements.Dropdown.Position = UDim2.new(1,0,Config.Window.NewElements and 0 or 0.5,0)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
-        
-        -- New("UIScale", {
-        --     Parent = Dropdown.UIElements.Dropdown,
-        --     Scale = .85,
-        -- })
     end
-
-    -- [FIX START] Menambahkan fungsi SetImage untuk menangani Icon pada Value Dropdown
+    
+    -- [FIX PERMANEN]
+    -- Fungsi ini meneruskan gambar ke DropdownFrame (Element Wrapper).
+    -- Element Wrapper secara otomatis menaruh Image di sebelah KIRI (seperti logo AN).
     function Dropdown:SetImage(image)
-        if not Dropdown.UIElements.Dropdown then return end
-        
-        -- Akses container di dalam Label (TextButton -> Frame -> SquircleFrame -> Container)
-        local Container = Dropdown.UIElements.Dropdown.Frame.Frame
-        local TextLabel = Container:FindFirstChild("TextLabel")
-        local CurrentIcon = Container:FindFirstChild("DropdownDynamicIcon")
-        
-        if image and image ~= "" then
-            if not CurrentIcon then
-                CurrentIcon = New("ImageLabel", {
-                    Name = "DropdownDynamicIcon",
-                    Size = UDim2.new(0, 21, 0, 21), -- Ukuran standar icon label (24-3)
-                    BackgroundTransparency = 1,
-                    ThemeTag = {
-                        ImageColor3 = "Icon",
-                    },
-                    LayoutOrder = -1, -- [PENTING] Memaksa icon berada di kiri TextLabel (index 0)
-                    Parent = Container
-                })
-            end
-            
-            -- Cek apakah image adalah Lucide Icon atau Asset ID
-            local ic = Creator.Icon(image)
-            if ic then
-                CurrentIcon.Image = ic[1]
-                CurrentIcon.ImageRectSize = ic[2].ImageRectSize
-                CurrentIcon.ImageRectOffset = ic[2].ImageRectPosition
-            else
-                CurrentIcon.Image = image
-                CurrentIcon.ImageRectSize = Vector2.new(0,0)
-                CurrentIcon.ImageRectOffset = Vector2.new(0,0)
-            end
-            
-            -- [PENTING] Kurangi lebar TextLabel agar muat dengan Icon (-29px)
-            if TextLabel then
-                TextLabel.Size = UDim2.new(1, -29, 1, 0)
-            end
-        else
-            -- Jika image nil/kosong, hapus icon dan kembalikan lebar teks
-            if CurrentIcon then
-                CurrentIcon:Destroy()
-            end
-            if TextLabel then
-                TextLabel.Size = UDim2.new(1, 0, 1, 0)
-            end
+        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
+            Dropdown.DropdownFrame:SetImage(image)
         end
     end
-    -- [FIX END]
+
+    -- Jika user menggunakan SetIcon, arahkan juga ke SetImage agar konsisten di kiri
+    function Dropdown:SetIcon(image)
+        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
+            Dropdown.DropdownFrame:SetImage(image)
+        end
+    end
     
     Dropdown.DropdownMenu = CreateDropdown(Config, Dropdown, Element, CanCallback, "Dropdown")
     
