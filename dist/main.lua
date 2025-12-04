@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.133  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.134  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.133",
+    "version": "1.0.134",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7236,10 +7236,14 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
-ak("Frame",{
+ak("ScrollingFrame",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
+AutomaticCanvasSize=Enum.AutomaticSize.X,
+ScrollingDirection=Enum.ScrollingDirection.X,
+ScrollBarThickness=0,
+CanvasSize=UDim2.new(0,0,0,0),
 Visible=(ax.Images and#ax.Images>0)and true or false,
 LayoutOrder=3,
 Name="Images",
@@ -7249,6 +7253,13 @@ FillDirection="Horizontal",
 Padding=UDim.new(0,an.ImagePadding or ao.TabPadding/3),
 VerticalAlignment="Center",
 }),
+
+ak("UIPadding",{
+PaddingLeft=UDim.new(0,2),
+PaddingRight=UDim.new(0,2),
+PaddingTop=UDim.new(0,2),
+PaddingBottom=UDim.new(0,2),
+})
 }),
 ak("UIListLayout",{
 Padding=UDim.new(0,ao.TabPadding/3),
@@ -7299,7 +7310,7 @@ SliceCenter=Rect.new(23,23,277,277),
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.5,
+ImageTransparency=0.2,
 ZIndex=2,
 }),
 ak("UIGradient",{
@@ -7325,7 +7336,7 @@ BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=10,
+TextSize=9,
 TextStrokeTransparency=0.5,
 ZIndex=3,
 }),
@@ -7340,13 +7351,13 @@ BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Right,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=10,
+TextSize=9,
 TextStrokeTransparency=0.5,
 ZIndex=3,
 }),
 
 ak("Frame",{
-Size=UDim2.new(1,0,0,22),
+Size=UDim2.new(1,0,0,20),
 Position=UDim2.new(0,0,1,0),
 AnchorPoint=Vector2.new(0,1),
 BackgroundColor3=Color3.new(0,0,0),
@@ -7357,10 +7368,10 @@ ZIndex=4,
 
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-8,1,0),
-Position=UDim2.new(0,4,0,0),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Left,
+TextXAlignment=Enum.TextXAlignment.Center,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=9,
