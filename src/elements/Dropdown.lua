@@ -52,11 +52,10 @@ function Element:New(Config)
     
     local CanCallback = true
     
-    -- DropdownFrame adalah wrapper utama (Title, Desc, Image Kiri)
     Dropdown.DropdownFrame = require("../components/window/Element")({
         Title = Dropdown.Title,
         Desc = Dropdown.Desc,
-        Image = Config.Image, -- Image default (kiri)
+        Image = Config.Image,
         ImageSize = Config.ImageSize,
         IconThemed = Config.IconThemed,
         Color = Config.Color,
@@ -83,20 +82,66 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     end
     
-    -- [FIX PERMANEN]
-    -- Fungsi ini meneruskan gambar ke DropdownFrame (Element Wrapper).
-    -- Element Wrapper secara otomatis menaruh Image di sebelah KIRI (seperti logo AN).
+    -- [FIX LOGIC] Fungsi untuk mengubah gambar pada kotak Value (Sebelah Kanan)
     function Dropdown:SetImage(image)
-        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
-            Dropdown.DropdownFrame:SetImage(image)
+        -- Cek apakah kotak Value ada (untuk dropdown yang memiliki Callback)
+        if Dropdown.UIElements.Dropdown then
+             local Container = Dropdown.UIElements.Dropdown.Frame.Frame -- Container dalam Label
+             
+             -- Cari elemen TextLabel dan Icon
+             local TextLabel = Container:FindFirstChild("TextLabel")
+             local DynamicIcon = Container:FindFirstChild("DynamicValueIcon")
+             
+             if image and image ~= "" then
+                 -- Jika Icon belum ada, buat baru
+                 if not DynamicIcon then
+                     DynamicIcon = New("ImageLabel", {
+                         Name = "DynamicValueIcon",
+                         Size = UDim2.new(0, 21, 0, 21),
+                         BackgroundTransparency = 1,
+                         ThemeTag = {
+                             ImageColor3 = "Icon",
+                         },
+                         LayoutOrder = -1, -- [PENTING] Memaksa icon di urutan paling kiri
+                         Parent = Container
+                     })
+                 end
+                 
+                 -- Update Gambar Icon
+                 local ic = Creator.Icon(image)
+                 if ic then
+                     DynamicIcon.Image = ic[1]
+                     DynamicIcon.ImageRectSize = ic[2].ImageRectSize
+                     DynamicIcon.ImageRectOffset = ic[2].ImageRectPosition
+                 else
+                     DynamicIcon.Image = image
+                     DynamicIcon.ImageRectSize = Vector2.new(0,0)
+                     DynamicIcon.ImageRectOffset = Vector2.new(0,0)
+                 end
+                 
+                 DynamicIcon.Visible = true
+                 
+                 -- [PENTING] Ubah ukuran teks agar tidak menimpa/terdorong
+                 if TextLabel then
+                     TextLabel.Size = UDim2.new(1, -29, 1, 0)
+                 end
+             else
+                 -- Jika image kosong/nil, sembunyikan icon
+                 if DynamicIcon then
+                     DynamicIcon.Visible = false
+                 end
+                 
+                 -- Kembalikan ukuran teks ke penuh
+                 if TextLabel then
+                     TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                 end
+             end
         end
     end
-
-    -- Jika user menggunakan SetIcon, arahkan juga ke SetImage agar konsisten di kiri
+    
+    -- Mapping SetIcon ke SetImage agar konsisten
     function Dropdown:SetIcon(image)
-        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
-            Dropdown.DropdownFrame:SetImage(image)
-        end
+        Dropdown:SetImage(image)
     end
     
     Dropdown.DropdownMenu = CreateDropdown(Config, Dropdown, Element, CanCallback, "Dropdown")
