@@ -425,11 +425,29 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local QuantitySize = math.clamp(math.floor(CardHeight * 0.175), 10, 14)
                                 local TitleSize = math.clamp(math.floor(CardHeight * 0.15), 9, 12)
                                 
-                                local Card = Creator.NewRoundFrame(8, "Squircle", {
+                                local CardContainer = New("Frame", {
                                     Size = CardSize,
                                     Parent = imagesContainer,
+                                    BackgroundTransparency = 1,
+                                })
+
+                                -- Shadow
+                                Creator.NewRoundFrame(8, "Shadow-sm", {
+                                    Size = UDim2.new(1, 15, 1, 15),
+                                    Position = UDim2.new(0.5, 0, 0.5, 4),
+                                    AnchorPoint = Vector2.new(0.5, 0.5),
+                                    ImageColor3 = Color3.fromRGB(0, 0, 0),
+                                    ImageTransparency = 0.4,
+                                    Parent = CardContainer,
+                                    ZIndex = 1,
+                                })
+                                
+                                local Card = Creator.NewRoundFrame(8, "Squircle", {
+                                    Size = UDim2.new(1, 0, 1, 0),
+                                    Parent = CardContainer,
                                     ImageColor3 = BorderColor, -- Outer Frame acts as Border
                                     ClipsDescendants = false,
+                                    ZIndex = 2,
                                 }, {
                                     -- Inner Background Frame
                                     Creator.NewRoundFrame(8, "Squircle", {
