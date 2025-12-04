@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.150  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.151  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.150",
+    "version": "1.0.151",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7764,9 +7764,9 @@ ao.UIElements.Dropdown.AnchorPoint=Vector2.new(1,an.Window.NewElements and 0 or 
 end
 
 
+
 function ao.SetMainImage(aq,ar)
 if ao.DropdownFrame and ao.DropdownFrame.SetImage then
-
 ao.DropdownFrame:SetImage(ar)
 
 
@@ -7777,8 +7777,7 @@ local at=as and as:FindFirstChild"TitleFrame"
 if at then
 for au,av in ipairs(at:GetChildren())do
 
-
-if av:IsA"Frame"and av.Name~="TitleFrame"then
+if av:IsA"Frame"and av.Name~="TitleFrame"and av.Name~="UIListLayout"then
 av.LayoutOrder=-1
 end
 end
@@ -7847,29 +7846,6 @@ ao.Select=ao.DropdownMenu.Select
 ao.Open=ao.DropdownMenu.Open
 ao.Close=ao.DropdownMenu.Close
 
-local aq=ao.Open
-
-
-local function ForceUpwardsPosition()
-local ar=ao.UIElements.Dropdown or ao.DropdownFrame.UIElements.Main
-local as=ao.UIElements.MenuCanvas
-
-
-local at=ar.AbsolutePosition.Y-as.AbsoluteSize.Y-5
-
-as.Position=UDim2.new(
-0,
-ar.AbsolutePosition.X+ar.AbsoluteSize.X,
-0,
-at
-)
-end
-
-
-ae.AddSignal(ao.UIElements.MenuCanvas:GetPropertyChangedSignal"AbsoluteSize",function()
-if ao.Opened then ForceUpwardsPosition()end
-end)
-
 af("ImageLabel",{
 Image=ae.Icon"chevrons-up-down"[1],
 ImageRectOffset=ae.Icon"chevrons-up-down"[2].ImageRectPosition,
@@ -7888,12 +7864,12 @@ AnchorPoint=Vector2.new(1,0.5),
 Parent=ao.UIElements.Dropdown and ao.UIElements.Dropdown.Frame or ao.DropdownFrame.UIElements.Main
 })
 
-function ao.Lock(ar)
+function ao.Lock(aq)
 ao.Locked=true
 ap=false
 return ao.DropdownFrame:Lock()
 end
-function ao.Unlock(ar)
+function ao.Unlock(aq)
 ao.Locked=false
 ap=true
 return ao.DropdownFrame:Unlock()
@@ -7904,6 +7880,9 @@ ao:Lock()
 end
 
 
+
+local aq=ao.Open
+
 ao.Open=function()
 if ao.Opened then
 
@@ -7911,11 +7890,6 @@ ao.Close()
 else
 
 aq()
-
-task.spawn(function()
-game:GetService"RunService".RenderStepped:Wait()
-ForceUpwardsPosition()
-end)
 end
 end
 

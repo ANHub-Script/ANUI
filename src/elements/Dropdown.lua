@@ -82,30 +82,29 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     end
     
-    -- 1. [FIX POSISI GAMBAR UTAMA]
+    -- 1. [FIXED] SetMainImage (Gambar Kiri "AN")
+    -- Memastikan gambar tetap di kiri dengan LayoutOrder negatif
     function Dropdown:SetMainImage(image)
         if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
-            -- Panggil fungsi bawaan Element
             Dropdown.DropdownFrame:SetImage(image)
 
-            -- FIX: Secara default SetImage menaruh gambar di urutan terakhir (kanan).
-            -- Kita cari gambar tersebut dan set LayoutOrder = -1 agar pindah ke kiri.
-            local Container = Dropdown.DropdownFrame.UIElements.Container
-            local OuterTitleFrame = Container and Container:FindFirstChild("TitleFrame")
-            
-            if OuterTitleFrame then
-                for _, child in ipairs(OuterTitleFrame:GetChildren()) do
-                    -- Di Element.lua, container text bernama "TitleFrame". 
-                    -- Jadi frame apapun yang BUKAN "TitleFrame" (dan bukan Layout) adalah Icon-nya.
-                    if child:IsA("Frame") and child.Name ~= "TitleFrame" then
-                        child.LayoutOrder = -1
+            -- Fix posisi agar tidak pindah ke kanan
+            -- Kita cari container TitleFrame di dalam elemen utama
+            local MainContainer = Dropdown.DropdownFrame.UIElements.Container
+            local TitleFrameOuter = MainContainer and MainContainer:FindFirstChild("TitleFrame")
+
+            if TitleFrameOuter then
+                for _, child in ipairs(TitleFrameOuter:GetChildren()) do
+                    -- Image biasanya berupa Frame biasa, sedangkan teks ada di dalam Frame bernama "TitleFrame"
+                    if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
+                        child.LayoutOrder = -1 -- Paksa ke kiri
                     end
                 end
             end
         end
     end
 
-    -- 2. SetValueImage: Mengubah gambar di dalam kotak value (yang di kanan)
+    -- 2. SetValueImage (Gambar Kanan dalam kotak Value)
     function Dropdown:SetValueImage(image)
         if Dropdown.UIElements.Dropdown then
              local Container = Dropdown.UIElements.Dropdown.Frame.Frame
@@ -166,29 +165,6 @@ function Element:New(Config)
     Dropdown.Open = Dropdown.DropdownMenu.Open
     Dropdown.Close = Dropdown.DropdownMenu.Close
     
-    local OriginalOpen = Dropdown.Open
-    
-    -- Fungsi bantuan untuk memaksa posisi menu ke ATAS
-    local function ForceUpwardsPosition()
-        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
-        local menu = Dropdown.UIElements.MenuCanvas
-        
-        -- Hitung posisi Y agar berada tepat DI ATAS tombol
-        local UpY = button.AbsolutePosition.Y - menu.AbsoluteSize.Y - 5 -- 5px padding
-        
-        menu.Position = UDim2.new(
-            0, 
-            button.AbsolutePosition.X + button.AbsoluteSize.X, 
-            0, 
-            UpY
-        )
-    end
-
-    -- Bind ke perubahan size untuk menjaga posisi tetap di atas
-    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsoluteSize"), function()
-        if Dropdown.Opened then ForceUpwardsPosition() end
-    end)
-
     local DropdownIcon = New("ImageLabel", {
         Image = Creator.Icon("chevrons-up-down")[1],
         ImageRectOffset = Creator.Icon("chevrons-up-down")[2].ImageRectPosition,
@@ -222,19 +198,17 @@ function Element:New(Config)
         Dropdown:Lock()
     end
     
-    -- 3. [LOGIC TOGGLE (Buka/Tutup) & POSISI ATAS]
+    -- 3. [RESTORE DEFAULT POSITION + TOGGLE FIX]
+    -- Mengembalikan fungsi Open ke default tapi dengan logika Toggle
+    local OriginalOpen = Dropdown.Open
+    
     Dropdown.Open = function()
         if Dropdown.Opened then
-            -- Jika sudah terbuka, tutup (Toggle)
+            -- Jika sudah terbuka, tutup (Toggle Close)
             Dropdown.Close()
         else
-            -- Jika tertutup, buka
+            -- Jika tertutup, buka (Normal Downwards)
             OriginalOpen()
-            -- Paksa posisi ke atas setelah frame dirender
-            task.spawn(function()
-                game:GetService("RunService").RenderStepped:Wait()
-                ForceUpwardsPosition()
-            end)
         end
     end
     
