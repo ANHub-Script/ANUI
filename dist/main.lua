@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.134  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.135  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.134",
+    "version": "1.0.135",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7236,10 +7236,11 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
+
 ak("ScrollingFrame",{
-Size=UDim2.new(1,0,0,0),
+Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
-AutomaticSize="Y",
+AutomaticSize=Enum.AutomaticSize.None,
 AutomaticCanvasSize=Enum.AutomaticSize.X,
 ScrollingDirection=Enum.ScrollingDirection.X,
 ScrollBarThickness=0,
@@ -7253,7 +7254,6 @@ FillDirection="Horizontal",
 Padding=UDim.new(0,an.ImagePadding or ao.TabPadding/3),
 VerticalAlignment="Center",
 }),
-
 ak("UIPadding",{
 PaddingLeft=UDim.new(0,2),
 PaddingRight=UDim.new(0,2),
@@ -7279,7 +7279,6 @@ d=true
 end
 
 if d then
-
 local e=aB.Size or an.ImageSize or UDim2.new(0,60,0,60)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
@@ -7310,7 +7309,7 @@ SliceCenter=Rect.new(23,23,277,277),
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.2,
+ImageTransparency=0.1,
 ZIndex=2,
 }),
 ak("UIGradient",{
@@ -7327,7 +7326,6 @@ ScaleType="Fit",
 ZIndex=2,
 }),
 
-
 ak("TextLabel",{
 Text=g,
 Size=UDim2.new(0.5,0,0,12),
@@ -7340,7 +7338,6 @@ TextSize=9,
 TextStrokeTransparency=0.5,
 ZIndex=3,
 }),
-
 
 ak("TextLabel",{
 Text=h,
@@ -7378,7 +7375,6 @@ TextSize=9,
 TextWrapped=true,
 TextTruncate="AtEnd",
 }),
-
 })
 })
 else

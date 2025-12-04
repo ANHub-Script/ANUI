@@ -368,12 +368,13 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
-                            New("ScrollingFrame", { -- [UPDATED] Changed to ScrollingFrame for horizontal scroll
-                                Size = UDim2.new(1,0,0,0),
+                            -- [PERBAIKAN LAYOUT] Menggunakan Fixed Height agar tidak crash dengan AutomaticSize
+                            New("ScrollingFrame", { 
+                                Size = UDim2.new(1,0,0,70), -- Tinggi tetap untuk menampung card 60px + padding
                                 BackgroundTransparency = 1,
-                                AutomaticSize = "Y",
-                                AutomaticCanvasSize = Enum.AutomaticSize.X, -- Enable horizontal scroll
-                                ScrollingDirection = Enum.ScrollingDirection.X, -- Scroll horizontal
+                                AutomaticSize = Enum.AutomaticSize.None, -- Dimatikan untuk mencegah glitch layout
+                                AutomaticCanvasSize = Enum.AutomaticSize.X, 
+                                ScrollingDirection = Enum.ScrollingDirection.X, 
                                 ScrollBarThickness = 0,
                                 CanvasSize = UDim2.new(0,0,0,0),
                                 Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
@@ -385,7 +386,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3),
                                     VerticalAlignment = "Center",
                                 }),
-                                -- [NEW] Padding for better look
                                 New("UIPadding", {
                                     PaddingLeft = UDim.new(0, 2),
                                     PaddingRight = UDim.new(0, 2),
@@ -411,11 +411,10 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             end
                             
                             if isCard then
-                                -- [UPDATED] Ukuran Card 60
                                 local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
-                                local CardRate = imageData.Rate or "" -- [NEW] Rate
+                                local CardRate = imageData.Rate or "" 
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
                                 
@@ -434,15 +433,15 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     ImageColor3 = Color3.new(1, 1, 1),
                                     ClipsDescendants = true,
                                 }, {
-                                    -- [NEW] Inner Shadow (Black Overlay) with thicker transparency
+                                    -- [FIXED] Inner Shadow lebih tebal (Transparency 0.1)
                                     New("ImageLabel", {
-                                        Image = "rbxassetid://5554236805", -- Generic Shadow
+                                        Image = "rbxassetid://5554236805", 
                                         ScaleType = Enum.ScaleType.Slice,
                                         SliceCenter = Rect.new(23,23,277,277),
                                         Size = UDim2.new(1,0,1,0),
                                         BackgroundTransparency = 1,
                                         ImageColor3 = Color3.new(0,0,0),
-                                        ImageTransparency = 0.2, -- [UPDATED] 0.2 for thicker shadow
+                                        ImageTransparency = 0.1, 
                                         ZIndex = 2,
                                     }),
                                     New("UIGradient", {
@@ -459,7 +458,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         ZIndex = 2,
                                     }),
                                     
-                                    -- [UPDATED] Quantity on Top Left
                                     New("TextLabel", {
                                         Text = CardQuantity,
                                         Size = UDim2.new(0.5, 0, 0, 12),
@@ -468,28 +466,27 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         TextXAlignment = Enum.TextXAlignment.Left,
                                         TextColor3 = Color3.new(1, 1, 1),
                                         FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 9, -- Smaller to fit 60px
+                                        TextSize = 9,
                                         TextStrokeTransparency = 0.5,
                                         ZIndex = 3,
                                     }),
 
-                                    -- [NEW] Rate on Top Right
                                     New("TextLabel", {
                                         Text = CardRate,
                                         Size = UDim2.new(0.5, -4, 0, 12),
                                         Position = UDim2.new(1, -4, 0, 2),
                                         AnchorPoint = Vector2.new(1, 0),
                                         BackgroundTransparency = 1,
-                                        TextXAlignment = Enum.TextXAlignment.Right,
+                                        TextXAlignment = Enum.TextXAlignment.Right, 
                                         TextColor3 = Color3.new(1, 1, 1),
                                         FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 9, -- Smaller to fit 60px
+                                        TextSize = 9, 
                                         TextStrokeTransparency = 0.5,
                                         ZIndex = 3,
                                     }),
 
                                     New("Frame", {
-                                        Size = UDim2.new(1, 0, 0, 20), -- Reduced height for small card
+                                        Size = UDim2.new(1, 0, 0, 20),
                                         Position = UDim2.new(0, 0, 1, 0),
                                         AnchorPoint = Vector2.new(0, 1),
                                         BackgroundColor3 = Color3.new(0, 0, 0),
@@ -497,20 +494,19 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         BorderSizePixel = 0,
                                         ZIndex = 4,
                                     }, {
-                                        -- [UPDATED] Centered Title & TextWrapped
+                                        -- [FIXED] Judul rata tengah (Center)
                                         New("TextLabel", {
                                             Text = CardTitle,
-                                            Size = UDim2.new(1, 0, 1, 0), -- Full width
+                                            Size = UDim2.new(1, 0, 1, 0), 
                                             Position = UDim2.new(0, 0, 0, 0),
                                             BackgroundTransparency = 1,
-                                            TextXAlignment = Enum.TextXAlignment.Center, -- Center
+                                            TextXAlignment = Enum.TextXAlignment.Center, 
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 9, -- Smaller font
+                                            TextSize = 9, 
                                             TextWrapped = true,
                                             TextTruncate = "AtEnd",
                                         }),
-                                        -- Star Icon Removed
                                     })
                                 })
                             else
