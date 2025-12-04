@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.154  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.155  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.154",
+    "version": "1.0.155",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7765,22 +7765,137 @@ end
 
 
 
-function ao.SetMainImage(aq,ar)
-if ao.DropdownFrame and ao.DropdownFrame.SetImage then
-ao.DropdownFrame:SetImage(ar)
 
+function ao.SetMainImage(aq,ar,as)
 
-
-local as=ao.DropdownFrame.UIElements.Container
-local at=as and as:FindFirstChild"TitleFrame"
+local at=ao.DropdownFrame.UIElements.Container:FindFirstChild"TitleFrame"
+local au=at and at:FindFirstChild"TitleFrame"
 
 if at then
-for au,av in ipairs(at:GetChildren())do
+for av,aw in ipairs(at:GetChildren())do
+if aw:IsA"Frame"and aw.Name~="TitleFrame"and aw.Name~="UIListLayout"then
+aw:Destroy()
+end
+end
+end
 
-if av:IsA"Frame"and av.Name~="TitleFrame"and av.Name~="UIListLayout"then
-av.LayoutOrder=-1
+
+local av=as or ao.ImageSize or 30
+if typeof(av)=="number"then
+av=UDim2.new(0,av,0,av)
+end
+
+
+if typeof(ar)=="table"then
+local aw=ar
+local ax=aw.Image or""
+local ay=aw.Gradient
+local az=aw.Quantity
+
+
+local aA
+if typeof(ay)=="ColorSequence"then
+aA=ay
+elseif typeof(ay)=="Color3"then
+aA=ColorSequence.new(ay)
+else
+aA=ColorSequence.new(Color3.fromRGB(80,80,80))
+end
+
+
+local aB=aA.Keypoints[1].Value
+local d=2
+
+
+ae.NewRoundFrame(8,"Squircle",{
+Size=av,
+Parent=at,
+ImageColor3=aB,
+ClipsDescendants=true,
+LayoutOrder=-1,
+AnchorPoint=Vector2.new(0,0.5),
+Position=UDim2.new(0,0,0.5,0),
+},{
+
+af("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+ZIndex=2,
+}),
+
+ae.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-d*2,1,-d*2),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+ZIndex=3,
+},{
+
+af("UIGradient",{
+Color=aA,
+Rotation=45,
+}),
+
+af("ImageLabel",{
+Image=ax,
+Size=UDim2.new(0.65,0,0.65,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.5,0),
+BackgroundTransparency=1,
+ScaleType="Fit",
+ZIndex=4,
+}),
+
+az and af("TextLabel",{
+Text=az,
+Size=UDim2.new(1,-4,0,12),
+Position=UDim2.new(0,4,0,2),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Left,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ae.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0.5,
+ZIndex=5,
+})or nil
+})
+})
+
+
+if au then
+au.Size=UDim2.new(1,-av.X.Offset,1,0)
+end
+
+
+elseif ar then
+
+if ao.DropdownFrame.SetImage then
+ao.DropdownFrame:SetImage(ar,av.X.Offset)
+end
+
+
+for aw,ax in ipairs(at:GetChildren())do
+if ax:IsA"Frame"and ax.Name~="TitleFrame"and ax.Name~="UIListLayout"then
+ax.LayoutOrder=-1
+ax.AnchorPoint=Vector2.new(0,0.5)
+ax.Position=UDim2.new(0,0,0.5,0)
 end
 end
+
+
+if au then
+au.Size=UDim2.new(1,-av.X.Offset,1,0)
+end
+else
+
+if au then
+au.Size=UDim2.new(1,0,1,0)
 end
 end
 end

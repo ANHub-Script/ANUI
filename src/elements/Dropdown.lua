@@ -84,22 +84,137 @@ function Element:New(Config)
     
     -- 1. [FIXED] SetMainImage (Gambar Kiri "AN")
     -- Memastikan gambar tetap di kiri dengan LayoutOrder negatif
-    function Dropdown:SetMainImage(image)
-        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
-            Dropdown.DropdownFrame:SetImage(image)
-
-            -- Fix posisi agar tidak pindah ke kanan
-            -- Kita cari container TitleFrame di dalam elemen utama
-            local MainContainer = Dropdown.DropdownFrame.UIElements.Container
-            local TitleFrameOuter = MainContainer and MainContainer:FindFirstChild("TitleFrame")
-
-            if TitleFrameOuter then
-                for _, child in ipairs(TitleFrameOuter:GetChildren()) do
-                    -- Image biasanya berupa Frame biasa, sedangkan teks ada di dalam Frame bernama "TitleFrame"
-                    if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
-                        child.LayoutOrder = -1 -- Paksa ke kiri
-                    end
+    -- [UPDATE] SetMainImage: Mendukung Card Style (Gradient, Quantity, dll)
+    function Dropdown:SetMainImage(image, size)
+        -- Hapus gambar lama jika ada (baik itu ImageFrame biasa atau Custom Card)
+        local TitleFrameOuter = Dropdown.DropdownFrame.UIElements.Container:FindFirstChild("TitleFrame")
+        local InnerTitleFrame = TitleFrameOuter and TitleFrameOuter:FindFirstChild("TitleFrame")
+        
+        if TitleFrameOuter then
+            for _, child in ipairs(TitleFrameOuter:GetChildren()) do
+                if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
+                    child:Destroy()
                 end
+            end
+        end
+
+        -- Definisikan Ukuran
+        local ImageSize = size or Dropdown.ImageSize or 30
+        if typeof(ImageSize) == "number" then
+            ImageSize = UDim2.new(0, ImageSize, 0, ImageSize)
+        end
+
+        -- [LOGIKA 1] Jika Input adalah TABEL (Card Style dengan Gradient)
+        if typeof(image) == "table" then
+            local CardData = image
+            local CardImage = CardData.Image or ""
+            local CardGradient = CardData.Gradient
+            local CardQuantity = CardData.Quantity
+            
+            -- Parsing Warna Gradient
+            local GradientColor
+            if typeof(CardGradient) == "ColorSequence" then
+                GradientColor = CardGradient
+            elseif typeof(CardGradient) == "Color3" then
+                GradientColor = ColorSequence.new(CardGradient)
+            else
+                GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
+            end
+            
+            -- Warna Border (ambil dari keypoint pertama gradient)
+            local BorderColor = GradientColor.Keypoints[1].Value
+            local borderThickness = 2
+
+            -- Membuat Frame Card (Meniru style src/components/ui/Dropdown.lua)
+            local Card = Creator.NewRoundFrame(8, "Squircle", {
+                Size = ImageSize,
+                Parent = TitleFrameOuter,
+                ImageColor3 = BorderColor,
+                ClipsDescendants = true,
+                LayoutOrder = -1, -- Pastikan di kiri
+                AnchorPoint = Vector2.new(0, 0.5),
+                Position = UDim2.new(0, 0, 0.5, 0),
+            }, {
+                -- Inner Shadow
+                New("ImageLabel", {
+                    Image = "rbxassetid://5554236805",
+                    ScaleType = Enum.ScaleType.Slice,
+                    SliceCenter = Rect.new(23,23,277,277),
+                    Size = UDim2.new(1,0,1,0),
+                    BackgroundTransparency = 1,
+                    ImageColor3 = Color3.new(0,0,0),
+                    ImageTransparency = 0.4,
+                    ZIndex = 2,
+                }),
+                -- Konten Dalam
+                Creator.NewRoundFrame(8, "Squircle", {
+                    Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2),
+                    Position = UDim2.new(0.5, 0, 0.5, 0),
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    ImageColor3 = Color3.new(1,1,1),
+                    ClipsDescendants = true,
+                    ZIndex = 3,
+                }, {
+                    -- Gradient
+                    New("UIGradient", {
+                        Color = GradientColor,
+                        Rotation = 45,
+                    }),
+                    -- Gambar Item
+                    New("ImageLabel", {
+                        Image = CardImage,
+                        Size = UDim2.new(0.65, 0, 0.65, 0),
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                        BackgroundTransparency = 1,
+                        ScaleType = "Fit",
+                        ZIndex = 4,
+                    }),
+                    -- Quantity Text (Opsional)
+                    CardQuantity and New("TextLabel", {
+                        Text = CardQuantity,
+                        Size = UDim2.new(1, -4, 0, 12),
+                        Position = UDim2.new(0, 4, 0, 2),
+                        BackgroundTransparency = 1,
+                        TextXAlignment = Enum.TextXAlignment.Left,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                        TextSize = 10,
+                        TextStrokeTransparency = 0.5,
+                        ZIndex = 5,
+                    }) or nil
+                })
+            })
+
+            -- Update ukuran text container agar tidak menimpa gambar
+            if InnerTitleFrame then
+                InnerTitleFrame.Size = UDim2.new(1, -ImageSize.X.Offset, 1, 0)
+            end
+
+        -- [LOGIKA 2] Jika Input adalah STRING/ID BIASA (Normal Image)
+        elseif image then
+            -- Panggil logika standar via Element Wrapper jika tersedia
+            if Dropdown.DropdownFrame.SetImage then
+                Dropdown.DropdownFrame:SetImage(image, ImageSize.X.Offset)
+            end
+            
+            -- Fix posisi layout untuk gambar biasa
+            for _, child in ipairs(TitleFrameOuter:GetChildren()) do
+                if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
+                    child.LayoutOrder = -1
+                    child.AnchorPoint = Vector2.new(0, 0.5)
+                    child.Position = UDim2.new(0, 0, 0.5, 0)
+                end
+            end
+            
+            -- Update ukuran text container
+            if InnerTitleFrame then
+                InnerTitleFrame.Size = UDim2.new(1, -ImageSize.X.Offset, 1, 0)
+            end
+        else
+            -- Jika nil/kosong, reset ukuran text container
+            if InnerTitleFrame then
+                InnerTitleFrame.Size = UDim2.new(1, 0, 1, 0)
             end
         end
     end
