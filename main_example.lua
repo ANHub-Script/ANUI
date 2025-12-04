@@ -1176,13 +1176,12 @@ do
 				Images = {
 					{
 						Card = true,
-						Size = UDim2.new(0, 60, 0, 60),
-						Title = "Clan Scroll Clan Scroll Clan Scroll",
+						Title = "Clan Scroll",
 						Quantity = "x5",
 						Rate = "10%",
 						Image = "rbxassetid://84366761557806",
 						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(40, 40, 40)
+						BackgroundColor = Color3.fromRGB(100, 100, 100),
 					},
 					{
 						Card = true,
@@ -1191,7 +1190,7 @@ do
 						Rate = "15%",
 						Image = "rbxassetid://84366761557806",
 						Gradient = Color3.fromRGB(255, 215, 0), -- Yellow Border
-						BackgroundColor = Color3.fromRGB(40, 40, 40)
+						BackgroundColor = Color3.fromRGB(255, 215, 0), -- Yellow Border
 					},
 					{
 						Card = true,
@@ -1200,7 +1199,7 @@ do
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
 						Gradient = Color3.fromRGB(255, 255, 255),
-						BackgroundColor = Color3.fromRGB(40, 40, 40)
+						BackgroundColor = Color3.fromRGB(255, 255, 255),
 					},
 					{
 						Card = true,
@@ -1209,7 +1208,7 @@ do
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
 						Gradient = Color3.fromRGB(100, 100, 100),
-						BackgroundColor = Color3.fromRGB(40, 40, 40)
+						BackgroundColor = Color3.fromRGB(100, 100, 100),
 					}
 				}
 			}
