@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.126  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.127  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.126",
+    "version": "1.0.127",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7249,6 +7249,12 @@ Visible=(ax.Images and#ax.Images>0)and true or false,
 LayoutOrder=3,
 Name="Images",
 },{
+ak("UIPadding",{
+PaddingTop=UDim.new(0,4),
+PaddingBottom=UDim.new(0,8),
+PaddingLeft=UDim.new(0,4),
+PaddingRight=UDim.new(0,4),
+}),
 ak("UIListLayout",{
 FillDirection="Horizontal",
 Padding=UDim.new(0,an.ImagePadding or ao.TabPadding/3),
@@ -7294,15 +7300,15 @@ local u=math.clamp(math.floor(r*0.175),10,14)
 local v=math.clamp(math.floor(r*0.15),9,12)
 
 local x=ak("Frame",{
-Size=e,
+Size=UDim2.new(e.X.Scale,e.X.Offset,e.Y.Scale,e.Y.Offset+15),
 Parent=az,
 BackgroundTransparency=1,
 })
 
 
 aj.NewRoundFrame(8,"Shadow-sm",{
-Size=UDim2.new(1,15,1,15),
-Position=UDim2.new(0.5,0,0.5,4),
+Size=UDim2.new(1,10,1,10),
+Position=UDim2.new(0.5,0,0.5,2),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.fromRGB(0,0,0),
 ImageTransparency=0.4,
@@ -7311,7 +7317,9 @@ ZIndex=1,
 })
 
 aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,0,1,0),
+Size=UDim2.new(1,-10,1,-15),
+Position=UDim2.new(0.5,0,0.5,-2),
+AnchorPoint=Vector2.new(0.5,0.5),
 Parent=x,
 ImageColor3=p,
 ClipsDescendants=false,
@@ -7344,6 +7352,7 @@ TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=u,
+TextWrapped=true,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=4,
