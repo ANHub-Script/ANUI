@@ -82,23 +82,188 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     end
     
-    -- 1. [FIXED] SetMainImage (Gambar Kiri "AN")
-    -- Memastikan gambar tetap di kiri dengan LayoutOrder negatif
+    -- 1. [FIXED & UPGRADED] SetMainImage
+    -- Sekarang mendukung format Card Table seperti yang diminta
     function Dropdown:SetMainImage(image)
-        if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
-            Dropdown.DropdownFrame:SetImage(image)
+        local MainContainer = Dropdown.DropdownFrame.UIElements.Container
+        local TitleFrameOuter = MainContainer and MainContainer:FindFirstChild("TitleFrame")
+        
+        if not TitleFrameOuter then return end
 
-            -- Fix posisi agar tidak pindah ke kanan
-            -- Kita cari container TitleFrame di dalam elemen utama
-            local MainContainer = Dropdown.DropdownFrame.UIElements.Container
-            local TitleFrameOuter = MainContainer and MainContainer:FindFirstChild("TitleFrame")
+        -- Helper: Hapus icon lama (apapun jenisnya)
+        local function clearOldIcon()
+            for _, child in ipairs(TitleFrameOuter:GetChildren()) do
+                -- Hapus frame yang bukan Layout/Padding dan bukan Container Text ("TitleFrame")
+                if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" and child.Name ~= "UIPadding" then
+                    child:Destroy()
+                end
+            end
+        end
 
-            if TitleFrameOuter then
+        -- Helper: Resize Text Container
+        local function updateTextSize(iconWidth)
+            local TextContainer = TitleFrameOuter:FindFirstChild("TitleFrame")
+            if TextContainer then
+                -- Mengurangi lebar text container sesuai lebar icon agar text tidak nabrak/terpotong
+                TextContainer.Size = UDim2.new(1, -iconWidth, 1, 0)
+            end
+        end
+
+        -- >> LOGIKA UTAMA <<
+        if type(image) == "table" and image.Card then
+            -- A. RENDER CARD STYLE
+            clearOldIcon()
+            
+            -- Ambil properti dari table image
+            local CardSize = image.Size or UDim2.new(0, 45, 0, 45) -- Ukuran default Card
+            local CardTitle = image.Title or ""
+            local CardQuantity = image.Quantity or ""
+            local CardRate = image.Rate or ""
+            local CardImage = image.Image or ""
+            local CardGradient = image.Gradient
+            
+            -- Parse Gradient Colors
+            local GradientColor, BorderColor
+            if typeof(CardGradient) == "ColorSequence" then
+                GradientColor = CardGradient
+                if CardGradient.Keypoints[1] then BorderColor = CardGradient.Keypoints[1].Value end
+            elseif typeof(CardGradient) == "Color3" then
+                GradientColor = ColorSequence.new(CardGradient)
+                BorderColor = CardGradient
+            else
+                -- Default abu-abu jika tidak ada warna
+                GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
+                BorderColor = Color3.fromRGB(80, 80, 80)
+            end
+            
+            local borderThickness = 2
+
+            -- Buat Struktur Card
+            local CardFrame = Creator.NewRoundFrame(8, "Squircle", {
+                Size = CardSize,
+                Parent = TitleFrameOuter,
+                ImageColor3 = BorderColor, -- Warna Border
+                ClipsDescendants = true,
+                LayoutOrder = -1, -- PAKSA KE KIRI
+                Name = "CardMainIcon"
+            }, {
+                -- Inner Shadow (Opsional, untuk kedalaman)
+                New("ImageLabel", {
+                    Image = "rbxassetid://5554236805",
+                    ScaleType = Enum.ScaleType.Slice,
+                    SliceCenter = Rect.new(23,23,277,277),
+                    Size = UDim2.new(1,0,1,0),
+                    BackgroundTransparency = 1,
+                    ImageColor3 = Color3.new(0,0,0),
+                    ImageTransparency = 0.6,
+                    ZIndex = 2,
+                }),
+                
+                -- Konten Dalam (Putih + Gradient)
+                Creator.NewRoundFrame(8, "Squircle", {
+                    Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2),
+                    Position = UDim2.new(0.5, 0, 0.5, 0),
+                    AnchorPoint = Vector2.new(0.5, 0.5),
+                    ImageColor3 = Color3.new(1,1,1),
+                    ClipsDescendants = true,
+                    ZIndex = 3,
+                }, {
+                     -- Gradient Layer
+                    New("UIGradient", {
+                        Color = GradientColor,
+                        Rotation = 45,
+                    }),
+                    
+                    -- Gambar Utama Item
+                    New("ImageLabel", {
+                        Image = CardImage,
+                        Size = UDim2.new(0.7, 0, 0.7, 0),
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        Position = UDim2.new(0.5, 0, 0.45, 0),
+                        BackgroundTransparency = 1,
+                        ScaleType = "Fit",
+                        ZIndex = 4,
+                    }),
+                    
+                    -- Teks Quantity (Kiri Atas)
+                    New("TextLabel", {
+                        Text = CardQuantity,
+                        Size = UDim2.new(0.5, 0, 0, 10),
+                        Position = UDim2.new(0, 3, 0, 1),
+                        BackgroundTransparency = 1,
+                        TextXAlignment = Enum.TextXAlignment.Left,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                        TextSize = 9,
+                        TextStrokeTransparency = 0, 
+                        TextStrokeColor3 = Color3.new(0,0,0),
+                        ZIndex = 5,
+                    }),
+                    
+                     -- Teks Rate (Kanan Atas)
+                    New("TextLabel", {
+                        Text = CardRate,
+                        Size = UDim2.new(0.5, -3, 0, 10),
+                        Position = UDim2.new(1, -3, 0, 1),
+                        AnchorPoint = Vector2.new(1, 0),
+                        BackgroundTransparency = 1,
+                        TextXAlignment = Enum.TextXAlignment.Right,
+                        TextColor3 = Color3.new(1, 1, 1),
+                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                        TextSize = 9,
+                        TextStrokeTransparency = 0,
+                        TextStrokeColor3 = Color3.new(0,0,0),
+                        ZIndex = 5,
+                    }),
+                    
+                    -- Title Bar Hitam (Bawah)
+                    New("Frame", {
+                        Size = UDim2.new(1, 0, 0, 14),
+                        Position = UDim2.new(0, 0, 1, 0),
+                        AnchorPoint = Vector2.new(0, 1),
+                        BackgroundColor3 = Color3.new(0, 0, 0),
+                        BackgroundTransparency = 0.4,
+                        BorderSizePixel = 0,
+                        ZIndex = 6,
+                    }, {
+                        New("TextLabel", {
+                            Text = CardTitle,
+                            Size = UDim2.new(1, 0, 1, 0),
+                            Position = UDim2.new(0, 0, 0, 0),
+                            BackgroundTransparency = 1,
+                            TextXAlignment = Enum.TextXAlignment.Center,
+                            TextColor3 = Color3.new(1, 1, 1),
+                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                            TextSize = 8,
+                            TextWrapped = true,
+                            TextTruncate = "AtEnd",
+                            ZIndex = 7,
+                        }),
+                    })
+                })
+            })
+            
+            -- Update ukuran text container agar muat
+            updateTextSize(CardSize.X.Offset)
+            
+        else
+            -- B. RENDER STANDARD STYLE (Gambar/Icon biasa)
+            if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
+                Dropdown.DropdownFrame:SetImage(image)
+
+                -- Cari icon baru yang dibuat oleh library standard
+                local newIcon
                 for _, child in ipairs(TitleFrameOuter:GetChildren()) do
-                    -- Image biasanya berupa Frame biasa, sedangkan teks ada di dalam Frame bernama "TitleFrame"
-                    if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
-                        child.LayoutOrder = -1 -- Paksa ke kiri
+                    if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" and child.Name ~= "UIPadding" then
+                        newIcon = child
+                        child.LayoutOrder = -1 -- PAKSA KE KIRI
+                        break
                     end
+                end
+                
+                -- Update ukuran text container jika icon ditemukan
+                if newIcon then
+                     updateTextSize(newIcon.Size.X.Offset)
                 end
             end
         end
@@ -199,7 +364,7 @@ function Element:New(Config)
     end
     
     -- 3. [RESTORE DEFAULT POSITION + TOGGLE FIX]
-    -- Mengembalikan fungsi Open ke default tapi dengan logika Toggle
+    -- Mengembalikan fungsi Open ke default (kebawah) tapi dengan logika Toggle
     local OriginalOpen = Dropdown.Open
     
     Dropdown.Open = function()
