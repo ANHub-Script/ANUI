@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.127  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.128  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.127",
+    "version": "1.0.128",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7241,7 +7241,7 @@ ak("ScrollingFrame",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
-AutomaticCanvasSize="X",
+AutomaticCanvasSize="XY",
 ScrollingDirection="X",
 ScrollBarThickness=2,
 CanvasSize=UDim2.new(0,0,0,0),
@@ -7300,25 +7300,14 @@ local u=math.clamp(math.floor(r*0.175),10,14)
 local v=math.clamp(math.floor(r*0.15),9,12)
 
 local x=ak("Frame",{
-Size=UDim2.new(e.X.Scale,e.X.Offset,e.Y.Scale,e.Y.Offset+15),
+Size=UDim2.new(e.X.Scale,e.X.Offset,e.Y.Scale,e.Y.Offset),
 Parent=az,
 BackgroundTransparency=1,
 })
 
-
-aj.NewRoundFrame(8,"Shadow-sm",{
-Size=UDim2.new(1,10,1,10),
-Position=UDim2.new(0.5,0,0.5,2),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.fromRGB(0,0,0),
-ImageTransparency=0.4,
-Parent=x,
-ZIndex=1,
-})
-
 aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-10,1,-15),
-Position=UDim2.new(0.5,0,0.5,-2),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Parent=x,
 ImageColor3=p,
@@ -7343,6 +7332,40 @@ BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=3,
 }),
+
+ak("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ZIndex=4,
+},{
+ak("UIGradient",{
+Color=ColorSequence.new(Color3.new(0,0,0)),
+Transparency=NumberSequence.new{
+NumberSequenceKeypoint.new(0.0,0.3),
+NumberSequenceKeypoint.new(0.2,1.0),
+NumberSequenceKeypoint.new(0.8,1.0),
+NumberSequenceKeypoint.new(1.0,0.3),
+},
+Rotation=0,
+})
+}),
+
+ak("Frame",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ZIndex=4,
+},{
+ak("UIGradient",{
+Color=ColorSequence.new(Color3.new(0,0,0)),
+Transparency=NumberSequence.new{
+NumberSequenceKeypoint.new(0.0,0.3),
+NumberSequenceKeypoint.new(0.2,1.0),
+NumberSequenceKeypoint.new(0.8,1.0),
+NumberSequenceKeypoint.new(1.0,0.3),
+},
+Rotation=90,
+})
+}),
 ak("TextLabel",{
 Text=g,
 Size=UDim2.new(0.5,-4,0,u+6),
@@ -7355,7 +7378,7 @@ TextSize=u,
 TextWrapped=true,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=4,
+ZIndex=5,
 }),
 ak("TextLabel",{
 Text=h,
@@ -7369,7 +7392,7 @@ FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=u,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=4,
+ZIndex=5,
 }),
 ak("TextLabel",{
 Text=f,

@@ -373,7 +373,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Size = UDim2.new(1,0,0,0),
                                 BackgroundTransparency = 1,
                                 AutomaticSize = "Y",
-                                AutomaticCanvasSize = "X",
+                                AutomaticCanvasSize = "XY",
                                 ScrollingDirection = "X",
                                 ScrollBarThickness = 2,
                                 CanvasSize = UDim2.new(0,0,0,0),
@@ -432,25 +432,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local TitleSize = math.clamp(math.floor(CardHeight * 0.15), 9, 12)
                                 
                                 local CardContainer = New("Frame", {
-                                    Size = UDim2.new(CardSize.X.Scale, CardSize.X.Offset, CardSize.Y.Scale, CardSize.Y.Offset + 15),
+                                    Size = UDim2.new(CardSize.X.Scale, CardSize.X.Offset, CardSize.Y.Scale, CardSize.Y.Offset),
                                     Parent = imagesContainer,
                                     BackgroundTransparency = 1,
                                 })
 
-                                -- Shadow
-                                Creator.NewRoundFrame(8, "Shadow-sm", {
-                                    Size = UDim2.new(1, 10, 1, 10), -- Reduced shadow size slightly to fit better
-                                    Position = UDim2.new(0.5, 0, 0.5, 2),
-                                    AnchorPoint = Vector2.new(0.5, 0.5),
-                                    ImageColor3 = Color3.fromRGB(0, 0, 0),
-                                    ImageTransparency = 0.4,
-                                    Parent = CardContainer,
-                                    ZIndex = 1,
-                                })
-                                
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
-                                    Size = UDim2.new(1, -10, 1, -15), -- Reduce card size relative to container to make room for shadow
-                                    Position = UDim2.new(0.5, 0, 0.5, -2), -- Shift card up slightly
+                                    Size = UDim2.new(1, 0, 1, 0),
+                                    Position = UDim2.new(0.5, 0, 0.5, 0),
                                     AnchorPoint = Vector2.new(0.5, 0.5),
                                     Parent = CardContainer,
                                     ImageColor3 = BorderColor, -- Outer Frame acts as Border
@@ -475,6 +464,40 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             ScaleType = "Fit",
                                             ZIndex = 3,
                                         }),
+                                        -- Inner Shadow (Left/Right)
+                                        New("Frame", {
+                                            Size = UDim2.new(1, 0, 1, 0),
+                                            BackgroundTransparency = 1,
+                                            ZIndex = 4,
+                                        }, {
+                                            New("UIGradient", {
+                                                Color = ColorSequence.new(Color3.new(0,0,0)),
+                                                Transparency = NumberSequence.new({
+                                                    NumberSequenceKeypoint.new(0.0, 0.3),
+                                                    NumberSequenceKeypoint.new(0.2, 1.0),
+                                                    NumberSequenceKeypoint.new(0.8, 1.0),
+                                                    NumberSequenceKeypoint.new(1.0, 0.3),
+                                                }),
+                                                Rotation = 0,
+                                            })
+                                        }),
+                                        -- Inner Shadow (Top/Bottom)
+                                        New("Frame", {
+                                            Size = UDim2.new(1, 0, 1, 0),
+                                            BackgroundTransparency = 1,
+                                            ZIndex = 4,
+                                        }, {
+                                            New("UIGradient", {
+                                                Color = ColorSequence.new(Color3.new(0,0,0)),
+                                                Transparency = NumberSequence.new({
+                                                    NumberSequenceKeypoint.new(0.0, 0.3),
+                                                    NumberSequenceKeypoint.new(0.2, 1.0),
+                                                    NumberSequenceKeypoint.new(0.8, 1.0),
+                                                    NumberSequenceKeypoint.new(1.0, 0.3),
+                                                }),
+                                                Rotation = 90,
+                                            })
+                                        }),
                                         New("TextLabel", {
                                             Text = CardQuantity,
                                             Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
@@ -487,7 +510,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             TextWrapped = true, -- Enable text wrapping
                                             TextStrokeTransparency = 0,
                                             TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 4,
+                                            ZIndex = 5,
                                         }),
                                         New("TextLabel", {
                                             Text = CardRate,
@@ -501,7 +524,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                             TextSize = QuantitySize,
                                             TextStrokeTransparency = 0,
                                             TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 4,
+                                            ZIndex = 5,
                                         }),
                                         New("TextLabel", {
                                             Text = CardTitle,
