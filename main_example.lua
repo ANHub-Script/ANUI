@@ -1176,7 +1176,8 @@ do
 				Images = {
 					{
 						Card = true,
-						Title = "Clan Scroll",
+						Size = UDim2.new(0, 60, 0, 60),
+						Title = "Clan Scroll Clan Scroll Clan Scroll",
 						Quantity = "x5",
 						Rate = "10%",
 						Image = "rbxassetid://84366761557806",

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.119  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.120  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.119",
+    "version": "1.0.120",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7285,15 +7285,17 @@ end
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
+ImageColor3=m,
+ClipsDescendants=false,
+},{
+
+aj.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-5,1,-5),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.fromRGB(40,40,40),
 ClipsDescendants=true,
 },{
-ak("UIStroke",{
-Color=m,
-Thickness=2.5,
-Transparency=0,
-ApplyStrokeMode="Border",
-}),
 ak("ImageLabel",{
 Image=j,
 Size=UDim2.new(0.55,0,0.55,0),
@@ -7312,7 +7314,8 @@ TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=14,
-TextStrokeTransparency=0.5,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=3,
 }),
 ak("TextLabel",{
@@ -7325,23 +7328,27 @@ TextXAlignment="Right",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=14,
-TextStrokeTransparency=0.5,
-ZIndex=3,
-}),
-ak("TextLabel",{
-Text=f,
-Size=UDim2.new(1,-8,0,20),
-Position=UDim2.new(0.5,0,1,-4),
-AnchorPoint=Vector2.new(0.5,1),
-BackgroundTransparency=1,
-TextXAlignment="Center",
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=12,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=3,
 }),
+ak("TextLabel",{
+Text=f,
+Size=UDim2.new(1,-8,0,32),
+Position=UDim2.new(0.5,0,1,-4),
+AnchorPoint=Vector2.new(0.5,1),
+BackgroundTransparency=1,
+TextXAlignment="Center",
+TextYAlignment="Bottom",
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
+TextSize=12,
+TextWrapped=true,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+ZIndex=4,
+}),
+})
 })
 else
 local e
