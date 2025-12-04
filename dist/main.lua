@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.129  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.130  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.129",
+    "version": "1.0.130",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7271,83 +7271,79 @@ if d then
 local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
-local h=aB.Rate or""
-local j=aB.Image or""
-local l=aB.Gradient
+local h=aB.Image or""
+local j=aB.Gradient
 
-local m=Color3.fromRGB(60,60,60)
-if typeof(l)=="ColorSequence"then
-m=l.Keypoints[1].Value
-elseif typeof(l)=="Color3"then
-m=l
+local l
+if typeof(j)=="ColorSequence"then
+l=j
+elseif typeof(j)=="Color3"then
+l=ColorSequence.new(j)
+else
+l=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
-ImageColor3=m,
-ClipsDescendants=false,
-},{
-
-aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-5,1,-5),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.fromRGB(40,40,40),
+ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 },{
+ak("UIGradient",{
+Color=l,
+Rotation=45,
+}),
 ak("ImageLabel",{
-Image=j,
-Size=UDim2.new(0.55,0,0.55,0),
+Image=h,
+Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Position=UDim2.new(0.5,0,0.45,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=2,
 }),
 ak("TextLabel",{
 Text=g,
-Size=UDim2.new(0.5,-4,0,20),
-Position=UDim2.new(0,6,0,4),
-BackgroundTransparency=1,
-TextXAlignment="Left",
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=14,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=3,
-}),
-ak("TextLabel",{
-Text=h,
-Size=UDim2.new(0.5,-4,0,20),
-Position=UDim2.new(1,-6,0,4),
-AnchorPoint=Vector2.new(1,0),
+Size=UDim2.new(1,-8,0,20),
+Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
 TextXAlignment="Right",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=14,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
+TextStrokeTransparency=0.5,
 ZIndex=3,
 }),
+ak("Frame",{
+Size=UDim2.new(1,0,0,22),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=4,
+},{
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-8,0,32),
-Position=UDim2.new(0.5,0,1,-4),
-AnchorPoint=Vector2.new(0.5,1),
+Size=UDim2.new(1,-20,1,0),
+Position=UDim2.new(0,6,0,0),
 BackgroundTransparency=1,
-TextXAlignment="Center",
-TextYAlignment="Bottom",
+TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=12,
-TextWrapped=true,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=4,
+TextSize=11,
+TextTruncate="AtEnd",
 }),
+ak("ImageLabel",{
+Image=aj.Icon"star"[1],
+ImageRectOffset=aj.Icon"star"[2].ImageRectPosition,
+ImageRectSize=aj.Icon"star"[2].ImageRectSize,
+Size=UDim2.new(0,12,0,12),
+AnchorPoint=Vector2.new(1,0.5),
+Position=UDim2.new(1,-4,0.5,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.fromRGB(255,255,255),
+})
 })
 })
 else
