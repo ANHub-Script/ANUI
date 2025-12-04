@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.143  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.144  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.143",
+    "version": "1.0.144",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7766,10 +7766,58 @@ ao.UIElements.Dropdown.AnchorPoint=Vector2.new(1,an.Window.NewElements and 0 or 
 
 
 
-
-
-
 end
+
+
+function ao.SetImage(aq,ar)
+if not ao.UIElements.Dropdown then return end
+
+
+local as=ao.UIElements.Dropdown.Frame.Frame
+local at=as:FindFirstChild"TextLabel"
+local au=as:FindFirstChild"DropdownDynamicIcon"
+
+if ar and ar~=""then
+if not au then
+au=af("ImageLabel",{
+Name="DropdownDynamicIcon",
+Size=UDim2.new(0,21,0,21),
+BackgroundTransparency=1,
+ThemeTag={
+ImageColor3="Icon",
+},
+LayoutOrder=-1,
+Parent=as
+})
+end
+
+
+local av=ae.Icon(ar)
+if av then
+au.Image=av[1]
+au.ImageRectSize=av[2].ImageRectSize
+au.ImageRectOffset=av[2].ImageRectPosition
+else
+au.Image=ar
+au.ImageRectSize=Vector2.new(0,0)
+au.ImageRectOffset=Vector2.new(0,0)
+end
+
+
+if at then
+at.Size=UDim2.new(1,-29,1,0)
+end
+else
+
+if au then
+au:Destroy()
+end
+if at then
+at.Size=UDim2.new(1,0,1,0)
+end
+end
+end
+
 
 ao.DropdownMenu=aj(an,ao,al,ap,"Dropdown")
 
@@ -7820,7 +7868,6 @@ return ao.__type,ao
 end
 
 return al end function a.L()
-
 
 
 
