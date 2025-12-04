@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.135  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.136  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.135",
+    "version": "1.0.136",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7236,7 +7236,6 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
-
 ak("ScrollingFrame",{
 Size=UDim2.new(1,0,0,70),
 BackgroundTransparency=1,
@@ -7302,16 +7301,12 @@ ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 },{
 
-ak("ImageLabel",{
-Image="rbxassetid://5554236805",
-ScaleType=Enum.ScaleType.Slice,
-SliceCenter=Rect.new(23,23,277,277),
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.1,
-ZIndex=2,
+ak("UIStroke",{
+Thickness=2,
+Color=Color3.fromRGB(255,215,0),
+ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
 }),
+
 ak("UIGradient",{
 Color=m,
 Rotation=45,
@@ -7326,6 +7321,7 @@ ScaleType="Fit",
 ZIndex=2,
 }),
 
+
 ak("TextLabel",{
 Text=g,
 Size=UDim2.new(0.5,0,0,12),
@@ -7335,9 +7331,11 @@ TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=9,
-TextStrokeTransparency=0.5,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=3,
 }),
+
 
 ak("TextLabel",{
 Text=h,
@@ -7349,9 +7347,11 @@ TextXAlignment=Enum.TextXAlignment.Right,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=9,
-TextStrokeTransparency=0.5,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=3,
 }),
+
 
 ak("Frame",{
 Size=UDim2.new(1,0,0,20),
@@ -7363,10 +7363,21 @@ BorderSizePixel=0,
 ZIndex=4,
 },{
 
+ak("UICorner",{CornerRadius=UDim.new(0,8)}),
+ak("Frame",{
+Size=UDim2.new(1,0,0.5,0),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0,
+
+
+
+BorderSizePixel=0,
+Visible=false
+}),
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0,0,0,0),
+Size=UDim2.new(1,-4,1,0),
+Position=UDim2.new(0,2,0,0),
 BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Center,
 TextColor3=Color3.new(1,1,1),
