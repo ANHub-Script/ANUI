@@ -368,11 +368,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
+                            -- [UPDATED] ScrollingFrame untuk Card agar bisa digeser
                             New("ScrollingFrame", {
                                 Size = UDim2.new(1,0,0,70), 
                                 BackgroundTransparency = 1,
-                                AutomaticSize = Enum.AutomaticSize.None,
-                                AutomaticCanvasSize = Enum.AutomaticSize.X,
+                                AutomaticSize = Enum.AutomaticSize.None, -- Fixed height agar tidak glitch
+                                AutomaticCanvasSize = Enum.AutomaticSize.X, -- Scroll horizontal
                                 ScrollingDirection = Enum.ScrollingDirection.X,
                                 ScrollBarThickness = 0,
                                 CanvasSize = UDim2.new(0,0,0,0),
@@ -413,7 +414,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
-                                local CardRate = imageData.Rate or ""
+                                local CardRate = imageData.Rate or "" 
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
                                 
@@ -432,17 +433,21 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     ImageColor3 = Color3.new(1, 1, 1),
                                     ClipsDescendants = true,
                                 }, {
-                                    -- [FIX] BORDER: Menggunakan UIStroke sebagai pengganti Shadow
+                                    -- [UPDATED] UIStroke sebagai pengganti Inner Shadow (Border Warna Putih agar terkena Gradient)
                                     New("UIStroke", {
                                         Thickness = 2,
-                                        Color = Color3.fromRGB(255, 215, 0), -- Default Gold, akan tertimpa UIGradient di bawah
+                                        Color = Color3.new(1, 1, 1), -- Putih agar diwarnai oleh UIGradient
                                         ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
+                                        Transparency = 0,
                                     }),
+                                    
                                     -- Gradient Utama (Mewarnai Card + Border)
                                     New("UIGradient", {
                                         Color = GradientColor,
                                         Rotation = 45,
                                     }),
+                                    
+                                    -- Background Image
                                     New("ImageLabel", {
                                         Image = CardImage,
                                         Size = UDim2.new(0.65, 0, 0.65, 0),
@@ -453,7 +458,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         ZIndex = 2,
                                     }),
                                     
-                                    -- Quantity (Kiri Atas) + Stroke
+                                    -- Quantity (Kiri Atas) + Text Shadow (Stroke)
                                     New("TextLabel", {
                                         Text = CardQuantity,
                                         Size = UDim2.new(0.5, 0, 0, 12),
@@ -462,29 +467,29 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         TextXAlignment = Enum.TextXAlignment.Left,
                                         TextColor3 = Color3.new(1, 1, 1),
                                         FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 9,
-                                        TextStrokeTransparency = 0, -- Solid Stroke
+                                        TextSize = 10,
+                                        TextStrokeTransparency = 0, -- Shadow effect
                                         TextStrokeColor3 = Color3.new(0,0,0),
                                         ZIndex = 3,
                                     }),
 
-                                    -- Rate (Kanan Atas) + Stroke
+                                    -- Rate (Kanan Atas) + Text Shadow (Stroke)
                                     New("TextLabel", {
                                         Text = CardRate,
                                         Size = UDim2.new(0.5, -4, 0, 12),
                                         Position = UDim2.new(1, -4, 0, 2),
                                         AnchorPoint = Vector2.new(1, 0),
                                         BackgroundTransparency = 1,
-                                        TextXAlignment = Enum.TextXAlignment.Right,
+                                        TextXAlignment = Enum.TextXAlignment.Right, 
                                         TextColor3 = Color3.new(1, 1, 1),
                                         FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 9,
-                                        TextStrokeTransparency = 0, -- Solid Stroke
+                                        TextSize = 10,
+                                        TextStrokeTransparency = 0, -- Shadow effect
                                         TextStrokeColor3 = Color3.new(0,0,0),
                                         ZIndex = 3,
                                     }),
 
-                                    -- [FIX] Judul Background: Mengikuti bentuk kartu (Squircle bawah)
+                                    -- [UPDATED] Title Bar (Menyatu dengan Card - Squircle)
                                     New("Frame", {
                                         Size = UDim2.new(1, 0, 0, 20),
                                         Position = UDim2.new(0, 0, 1, 0),
@@ -494,27 +499,25 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         BorderSizePixel = 0,
                                         ZIndex = 4,
                                     }, {
-                                        -- Teknik Patching agar hanya sudut bawah yang rounded
-                                        New("UICorner", { CornerRadius = UDim.new(0, 8) }), -- Rounded semua sudut
-                                        New("Frame", { -- Penutup sudut atas agar rata
+                                        -- Menggunakan UICorner agar sudut bawah melengkung
+                                        New("UICorner", { CornerRadius = UDim.new(0, 8) }),
+                                        -- Frame Penutup untuk membuat bagian atas Title Bar tetap rata (agar menyatu dengan gambar di atasnya)
+                                        New("Frame", {
                                             Size = UDim2.new(1, 0, 0.5, 0),
                                             BackgroundColor3 = Color3.new(0, 0, 0),
-                                            BackgroundTransparency = 0, -- Harus sama dengan parent transparency jika parent transparan (tp disini 0.4 agak tricky, lebih baik transparan 1 dan parent container handle color, tapi cara paling mudah adalah frame ini 0 transparency tapi warnanya sama)
-                                            -- Karena parent transparan (0.4), frame penutup ini akan terlihat double layer.
-                                            -- Solusi: Gunakan CanvasGroup untuk container title atau biarkan saja rounded semua karena card 60px sangat kecil, rounded semua (pill shape) juga bagus.
-                                            -- Tapi, sesuai request "ngikut layout":
+                                            BackgroundTransparency = 0, -- Match parent logically, but visual hack
                                             BorderSizePixel = 0,
-                                            Visible = false -- Visible false karena di ukuran 60px, rounded penuh di title bar (pill style) seringkali terlihat lebih rapi/menyatu daripada patch. Tapi jika ingin siku, aktifkan visible.
+                                            Visible = false, -- Optional: Set true if you want perfectly sharp top corners for title bar
                                         }),
                                         New("TextLabel", {
                                             Text = CardTitle,
-                                            Size = UDim2.new(1, -4, 1, 0), -- Padding dikit
-                                            Position = UDim2.new(0, 2, 0, 0),
+                                            Size = UDim2.new(1, 0, 1, 0), 
+                                            Position = UDim2.new(0, 0, 0, 0),
                                             BackgroundTransparency = 1,
-                                            TextXAlignment = Enum.TextXAlignment.Center,
+                                            TextXAlignment = Enum.TextXAlignment.Center, 
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 9,
+                                            TextSize = 9, 
                                             TextWrapped = true,
                                             TextTruncate = "AtEnd",
                                         }),
