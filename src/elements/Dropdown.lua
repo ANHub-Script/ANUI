@@ -80,14 +80,69 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.Size = UDim2.new(0,Dropdown.Width,0,36)
         Dropdown.UIElements.Dropdown.Position = UDim2.new(1,0,Config.Window.NewElements and 0 or 0.5,0)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
-        
-        -- New("UIScale", {
-        --     Parent = Dropdown.UIElements.Dropdown,
-        --     Scale = .85,
-        -- })
-        
-        
-        
+    end
+    
+    -- [FIX LOGIC] Fungsi untuk mengubah gambar pada kotak Value (Sebelah Kanan)
+    -- Diganti menjadi SetValueImage untuk menghindari konflik dengan SetImage milik Element utama
+    function Dropdown:SetValueImage(image)
+        -- Cek apakah kotak Value ada (untuk dropdown yang memiliki Callback)
+        if Dropdown.UIElements.Dropdown then
+             local Container = Dropdown.UIElements.Dropdown.Frame.Frame -- Container dalam Label
+             
+             -- Cari elemen TextLabel dan Icon
+             local TextLabel = Container:FindFirstChild("TextLabel")
+             local DynamicIcon = Container:FindFirstChild("DynamicValueIcon")
+             
+             if image and image ~= "" then
+                 -- Jika Icon belum ada, buat baru
+                 if not DynamicIcon then
+                     DynamicIcon = New("ImageLabel", {
+                         Name = "DynamicValueIcon",
+                         Size = UDim2.new(0, 21, 0, 21),
+                         BackgroundTransparency = 1,
+                         ThemeTag = {
+                             ImageColor3 = "Icon",
+                         },
+                         LayoutOrder = -1, -- [PENTING] Memaksa icon di urutan paling kiri
+                         Parent = Container
+                     })
+                 end
+                 
+                 -- Update Gambar Icon
+                 local ic = Creator.Icon(image)
+                 if ic then
+                     DynamicIcon.Image = ic[1]
+                     DynamicIcon.ImageRectSize = ic[2].ImageRectSize
+                     DynamicIcon.ImageRectOffset = ic[2].ImageRectPosition
+                 else
+                     DynamicIcon.Image = image
+                     DynamicIcon.ImageRectSize = Vector2.new(0,0)
+                     DynamicIcon.ImageRectOffset = Vector2.new(0,0)
+                 end
+                 
+                 DynamicIcon.Visible = true
+                 
+                 -- [PENTING] Ubah ukuran teks agar tidak menimpa/terdorong
+                 if TextLabel then
+                     TextLabel.Size = UDim2.new(1, -29, 1, 0)
+                 end
+             else
+                 -- Jika image kosong/nil, sembunyikan icon
+                 if DynamicIcon then
+                     DynamicIcon.Visible = false
+                 end
+                 
+                 -- Kembalikan ukuran teks ke penuh
+                 if TextLabel then
+                     TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                 end
+             end
+        end
+    end
+    
+    -- Mapping untuk kemudahan, tapi disarankan pakai SetValueImage
+    function Dropdown:SetValueIcon(image)
+        Dropdown:SetValueImage(image)
     end
     
     Dropdown.DropdownMenu = CreateDropdown(Config, Dropdown, Element, CanCallback, "Dropdown")
