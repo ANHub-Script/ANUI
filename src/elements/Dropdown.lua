@@ -82,11 +82,26 @@ function Element:New(Config)
         Dropdown.UIElements.Dropdown.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     end
     
-    -- 1. [FITUR BARU] SetMainImage: Mengubah gambar utama elemen (yang di kiri / "AN" Image)
-    -- Ini mengakses fungsi SetImage milik wrapper Element utama
+    -- 1. [FIX POSISI GAMBAR UTAMA]
     function Dropdown:SetMainImage(image)
         if Dropdown.DropdownFrame and Dropdown.DropdownFrame.SetImage then
+            -- Panggil fungsi bawaan Element
             Dropdown.DropdownFrame:SetImage(image)
+
+            -- FIX: Secara default SetImage menaruh gambar di urutan terakhir (kanan).
+            -- Kita cari gambar tersebut dan set LayoutOrder = -1 agar pindah ke kiri.
+            local Container = Dropdown.DropdownFrame.UIElements.Container
+            local OuterTitleFrame = Container and Container:FindFirstChild("TitleFrame")
+            
+            if OuterTitleFrame then
+                for _, child in ipairs(OuterTitleFrame:GetChildren()) do
+                    -- Di Element.lua, container text bernama "TitleFrame". 
+                    -- Jadi frame apapun yang BUKAN "TitleFrame" (dan bukan Layout) adalah Icon-nya.
+                    if child:IsA("Frame") and child.Name ~= "TitleFrame" then
+                        child.LayoutOrder = -1
+                    end
+                end
+            end
         end
     end
 
@@ -139,7 +154,6 @@ function Element:New(Config)
         end
     end
     
-    -- Mapping fungsi lama untuk kompatibilitas
     function Dropdown:SetValueIcon(image)
         Dropdown:SetValueImage(image)
     end
@@ -152,18 +166,28 @@ function Element:New(Config)
     Dropdown.Open = Dropdown.DropdownMenu.Open
     Dropdown.Close = Dropdown.DropdownMenu.Close
     
-    -- [MODIFIKASI] UpdatePosition untuk memaksa menu ke ATAS
-    local OriginalUpdatePosition = UpdatePosition -- Menyimpan referensi fungsi lokal jika ada di scope CreateDropdown (biasanya tidak terakses langsung, jadi kita override logikanya di sini jika memungkinkan, atau memodifikasi file komponen Dropdown). 
-    -- Karena logic UpdatePosition ada di file `src/components/ui/Dropdown.lua`, dan file ini (`src/elements/Dropdown.lua`) hanya wrapper, kita perlu memastikan logic posisi dihandle.
-    -- TAPI, di ANUI struktur file, logic posisi biasanya ada di `CreateDropdown` (components/ui/Dropdown).
+    local OriginalOpen = Dropdown.Open
     
-    -- NAMUN, ANUI menggunakan AddSignal di dalam `components/ui/Dropdown.lua`. 
-    -- Kita tidak bisa dengan mudah meng-override fungsi lokal di file lain tanpa mengedit file `components/ui/Dropdown.lua`.
-    -- TAPI, untungnya `Dropdown.DropdownMenu` adalah tabel yang dikembalikan.
-    -- Mari kita lihat `src/components/ui/Dropdown.lua` yang Anda berikan sebelumnya. Di sana ada fungsi `UpdatePosition` lokal.
-    
-    -- **PENTING**: Karena Anda meminta perubahan logika tampilan (ke atas), idealnya kita ubah di `components/ui/Dropdown.lua`. 
-    -- Tapi karena saya hanya mengedit file `src/elements/Dropdown.lua` sekarang, saya akan mencoba meng-override logic tersebut melalui Signal baru yang menimpa posisi.
+    -- Fungsi bantuan untuk memaksa posisi menu ke ATAS
+    local function ForceUpwardsPosition()
+        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
+        local menu = Dropdown.UIElements.MenuCanvas
+        
+        -- Hitung posisi Y agar berada tepat DI ATAS tombol
+        local UpY = button.AbsolutePosition.Y - menu.AbsoluteSize.Y - 5 -- 5px padding
+        
+        menu.Position = UDim2.new(
+            0, 
+            button.AbsolutePosition.X + button.AbsoluteSize.X, 
+            0, 
+            UpY
+        )
+    end
+
+    -- Bind ke perubahan size untuk menjaga posisi tetap di atas
+    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsoluteSize"), function()
+        if Dropdown.Opened then ForceUpwardsPosition() end
+    end)
 
     local DropdownIcon = New("ImageLabel", {
         Image = Creator.Icon("chevrons-up-down")[1],
@@ -198,73 +222,17 @@ function Element:New(Config)
         Dropdown:Lock()
     end
     
-    -- 3. [FITUR BARU] Toggle Logic (Open/Close)
-    local ClickableArea = (Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.MouseButton1Click or Dropdown.DropdownFrame.UIElements.Main.MouseButton1Click)
-    
-    -- Kita perlu menghapus koneksi lama yang dibuat di `components/ui/Dropdown.lua` jika memungkinkan, atau menimpanya.
-    -- Karena kita tidak bisa menghapus koneksi lokal di file lain dengan mudah, kita akan menggunakan trik:
-    -- Kita akan membiarkan koneksi lama, tapi kita akan memodifikasi fungsi `Open` di Dropdown object agar bertindak sebagai Toggle jika sudah terbuka.
-    
-    local OriginalOpen = Dropdown.Open
-    local OriginalClose = Dropdown.Close
-    
-    -- Override fungsi Open agar menjadi Toggle Logic
-    -- Catatan: Ini agak hacky. Cara terbaik sebenarnya adalah mengedit `components/ui/Dropdown.lua`.
-    -- TAPI, di sini kita akan menggunakan logic di wrapper ini.
-    
-    -- Mari kita buat fungsi ForceUpdatePosition untuk memaksa ke atas
-    local function ForceUpwardsPosition()
-        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
-        local menu = Dropdown.UIElements.MenuCanvas
-        
-        -- Hitung posisi Y agar berada DI ATAS tombol
-        -- Posisi Y = Tombol Y - Tinggi Menu - Padding
-        local UpY = button.AbsolutePosition.Y - menu.AbsoluteSize.Y - 5 -- 5 pixel padding
-        
-        menu.Position = UDim2.new(
-            0, 
-            button.AbsolutePosition.X + button.AbsoluteSize.X, -- Anchor Point (1,0) jadi X sejajar kanan
-            0, 
-            UpY
-        )
-    end
-
-    -- Kita bind fungsi posisi ke atas ini ke perubahan size/posisi
-    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsoluteSize"), function()
-        if Dropdown.Opened then ForceUpwardsPosition() end
-    end)
-    Creator.AddSignal(Dropdown.UIElements.MenuCanvas:GetPropertyChangedSignal("AbsolutePosition"), function()
-         -- Kita biarkan default jalan dulu, lalu kita timpa frame berikutnya jika perlu, 
-         -- tapi karena render stepped mungkin flicker, lebih baik kita hook ke fungsi Open.
-    end)
-    
-    -- Override Open untuk memaksa posisi ke atas setelah dibuka
-    Dropdown.Open = function()
-        OriginalOpen()
-        -- Paksa posisi ke atas setelah frame dirender
-        task.spawn(function()
-            RunService.RenderStepped:Wait()
-            ForceUpwardsPosition()
-        end)
-    end
-
-    -- [PERBAIKAN TOGGLE]
-    -- Masalahnya: `components/ui/Dropdown.lua` sudah memiliki event `MouseButton1Click` yang memanggil `Open()`.
-    -- Kita tidak bisa mendisconnectnya dari sini karena variabel signalnya lokal di sana.
-    -- SOLUSI: Kita akan memanipulasi `CanCallback` atau status `Opened`? Tidak.
-    -- Solusi terbaik tanpa mengedit file lain adalah mengubah fungsi `Dropdown.Open` itu sendiri.
-    
-    -- Kita ubah fungsi Dropdown.Open menjadi fungsi Toggle cerdas
+    -- 3. [LOGIC TOGGLE (Buka/Tutup) & POSISI ATAS]
     Dropdown.Open = function()
         if Dropdown.Opened then
-            -- Jika sudah terbuka, kita tutup (Toggle behavior)
+            -- Jika sudah terbuka, tutup (Toggle)
             Dropdown.Close()
         else
-            -- Jika tertutup, kita buka (dan paksa ke atas)
+            -- Jika tertutup, buka
             OriginalOpen()
+            -- Paksa posisi ke atas setelah frame dirender
             task.spawn(function()
-                -- Tunggu sebentar agar size terupdate layoutnya
-                RunService.RenderStepped:Wait() 
+                game:GetService("RunService").RenderStepped:Wait()
                 ForceUpwardsPosition()
             end)
         end
