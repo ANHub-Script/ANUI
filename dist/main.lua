@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.156  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.157  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.156",
+    "version": "1.0.157",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7769,14 +7769,30 @@ end
 function ao.SetMainImage(aq,ar,as)
 
 local at=ao.DropdownFrame.UIElements.Container:FindFirstChild"TitleFrame"
-local au=at and at:FindFirstChild"TitleFrame"
 
-if at then
+if not at then return end
+
+
+
+local au=at:FindFirstChild"CustomMainIcon"
+if au then
+au:Destroy()
+end
+
+
 for av,aw in ipairs(at:GetChildren())do
-if aw:IsA"Frame"and aw.Name~="TitleFrame"and aw.Name~="UIListLayout"then
+if aw:IsA"Frame"and aw.Name~="TitleFrame"and aw.Name~="UIListLayout"and aw.Name~="CustomMainIcon"then
 aw:Destroy()
 end
 end
+
+
+if not ar then
+local av=at:FindFirstChild"TitleFrame"
+if av then
+av.Size=UDim2.new(1,0,1,0)
+end
+return
 end
 
 
@@ -7786,31 +7802,34 @@ av=UDim2.new(0,av,0,av)
 end
 
 
+local aw
+
+
 if typeof(ar)=="table"then
-local aw=ar
-local ax=aw.Image or""
-local ay=aw.Gradient
-local az=aw.Quantity
+local ax=ar
+local ay=ax.Image or""
+local az=ax.Gradient
+local aA=ax.Quantity
 
 
-local aA
-if typeof(ay)=="ColorSequence"then
-aA=ay
-elseif typeof(ay)=="Color3"then
-aA=ColorSequence.new(ay)
+local aB
+if typeof(az)=="ColorSequence"then
+aB=az
+elseif typeof(az)=="Color3"then
+aB=ColorSequence.new(az)
 else
-aA=ColorSequence.new(Color3.fromRGB(80,80,80))
+aB=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
+local d=aB.Keypoints[1].Value
+local e=2
 
-local aB=aA.Keypoints[1].Value
-local d=2
 
-
-ae.NewRoundFrame(8,"Squircle",{
+aw=ae.NewRoundFrame(8,"Squircle",{
+Name="CustomMainIcon",
 Size=av,
 Parent=at,
-ImageColor3=aB,
+ImageColor3=d,
 ClipsDescendants=true,
 LayoutOrder=-1,
 AnchorPoint=Vector2.new(0,0.5),
@@ -7829,7 +7848,7 @@ ZIndex=2,
 }),
 
 ae.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-d*2,1,-d*2),
+Size=UDim2.new(1,-e*2,1,-e*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.new(1,1,1),
@@ -7838,12 +7857,12 @@ ZIndex=3,
 },{
 
 af("UIGradient",{
-Color=aA,
+Color=aB,
 Rotation=45,
 }),
 
 af("ImageLabel",{
-Image=ax,
+Image=ay,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
@@ -7852,8 +7871,8 @@ ScaleType="Fit",
 ZIndex=4,
 }),
 
-az and af("TextLabel",{
-Text=az,
+aA and af("TextLabel",{
+Text=aA,
 Size=UDim2.new(1,-4,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
@@ -7868,35 +7887,29 @@ ZIndex=5,
 })
 
 
-if au then
-au.Size=UDim2.new(1,-av.X.Offset,1,0)
-end
-
-
-elseif ar then
-
-if ao.DropdownFrame.SetImage then
-ao.DropdownFrame:SetImage(ar,av.X.Offset)
-end
-
-
-for aw,ax in ipairs(at:GetChildren())do
-if ax:IsA"Frame"and ax.Name~="TitleFrame"and ax.Name~="UIListLayout"then
-ax.LayoutOrder=-1
-ax.AnchorPoint=Vector2.new(0,0.5)
-ax.Position=UDim2.new(0,0,0.5,0)
-end
-end
-
-
-if au then
-au.Size=UDim2.new(1,-av.X.Offset,1,0)
-end
 else
+aw=ae.Image(
+ar,
+ao.Title,
+an.Window.NewElements and 12 or 6,
+an.Window.Folder,
+"DropdownIcon",
+false
+)
 
-if au then
-au.Size=UDim2.new(1,0,1,0)
+aw.Name="CustomMainIcon"
+aw.Parent=at
+aw.Size=av
+aw.LayoutOrder=-1
+aw.AnchorPoint=Vector2.new(0,0.5)
+aw.Position=UDim2.new(0,0,0.5,0)
+aw.BackgroundTransparency=1
 end
+
+
+local ax=at:FindFirstChild"TitleFrame"
+if ax then
+ax.Size=UDim2.new(1,-av.X.Offset,1,0)
 end
 end
 

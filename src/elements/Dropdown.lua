@@ -84,27 +84,46 @@ function Element:New(Config)
     
     -- 1. [FIXED] SetMainImage (Gambar Kiri "AN")
     -- Memastikan gambar tetap di kiri dengan LayoutOrder negatif
-    -- [UPDATE] SetMainImage: Mendukung Card Style (Gradient, Quantity, dll)
+    -- [FIXED] SetMainImage: Mencegah Duplikasi (Update Gambar)
     function Dropdown:SetMainImage(image, size)
-        -- Hapus gambar lama jika ada (baik itu ImageFrame biasa atau Custom Card)
+        -- 1. Ambil Container Utama
         local TitleFrameOuter = Dropdown.DropdownFrame.UIElements.Container:FindFirstChild("TitleFrame")
-        local InnerTitleFrame = TitleFrameOuter and TitleFrameOuter:FindFirstChild("TitleFrame")
         
-        if TitleFrameOuter then
-            for _, child in ipairs(TitleFrameOuter:GetChildren()) do
-                if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
-                    child:Destroy()
-                end
+        if not TitleFrameOuter then return end -- Safety check
+
+        -- 2. [LOGIKA PEMBERSIHAN] Hapus gambar lama sebelum membuat yang baru
+        -- Kita cari object dengan nama "CustomMainIcon"
+        local OldIcon = TitleFrameOuter:FindFirstChild("CustomMainIcon")
+        if OldIcon then
+            OldIcon:Destroy()
+        end
+
+        -- Pembersihan cadangan: Hapus frame lain yang bukan bagian dari struktur teks
+        for _, child in ipairs(TitleFrameOuter:GetChildren()) do
+            if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" and child.Name ~= "CustomMainIcon" then
+                child:Destroy()
             end
         end
 
-        -- Definisikan Ukuran
+        -- Jika parameter image nil/kosong, kita reset layout teks dan berhenti disini
+        if not image then
+            local InnerTitleFrame = TitleFrameOuter:FindFirstChild("TitleFrame")
+            if InnerTitleFrame then
+                InnerTitleFrame.Size = UDim2.new(1, 0, 1, 0)
+            end
+            return
+        end
+
+        -- 3. Setup Ukuran
         local ImageSize = size or Dropdown.ImageSize or 30
         if typeof(ImageSize) == "number" then
             ImageSize = UDim2.new(0, ImageSize, 0, ImageSize)
         end
 
-        -- [LOGIKA 1] Jika Input adalah TABEL (Card Style dengan Gradient)
+        -- 4. Buat Frame Icon Baru
+        local NewIconFrame
+
+        -- [STYLE 1] Jika Input adalah TABEL (Card Style dengan Gradient/Quantity)
         if typeof(image) == "table" then
             local CardData = image
             local CardImage = CardData.Image or ""
@@ -121,17 +140,17 @@ function Element:New(Config)
                 GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
             end
             
-            -- Warna Border (ambil dari keypoint pertama gradient)
             local BorderColor = GradientColor.Keypoints[1].Value
             local borderThickness = 2
 
-            -- Membuat Frame Card (Meniru style src/components/ui/Dropdown.lua)
-            local Card = Creator.NewRoundFrame(8, "Squircle", {
+            -- Buat Frame Card
+            NewIconFrame = Creator.NewRoundFrame(8, "Squircle", {
+                Name = "CustomMainIcon", -- PENTING: Nama ini dipakai untuk deteksi penghapusan
                 Size = ImageSize,
                 Parent = TitleFrameOuter,
                 ImageColor3 = BorderColor,
                 ClipsDescendants = true,
-                LayoutOrder = -1, -- Pastikan di kiri
+                LayoutOrder = -1, 
                 AnchorPoint = Vector2.new(0, 0.5),
                 Position = UDim2.new(0, 0, 0.5, 0),
             }, {
@@ -155,7 +174,7 @@ function Element:New(Config)
                     ClipsDescendants = true,
                     ZIndex = 3,
                 }, {
-                    -- Gradient
+                    -- Gradient Background
                     New("UIGradient", {
                         Color = GradientColor,
                         Rotation = 45,
@@ -170,7 +189,7 @@ function Element:New(Config)
                         ScaleType = "Fit",
                         ZIndex = 4,
                     }),
-                    -- Quantity Text (Opsional)
+                    -- Teks Quantity (Pojok Kiri Atas)
                     CardQuantity and New("TextLabel", {
                         Text = CardQuantity,
                         Size = UDim2.new(1, -4, 0, 12),
@@ -186,36 +205,30 @@ function Element:New(Config)
                 })
             })
 
-            -- Update ukuran text container agar tidak menimpa gambar
-            if InnerTitleFrame then
-                InnerTitleFrame.Size = UDim2.new(1, -ImageSize.X.Offset, 1, 0)
-            end
-
-        -- [LOGIKA 2] Jika Input adalah STRING/ID BIASA (Normal Image)
-        elseif image then
-            -- Panggil logika standar via Element Wrapper jika tersedia
-            if Dropdown.DropdownFrame.SetImage then
-                Dropdown.DropdownFrame:SetImage(image, ImageSize.X.Offset)
-            end
-            
-            -- Fix posisi layout untuk gambar biasa
-            for _, child in ipairs(TitleFrameOuter:GetChildren()) do
-                if child:IsA("Frame") and child.Name ~= "TitleFrame" and child.Name ~= "UIListLayout" then
-                    child.LayoutOrder = -1
-                    child.AnchorPoint = Vector2.new(0, 0.5)
-                    child.Position = UDim2.new(0, 0, 0.5, 0)
-                end
-            end
-            
-            -- Update ukuran text container
-            if InnerTitleFrame then
-                InnerTitleFrame.Size = UDim2.new(1, -ImageSize.X.Offset, 1, 0)
-            end
+        -- [STYLE 2] Jika Input adalah ID Gambar Biasa
         else
-            -- Jika nil/kosong, reset ukuran text container
-            if InnerTitleFrame then
-                InnerTitleFrame.Size = UDim2.new(1, 0, 1, 0)
-            end
+            NewIconFrame = Creator.Image(
+                image, 
+                Dropdown.Title, 
+                Config.Window.NewElements and 12 or 6, 
+                Config.Window.Folder, 
+                "DropdownIcon", 
+                false
+            )
+            -- Set properti manual agar konsisten
+            NewIconFrame.Name = "CustomMainIcon" -- PENTING
+            NewIconFrame.Parent = TitleFrameOuter
+            NewIconFrame.Size = ImageSize
+            NewIconFrame.LayoutOrder = -1
+            NewIconFrame.AnchorPoint = Vector2.new(0, 0.5)
+            NewIconFrame.Position = UDim2.new(0, 0, 0.5, 0)
+            NewIconFrame.BackgroundTransparency = 1
+        end
+        
+        -- 5. Update Ukuran Teks (Geser teks agar tidak menimpa gambar)
+        local InnerTitleFrame = TitleFrameOuter:FindFirstChild("TitleFrame")
+        if InnerTitleFrame then
+            InnerTitleFrame.Size = UDim2.new(1, -ImageSize.X.Offset, 1, 0)
         end
     end
 
