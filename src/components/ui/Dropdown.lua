@@ -403,41 +403,55 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 80, 0, 80)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
+                                local CardRate = imageData.Rate or ""
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
                                 
-                                local GradientColor
+                                local BorderColor = Color3.fromRGB(60, 60, 60)
                                 if typeof(CardGradient) == "ColorSequence" then
-                                    GradientColor = CardGradient
+                                    BorderColor = CardGradient.Keypoints[1].Value
                                 elseif typeof(CardGradient) == "Color3" then
-                                    GradientColor = ColorSequence.new(CardGradient)
-                                else
-                                    GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
+                                    BorderColor = CardGradient
                                 end
                                 
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
                                     Size = CardSize,
                                     Parent = imagesContainer,
-                                    ImageColor3 = Color3.new(1, 1, 1),
+                                    ImageColor3 = Color3.fromRGB(40, 40, 40),
                                     ClipsDescendants = true,
                                 }, {
-                                    New("UIGradient", {
-                                        Color = GradientColor,
-                                        Rotation = 45,
+                                    New("UIStroke", {
+                                        Color = BorderColor,
+                                        Thickness = 2.5,
+                                        Transparency = 0,
+                                        ApplyStrokeMode = "Border",
                                     }),
                                     New("ImageLabel", {
                                         Image = CardImage,
-                                        Size = UDim2.new(0.65, 0, 0.65, 0),
+                                        Size = UDim2.new(0.55, 0, 0.55, 0),
                                         AnchorPoint = Vector2.new(0.5, 0.5),
-                                        Position = UDim2.new(0.5, 0, 0.45, 0),
+                                        Position = UDim2.new(0.5, 0, 0.5, 0),
                                         BackgroundTransparency = 1,
                                         ScaleType = "Fit",
                                         ZIndex = 2,
                                     }),
                                     New("TextLabel", {
                                         Text = CardQuantity,
-                                        Size = UDim2.new(1, -8, 0, 20),
-                                        Position = UDim2.new(0, 4, 0, 2),
+                                        Size = UDim2.new(0.5, -4, 0, 20),
+                                        Position = UDim2.new(0, 6, 0, 4),
+                                        BackgroundTransparency = 1,
+                                        TextXAlignment = "Left",
+                                        TextColor3 = Color3.new(1, 1, 1),
+                                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                        TextSize = 14,
+                                        TextStrokeTransparency = 0.5,
+                                        ZIndex = 3,
+                                    }),
+                                    New("TextLabel", {
+                                        Text = CardRate,
+                                        Size = UDim2.new(0.5, -4, 0, 20),
+                                        Position = UDim2.new(1, -6, 0, 4),
+                                        AnchorPoint = Vector2.new(1, 0),
                                         BackgroundTransparency = 1,
                                         TextXAlignment = "Right",
                                         TextColor3 = Color3.new(1, 1, 1),
@@ -446,37 +460,20 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         TextStrokeTransparency = 0.5,
                                         ZIndex = 3,
                                     }),
-                                    New("Frame", {
-                                        Size = UDim2.new(1, 0, 0, 22),
-                                        Position = UDim2.new(0, 0, 1, 0),
-                                        AnchorPoint = Vector2.new(0, 1),
-                                        BackgroundColor3 = Color3.new(0, 0, 0),
-                                        BackgroundTransparency = 0.4,
-                                        BorderSizePixel = 0,
-                                        ZIndex = 4,
-                                    }, {
-                                        New("TextLabel", {
-                                            Text = CardTitle,
-                                            Size = UDim2.new(1, -20, 1, 0),
-                                            Position = UDim2.new(0, 6, 0, 0),
-                                            BackgroundTransparency = 1,
-                                            TextXAlignment = "Left",
-                                            TextColor3 = Color3.new(1, 1, 1),
-                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 11,
-                                            TextTruncate = "AtEnd",
-                                        }),
-                                        New("ImageLabel", {
-                                            Image = Creator.Icon("star")[1],
-                                            ImageRectOffset = Creator.Icon("star")[2].ImageRectPosition,
-                                            ImageRectSize = Creator.Icon("star")[2].ImageRectSize,
-                                            Size = UDim2.new(0, 12, 0, 12),
-                                            AnchorPoint = Vector2.new(1, 0.5),
-                                            Position = UDim2.new(1, -4, 0.5, 0),
-                                            BackgroundTransparency = 1,
-                                            ImageColor3 = Color3.fromRGB(255, 255, 255),
-                                        })
-                                    })
+                                    New("TextLabel", {
+                                        Text = CardTitle,
+                                        Size = UDim2.new(1, -8, 0, 20),
+                                        Position = UDim2.new(0.5, 0, 1, -4),
+                                        AnchorPoint = Vector2.new(0.5, 1),
+                                        BackgroundTransparency = 1,
+                                        TextXAlignment = "Center",
+                                        TextColor3 = Color3.new(1, 1, 1),
+                                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                        TextSize = 12,
+                                        TextStrokeTransparency = 0,
+                                        TextStrokeColor3 = Color3.new(0,0,0),
+                                        ZIndex = 3,
+                                    }),
                                 })
                             else
                                 local imageId

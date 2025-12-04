@@ -1176,44 +1176,36 @@ do
 				Images = {
 					{
 						Card = true,
-						Title = "World Box",
-						Quantity = "244x",
-						Image = "package",
-						Gradient = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromHex("#C042FF")),
-							ColorSequenceKeypoint.new(1, Color3.fromHex("#8E24AA"))
-						}
+						Title = "Clan Scroll",
+						Quantity = "x5",
+						Rate = "10%",
+						Image = "rbxassetid://84366761557806",
+						Gradient = Color3.fromRGB(100, 100, 100)
 					},
 					{
 						Card = true,
-						Title = "Golden Ticket",
-						Quantity = "72x",
-						Image = "ticket",
-						Gradient = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromHex("#FFD700")),
-							ColorSequenceKeypoint.new(1, Color3.fromHex("#FFA000"))
-						}
+						Title = "Doume",
+						Quantity = "x1",
+						Rate = "15%",
+						Image = "rbxassetid://84366761557806",
+						Gradient = Color3.fromRGB(255, 215, 0) -- Yellow Border
 					},
 					{
 						Card = true,
-						Title = "Zone Key",
-						Quantity = "3x",
-						Image = "key",
-						Gradient = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromHex("#29B6F6")),
-							ColorSequenceKeypoint.new(1, Color3.fromHex("#0288D1"))
-						}
+						Title = "Coins",
+						Quantity = "x1-125k",
+						Rate = "100%",
+						Image = "rbxassetid://84366761557806",
+						Gradient = Color3.fromRGB(100, 100, 100)
 					},
 					{
 						Card = true,
-						Title = "Lost Amulet",
-						Quantity = "675x",
-						Image = "gem",
-						Gradient = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromHex("#29B6F6")),
-							ColorSequenceKeypoint.new(1, Color3.fromHex("#0288D1"))
-						}
-					},
+						Title = "Player Exp",
+						Quantity = "x17",
+						Rate = "100%",
+						Image = "rbxassetid://84366761557806",
+						Gradient = Color3.fromRGB(100, 100, 100)
+					}
 				}
 			}
 		},
