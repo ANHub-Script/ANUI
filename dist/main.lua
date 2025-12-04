@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.140  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.141  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.140",
+    "version": "1.0.141",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6889,8 +6889,10 @@ if not an.Callback then
 aq="Menu"
 end
 
+
+
 an.UIElements.UIListLayout=ak("UIListLayout",{
-Padding=UDim.new(0,ao.MenuPadding/1.5),
+Padding=UDim.new(0,ao.MenuPadding/4),
 FillDirection="Vertical",
 HorizontalAlignment="Center",
 })
@@ -7278,7 +7280,7 @@ d=true
 end
 
 if d then
-local e=aB.Size or an.ImageSize or UDim2.new(0,60,0,60)
+local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
 local h=aB.Rate or""
@@ -7294,6 +7296,7 @@ else
 m=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
+
 local p
 if typeof(l)=="ColorSequence"and l.Keypoints[1]then
 p=l.Keypoints[1].Value
@@ -7303,20 +7306,39 @@ else
 p=Color3.fromRGB(80,80,80)
 end
 
+
+local r=0
+
+
+
+
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
-ImageColor3=Color3.new(1,1,1),
+ImageColor3=p,
 ClipsDescendants=true,
 },{
 
-ak("UIStroke",{
-Thickness=2,
-Color=p,
-ApplyStrokeMode=Enum.ApplyStrokeMode.Border,
-Transparency=0,
+ak("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+ZIndex=2,
 }),
 
+
+aj.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-r*2,1,-r*2),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+ZIndex=3,
+},{
 
 ak("UIGradient",{
 Color=m,
@@ -7331,7 +7353,7 @@ AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.45,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
-ZIndex=2,
+ZIndex=4,
 }),
 
 
@@ -7346,7 +7368,7 @@ FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=10,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=3,
+ZIndex=5,
 }),
 
 
@@ -7362,7 +7384,7 @@ FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=10,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=3,
+ZIndex=5,
 }),
 
 
@@ -7370,11 +7392,12 @@ ak("Frame",{
 Size=UDim2.new(1,0,0,20),
 Position=UDim2.new(0,0,1,0),
 AnchorPoint=Vector2.new(0,1),
-BackgroundColor3=Color3.fromRGB(80,80,80),
-BackgroundTransparency=0.2,
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
 BorderSizePixel=0,
-ZIndex=4,
+ZIndex=6,
 },{
+
 ak("TextLabel",{
 Text=f,
 Size=UDim2.new(1,0,1,0),
@@ -7386,8 +7409,9 @@ FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
 TextSize=9,
 TextWrapped=true,
 TextTruncate="AtEnd",
-ZIndex=5,
+ZIndex=7,
 }),
+})
 })
 })
 else

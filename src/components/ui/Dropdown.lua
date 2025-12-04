@@ -21,8 +21,10 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
+    -- [UPDATE] Mengurangi jarak antar list (Padding) agar lebih rapat
+    -- Sebelumnya: Element.MenuPadding/1.5 -> Sekarang: Element.MenuPadding/4
     Dropdown.UIElements.UIListLayout = New("UIListLayout", {
-        Padding = UDim.new(0,Element.MenuPadding/1.5),
+        Padding = UDim.new(0, Element.MenuPadding/4), 
         FillDirection = "Vertical",
         HorizontalAlignment = "Center",
     })
@@ -410,7 +412,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             end
                             
                             if isCard then
-                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
+                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 80, 0, 80)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
                                 local CardRate = imageData.Rate or "" 
@@ -426,6 +428,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
                                 end
                                 
+                                -- Mengambil warna untuk border dari warna pertama di Gradient
                                 local BorderColor
                                 if typeof(CardGradient) == "ColorSequence" and CardGradient.Keypoints[1] then
                                     BorderColor = CardGradient.Keypoints[1].Value
@@ -435,91 +438,112 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     BorderColor = Color3.fromRGB(80, 80, 80)
                                 end
                                 
+                                -- [UPDATE] Menghapus Border (set ketebalan jadi 0)
+                                local borderThickness = 0 -- Ketebalan border
+
+                                -- [FIX STRUKTUR CARD] Menggunakan Layering untuk Border + Inner Shadow yang akurat
+                                
+                                -- 1. Layer Terluar: Base Border (Squircle Shape berwarna)
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
                                     Size = CardSize,
                                     Parent = imagesContainer,
-                                    ImageColor3 = Color3.new(1, 1, 1),
-                                    ClipsDescendants = true, -- [PENTING] Ini akan memotong Title Bar di bawah agar rounded
+                                    ImageColor3 = BorderColor, -- Warna Border diambil dari gradient
+                                    ClipsDescendants = true,
                                 }, {
-                                    -- Border menggunakan UIStroke
-                                    New("UIStroke", {
-                                        Thickness = 2,
-                                        Color = BorderColor, 
-                                        ApplyStrokeMode = Enum.ApplyStrokeMode.Border,
-                                        Transparency = 0,
-                                    }),
-                                    
-                                    -- Gradient Utama
-                                    New("UIGradient", {
-                                        Color = GradientColor,
-                                        Rotation = 45,
-                                    }),
-                                    
-                                    -- Gambar Item
+                                    -- 2. Layer Shadow: Gambar bayangan di dalam border
                                     New("ImageLabel", {
-                                        Image = CardImage,
-                                        Size = UDim2.new(0.65, 0, 0.65, 0),
-                                        AnchorPoint = Vector2.new(0.5, 0.5),
-                                        Position = UDim2.new(0.5, 0, 0.45, 0),
+                                        Image = "rbxassetid://5554236805", -- Asset shadow generik
+                                        ScaleType = Enum.ScaleType.Slice,
+                                        SliceCenter = Rect.new(23,23,277,277),
+                                        Size = UDim2.new(1,0,1,0),
                                         BackgroundTransparency = 1,
-                                        ScaleType = "Fit",
+                                        ImageColor3 = Color3.new(0,0,0),
+                                        ImageTransparency = 0.4, -- Tingkat kegelapan inner shadow
                                         ZIndex = 2,
                                     }),
-                                    
-                                    -- Quantity (Kiri Atas) + Outline Hitam
-                                    New("TextLabel", {
-                                        Text = CardQuantity,
-                                        Size = UDim2.new(0.5, 0, 0, 12),
-                                        Position = UDim2.new(0, 4, 0, 2),
-                                        BackgroundTransparency = 1,
-                                        TextXAlignment = Enum.TextXAlignment.Left,
-                                        TextColor3 = Color3.new(1, 1, 1),
-                                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 10,
-                                        TextStrokeTransparency = 0, 
-                                        TextStrokeColor3 = Color3.new(0,0,0),
-                                        ZIndex = 3,
-                                    }),
 
-                                    -- Rate (Kanan Atas) + Outline Hitam
-                                    New("TextLabel", {
-                                        Text = CardRate,
-                                        Size = UDim2.new(0.5, -4, 0, 12),
-                                        Position = UDim2.new(1, -4, 0, 2),
-                                        AnchorPoint = Vector2.new(1, 0),
-                                        BackgroundTransparency = 1,
-                                        TextXAlignment = Enum.TextXAlignment.Right, 
-                                        TextColor3 = Color3.new(1, 1, 1),
-                                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                        TextSize = 10,
-                                        TextStrokeTransparency = 0,
-                                        TextStrokeColor3 = Color3.new(0,0,0),
+                                    -- 3. Layer Konten Dalam: Container untuk isi kartu, ukurannya dikurangi ketebalan border
+                                    Creator.NewRoundFrame(8, "Squircle", {
+                                        Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2), -- Kurangi ukuran untuk membuat efek border
+                                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                                        AnchorPoint = Vector2.new(0.5, 0.5),
+                                        ImageColor3 = Color3.new(1,1,1), -- Base warna putih untuk gradient
+                                        ClipsDescendants = true, -- Penting agar title bar terpotong rapi mengikuti bentuk squircle
                                         ZIndex = 3,
-                                    }),
-
-                                    -- Title Bar (Menyatu dengan Card karena di-clip oleh parent Squircle)
-                                    New("Frame", {
-                                        Size = UDim2.new(1, 0, 0, 20),
-                                        Position = UDim2.new(0, 0, 1, 0),
-                                        AnchorPoint = Vector2.new(0, 1),
-                                        BackgroundColor3 = Color3.fromRGB(80, 80, 80), -- Abu-abu
-                                        BackgroundTransparency = 0.2, -- 80% opacity / 20% transparent
-                                        BorderSizePixel = 0,
-                                        ZIndex = 4,
                                     }, {
-                                        New("TextLabel", {
-                                            Text = CardTitle,
-                                            Size = UDim2.new(1, 0, 1, 0), 
-                                            Position = UDim2.new(0, 0, 0, 0),
+                                        -- Gradient Utama (Isi Kartu)
+                                        New("UIGradient", {
+                                            Color = GradientColor,
+                                            Rotation = 45,
+                                        }),
+                                        
+                                        -- Background Image Item
+                                        New("ImageLabel", {
+                                            Image = CardImage,
+                                            Size = UDim2.new(0.65, 0, 0.65, 0),
+                                            AnchorPoint = Vector2.new(0.5, 0.5),
+                                            Position = UDim2.new(0.5, 0, 0.45, 0),
                                             BackgroundTransparency = 1,
-                                            TextXAlignment = Enum.TextXAlignment.Center, 
+                                            ScaleType = "Fit",
+                                            ZIndex = 4,
+                                        }),
+                                        
+                                        -- Quantity (Kiri Atas) + Text Stroke Hitam
+                                        New("TextLabel", {
+                                            Text = CardQuantity,
+                                            Size = UDim2.new(0.5, 0, 0, 12),
+                                            Position = UDim2.new(0, 4, 0, 2),
+                                            BackgroundTransparency = 1,
+                                            TextXAlignment = Enum.TextXAlignment.Left,
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 9, 
-                                            TextWrapped = true,
-                                            TextTruncate = "AtEnd",
+                                            TextSize = 10,
+                                            TextStrokeTransparency = 0, 
+                                            TextStrokeColor3 = Color3.new(0,0,0),
                                             ZIndex = 5,
                                         }),
+
+                                        -- Rate (Kanan Atas) + Text Stroke Hitam
+                                        New("TextLabel", {
+                                            Text = CardRate,
+                                            Size = UDim2.new(0.5, -4, 0, 12),
+                                            Position = UDim2.new(1, -4, 0, 2),
+                                            AnchorPoint = Vector2.new(1, 0),
+                                            BackgroundTransparency = 1,
+                                            TextXAlignment = Enum.TextXAlignment.Right, 
+                                            TextColor3 = Color3.new(1, 1, 1),
+                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                            TextSize = 10,
+                                            TextStrokeTransparency = 0,
+                                            TextStrokeColor3 = Color3.new(0,0,0),
+                                            ZIndex = 5,
+                                        }),
+
+                                        -- [FIX] Title Bar Menyatu (Lebih rapi karena diclip oleh parent Squircle)
+                                        New("Frame", {
+                                            Size = UDim2.new(1, 0, 0, 20), -- Tinggi title bar
+                                            Position = UDim2.new(0, 0, 1, 0), -- Posisi di bawah
+                                            AnchorPoint = Vector2.new(0, 1),
+                                            BackgroundColor3 = Color3.new(0, 0, 0),
+                                            BackgroundTransparency = 0.4, -- Transparan hitam
+                                            BorderSizePixel = 0,
+                                            ZIndex = 6,
+                                        }, {
+                                            -- Text Title
+                                            New("TextLabel", {
+                                                Text = CardTitle,
+                                                Size = UDim2.new(1, 0, 1, 0), 
+                                                Position = UDim2.new(0, 0, 0, 0),
+                                                BackgroundTransparency = 1,
+                                                TextXAlignment = Enum.TextXAlignment.Center, 
+                                                TextColor3 = Color3.new(1, 1, 1),
+                                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                                TextSize = 9, 
+                                                TextWrapped = true,
+                                                TextTruncate = "AtEnd",
+                                                ZIndex = 7,
+                                            }),
+                                        })
                                     })
                                 })
                             else
