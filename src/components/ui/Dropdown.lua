@@ -410,7 +410,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             end
                             
                             if isCard then
-                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 55, 0, 55)
+                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
                                 local CardRate = imageData.Rate or "" 

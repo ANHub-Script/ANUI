@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.142  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.143  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.142",
+    "version": "1.0.143",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7278,7 +7278,7 @@ d=true
 end
 
 if d then
-local e=aB.Size or an.ImageSize or UDim2.new(0,55,0,55)
+local e=aB.Size or an.ImageSize or UDim2.new(0,60,0,60)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
 local h=aB.Rate or""
