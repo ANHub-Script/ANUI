@@ -369,10 +369,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
-                            New("Frame", {
+                            New("ScrollingFrame", {
                                 Size = UDim2.new(1,0,0,0),
                                 BackgroundTransparency = 1,
                                 AutomaticSize = "Y",
+                                AutomaticCanvasSize = "X",
+                                ScrollingDirection = "X",
+                                ScrollBarThickness = 2,
+                                CanvasSize = UDim2.new(0,0,0,0),
                                 Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
                                 LayoutOrder = 3,
                                 Name = "Images",
@@ -407,6 +411,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 local CardRate = imageData.Rate or ""
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
+                                local CardBackground = imageData.BackgroundColor or Color3.fromRGB(30, 30, 30)
                                 
                                 local BorderColor = Color3.fromRGB(60, 60, 60)
                                 if typeof(CardGradient) == "ColorSequence" then
@@ -431,7 +436,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         Size = UDim2.new(1, -4, 1, -4), -- Subtract border thickness (2px * 2)
                                         Position = UDim2.new(0.5, 0, 0.5, 0),
                                         AnchorPoint = Vector2.new(0.5, 0.5),
-                                        ImageColor3 = Color3.fromRGB(30, 30, 30),
+                                        ImageColor3 = CardBackground,
                                         ZIndex = 2,
                                         ClipsDescendants = true,
                                     }, {
@@ -447,7 +452,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         New("TextLabel", {
                                             Text = CardQuantity,
                                             Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(0, 6, 0, 4),
+                                            Position = UDim2.new(0, 6, 0, 2),
                                             BackgroundTransparency = 1,
                                             TextXAlignment = "Left",
                                             TextColor3 = Color3.new(1, 1, 1),
@@ -460,7 +465,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                         New("TextLabel", {
                                             Text = CardRate,
                                             Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(1, -6, 0, 4),
+                                            Position = UDim2.new(1, -6, 0, 2),
                                             AnchorPoint = Vector2.new(1, 0),
                                             BackgroundTransparency = 1,
                                             TextXAlignment = "Right",

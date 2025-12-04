@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.123  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.124  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.123",
+    "version": "1.0.124",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7237,10 +7237,14 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
-ak("Frame",{
+ak("ScrollingFrame",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
+AutomaticCanvasSize="X",
+ScrollingDirection="X",
+ScrollBarThickness=2,
+CanvasSize=UDim2.new(0,0,0,0),
 Visible=(ax.Images and#ax.Images>0)and true or false,
 LayoutOrder=3,
 Name="Images",
@@ -7275,23 +7279,24 @@ local g=aB.Quantity or""
 local h=aB.Rate or""
 local j=aB.Image or""
 local l=aB.Gradient
+local m=aB.BackgroundColor or Color3.fromRGB(30,30,30)
 
-local m=Color3.fromRGB(60,60,60)
+local p=Color3.fromRGB(60,60,60)
 if typeof(l)=="ColorSequence"then
-m=l.Keypoints[1].Value
+p=l.Keypoints[1].Value
 elseif typeof(l)=="Color3"then
-m=l
+p=l
 end
 
 
-local p=e.Y.Offset
-local r=math.clamp(math.floor(p*0.175),10,14)
-local u=math.clamp(math.floor(p*0.15),9,12)
+local r=e.Y.Offset
+local u=math.clamp(math.floor(r*0.175),10,14)
+local v=math.clamp(math.floor(r*0.15),9,12)
 
 aj.NewRoundFrame(8,"Squircle",{
 Size=e,
 Parent=az,
-ImageColor3=m,
+ImageColor3=p,
 ClipsDescendants=false,
 },{
 
@@ -7299,7 +7304,7 @@ aj.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,-4,1,-4),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.fromRGB(30,30,30),
+ImageColor3=m,
 ZIndex=2,
 ClipsDescendants=true,
 },{
@@ -7314,34 +7319,34 @@ ZIndex=3,
 }),
 ak("TextLabel",{
 Text=g,
-Size=UDim2.new(0.5,-4,0,r+6),
-Position=UDim2.new(0,6,0,4),
+Size=UDim2.new(0.5,-4,0,u+6),
+Position=UDim2.new(0,6,0,2),
 BackgroundTransparency=1,
 TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=r,
+TextSize=u,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=4,
 }),
 ak("TextLabel",{
 Text=h,
-Size=UDim2.new(0.5,-4,0,r+6),
-Position=UDim2.new(1,-6,0,4),
+Size=UDim2.new(0.5,-4,0,u+6),
+Position=UDim2.new(1,-6,0,2),
 AnchorPoint=Vector2.new(1,0),
 BackgroundTransparency=1,
 TextXAlignment="Right",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=r,
+TextSize=u,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=4,
 }),
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-8,0,(u*2)+8),
+Size=UDim2.new(1,-8,0,(v*2)+8),
 Position=UDim2.new(0.5,0,1,-4),
 AnchorPoint=Vector2.new(0.5,1),
 BackgroundTransparency=1,
@@ -7349,7 +7354,7 @@ TextXAlignment="Center",
 TextYAlignment="Bottom",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=u,
+TextSize=v,
 TextWrapped=true,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),

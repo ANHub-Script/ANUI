@@ -1181,7 +1181,8 @@ do
 						Quantity = "x5",
 						Rate = "10%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100)
+						Gradient = Color3.fromRGB(100, 100, 100),
+						BackgroundColor = Color3.fromRGB(40, 40, 40)
 					},
 					{
 						Card = true,
@@ -1189,7 +1190,8 @@ do
 						Quantity = "x1",
 						Rate = "15%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(255, 215, 0) -- Yellow Border
+						Gradient = Color3.fromRGB(255, 215, 0), -- Yellow Border
+						BackgroundColor = Color3.fromRGB(40, 40, 40)
 					},
 					{
 						Card = true,
@@ -1197,7 +1199,8 @@ do
 						Quantity = "x1-125k",
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100)
+						Gradient = Color3.fromRGB(255, 255, 255),
+						BackgroundColor = Color3.fromRGB(40, 40, 40)
 					},
 					{
 						Card = true,
@@ -1205,7 +1208,8 @@ do
 						Quantity = "x17",
 						Rate = "100%",
 						Image = "rbxassetid://84366761557806",
-						Gradient = Color3.fromRGB(100, 100, 100)
+						Gradient = Color3.fromRGB(100, 100, 100),
+						BackgroundColor = Color3.fromRGB(40, 40, 40)
 					}
 				}
 			}
