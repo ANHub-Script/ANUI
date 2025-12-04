@@ -310,8 +310,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         }),
                     }),
                     New("Frame", {
-                        Size = UDim2.new(1,0,0,0),
-                        AutomaticSize = "Y",
+                        Size = UDim2.new(1,0,1,0),
                         BackgroundTransparency = 1,
                         Name = "Frame",
                     }, {
@@ -369,24 +368,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Visible = TabMain.Desc and true or false,
                                 Name = "Desc",
                             }),
-                            New("ScrollingFrame", {
+                            New("Frame", {
                                 Size = UDim2.new(1,0,0,0),
                                 BackgroundTransparency = 1,
                                 AutomaticSize = "Y",
-                                AutomaticCanvasSize = "XY",
-                                ScrollingDirection = "X",
-                                ScrollBarThickness = 2,
-                                CanvasSize = UDim2.new(0,0,0,0),
                                 Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
                                 LayoutOrder = 3,
                                 Name = "Images",
                             }, {
-                                New("UIPadding", {
-                                    PaddingTop = UDim.new(0, 4),
-                                    PaddingBottom = UDim.new(0, 8),
-                                    PaddingLeft = UDim.new(0, 4),
-                                    PaddingRight = UDim.new(0, 4),
-                                }),
                                 New("UIListLayout", {
                                     FillDirection = "Horizontal",
                                     Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3),
@@ -411,137 +400,82 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             end
                             
                             if isCard then
-                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
+                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 80, 0, 80)
                                 local CardTitle = imageData.Title or TabMain.Name
                                 local CardQuantity = imageData.Quantity or ""
-                                local CardRate = imageData.Rate or ""
                                 local CardImage = imageData.Image or ""
                                 local CardGradient = imageData.Gradient
-                                local CardBackground = imageData.BackgroundColor or Color3.fromRGB(30, 30, 30)
                                 
-                                local BorderColor = Color3.fromRGB(60, 60, 60)
+                                local GradientColor
                                 if typeof(CardGradient) == "ColorSequence" then
-                                    BorderColor = CardGradient.Keypoints[1].Value
+                                    GradientColor = CardGradient
                                 elseif typeof(CardGradient) == "Color3" then
-                                    BorderColor = CardGradient
+                                    GradientColor = ColorSequence.new(CardGradient)
+                                else
+                                    GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
                                 end
                                 
-                                -- Adaptive Text Sizing
-                                local CardHeight = CardSize.Y.Offset
-                                local QuantitySize = math.clamp(math.floor(CardHeight * 0.18), 9, 12)
-                                local TitleSize = math.clamp(math.floor(CardHeight * 0.16), 9, 12)
-                                
-                                local CardContainer = New("Frame", {
-                                    Size = UDim2.new(CardSize.X.Scale, CardSize.X.Offset, CardSize.Y.Scale, CardSize.Y.Offset),
-                                    Parent = imagesContainer,
-                                    BackgroundTransparency = 1,
-                                })
-
                                 local Card = Creator.NewRoundFrame(8, "Squircle", {
-                                    Size = UDim2.new(1, 0, 1, 0),
-                                    Position = UDim2.new(0.5, 0, 0.5, 0),
-                                    AnchorPoint = Vector2.new(0.5, 0.5),
-                                    Parent = CardContainer,
-                                    ImageColor3 = BorderColor, -- Outer Frame acts as Border
-                                    ClipsDescendants = false,
-                                    ZIndex = 2,
+                                    Size = CardSize,
+                                    Parent = imagesContainer,
+                                    ImageColor3 = Color3.new(1, 1, 1),
+                                    ClipsDescendants = true,
                                 }, {
-                                    -- Inner Background Frame
-                                    Creator.NewRoundFrame(8, "Squircle", {
-                                        Size = UDim2.new(1, -4, 1, -4), -- Subtract border thickness (2px * 2)
-                                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                                    New("UIGradient", {
+                                        Color = GradientColor,
+                                        Rotation = 45,
+                                    }),
+                                    New("ImageLabel", {
+                                        Image = CardImage,
+                                        Size = UDim2.new(0.65, 0, 0.65, 0),
                                         AnchorPoint = Vector2.new(0.5, 0.5),
-                                        ImageColor3 = CardBackground,
+                                        Position = UDim2.new(0.5, 0, 0.45, 0),
+                                        BackgroundTransparency = 1,
+                                        ScaleType = "Fit",
                                         ZIndex = 2,
-                                        ClipsDescendants = true,
+                                    }),
+                                    New("TextLabel", {
+                                        Text = CardQuantity,
+                                        Size = UDim2.new(1, -8, 0, 20),
+                                        Position = UDim2.new(0, 4, 0, 2),
+                                        BackgroundTransparency = 1,
+                                        TextXAlignment = "Right",
+                                        TextColor3 = Color3.new(1, 1, 1),
+                                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                        TextSize = 14,
+                                        TextStrokeTransparency = 0.5,
+                                        ZIndex = 3,
+                                    }),
+                                    New("Frame", {
+                                        Size = UDim2.new(1, 0, 0, 22),
+                                        Position = UDim2.new(0, 0, 1, 0),
+                                        AnchorPoint = Vector2.new(0, 1),
+                                        BackgroundColor3 = Color3.new(0, 0, 0),
+                                        BackgroundTransparency = 0.4,
+                                        BorderSizePixel = 0,
+                                        ZIndex = 4,
                                     }, {
-                                        New("ImageLabel", {
-                                            Image = CardImage,
-                                            Size = UDim2.new(0.55, 0, 0.55, 0),
-                                            AnchorPoint = Vector2.new(0.5, 0.5),
-                                            Position = UDim2.new(0.5, 0, 0.5, 0),
-                                            BackgroundTransparency = 1,
-                                            ScaleType = "Fit",
-                                            ZIndex = 3,
-                                        }),
-                                        -- Inner Shadow (Left/Right)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 1, 0),
-                                            BackgroundTransparency = 1,
-                                            ZIndex = 4,
-                                        }, {
-                                            New("UIGradient", {
-                                                Color = ColorSequence.new(Color3.new(0,0,0)),
-                                                Transparency = NumberSequence.new({
-                                                    NumberSequenceKeypoint.new(0.0, 0.3),
-                                                    NumberSequenceKeypoint.new(0.2, 1.0),
-                                                    NumberSequenceKeypoint.new(0.8, 1.0),
-                                                    NumberSequenceKeypoint.new(1.0, 0.3),
-                                                }),
-                                                Rotation = 0,
-                                            })
-                                        }),
-                                        -- Inner Shadow (Top/Bottom)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 1, 0),
-                                            BackgroundTransparency = 1,
-                                            ZIndex = 4,
-                                        }, {
-                                            New("UIGradient", {
-                                                Color = ColorSequence.new(Color3.new(0,0,0)),
-                                                Transparency = NumberSequence.new({
-                                                    NumberSequenceKeypoint.new(0.0, 0.3),
-                                                    NumberSequenceKeypoint.new(0.2, 1.0),
-                                                    NumberSequenceKeypoint.new(0.8, 1.0),
-                                                    NumberSequenceKeypoint.new(1.0, 0.3),
-                                                }),
-                                                Rotation = 90,
-                                            })
-                                        }),
                                         New("TextLabel", {
-                                            Text = CardQuantity,
-                                            Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(0, 4, 0, 2), -- Kiri Atas
+                                            Text = CardTitle,
+                                            Size = UDim2.new(1, -20, 1, 0),
+                                            Position = UDim2.new(0, 6, 0, 0),
                                             BackgroundTransparency = 1,
                                             TextXAlignment = "Left",
                                             TextColor3 = Color3.new(1, 1, 1),
                                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = QuantitySize,
-                                            TextWrapped = true, -- Enable text wrapping
-                                            TextStrokeTransparency = 0,
-                                            TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
+                                            TextSize = 11,
+                                            TextTruncate = "AtEnd",
                                         }),
-                                        New("TextLabel", {
-                                            Text = CardRate,
-                                            Size = UDim2.new(0.5, -4, 0, QuantitySize + 6),
-                                            Position = UDim2.new(1, -4, 0, 2), -- Kanan Atas
-                                            AnchorPoint = Vector2.new(1, 0),
+                                        New("ImageLabel", {
+                                            Image = Creator.Icon("star")[1],
+                                            ImageRectOffset = Creator.Icon("star")[2].ImageRectPosition,
+                                            ImageRectSize = Creator.Icon("star")[2].ImageRectSize,
+                                            Size = UDim2.new(0, 12, 0, 12),
+                                            AnchorPoint = Vector2.new(1, 0.5),
+                                            Position = UDim2.new(1, -4, 0.5, 0),
                                             BackgroundTransparency = 1,
-                                            TextXAlignment = "Right",
-                                            TextColor3 = Color3.new(1, 1, 1),
-                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = QuantitySize,
-                                            TextStrokeTransparency = 0,
-                                            TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
-                                        }),
-                                        New("TextLabel", {
-                                            Text = CardTitle,
-                                            Size = UDim2.new(1, -8, 0, (TitleSize * 2) + 8),
-                                            Position = UDim2.new(0.5, 0, 1, -4),
-                                            AnchorPoint = Vector2.new(0.5, 1),
-                                            BackgroundTransparency = 1,
-                                            TextXAlignment = "Center",
-                                            TextYAlignment = "Bottom",
-                                            TextColor3 = Color3.new(1, 1, 1),
-                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = TitleSize,
-                                            TextWrapped = true,
-                                            TextStrokeTransparency = 0,
-                                            TextStrokeColor3 = Color3.new(0, 0, 0),
-                                            ZIndex = 5,
-                                        }),
+                                            ImageColor3 = Color3.fromRGB(255, 255, 255),
+                                        })
                                     })
                                 })
                             else

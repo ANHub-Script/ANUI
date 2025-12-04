@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.131  |  2025-12-04  |  Roblox UI Library for scripts
+    v1.0.132  |  2025-12-04  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.131",
+    "version": "1.0.132",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7178,8 +7178,7 @@ NumberSequenceKeypoint.new(1.0,0.1),
 }),
 }),
 ak("Frame",{
-Size=UDim2.new(1,0,0,0),
-AutomaticSize="Y",
+Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 Name="Frame",
 },{
@@ -7237,24 +7236,14 @@ Size=UDim2.new(1,0,0,0),
 Visible=ax.Desc and true or false,
 Name="Desc",
 }),
-ak("ScrollingFrame",{
+ak("Frame",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
-AutomaticCanvasSize="XY",
-ScrollingDirection="X",
-ScrollBarThickness=2,
-CanvasSize=UDim2.new(0,0,0,0),
 Visible=(ax.Images and#ax.Images>0)and true or false,
 LayoutOrder=3,
 Name="Images",
 },{
-ak("UIPadding",{
-PaddingTop=UDim.new(0,4),
-PaddingBottom=UDim.new(0,8),
-PaddingLeft=UDim.new(0,4),
-PaddingRight=UDim.new(0,4),
-}),
 ak("UIListLayout",{
 FillDirection="Horizontal",
 Padding=UDim.new(0,an.ImagePadding or ao.TabPadding/3),
@@ -7279,137 +7268,82 @@ d=true
 end
 
 if d then
-local e=aB.Size or an.ImageSize or UDim2.new(0,60,0,60)
+local e=aB.Size or an.ImageSize or UDim2.new(0,80,0,80)
 local f=aB.Title or ax.Name
 local g=aB.Quantity or""
-local h=aB.Rate or""
-local j=aB.Image or""
-local l=aB.Gradient
-local m=aB.BackgroundColor or Color3.fromRGB(30,30,30)
+local h=aB.Image or""
+local j=aB.Gradient
 
-local p=Color3.fromRGB(60,60,60)
-if typeof(l)=="ColorSequence"then
-p=l.Keypoints[1].Value
-elseif typeof(l)=="Color3"then
-p=l
+local l
+if typeof(j)=="ColorSequence"then
+l=j
+elseif typeof(j)=="Color3"then
+l=ColorSequence.new(j)
+else
+l=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
-
-local r=e.Y.Offset
-local u=math.clamp(math.floor(r*0.18),9,12)
-local v=math.clamp(math.floor(r*0.16),9,12)
-
-local x=ak("Frame",{
-Size=UDim2.new(e.X.Scale,e.X.Offset,e.Y.Scale,e.Y.Offset),
+aj.NewRoundFrame(8,"Squircle",{
+Size=e,
 Parent=az,
-BackgroundTransparency=1,
-})
-
-aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-Parent=x,
-ImageColor3=p,
-ClipsDescendants=false,
-ZIndex=2,
-},{
-
-aj.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-4,1,-4),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=m,
-ZIndex=2,
+ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 },{
+ak("UIGradient",{
+Color=l,
+Rotation=45,
+}),
 ak("ImageLabel",{
-Image=j,
-Size=UDim2.new(0.55,0,0.55,0),
+Image=h,
+Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Position=UDim2.new(0.5,0,0.45,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
-ZIndex=3,
-}),
-
-ak("Frame",{
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ZIndex=4,
-},{
-ak("UIGradient",{
-Color=ColorSequence.new(Color3.new(0,0,0)),
-Transparency=NumberSequence.new{
-NumberSequenceKeypoint.new(0.0,0.3),
-NumberSequenceKeypoint.new(0.2,1.0),
-NumberSequenceKeypoint.new(0.8,1.0),
-NumberSequenceKeypoint.new(1.0,0.3),
-},
-Rotation=0,
-})
-}),
-
-ak("Frame",{
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ZIndex=4,
-},{
-ak("UIGradient",{
-Color=ColorSequence.new(Color3.new(0,0,0)),
-Transparency=NumberSequence.new{
-NumberSequenceKeypoint.new(0.0,0.3),
-NumberSequenceKeypoint.new(0.2,1.0),
-NumberSequenceKeypoint.new(0.8,1.0),
-NumberSequenceKeypoint.new(1.0,0.3),
-},
-Rotation=90,
-})
+ZIndex=2,
 }),
 ak("TextLabel",{
 Text=g,
-Size=UDim2.new(0.5,-4,0,u+6),
+Size=UDim2.new(1,-8,0,20),
 Position=UDim2.new(0,4,0,2),
-BackgroundTransparency=1,
-TextXAlignment="Left",
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=u,
-TextWrapped=true,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-ak("TextLabel",{
-Text=h,
-Size=UDim2.new(0.5,-4,0,u+6),
-Position=UDim2.new(1,-4,0,2),
-AnchorPoint=Vector2.new(1,0),
 BackgroundTransparency=1,
 TextXAlignment="Right",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=u,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
+TextSize=14,
+TextStrokeTransparency=0.5,
+ZIndex=3,
 }),
+ak("Frame",{
+Size=UDim2.new(1,0,0,22),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=4,
+},{
 ak("TextLabel",{
 Text=f,
-Size=UDim2.new(1,-8,0,(v*2)+8),
-Position=UDim2.new(0.5,0,1,-4),
-AnchorPoint=Vector2.new(0.5,1),
+Size=UDim2.new(1,-20,1,0),
+Position=UDim2.new(0,6,0,0),
 BackgroundTransparency=1,
-TextXAlignment="Center",
-TextYAlignment="Bottom",
+TextXAlignment="Left",
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aj.Font,Enum.FontWeight.Bold),
-TextSize=v,
-TextWrapped=true,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
+TextSize=11,
+TextTruncate="AtEnd",
 }),
+ak("ImageLabel",{
+Image=aj.Icon"star"[1],
+ImageRectOffset=aj.Icon"star"[2].ImageRectPosition,
+ImageRectSize=aj.Icon"star"[2].ImageRectSize,
+Size=UDim2.new(0,12,0,12),
+AnchorPoint=Vector2.new(1,0.5),
+Position=UDim2.new(1,-4,0.5,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.fromRGB(255,255,255),
+})
 })
 })
 else
@@ -7680,6 +7614,7 @@ return ar
 end
 
 return aa end function a.K()
+
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 aa(game:GetService"UserInputService")
