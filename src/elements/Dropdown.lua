@@ -235,7 +235,19 @@ function Element:New(Config)
     -- 2. SetValueImage (Gambar Kanan dalam kotak Value)
     function Dropdown:SetValueImage(image)
         if Dropdown.UIElements.Dropdown then
-             local Container = Dropdown.UIElements.Dropdown.Frame.Frame
+             -- [FIX] Menggunakan FindFirstChild untuk mencegah error "Frame is not a valid member"
+             local OuterFrame = Dropdown.UIElements.Dropdown:FindFirstChild("Frame")
+             local Container = OuterFrame and OuterFrame:FindFirstChild("Frame")
+             
+             -- Fallback jika path default tidak ditemukan
+             if not Container then
+                 local foundLabel = Dropdown.UIElements.Dropdown:FindFirstChild("TextLabel", true)
+                 if foundLabel then
+                     Container = foundLabel.Parent
+                 end
+             end
+
+             if not Container then return end
              
              local TextLabel = Container:FindFirstChild("TextLabel")
              local DynamicIcon = Container:FindFirstChild("DynamicValueIcon")
