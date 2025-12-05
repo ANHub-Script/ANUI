@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.160  |  2025-12-05  |  Roblox UI Library for scripts
+    v1.0.161  |  2025-12-05  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.160",
+    "version": "1.0.161",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6249,8 +6249,6 @@ UIElements={}
 }
 
 
-
-
 local aj=ai.Image
 if typeof(aj)=="table"then
 aj=nil
@@ -6282,17 +6280,11 @@ end
 
 
 function ai.SetMainImage(al,am,an)
-
 local ao=ai.ToggleFrame.UIElements.Container:FindFirstChild"TitleFrame"
-
 if not ao then return end
 
-
 local ap=ao:FindFirstChild"CustomMainIcon"
-if ap then
-ap:Destroy()
-end
-
+if ap then ap:Destroy()end
 
 for aq,ar in ipairs(ao:GetChildren())do
 if ar:IsA"Frame"and ar.Name~="TitleFrame"and ar.Name~="UIListLayout"and ar.Name~="CustomMainIcon"then
@@ -6300,21 +6292,16 @@ ar:Destroy()
 end
 end
 
-
 if not am then
 local aq=ao:FindFirstChild"TitleFrame"
-if aq then
-aq.Size=UDim2.new(1,0,1,0)
-end
+if aq then aq.Size=UDim2.new(1,0,1,0)end
 return
 end
-
 
 local aq=an or ai.ImageSize or 30
 if typeof(aq)=="number"then
 aq=UDim2.new(0,aq,0,aq)
 end
-
 
 local ar
 
@@ -6324,26 +6311,27 @@ local as=am
 local at=as.Image or""
 local au=as.Gradient
 local av=as.Quantity
+local aw=as.Rate
+local ax=as.Title
 
-
-local aw
+local ay
 if typeof(au)=="ColorSequence"then
-aw=au
+ay=au
 elseif typeof(au)=="Color3"then
-aw=ColorSequence.new(au)
+ay=ColorSequence.new(au)
 else
-aw=ColorSequence.new(Color3.fromRGB(80,80,80))
+ay=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
-local ax=aw.Keypoints[1].Value
-local ay=2
+local az=ay.Keypoints[1].Value
+local aA=2
 
 
 ar=aa.NewRoundFrame(8,"Squircle",{
 Name="CustomMainIcon",
 Size=aq,
 Parent=ao,
-ImageColor3=ax,
+ImageColor3=az,
 ClipsDescendants=true,
 LayoutOrder=-1,
 AnchorPoint=Vector2.new(0,0.5),
@@ -6362,7 +6350,7 @@ ZIndex=2,
 }),
 
 aa.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-ay*2,1,-ay*2),
+Size=UDim2.new(1,-aA*2,1,-aA*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.new(1,1,1),
@@ -6371,7 +6359,7 @@ ZIndex=3,
 },{
 
 ab("UIGradient",{
-Color=aw,
+Color=ay,
 Rotation=45,
 }),
 
@@ -6379,23 +6367,68 @@ ab("ImageLabel",{
 Image=at,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Position=UDim2.new(0.5,0,0.45,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=4,
 }),
 
+
 av and ab("TextLabel",{
 Text=av,
-Size=UDim2.new(1,-4,0,12),
+Size=UDim2.new(0.5,0,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0.5,
+TextSize=11,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+TextWrapped=true,
 ZIndex=5,
+})or nil,
+
+
+aw and ab("TextLabel",{
+Text=aw,
+Size=UDim2.new(0.5,-4,0,12),
+Position=UDim2.new(1,-4,0,2),
+AnchorPoint=Vector2.new(1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
+TextSize=11,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+TextWrapped=true,
+ZIndex=5,
+})or nil,
+
+
+ax and ab("Frame",{
+Size=UDim2.new(1,0,0,18),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=6,
+},{
+ab("TextLabel",{
+Text=ax,
+Size=UDim2.new(1,-2,1,0),
+Position=UDim2.new(0.5,0,0,0),
+AnchorPoint=Vector2.new(0.5,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Center,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextWrapped=true,
+ZIndex=7,
+})
 })or nil
 })
 })
@@ -6419,13 +6452,11 @@ ar.Position=UDim2.new(0,0,0.5,0)
 ar.BackgroundTransparency=1
 end
 
-
 local as=ao:FindFirstChild"TitleFrame"
 if as then
 as.Size=UDim2.new(1,-aq.X.Offset,1,0)
 end
 end
-
 
 if typeof(ai.Image)=="table"then
 ai:SetMainImage(ai.Image,ai.ImageSize)
