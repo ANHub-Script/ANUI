@@ -159,10 +159,10 @@ function Element:New(Config)
                         TextXAlignment = Enum.TextXAlignment.Left,
                         TextColor3 = Color3.new(1, 1, 1),
                         FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                        TextSize = 11,
+                        TextSize = 8,
                         TextStrokeTransparency = 0,
                         TextStrokeColor3 = Color3.new(0,0,0),
-                        TextWrapped = true, -- Request
+                        -- TextWrapped = true, -- Request
                         ZIndex = 5,
                     }) or nil,
 

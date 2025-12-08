@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.161  |  2025-12-05  |  Roblox UI Library for scripts
+    v1.0.162  |  2025-12-08  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.161",
+    "version": "1.0.162",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6382,10 +6382,10 @@ BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
-TextSize=11,
+TextSize=8,
 TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
-TextWrapped=true,
+
 ZIndex=5,
 })or nil,
 
