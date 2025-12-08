@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.162  |  2025-12-08  |  Roblox UI Library for scripts
+    v1.0.163  |  2025-12-08  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.162",
+    "version": "1.0.163",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7993,26 +7993,27 @@ local aw=aq
 local ax=aw.Image or""
 local ay=aw.Gradient
 local az=aw.Quantity
+local aA=aw.Rate
+local aB=aw.Title
 
-
-local aA
+local d
 if typeof(ay)=="ColorSequence"then
-aA=ay
+d=ay
 elseif typeof(ay)=="Color3"then
-aA=ColorSequence.new(ay)
+d=ColorSequence.new(ay)
 else
-aA=ColorSequence.new(Color3.fromRGB(80,80,80))
+d=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
-local aB=aA.Keypoints[1].Value
-local d=2
+local e=d.Keypoints[1].Value
+local f=2
 
 
 av=ad.NewRoundFrame(8,"Squircle",{
 Name="CustomMainIcon",
 Size=au,
 Parent=as,
-ImageColor3=aB,
+ImageColor3=e,
 ClipsDescendants=true,
 LayoutOrder=-1,
 AnchorPoint=Vector2.new(0,0.5),
@@ -8031,7 +8032,7 @@ ZIndex=2,
 }),
 
 ad.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-d*2,1,-d*2),
+Size=UDim2.new(1,-f*2,1,-f*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.new(1,1,1),
@@ -8040,7 +8041,7 @@ ZIndex=3,
 },{
 
 ae("UIGradient",{
-Color=aA,
+Color=d,
 Rotation=45,
 }),
 
@@ -8048,27 +8049,71 @@ ae("ImageLabel",{
 Image=ax,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.5,0),
+Position=UDim2.new(0.5,0,0.45,0),
 BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=4,
 }),
 
+
 az and ae("TextLabel",{
 Text=az,
-Size=UDim2.new(1,-4,0,12),
+Size=UDim2.new(0.5,0,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Left,
 TextColor3=Color3.new(1,1,1),
 FontFace=Font.new(ad.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0.5,
+TextSize=8,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+
 ZIndex=5,
+})or nil,
+
+
+aA and ae("TextLabel",{
+Text=aA,
+Size=UDim2.new(0.5,-4,0,12),
+Position=UDim2.new(1,-4,0,2),
+AnchorPoint=Vector2.new(1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ad.Font,Enum.FontWeight.Bold),
+TextSize=11,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+TextWrapped=true,
+ZIndex=5,
+})or nil,
+
+
+aB and ae("Frame",{
+Size=UDim2.new(1,0,0,18),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=6,
+},{
+ae("TextLabel",{
+Text=aB,
+Size=UDim2.new(1,-2,1,0),
+Position=UDim2.new(0.5,0,0,0),
+AnchorPoint=Vector2.new(0.5,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Center,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ad.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextWrapped=true,
+ZIndex=7,
+})
 })or nil
 })
 })
-
 
 else
 av=ad.Image(
