@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.163  |  2025-12-08  |  Roblox UI Library for scripts
+    v1.0.164  |  2025-12-09  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.163",
+    "version": "1.0.164",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5705,6 +5705,18 @@ local ac={}
 
 local ad=a.load'j'.New
 
+
+local function GetGradientData(ae)
+if typeof(ae)=="ColorSequence"then
+return ae
+elseif typeof(ae)=="Color3"then
+return ColorSequence.new(ae)
+else
+
+return ColorSequence.new(Color3.fromRGB(80,80,80))
+end
+end
+
 function ac.New(ae,af)
 af.Hover=false
 af.TextOffset=0
@@ -5715,19 +5727,140 @@ local ag={
 __type="Paragraph",
 Title=af.Title or"Paragraph",
 Desc=af.Desc or nil,
-
 Locked=af.Locked or false,
 Elements={}
 }
-local ah=a.load'z'(af)
 
+local ah=a.load'z'(af)
 ag.ParagraphFrame=ah
+
+
+if af.Images and#af.Images>0 then
+
+local ai=ab("Frame",{
+Size=UDim2.new(1,0,0,0),
+AutomaticSize=Enum.AutomaticSize.Y,
+BackgroundTransparency=1,
+Parent=ah.UIElements.Container,
+LayoutOrder=2
+},{
+ab("UIGridLayout",{
+CellSize=af.ImageSize or UDim2.new(0,70,0,70),
+CellPadding=UDim2.new(0,8,0,8),
+FillDirection=Enum.FillDirection.Horizontal,
+SortOrder=Enum.SortOrder.LayoutOrder,
+HorizontalAlignment=Enum.HorizontalAlignment.Center,
+}),
+ab("UIPadding",{
+PaddingTop=UDim.new(0,10),
+PaddingBottom=UDim.new(0,10)
+})
+})
+
+for aj,ak in ipairs(af.Images)do
+local al=ak.Title or"Item"
+local am=ak.Quantity
+local an=ak.Image
+local ao=GetGradientData(ak.Gradient)
+local ap=ao.Keypoints[1].Value
+
+
+
+local aq=aa.NewRoundFrame(8,"Squircle",{
+ImageColor3=ap,
+ClipsDescendants=true,
+Parent=ai
+},{
+
+ab("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+ZIndex=2,
+}),
+
+
+aa.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-4,1,-4),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+ZIndex=3,
+},{
+
+ab("UIGradient",{
+Color=ao,
+Rotation=45,
+}),
+
+
+aa.Image(an,al,0,af.Window.Folder,"CardIcon",false).ImageLabel,
+
+
+am and ab("TextLabel",{
+Text=am,
+Size=UDim2.new(1,-8,0,12),
+Position=UDim2.new(0,4,0,2),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Left,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0.5,
+ZIndex=5,
+})or nil,
+
+
+ab("Frame",{
+Size=UDim2.new(1,0,0,18),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=6,
+},{
+ab("TextLabel",{
+Text=al,
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Center,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
+TextSize=9,
+TextTruncate=Enum.TextTruncate.AtEnd,
+ZIndex=7,
+})
+})
+})
+})
+
+
+local ar=aq:FindFirstChild("ImageLabel",true)
+if ar then
+ar.Size=UDim2.new(0.65,0,0.65,0)
+ar.AnchorPoint=Vector2.new(0.5,0.5)
+ar.Position=UDim2.new(0.5,0,0.45,0)
+ar.BackgroundTransparency=1
+ar.ScaleType=Enum.ScaleType.Fit
+ar.ZIndex=4
+end
+end
+end
+
+
 if af.Buttons and#af.Buttons>0 then
 local ai=ab("Frame",{
 Size=UDim2.new(1,0,0,38),
 BackgroundTransparency=1,
 AutomaticSize="Y",
-Parent=ah.UIElements.Container
+Parent=ah.UIElements.Container,
+LayoutOrder=3
 },{
 ab("UIListLayout",{
 Padding=UDim.new(0,10),
@@ -5735,11 +5868,9 @@ FillDirection="Vertical",
 })
 })
 
-
 for aj,ak in next,af.Buttons do
 local al=ad(ak.Title,ak.Icon,ak.Callback,"White",ai,nil,nil,af.Window.NewElements and 12 or 10)
 al.Size=UDim2.new(1,0,0,38)
-
 end
 end
 
@@ -5759,7 +5890,6 @@ af.Tab
 end
 
 return ag.__type,ag
-
 end
 
 return ac end function a.B()
