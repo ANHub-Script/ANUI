@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.164  |  2025-12-09  |  Roblox UI Library for scripts
+    v1.0.165  |  2025-12-09  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.164",
+    "version": "1.0.165",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5698,12 +5698,12 @@ end
 return ag
 end end function a.A()
 
+
 local aa=a.load'b'
 local ab=aa.New
 
-local ac={}
-
-local ad=a.load'j'.New
+local ac={}local ad=a.load'j'
+.New
 
 
 local function GetGradientData(ae)
@@ -5712,7 +5712,6 @@ return ae
 elseif typeof(ae)=="Color3"then
 return ColorSequence.new(ae)
 else
-
 return ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 end
@@ -5721,7 +5720,6 @@ function ac.New(ae,af)
 af.Hover=false
 af.TextOffset=0
 af.ParentConfig=af
-af.IsButtons=af.Buttons and#af.Buttons>0 and true or false
 
 local ag={
 __type="Paragraph",
@@ -5736,7 +5734,6 @@ ag.ParagraphFrame=ah
 
 
 if af.Images and#af.Images>0 then
-
 local ai=ab("Frame",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
@@ -5765,11 +5762,15 @@ local ao=GetGradientData(ak.Gradient)
 local ap=ao.Keypoints[1].Value
 
 
+local aq=(type(ak.Callback)=="function")
 
-local aq=aa.NewRoundFrame(8,"Squircle",{
+
+local ar=aa.NewRoundFrame(8,"Squircle",{
 ImageColor3=ap,
 ClipsDescendants=true,
-Parent=ai
+Parent=ai,
+
+Active=aq
 },{
 
 ab("ImageLabel",{
@@ -5792,15 +5793,8 @@ ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 ZIndex=3,
 },{
-
-ab("UIGradient",{
-Color=ao,
-Rotation=45,
-}),
-
-
+ab("UIGradient",{Color=ao,Rotation=45}),
 aa.Image(an,al,0,af.Window.Folder,"CardIcon",false).ImageLabel,
-
 
 am and ab("TextLabel",{
 Text=am,
@@ -5814,7 +5808,6 @@ TextSize=10,
 TextStrokeTransparency=0.5,
 ZIndex=5,
 })or nil,
-
 
 ab("Frame",{
 Size=UDim2.new(1,0,0,18),
@@ -5838,55 +5831,34 @@ ZIndex=7,
 })
 })
 })
-})
+},aq)
 
 
-local ar=aq:FindFirstChild("ImageLabel",true)
-if ar then
-ar.Size=UDim2.new(0.65,0,0.65,0)
-ar.AnchorPoint=Vector2.new(0.5,0.5)
-ar.Position=UDim2.new(0.5,0,0.45,0)
-ar.BackgroundTransparency=1
-ar.ScaleType=Enum.ScaleType.Fit
-ar.ZIndex=4
-end
-end
+local as=ar:FindFirstChild("ImageLabel",true)
+if as then
+as.Size=UDim2.new(0.65,0,0.65,0)
+as.AnchorPoint=Vector2.new(0.5,0.5)
+as.Position=UDim2.new(0.5,0,0.45,0)
+as.BackgroundTransparency=1
+as.ScaleType=Enum.ScaleType.Fit
+as.ZIndex=4
 end
 
 
-if af.Buttons and#af.Buttons>0 then
-local ai=ab("Frame",{
-Size=UDim2.new(1,0,0,38),
-BackgroundTransparency=1,
-AutomaticSize="Y",
-Parent=ah.UIElements.Container,
-LayoutOrder=3
-},{
-ab("UIListLayout",{
-Padding=UDim.new(0,10),
-FillDirection="Vertical",
-})
-})
+if aq then
+aa.AddSignal(ar.MouseButton1Click,function()
+ak.Callback()
+end)
 
-for aj,ak in next,af.Buttons do
-local al=ad(ak.Title,ak.Icon,ak.Callback,"White",ai,nil,nil,af.Window.NewElements and 12 or 10)
-al.Size=UDim2.new(1,0,0,38)
+
+aa.AddSignal(ar.MouseButton1Down,function()
+game:GetService"TweenService":Create(ar,TweenInfo.new(0.1),{Size=UDim2.new(0,66.5,0,66.5)}):Play()
+end)
+aa.AddSignal(ar.MouseButton1Up,function()
+game:GetService"TweenService":Create(ar,TweenInfo.new(0.1),{Size=UDim2.new(0,70,0,70)}):Play()
+end)
 end
 end
-
-local ai=af.ElementsModule
-if ai then
-ai.Load(
-ag,
-ah.UIElements.Container,
-ai.Elements,
-af.Window,
-af.ANUI,
-nil,
-ai,
-af.UIScale,
-af.Tab
-)
 end
 
 return ag.__type,ag

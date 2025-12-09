@@ -1,18 +1,17 @@
+-- [GANTI ISI src/elements/Paragraph.lua DENGAN INI]
 local Creator = require("../modules/Creator")
 local New = Creator.New
 
 local Element = {}
-
 local CreateButton = require("../components/ui/Button").New
 
--- Helper to get gradient data
+-- Helper Gradient
 local function GetGradientData(gradientInput)
     if typeof(gradientInput) == "ColorSequence" then
         return gradientInput
     elseif typeof(gradientInput) == "Color3" then
         return ColorSequence.new(gradientInput)
     else
-        -- Default Grey Gradient
         return ColorSequence.new(Color3.fromRGB(80, 80, 80))
     end
 end
@@ -21,8 +20,7 @@ function Element:New(ElementConfig)
     ElementConfig.Hover = false  
     ElementConfig.TextOffset = 0  
     ElementConfig.ParentConfig = ElementConfig  
-    ElementConfig.IsButtons = ElementConfig.Buttons and #ElementConfig.Buttons > 0 and true or false  
-      
+    
     local ParagraphModule = {  
         __type = "Paragraph",  
         Title = ElementConfig.Title or "Paragraph",  
@@ -34,18 +32,17 @@ function Element:New(ElementConfig)
     local Paragraph = require("../components/window/Element")(ElementConfig)  
     ParagraphModule.ParagraphFrame = Paragraph  
 
-    -- [NEW FEATURE] Image/Card Grid Support
+    -- [NEW FEATURE] Image/Card Grid Support (CLICKABLE)
     if ElementConfig.Images and #ElementConfig.Images > 0 then
-        -- Container for the grid
         local GridContainer = New("Frame", {
-            Size = UDim2.new(1, 0, 0, 0), -- Height automatic
+            Size = UDim2.new(1, 0, 0, 0),
             AutomaticSize = Enum.AutomaticSize.Y,
             BackgroundTransparency = 1,
             Parent = Paragraph.UIElements.Container,
-            LayoutOrder = 2 -- Ensure it appears after text
+            LayoutOrder = 2
         }, {
             New("UIGridLayout", {
-                CellSize = ElementConfig.ImageSize or UDim2.new(0, 70, 0, 70), -- Default Card Size
+                CellSize = ElementConfig.ImageSize or UDim2.new(0, 70, 0, 70),
                 CellPadding = UDim2.new(0, 8, 0, 8),
                 FillDirection = Enum.FillDirection.Horizontal,
                 SortOrder = Enum.SortOrder.LayoutOrder,
@@ -62,14 +59,18 @@ function Element:New(ElementConfig)
             local Quantity = imgData.Quantity
             local ImageId = imgData.Image
             local GradientColor = GetGradientData(imgData.Gradient)
-            local BorderColor = GradientColor.Keypoints[1].Value -- Use first color for border base
+            local BorderColor = GradientColor.Keypoints[1].Value
             
-            -- [CARD CONSTRUCTION]
-            -- 1. Outer Border Frame
+            -- Cek apakah ada Callback (Fungsi Klik)
+            local IsInteractive = (type(imgData.Callback) == "function")
+
+            -- 1. Outer Frame (Button atau Frame Biasa)
             local Card = Creator.NewRoundFrame(8, "Squircle", {
                 ImageColor3 = BorderColor,
                 ClipsDescendants = true,
-                Parent = GridContainer
+                Parent = GridContainer,
+                -- Jika ada callback, jadikan Active agar menangkap input
+                Active = IsInteractive 
             }, {
                 -- 2. Inner Shadow
                 New("ImageLabel", {
@@ -83,25 +84,18 @@ function Element:New(ElementConfig)
                     ZIndex = 2,
                 }),
                 
-                -- 3. Content Container (White base for gradient)
+                -- 3. Content Container
                 Creator.NewRoundFrame(8, "Squircle", {
-                    Size = UDim2.new(1, -4, 1, -4), -- 2px Border
+                    Size = UDim2.new(1, -4, 1, -4),
                     Position = UDim2.new(0.5, 0, 0.5, 0),
                     AnchorPoint = Vector2.new(0.5, 0.5),
                     ImageColor3 = Color3.new(1,1,1),
                     ClipsDescendants = true,
                     ZIndex = 3,
                 }, {
-                    -- Gradient
-                    New("UIGradient", {
-                        Color = GradientColor,
-                        Rotation = 45,
-                    }),
-                    
-                    -- Icon Image
+                    New("UIGradient", { Color = GradientColor, Rotation = 45 }),
                     Creator.Image(ImageId, Title, 0, ElementConfig.Window.Folder, "CardIcon", false).ImageLabel,
                     
-                    -- Quantity Label (Top Left)
                     Quantity and New("TextLabel", {
                         Text = Quantity,
                         Size = UDim2.new(1, -8, 0, 12),
@@ -115,7 +109,6 @@ function Element:New(ElementConfig)
                         ZIndex = 5,
                     }) or nil,
 
-                    -- Title Bar (Bottom)
                     New("Frame", {
                         Size = UDim2.new(1, 0, 0, 18),
                         Position = UDim2.new(0, 0, 1, 0),
@@ -138,9 +131,9 @@ function Element:New(ElementConfig)
                         })
                     })
                 })
-            })
-            
-            -- Fix ImageLabel Props inside Creator.Image result
+            }, IsInteractive) -- Parameter ke-5 true = ImageButton
+
+            -- Fix Image Size
             local imgLabel = Card:FindFirstChild("ImageLabel", true)
             if imgLabel then
                 imgLabel.Size = UDim2.new(0.65, 0, 0.65, 0)
@@ -150,43 +143,22 @@ function Element:New(ElementConfig)
                 imgLabel.ScaleType = Enum.ScaleType.Fit
                 imgLabel.ZIndex = 4
             end
-        end
-    end
 
-    -- Existing Button Logic
-    if ElementConfig.Buttons and #ElementConfig.Buttons > 0 then  
-        local ButtonsContainer = New("Frame", {  
-            Size = UDim2.new(1,0,0,38),  
-            BackgroundTransparency = 1,  
-            AutomaticSize = "Y",
-            Parent = Paragraph.UIElements.Container,
-            LayoutOrder = 3
-        }, {  
-            New("UIListLayout", {  
-                Padding = UDim.new(0,10),  
-                FillDirection = "Vertical",  
-            })  
-        })  
-          
-        for _,Button in next, ElementConfig.Buttons do  
-            local ButtonFrame = CreateButton(Button.Title, Button.Icon, Button.Callback, "White", ButtonsContainer, nil, nil, ElementConfig.Window.NewElements and 12 or 10)  
-            ButtonFrame.Size = UDim2.new(1,0,0,38)  
+            -- Bind Klik Event
+            if IsInteractive then
+                Creator.AddSignal(Card.MouseButton1Click, function()
+                    imgData.Callback()
+                end)
+                
+                -- Animasi Klik Sedikit
+                Creator.AddSignal(Card.MouseButton1Down, function()
+                    game:GetService("TweenService"):Create(Card, TweenInfo.new(0.1), {Size = UDim2.new(0, 70*0.95, 0, 70*0.95)}):Play()
+                end)
+                Creator.AddSignal(Card.MouseButton1Up, function()
+                    game:GetService("TweenService"):Create(Card, TweenInfo.new(0.1), {Size = UDim2.new(0, 70, 0, 70)}):Play()
+                end)
+            end
         end
-    end  
-      
-    local ElementsModule = ElementConfig.ElementsModule
-    if ElementsModule then
-        ElementsModule.Load(
-            ParagraphModule, 
-            Paragraph.UIElements.Container, 
-            ElementsModule.Elements, 
-            ElementConfig.Window, 
-            ElementConfig.ANUI, 
-            nil, 
-            ElementsModule, 
-            ElementConfig.UIScale, 
-            ElementConfig.Tab
-        )
     end
 
     return ParagraphModule.__type, ParagraphModule
