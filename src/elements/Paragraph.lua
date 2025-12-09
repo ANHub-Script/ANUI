@@ -1,11 +1,11 @@
--- [GANTI ISI src/elements/Paragraph.lua DENGAN INI]
 local Creator = require("../modules/Creator")
 local New = Creator.New
+local Tween = Creator.Tween
 
 local Element = {}
 local CreateButton = require("../components/ui/Button").New
 
--- Helper Gradient
+-- Helper untuk Gradient
 local function GetGradientData(gradientInput)
     if typeof(gradientInput) == "ColorSequence" then
         return gradientInput
@@ -61,16 +61,15 @@ function Element:New(ElementConfig)
             local GradientColor = GetGradientData(imgData.Gradient)
             local BorderColor = GradientColor.Keypoints[1].Value
             
-            -- Cek apakah ada Callback (Fungsi Klik)
+            -- Cek apakah kartu ini punya fungsi klik
             local IsInteractive = (type(imgData.Callback) == "function")
 
-            -- 1. Outer Frame (Button atau Frame Biasa)
+            -- 1. Outer Frame (Card Base)
             local Card = Creator.NewRoundFrame(8, "Squircle", {
                 ImageColor3 = BorderColor,
                 ClipsDescendants = true,
                 Parent = GridContainer,
-                -- Jika ada callback, jadikan Active agar menangkap input
-                Active = IsInteractive 
+                Active = IsInteractive -- PENTING: Agar bisa menerima input klik
             }, {
                 -- 2. Inner Shadow
                 New("ImageLabel", {
@@ -131,9 +130,9 @@ function Element:New(ElementConfig)
                         })
                     })
                 })
-            }, IsInteractive) -- Parameter ke-5 true = ImageButton
+            }, IsInteractive) -- Mode Button
 
-            -- Fix Image Size
+            -- Fix Image Size agar pas di dalam kartu
             local imgLabel = Card:FindFirstChild("ImageLabel", true)
             if imgLabel then
                 imgLabel.Size = UDim2.new(0.65, 0, 0.65, 0)
@@ -144,23 +143,47 @@ function Element:New(ElementConfig)
                 imgLabel.ZIndex = 4
             end
 
-            -- Bind Klik Event
+            -- Event Listener untuk Klik
             if IsInteractive then
                 Creator.AddSignal(Card.MouseButton1Click, function()
                     imgData.Callback()
                 end)
                 
-                -- Animasi Klik Sedikit
+                -- Animasi Klik Sedikit (Kecil lalu Kembali)
                 Creator.AddSignal(Card.MouseButton1Down, function()
-                    game:GetService("TweenService"):Create(Card, TweenInfo.new(0.1), {Size = UDim2.new(0, 70*0.95, 0, 70*0.95)}):Play()
+                    Tween(Card, 0.1, {Size = UDim2.new(0, ElementConfig.ImageSize.X.Offset * 0.95, 0, ElementConfig.ImageSize.Y.Offset * 0.95)}):Play()
                 end)
                 Creator.AddSignal(Card.MouseButton1Up, function()
-                    game:GetService("TweenService"):Create(Card, TweenInfo.new(0.1), {Size = UDim2.new(0, 70, 0, 70)}):Play()
+                    Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play()
+                end)
+                Creator.AddSignal(Card.MouseLeave, function()
+                    Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play()
                 end)
             end
         end
     end
 
+    -- Button Logic Lama (Tetap dipertahankan)
+    if ElementConfig.Buttons and #ElementConfig.Buttons > 0 then  
+        local ButtonsContainer = New("Frame", {  
+            Size = UDim2.new(1,0,0,38),  
+            BackgroundTransparency = 1,  
+            AutomaticSize = "Y",
+            Parent = Paragraph.UIElements.Container,
+            LayoutOrder = 3
+        }, {  
+            New("UIListLayout", {  
+                Padding = UDim.new(0,10),  
+                FillDirection = "Vertical",  
+            })  
+        })  
+          
+        for _,Button in next, ElementConfig.Buttons do  
+            local ButtonFrame = CreateButton(Button.Title, Button.Icon, Button.Callback, "White", ButtonsContainer, nil, nil, ElementConfig.Window.NewElements and 12 or 10)  
+            ButtonFrame.Size = UDim2.new(1,0,0,38)  
+        end
+    end  
+      
     return ParagraphModule.__type, ParagraphModule
 end
 

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.165  |  2025-12-09  |  Roblox UI Library for scripts
+    v1.0.166  |  2025-12-09  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.165",
+    "version": "1.0.166",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5698,51 +5698,51 @@ end
 return ag
 end end function a.A()
 
-
 local aa=a.load'b'
 local ab=aa.New
+local ac=aa.Tween
 
-local ac={}local ad=a.load'j'
-.New
+local ad={}
+local ae=a.load'j'.New
 
 
-local function GetGradientData(ae)
-if typeof(ae)=="ColorSequence"then
-return ae
-elseif typeof(ae)=="Color3"then
-return ColorSequence.new(ae)
+local function GetGradientData(af)
+if typeof(af)=="ColorSequence"then
+return af
+elseif typeof(af)=="Color3"then
+return ColorSequence.new(af)
 else
 return ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 end
 
-function ac.New(ae,af)
-af.Hover=false
-af.TextOffset=0
-af.ParentConfig=af
+function ad.New(af,ag)
+ag.Hover=false
+ag.TextOffset=0
+ag.ParentConfig=ag
 
-local ag={
+local ah={
 __type="Paragraph",
-Title=af.Title or"Paragraph",
-Desc=af.Desc or nil,
-Locked=af.Locked or false,
+Title=ag.Title or"Paragraph",
+Desc=ag.Desc or nil,
+Locked=ag.Locked or false,
 Elements={}
 }
 
-local ah=a.load'z'(af)
-ag.ParagraphFrame=ah
+local ai=a.load'z'(ag)
+ah.ParagraphFrame=ai
 
 
-if af.Images and#af.Images>0 then
-local ai=ab("Frame",{
+if ag.Images and#ag.Images>0 then
+local aj=ab("Frame",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 BackgroundTransparency=1,
-Parent=ah.UIElements.Container,
+Parent=ai.UIElements.Container,
 LayoutOrder=2
 },{
 ab("UIGridLayout",{
-CellSize=af.ImageSize or UDim2.new(0,70,0,70),
+CellSize=ag.ImageSize or UDim2.new(0,70,0,70),
 CellPadding=UDim2.new(0,8,0,8),
 FillDirection=Enum.FillDirection.Horizontal,
 SortOrder=Enum.SortOrder.LayoutOrder,
@@ -5754,23 +5754,22 @@ PaddingBottom=UDim.new(0,10)
 })
 })
 
-for aj,ak in ipairs(af.Images)do
-local al=ak.Title or"Item"
-local am=ak.Quantity
-local an=ak.Image
-local ao=GetGradientData(ak.Gradient)
-local ap=ao.Keypoints[1].Value
+for ak,al in ipairs(ag.Images)do
+local am=al.Title or"Item"
+local an=al.Quantity
+local ao=al.Image
+local ap=GetGradientData(al.Gradient)
+local aq=ap.Keypoints[1].Value
 
 
-local aq=(type(ak.Callback)=="function")
+local ar=(type(al.Callback)=="function")
 
 
-local ar=aa.NewRoundFrame(8,"Squircle",{
-ImageColor3=ap,
+local as=aa.NewRoundFrame(8,"Squircle",{
+ImageColor3=aq,
 ClipsDescendants=true,
-Parent=ai,
-
-Active=aq
+Parent=aj,
+Active=ar
 },{
 
 ab("ImageLabel",{
@@ -5793,11 +5792,11 @@ ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 ZIndex=3,
 },{
-ab("UIGradient",{Color=ao,Rotation=45}),
-aa.Image(an,al,0,af.Window.Folder,"CardIcon",false).ImageLabel,
+ab("UIGradient",{Color=ap,Rotation=45}),
+aa.Image(ao,am,0,ag.Window.Folder,"CardIcon",false).ImageLabel,
 
-am and ab("TextLabel",{
-Text=am,
+an and ab("TextLabel",{
+Text=an,
 Size=UDim2.new(1,-8,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
@@ -5819,7 +5818,7 @@ BorderSizePixel=0,
 ZIndex=6,
 },{
 ab("TextLabel",{
-Text=al,
+Text=am,
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
 TextXAlignment=Enum.TextXAlignment.Center,
@@ -5831,40 +5830,64 @@ ZIndex=7,
 })
 })
 })
-},aq)
+},ar)
 
 
-local as=ar:FindFirstChild("ImageLabel",true)
-if as then
-as.Size=UDim2.new(0.65,0,0.65,0)
-as.AnchorPoint=Vector2.new(0.5,0.5)
-as.Position=UDim2.new(0.5,0,0.45,0)
-as.BackgroundTransparency=1
-as.ScaleType=Enum.ScaleType.Fit
-as.ZIndex=4
+local at=as:FindFirstChild("ImageLabel",true)
+if at then
+at.Size=UDim2.new(0.65,0,0.65,0)
+at.AnchorPoint=Vector2.new(0.5,0.5)
+at.Position=UDim2.new(0.5,0,0.45,0)
+at.BackgroundTransparency=1
+at.ScaleType=Enum.ScaleType.Fit
+at.ZIndex=4
 end
 
 
-if aq then
-aa.AddSignal(ar.MouseButton1Click,function()
-ak.Callback()
+if ar then
+aa.AddSignal(as.MouseButton1Click,function()
+al.Callback()
 end)
 
 
-aa.AddSignal(ar.MouseButton1Down,function()
-game:GetService"TweenService":Create(ar,TweenInfo.new(0.1),{Size=UDim2.new(0,66.5,0,66.5)}):Play()
+aa.AddSignal(as.MouseButton1Down,function()
+ac(as,0.1,{Size=UDim2.new(0,ag.ImageSize.X.Offset*0.95,0,ag.ImageSize.Y.Offset*0.95)}):Play()
 end)
-aa.AddSignal(ar.MouseButton1Up,function()
-game:GetService"TweenService":Create(ar,TweenInfo.new(0.1),{Size=UDim2.new(0,70,0,70)}):Play()
+aa.AddSignal(as.MouseButton1Up,function()
+ac(as,0.1,{Size=ag.ImageSize}):Play()
+end)
+aa.AddSignal(as.MouseLeave,function()
+ac(as,0.1,{Size=ag.ImageSize}):Play()
 end)
 end
 end
 end
 
-return ag.__type,ag
+
+if ag.Buttons and#ag.Buttons>0 then
+local aj=ab("Frame",{
+Size=UDim2.new(1,0,0,38),
+BackgroundTransparency=1,
+AutomaticSize="Y",
+Parent=ai.UIElements.Container,
+LayoutOrder=3
+},{
+ab("UIListLayout",{
+Padding=UDim.new(0,10),
+FillDirection="Vertical",
+})
+})
+
+for ak,al in next,ag.Buttons do
+local am=ae(al.Title,al.Icon,al.Callback,"White",aj,nil,nil,ag.Window.NewElements and 12 or 10)
+am.Size=UDim2.new(1,0,0,38)
+end
 end
 
-return ac end function a.B()
+return ah.__type,ah
+end
+
+return ad end function a.B()
 local aa=a.load'b'local ab=
 aa.New
 
