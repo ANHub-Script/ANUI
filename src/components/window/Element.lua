@@ -5,70 +5,61 @@ local Tween = Creator.Tween
 
 local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
-
 local UserInputService = cloneref(game:GetService("UserInputService"))
 
-
 local function Color3ToHSB(color)
-	local r, g, b = color.R, color.G, color.B
-	local max = math.max(r, g, b)
-	local min = math.min(r, g, b)
-	local delta = max - min
+    local r, g, b = color.R, color.G, color.B
+    local max = math.max(r, g, b)
+    local min = math.min(r, g, b)
+    local delta = max - min
 
-	local h = 0
-	if delta ~= 0 then
-		if max == r then
-			h = (g - b) / delta % 6
-		elseif max == g then
-			h = (b - r) / delta + 2
-		else
-			h = (r - g) / delta + 4
-		end
-		h = h * 60
-	else
-		h = 0
-	end
+    local h = 0
+    if delta ~= 0 then
+        if max == r then
+            h = (g - b) / delta % 6
+        elseif max == g then
+            h = (b - r) / delta + 2
+        else
+            h = (r - g) / delta + 4
+        end
+        h = h * 60
+    else
+        h = 0
+    end
 
-	local s = (max == 0) and 0 or (delta / max)
-	local v = max
+    local s = (max == 0) and 0 or (delta / max)
+    local v = max
 
-	return {
-		h = math.floor(h + 0.5),
-		s = s,
-		b = v
-	}
+    return {
+        h = math.floor(h + 0.5),
+        s = s,
+        b = v
+    }
 end
 
 local function GetPerceivedBrightness(color)
-	local r = color.R
-	local g = color.G
-	local b = color.B
-	return 0.299 * r + 0.587 * g + 0.114 * b
+    local r = color.R
+    local g = color.G
+    local b = color.B
+    return 0.299 * r + 0.587 * g + 0.114 * b
 end
 
 local function GetTextColorForHSB(color)
     local hsb = Color3ToHSB(color)
-	local h, s, b = hsb.h, hsb.s, hsb.b
-	if GetPerceivedBrightness(color) > 0.5 then
-		return Color3.fromHSV(h / 360, 0, 0.05)
-	else
-		return Color3.fromHSV(h / 360, 0, 0.98)
-	end
+    local h, s, b = hsb.h, hsb.s, hsb.b
+    if GetPerceivedBrightness(color) > 0.5 then
+        return Color3.fromHSV(h / 360, 0, 0.05)
+    else
+        return Color3.fromHSV(h / 360, 0, 0.98)
+    end
 end
-
 
 local function getElementPosition(elements, targetIndex)
     if type(targetIndex) ~= "number" or targetIndex ~= math.floor(targetIndex) then
         return nil, 1
     end
 
-    -- local maxIndex = 0
-    -- for k,_ in next, elements do
-    --     if type(k) == "number" and k > maxIndex then maxIndex = k end
-    -- end
-    
     local maxIndex = #elements
-    --print(maxIndex)
     
     if maxIndex == 0 or targetIndex < 1 or targetIndex > maxIndex then
         return nil, 2
@@ -108,7 +99,6 @@ local function getElementPosition(elements, targetIndex)
         end
     end
 
-
     if targetIndex >= groupStart and targetIndex <= maxIndex then
         local pos = targetIndex - groupStart + 1
         return calculate(pos, groupCount)
@@ -116,7 +106,6 @@ local function getElementPosition(elements, targetIndex)
 
     return nil, 4
 end
-
 
 return function(Config)
     local Element = {
@@ -131,7 +120,7 @@ return function(Config)
         Color = Config.Color,
         Scalable = Config.Scalable,
         Parent = Config.Parent,
-        Justify = Config.Justify or "Between", -- Center or Between
+        Justify = Config.Justify or "Between", 
         UIPadding = Config.Window.ElementConfig.UIPadding,
         UICorner = Config.Window.ElementConfig.UICorner,
         UIElements = {},
@@ -142,8 +131,6 @@ return function(Config)
     local ImageSize = Element.ImageSize
     local ThumbnailSize = Element.ThumbnailSize
     local CanHover = true
-    local Hovering = false
-    
     local IconOffset = 0
     
     local ThumbnailFrame
@@ -182,6 +169,7 @@ return function(Config)
         IconOffset = ImageSize
     end
     
+    -- Fungsi Helper Membuat Text (Dipakai oleh Title & Desc Parser)
     local function CreateText(Title, Type)
         local TextColor = typeof(Element.Color) == "string" 
             and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
@@ -206,11 +194,105 @@ return function(Config)
     end
     
     local Title = CreateText(Element.Title, "Title")
-    local Desc = CreateText(Element.Desc, "Desc")
-    if not Element.Desc or Element.Desc == "" then
-        Desc.Visible = false
+    
+    -- [MODIFIKASI BARU] Container untuk Deskripsi Parsed (Support Image Inline)
+    local DescContainer = New("Frame", {
+        Name = "DescContainer",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 0, 0),
+        AutomaticSize = Enum.AutomaticSize.Y,
+    })
+    
+    New("UIListLayout", {
+        Parent = DescContainer,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0, 2), -- Jarak antar baris
+    })
+
+    -- [MODIFIKASI BARU] Fungsi Parsing Pintar
+    local function UpdateDesc(text)
+        -- Bersihkan elemen lama
+        for _, c in ipairs(DescContainer:GetChildren()) do
+            if not c:IsA("UIListLayout") then c:Destroy() end
+        end
+        
+        if not text or text == "" then
+            DescContainer.Visible = false
+            return
+        end
+        DescContainer.Visible = true
+
+        -- Pecah per baris (\n)
+        local lines = string.split(text, "\n")
+        
+        for i, line in ipairs(lines) do
+            -- Frame per baris (Horizontal)
+            local LineFrame = New("Frame", {
+                Parent = DescContainer,
+                BackgroundTransparency = 1,
+                Size = UDim2.new(1, 0, 0, 0),
+                AutomaticSize = Enum.AutomaticSize.Y,
+                LayoutOrder = i
+            })
+            
+            New("UIListLayout", {
+                Parent = LineFrame,
+                FillDirection = Enum.FillDirection.Horizontal,
+                SortOrder = Enum.SortOrder.LayoutOrder,
+                Padding = UDim.new(0, 4), -- Jarak antar teks dan ikon
+                VerticalAlignment = Enum.VerticalAlignment.Center
+            })
+
+            local lastPos = 1
+            while true do
+                -- Cari pola asset id
+                local s, e = string.find(line, "rbxassetid://%d+", lastPos)
+                
+                -- Ambil teks sebelum asset (atau sisa teks jika tidak ada asset lagi)
+                local textPart = string.sub(line, lastPos, s and (s - 1) or -1)
+                
+                if textPart ~= "" then
+                    local lbl = CreateText(textPart, "Desc")
+                    lbl.Parent = LineFrame
+                    lbl.Size = UDim2.new(0, 0, 0, 0)
+                    lbl.AutomaticSize = Enum.AutomaticSize.XY
+                    lbl.TextWrapped = false -- Inline tidak wrap, baris baru pakai \n
+                end
+                
+                if not s then break end -- Tidak ada asset lagi
+                
+                -- Ambil Asset ID dan buat Gambar
+                local assetId = string.sub(line, s, e)
+                
+                local icon = New("ImageLabel", {
+                    Parent = LineFrame,
+                    BackgroundTransparency = 1,
+                    Image = assetId,
+                    Size = UDim2.new(0, 16, 0, 16), -- Ukuran ikon inline
+                    ScaleType = Enum.ScaleType.Fit,
+                    ThemeTag = {
+                        ImageColor3 = "ElementDesc" -- Ikut warna tema deskripsi
+                    },
+                    ImageTransparency = 0.3 -- Sedikit transparan agar menyatu dengan teks desc
+                })
+                
+                -- Jika Element punya warna kustom, terapkan ke ikon juga
+                if Element.Color then
+                    if typeof(Element.Color) == "string" then
+                        icon.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                    elseif typeof(Element.Color) == "Color3" then
+                        icon.ImageColor3 = GetTextColorForHSB(Element.Color)
+                    end
+                end
+                
+                lastPos = e + 1
+            end
+        end
     end
     
+    -- Inisialisasi Deskripsi Awal
+    UpdateDesc(Element.Desc)
+
     Element.UIElements.Container = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         AutomaticSize = "Y",
@@ -267,15 +349,10 @@ return function(Config)
                     HorizontalAlignment = "Left",
                 }),
                 Title,
-                Desc
+                DescContainer -- [MODIFIKASI] Gunakan DescContainer (Parsed), bukan Desc (TextLabel)
             }),
         })
     })
-    
-    
-    -- print(Config.Tab.Elements)
-    -- print(Config.Index)
-    -- print("Squircle")
     
     local LockedIcon = Creator.Image(
         "lock", 
@@ -326,7 +403,7 @@ return function(Config)
     
     local HighlightOutline, HighlightOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.25
+        ImageTransparency = 1, 
         Active = false,
         ThemeTag = {
             ImageColor3 = "Text",
@@ -343,7 +420,7 @@ return function(Config)
     
     local Highlight, HighlightTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.88
+        ImageTransparency = 1, 
         Active = false,
         ThemeTag = {
             ImageColor3 = "Text",
@@ -361,7 +438,7 @@ return function(Config)
     
     local HoverOutline, HoverOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.25
+        ImageTransparency = 1, 
         Active = false,
         ThemeTag = {
             ImageColor3 = "Text",
@@ -393,7 +470,7 @@ return function(Config)
     
     local Hover, HoverTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.88
+        ImageTransparency = 1, 
         Active = false,
         ThemeTag = {
             ImageColor3 = "Text",
@@ -427,9 +504,6 @@ return function(Config)
         Size = UDim2.new(1,0,0,0),
         AutomaticSize = "Y",
         ImageTransparency = Element.Color and .05 or .93,
-        --Text = "",
-        --TextTransparency = 1,
-        --AutoButtonColor = false,
         Parent = Config.Parent,
         ThemeTag = {
             ImageColor3 = not Element.Color and "ElementBackground" or nil
@@ -483,11 +557,11 @@ return function(Config)
     
     function Element:SetDesc(text)
         Element.Desc = text
-        Desc.Text = text or ""
-        if not text then
-            Desc.Visible = false
-        elseif not Desc.Visible then
-            Desc.Visible = true
+        UpdateDesc(text) -- Panggil parser baru
+        
+        -- Update ke config system jika perlu
+        if Config.ElementTable then
+             Config.ElementTable.Desc = text
         end
     end
     
@@ -509,17 +583,7 @@ return function(Config)
                 Config.ElementTable.Title = Title.Text
             end
         end)
-        Creator.AddSignal(Desc:GetPropertyChangedSignal("Text"), function()
-            if Element.Desc ~= Desc.Text then
-                Element:SetDesc(Desc.Text)
-                Config.ElementTable.Desc = Desc.Text
-            end
-        end)
     end
-    
-    -- function Element:Show()
-        
-    -- end
     
     function Element:SetThumbnail(newThumbnail, newSize)
         Element.Thumbnail = newThumbnail
@@ -687,7 +751,6 @@ return function(Config)
     function Element.UpdateShape(Tab)
         if Config.Window.NewElements then
             local newShape
-            -- print("[DEBUG] Title:", Element.Title, "ParentType:", Config.ParentConfig and Config.ParentConfig.ParentType or "NIL")
             local pType = Config.ParentType or (Config.ParentConfig and Config.ParentConfig.ParentType)
             if pType == "Group" or pType == "Paragraph" then
                 newShape = "Squircle"
@@ -705,10 +768,6 @@ return function(Config)
             end
         end
     end
-    
-    --task.wait(.015)
-    
-    --Element:Show()
     
     return Element
 end

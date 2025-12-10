@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.167  |  2025-12-10  |  Roblox UI Library for scripts
+    v1.0.168  |  2025-12-10  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.167",
+    "version": "1.0.168",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4990,9 +4990,7 @@ local ad=aa.Tween
 
 local ae=(cloneref or clonereference or function(ae)return ae end)
 
-
 ae(game:GetService"UserInputService")
-
 
 local function Color3ToHSB(af)
 local ag,ah,ai=af.R,af.G,af.B
@@ -5041,19 +5039,12 @@ return Color3.fromHSV(ah/360,0,0.98)
 end
 end
 
-
 local function getElementPosition(af,ag)
 if type(ag)~="number"or ag~=math.floor(ag)then
 return nil,1
 end
 
-
-
-
-
-
 local ah=#af
-
 
 if ah==0 or ag<1 or ag>ah then
 return nil,2
@@ -5093,7 +5084,6 @@ aj=aj+1
 end
 end
 
-
 if ag>=ai and ag<=ah then
 local ak=ag-ai+1
 return calculate(ak,aj)
@@ -5101,7 +5091,6 @@ end
 
 return nil,4
 end
-
 
 return function(af)
 local ag={
@@ -5127,8 +5116,6 @@ Index=af.Index
 local ah=ag.ImageSize
 local ai=ag.ThumbnailSize
 local aj=true
-
-
 local ak=0
 
 local al
@@ -5167,6 +5154,7 @@ am.Size=UDim2.new(0,ah,0,ah)
 ak=ah
 end
 
+
 local function CreateText(an,ao)
 local ap=typeof(ag.Color)=="string"
 and GetTextColorForHSB(Color3.fromHex(aa.Colors[ag.Color]))
@@ -5191,10 +5179,104 @@ FontFace=Font.new(aa.Font,ao=="Desc"and Enum.FontWeight.Medium or Enum.FontWeigh
 end
 
 local an=CreateText(ag.Title,"Title")
-local ao=CreateText(ag.Desc,"Desc")
-if not ag.Desc or ag.Desc==""then
-ao.Visible=false
+
+
+local ao=ab("Frame",{
+Name="DescContainer",
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,0,0),
+AutomaticSize=Enum.AutomaticSize.Y,
+})
+
+ab("UIListLayout",{
+Parent=ao,
+SortOrder=Enum.SortOrder.LayoutOrder,
+Padding=UDim.new(0,2),
+})
+
+
+local function UpdateDesc(ap)
+
+for aq,ar in ipairs(ao:GetChildren())do
+if not ar:IsA"UIListLayout"then ar:Destroy()end
 end
+
+if not ap or ap==""then
+ao.Visible=false
+return
+end
+ao.Visible=true
+
+
+local aq=string.split(ap,"\n")
+
+for ar,as in ipairs(aq)do
+
+local at=ab("Frame",{
+Parent=ao,
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,0,0),
+AutomaticSize=Enum.AutomaticSize.Y,
+LayoutOrder=ar
+})
+
+ab("UIListLayout",{
+Parent=at,
+FillDirection=Enum.FillDirection.Horizontal,
+SortOrder=Enum.SortOrder.LayoutOrder,
+Padding=UDim.new(0,4),
+VerticalAlignment=Enum.VerticalAlignment.Center
+})
+
+local au=1
+while true do
+
+local av,aw=string.find(as,"rbxassetid://%d+",au)
+
+
+local ax=string.sub(as,au,av and(av-1)or-1)
+
+if ax~=""then
+local ay=CreateText(ax,"Desc")
+ay.Parent=at
+ay.Size=UDim2.new(0,0,0,0)
+ay.AutomaticSize=Enum.AutomaticSize.XY
+ay.TextWrapped=false
+end
+
+if not av then break end
+
+
+local ay=string.sub(as,av,aw)
+
+local az=ab("ImageLabel",{
+Parent=at,
+BackgroundTransparency=1,
+Image=ay,
+Size=UDim2.new(0,16,0,16),
+ScaleType=Enum.ScaleType.Fit,
+ThemeTag={
+ImageColor3="ElementDesc"
+},
+ImageTransparency=0.3
+})
+
+
+if ag.Color then
+if typeof(ag.Color)=="string"then
+az.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ag.Color]))
+elseif typeof(ag.Color)=="Color3"then
+az.ImageColor3=GetTextColorForHSB(ag.Color)
+end
+end
+
+au=aw+1
+end
+end
+end
+
+
+UpdateDesc(ag.Desc)
 
 ag.UIElements.Container=ab("Frame",{
 Size=UDim2.new(1,0,1,0),
@@ -5256,11 +5338,6 @@ ao
 }),
 })
 })
-
-
-
-
-
 
 local ap=aa.Image(
 "lock",
@@ -5412,9 +5489,6 @@ local d,e=ac(ag.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 ImageTransparency=ag.Color and.05 or.93,
-
-
-
 Parent=af.Parent,
 ThemeTag={
 ImageColor3=not ag.Color and"ElementBackground"or nil
@@ -5468,11 +5542,11 @@ end
 
 function ag.SetDesc(f,g)
 ag.Desc=g
-ao.Text=g or""
-if not g then
-ao.Visible=false
-elseif not ao.Visible then
-ao.Visible=true
+UpdateDesc(g)
+
+
+if af.ElementTable then
+af.ElementTable.Desc=g
 end
 end
 
@@ -5494,17 +5568,7 @@ ag:SetTitle(an.Text)
 af.ElementTable.Title=an.Text
 end
 end)
-aa.AddSignal(ao:GetPropertyChangedSignal"Text",function()
-if ag.Desc~=ao.Text then
-ag:SetDesc(ao.Text)
-af.ElementTable.Desc=ao.Text
 end
-end)
-end
-
-
-
-
 
 function ag.SetThumbnail(f,g,h)
 ag.Thumbnail=g
@@ -5672,7 +5736,6 @@ end
 function ag.UpdateShape(f)
 if af.Window.NewElements then
 local g
-
 local h=af.ParentType or(af.ParentConfig and af.ParentConfig.ParentType)
 if h=="Group"or h=="Paragraph"then
 g="Squircle"
@@ -5691,13 +5754,8 @@ end
 end
 end
 
-
-
-
-
 return ag
 end end function a.A()
-
 local aa=a.load'b'
 local ab=aa.New
 local ac=aa.Tween
