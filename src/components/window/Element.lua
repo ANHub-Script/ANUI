@@ -5,8 +5,6 @@ local Tween = Creator.Tween
 
 local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
-local UserInputService = cloneref(game:GetService("UserInputService"))
-
 local function Color3ToHSB(color)
     local r, g, b = color.R, color.G, color.B
     local max = math.max(r, g, b)
@@ -169,7 +167,7 @@ return function(Config)
         IconOffset = ImageSize
     end
     
-    -- Fungsi Helper Membuat Text (Dipakai oleh Title & Desc Parser)
+    -- Helper Create Text
     local function CreateText(Title, Type)
         local TextColor = typeof(Element.Color) == "string" 
             and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
@@ -195,104 +193,152 @@ return function(Config)
     
     local Title = CreateText(Element.Title, "Title")
     
-    -- [MODIFIKASI BARU] Container untuk Deskripsi Parsed (Support Image Inline)
+    -- Container Deskripsi
     local DescContainer = New("Frame", {
         Name = "DescContainer",
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 0),
         AutomaticSize = Enum.AutomaticSize.Y,
-    })
-    
-    New("UIListLayout", {
-        Parent = DescContainer,
-        SortOrder = Enum.SortOrder.LayoutOrder,
-        Padding = UDim.new(0, 2), -- Jarak antar baris
+    }, {
+        New("UIListLayout", {
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Padding = UDim.new(0, 2),
+        })
     })
 
-    -- [MODIFIKASI BARU] Fungsi Parsing Pintar
+    -- [FUNGSI OPTIMASI LAG] UpdateDesc dengan Reuse Instance
     local function UpdateDesc(text)
-        -- Bersihkan elemen lama
-        for _, c in ipairs(DescContainer:GetChildren()) do
-            if not c:IsA("UIListLayout") then c:Destroy() end
-        end
-        
         if not text or text == "" then
             DescContainer.Visible = false
             return
         end
         DescContainer.Visible = true
 
-        -- Pecah per baris (\n)
+        -- 1. Parsing Struktur Data
         local lines = string.split(text, "\n")
-        
-        for i, line in ipairs(lines) do
-            -- Frame per baris (Horizontal)
-            local LineFrame = New("Frame", {
-                Parent = DescContainer,
-                BackgroundTransparency = 1,
-                Size = UDim2.new(1, 0, 0, 0),
-                AutomaticSize = Enum.AutomaticSize.Y,
-                LayoutOrder = i
-            })
-            
-            New("UIListLayout", {
-                Parent = LineFrame,
-                FillDirection = Enum.FillDirection.Horizontal,
-                SortOrder = Enum.SortOrder.LayoutOrder,
-                Padding = UDim.new(0, 4), -- Jarak antar teks dan ikon
-                VerticalAlignment = Enum.VerticalAlignment.Center
-            })
-
+        local parsedData = {} 
+        for _, line in ipairs(lines) do
+            local lineItems = {}
             local lastPos = 1
             while true do
-                -- Cari pola asset id
                 local s, e = string.find(line, "rbxassetid://%d+", lastPos)
-                
-                -- Ambil teks sebelum asset (atau sisa teks jika tidak ada asset lagi)
                 local textPart = string.sub(line, lastPos, s and (s - 1) or -1)
                 
                 if textPart ~= "" then
-                    local lbl = CreateText(textPart, "Desc")
-                    lbl.Parent = LineFrame
-                    lbl.Size = UDim2.new(0, 0, 0, 0)
-                    lbl.AutomaticSize = Enum.AutomaticSize.XY
-                    lbl.TextWrapped = false -- Inline tidak wrap, baris baru pakai \n
+                    table.insert(lineItems, {Type = "Text", Content = textPart})
                 end
                 
-                if not s then break end -- Tidak ada asset lagi
+                if not s then break end
                 
-                -- Ambil Asset ID dan buat Gambar
                 local assetId = string.sub(line, s, e)
-                
-                local icon = New("ImageLabel", {
-                    Parent = LineFrame,
+                table.insert(lineItems, {Type = "Image", Content = assetId})
+                lastPos = e + 1
+            end
+            table.insert(parsedData, lineItems)
+        end
+
+        -- 2. Daur Ulang Baris (Line Reuse)
+        local currentLines = {}
+        for _, c in ipairs(DescContainer:GetChildren()) do
+            if c:IsA("Frame") then table.insert(currentLines, c) end
+        end
+
+        for i, items in ipairs(parsedData) do
+            local lineFrame = currentLines[i]
+            
+            -- Jika baris belum ada, buat baru
+            if not lineFrame then
+                lineFrame = New("Frame", {
+                    Parent = DescContainer,
                     BackgroundTransparency = 1,
-                    Image = assetId,
-                    Size = UDim2.new(0, 16, 0, 16), -- Ukuran ikon inline
-                    ScaleType = Enum.ScaleType.Fit,
-                    ThemeTag = {
-                        ImageColor3 = "ElementDesc" -- Ikut warna tema deskripsi
-                    },
-                    ImageTransparency = 0.3 -- Sedikit transparan agar menyatu dengan teks desc
+                    Size = UDim2.new(1, 0, 0, 0),
+                    AutomaticSize = Enum.AutomaticSize.Y,
+                }, {
+                     New("UIListLayout", {
+                        FillDirection = Enum.FillDirection.Horizontal,
+                        SortOrder = Enum.SortOrder.LayoutOrder,
+                        Padding = UDim.new(0, 4),
+                        VerticalAlignment = Enum.VerticalAlignment.Center
+                    })
                 })
+            end
+            lineFrame.LayoutOrder = i
+            lineFrame.Visible = true
+
+            -- 3. Daur Ulang Isi Baris (Item Reuse)
+            local currentItems = {}
+            for _, c in ipairs(lineFrame:GetChildren()) do 
+                if c:IsA("GuiObject") then table.insert(currentItems, c) end 
+            end
+
+            for j, itemData in ipairs(items) do
+                local itemFrame = currentItems[j]
                 
-                -- Jika Element punya warna kustom, terapkan ke ikon juga
-                if Element.Color then
-                    if typeof(Element.Color) == "string" then
-                        icon.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-                    elseif typeof(Element.Color) == "Color3" then
-                        icon.ImageColor3 = GetTextColorForHSB(Element.Color)
+                -- Cek kesesuaian Tipe (TextLabel vs ImageLabel)
+                if itemFrame then
+                    local isText = itemFrame:IsA("TextLabel")
+                    local isImage = itemFrame:IsA("ImageLabel")
+                    if (itemData.Type == "Text" and not isText) or (itemData.Type == "Image" and not isImage) then
+                        itemFrame:Destroy()
+                        itemFrame = nil
+                    end
+                end
+
+                -- Jika tidak ada atau tipe salah, buat baru
+                if not itemFrame then
+                    if itemData.Type == "Text" then
+                        itemFrame = CreateText(itemData.Content, "Desc")
+                        itemFrame.Parent = lineFrame
+                        itemFrame.Size = UDim2.new(0,0,0,0)
+                        itemFrame.AutomaticSize = Enum.AutomaticSize.XY
+                        itemFrame.TextWrapped = false
+                    else
+                        itemFrame = New("ImageLabel", {
+                            Parent = lineFrame,
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(0, 16, 0, 16),
+                            ScaleType = Enum.ScaleType.Fit,
+                            ThemeTag = { ImageColor3 = "ElementDesc" },
+                            ImageTransparency = 0.3
+                        })
                     end
                 end
                 
-                lastPos = e + 1
+                -- Update Properti (Tanpa Re-create)
+                itemFrame.LayoutOrder = j
+                itemFrame.Visible = true
+                
+                if itemData.Type == "Text" then
+                    if itemFrame.Text ~= itemData.Content then
+                         itemFrame.Text = itemData.Content
+                    end
+                else
+                    if itemFrame.Image ~= itemData.Content then
+                        itemFrame.Image = itemData.Content
+                    end
+                    -- Update warna jika custom color aktif
+                    if Element.Color then
+                        if typeof(Element.Color) == "string" then
+                            itemFrame.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                        elseif typeof(Element.Color) == "Color3" then
+                            itemFrame.ImageColor3 = GetTextColorForHSB(Element.Color)
+                        end
+                    end
+                end
             end
+            
+            -- Hapus item sisa di baris ini yang tidak terpakai
+            for k = #items + 1, #currentItems do
+                currentItems[k]:Destroy()
+            end
+        end
+
+        -- Hapus baris sisa yang tidak terpakai
+        for k = #parsedData + 1, #currentLines do
+            currentLines[k]:Destroy()
         end
     end
     
-    -- Inisialisasi Deskripsi Awal
-    UpdateDesc(Element.Desc)
-
     Element.UIElements.Container = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         AutomaticSize = "Y",
@@ -349,18 +395,13 @@ return function(Config)
                     HorizontalAlignment = "Left",
                 }),
                 Title,
-                DescContainer -- [MODIFIKASI] Gunakan DescContainer (Parsed), bukan Desc (TextLabel)
+                DescContainer -- Menggunakan Container Pintar
             }),
         })
     })
     
     local LockedIcon = Creator.Image(
-        "lock", 
-        "lock", 
-        0, 
-        Config.Window.Folder,
-        "Lock",
-        false
+        "lock", "lock", 0, Config.Window.Folder, "Lock", false
     )
     LockedIcon.Size = UDim2.new(0,20,0,20)
     LockedIcon.ImageLabel.ImageColor3 = Color3.new(1,1,1)
@@ -405,9 +446,7 @@ return function(Config)
         Size = UDim2.new(1,0,1,0),
         ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -422,9 +461,7 @@ return function(Config)
         Size = UDim2.new(1,0,1,0),
         ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -435,14 +472,11 @@ return function(Config)
         }),
     }, nil, true)
     
-    
     local HoverOutline, HoverOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
         ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -472,9 +506,7 @@ return function(Config)
         Size = UDim2.new(1,0,1,0),
         ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIGradient", {
@@ -556,16 +588,22 @@ return function(Config)
     end
     
     function Element:SetDesc(text)
-        Element.Desc = text
-        UpdateDesc(text) -- Panggil parser baru
+        -- [OPTIMASI 1] Equality Check: Jika teks sama persis, JANGAN update apapun.
+        if Element.Desc == text then
+            return 
+        end
         
-        -- Update ke config system jika perlu
+        Element.Desc = text
+        UpdateDesc(text) -- Panggil parser yang sudah dioptimasi
+        
         if Config.ElementTable then
              Config.ElementTable.Desc = text
         end
     end
     
-    
+    -- Inisialisasi awal
+    UpdateDesc(Element.Desc)
+
     function Element:Colorize(obj, prop)
         if Element.Color then
             obj[prop] = typeof(Element.Color) == "string" 
@@ -676,7 +714,6 @@ return function(Config)
         Main:Destroy()
     end
     
-    
     function Element:Lock()
         CanHover = false
         Locked.Active = true
@@ -737,7 +774,6 @@ return function(Config)
             Offset = Vector2.new(1, 0)
         }):Play()
         
-        
         task.spawn(function()
             task.wait(.75)
             HighlightOutline.ImageTransparency = 1
@@ -747,7 +783,6 @@ return function(Config)
         end)
     end
     
-
     function Element.UpdateShape(Tab)
         if Config.Window.NewElements then
             local newShape
