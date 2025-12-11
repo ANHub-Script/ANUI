@@ -229,6 +229,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 
     -- [HELPER] Fungsi Render Card (Dipakai di Refresh & Edit)
     local function RenderImages(Container, ImagesData)
+        -- Bersihkan container lama
         for _, child in ipairs(Container:GetChildren()) do
             if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
                 child:Destroy()
@@ -271,12 +272,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 
                 local borderThickness = 3
 
+                -- Render Struktur Card
                 local Card = Creator.NewRoundFrame(8, "Squircle", {
                     Size = CardSize,
                     Parent = Container,
                     ImageColor3 = BorderColor,
                     ClipsDescendants = true,
                 }, {
+                    -- Shadow Inner
                     New("ImageLabel", {
                         Image = "rbxassetid://5554236805",
                         ScaleType = Enum.ScaleType.Slice,
@@ -287,7 +290,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         ImageTransparency = 0.4,
                         ZIndex = 2,
                     }),
-                    Creator.NewRoundFrame(8, "Squircle", {
+                    
+                    -- [PERBAIKAN] Tambahkan tanda kurung ( ) di sini agar tidak error
+                    (Creator.NewRoundFrame(8, "Squircle", {
                         Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
                         AnchorPoint = Vector2.new(0.5, 0.5),
@@ -355,9 +360,10 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 ZIndex = 7,
                             }),
                         })
-                    })
+                    })) -- Tutup kurung perbaikan
                 })
             else
+                -- Render Gambar Biasa (Bukan Card)
                 local imageId = (typeof(imageData) == "table" and (imageData.Image or imageData.Icon or imageData.Id)) or imageData
                 local imgFrame = Creator.Image(
                     imageId,

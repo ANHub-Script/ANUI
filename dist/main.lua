@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.175  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.176  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.175",
+    "version": "1.0.176",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7515,6 +7515,7 @@ end
 
 
 local function RenderImages(as,at)
+
 for au,av in ipairs(as:GetChildren())do
 if not av:IsA"UIListLayout"and not av:IsA"UIPadding"then
 av:Destroy()
@@ -7557,12 +7558,14 @@ end
 
 local g=3
 
+
 ai.NewRoundFrame(8,"Squircle",{
 Size=ax,
 Parent=as,
 ImageColor3=f,
 ClipsDescendants=true,
 },{
+
 aj("ImageLabel",{
 Image="rbxassetid://5554236805",
 ScaleType=Enum.ScaleType.Slice,
@@ -7573,7 +7576,9 @@ ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
 ZIndex=2,
 }),
-ai.NewRoundFrame(8,"Squircle",{
+
+
+(ai.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,-g*2,1,-g*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
@@ -7641,9 +7646,10 @@ TextTruncate="AtEnd",
 ZIndex=7,
 }),
 })
-})
+}))
 })
 else
+
 local ax=(typeof(av)=="table"and(av.Image or av.Icon or av.Id))or av
 local ay=ai.Image(
 ax,
