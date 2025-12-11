@@ -3,7 +3,7 @@
 return [[
 {
     "name": "ANUI",
-    "version": "1.0.173",
+    "version": "1.0.174",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

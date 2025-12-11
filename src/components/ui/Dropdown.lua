@@ -86,6 +86,161 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             MaxSize = Vector2.new(300,400),
         })
     })
+
+    -- [HELPER] Fungsi Lokal untuk Render Gambar/Kartu (Agar bisa dipakai Refresh & Edit)
+    local function RenderImages(Container, ImagesData)
+        -- Bersihkan container lama
+        for _, child in ipairs(Container:GetChildren()) do
+            if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
+                child:Destroy()
+            end
+        end
+
+        if not ImagesData or #ImagesData == 0 then return end
+
+        for _, imageData in ipairs(ImagesData) do
+            local isCard = false
+            if typeof(imageData) == "table" and (imageData.Quantity or imageData.Gradient or imageData.Card) then
+                isCard = true
+            end
+            
+            if isCard then
+                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
+                local CardTitle = imageData.Title or "Item"
+                local CardQuantity = imageData.Quantity or ""
+                local CardRate = imageData.Rate or "" 
+                local CardImage = imageData.Image or ""
+                local CardGradient = imageData.Gradient
+                
+                local GradientColor
+                if typeof(CardGradient) == "ColorSequence" then
+                    GradientColor = CardGradient
+                elseif typeof(CardGradient) == "Color3" then
+                    GradientColor = ColorSequence.new(CardGradient)
+                else
+                    GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
+                end
+                
+                -- Ambil warna border dari Keypoint pertama gradient
+                local BorderColor
+                if typeof(CardGradient) == "ColorSequence" and CardGradient.Keypoints[1] then
+                    BorderColor = CardGradient.Keypoints[1].Value
+                elseif typeof(CardGradient) == "Color3" then
+                    BorderColor = CardGradient
+                else
+                    BorderColor = Color3.fromRGB(80, 80, 80)
+                end
+                
+                local borderThickness = 3
+
+                -- Render Struktur Card
+                local Card = Creator.NewRoundFrame(8, "Squircle", {
+                    Size = CardSize,
+                    Parent = Container,
+                    ImageColor3 = BorderColor,
+                    ClipsDescendants = true,
+                }, {
+                    New("ImageLabel", {
+                        Image = "rbxassetid://5554236805",
+                        ScaleType = Enum.ScaleType.Slice,
+                        SliceCenter = Rect.new(23,23,277,277),
+                        Size = UDim2.new(1,0,1,0),
+                        BackgroundTransparency = 1,
+                        ImageColor3 = Color3.new(0,0,0),
+                        ImageTransparency = 0.4,
+                        ZIndex = 2,
+                    }),
+                    Creator.NewRoundFrame(8, "Squircle", {
+                        Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2),
+                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        ImageColor3 = Color3.new(1,1,1),
+                        ClipsDescendants = true,
+                        ZIndex = 3,
+                    }, {
+                        New("UIGradient", { Color = GradientColor, Rotation = 45 }),
+                        New("ImageLabel", {
+                            Image = CardImage,
+                            Size = UDim2.new(0.65, 0, 0.65, 0),
+                            AnchorPoint = Vector2.new(0.5, 0.5),
+                            Position = UDim2.new(0.5, 0, 0.45, 0),
+                            BackgroundTransparency = 1,
+                            ScaleType = "Fit",
+                            ZIndex = 4,
+                        }),
+                        New("TextLabel", {
+                            Text = CardQuantity,
+                            Size = UDim2.new(0.5, 0, 0, 12),
+                            Position = UDim2.new(0, 4, 0, 2),
+                            BackgroundTransparency = 1,
+                            TextXAlignment = Enum.TextXAlignment.Left,
+                            TextColor3 = Color3.new(1, 1, 1),
+                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                            TextSize = 10,
+                            TextStrokeTransparency = 0, 
+                            TextStrokeColor3 = Color3.new(0,0,0),
+                            ZIndex = 5,
+                        }),
+                        New("TextLabel", {
+                            Text = CardRate,
+                            Size = UDim2.new(0.5, -4, 0, 12),
+                            Position = UDim2.new(1, -4, 0, 2),
+                            AnchorPoint = Vector2.new(1, 0),
+                            BackgroundTransparency = 1,
+                            TextXAlignment = Enum.TextXAlignment.Right, 
+                            TextColor3 = Color3.new(1, 1, 1),
+                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                            TextSize = 10,
+                            TextStrokeTransparency = 0,
+                            TextStrokeColor3 = Color3.new(0,0,0),
+                            ZIndex = 5,
+                        }),
+                        New("Frame", {
+                            Size = UDim2.new(1, 0, 0, 18),
+                            Position = UDim2.new(0, 0, 1, 0),
+                            AnchorPoint = Vector2.new(0, 1),
+                            BackgroundColor3 = Color3.new(0, 0, 0),
+                            BackgroundTransparency = 0.4,
+                            BorderSizePixel = 0,
+                            ZIndex = 6,
+                        }, {
+                            New("TextLabel", {
+                                Text = CardTitle,
+                                Size = UDim2.new(1, 0, 1, 0), 
+                                Position = UDim2.new(0, 0, 0, 0),
+                                BackgroundTransparency = 1,
+                                TextXAlignment = Enum.TextXAlignment.Center, 
+                                TextColor3 = Color3.new(1, 1, 1),
+                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                TextSize = 9, 
+                                TextWrapped = true,
+                                TextTruncate = "AtEnd",
+                                ZIndex = 7,
+                            }),
+                        })
+                    })
+                })
+            else
+                -- Render Gambar Biasa (Bukan Card)
+                local imageId
+                if typeof(imageData) == "table" then
+                    imageId = imageData.Image or imageData.Icon or imageData.Id or imageData
+                else
+                    imageId = imageData
+                end
+                local imgFrame = Creator.Image(
+                    imageId,
+                    tostring(imageId),
+                    6,
+                    Config.Window.Folder,
+                    "Dropdown",
+                    false
+                )
+                imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
+                imgFrame.Parent = Container
+            end
+        end
+    end
     
     local function RecalculateCanvasSize()
         Dropdown.UIElements.Menu.Frame.ScrollingFrame.CanvasSize = UDim2.fromOffset(0, Dropdown.UIElements.UIListLayout.AbsoluteContentSize.Y)
@@ -400,168 +555,11 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     })
                 }, true)
 
+                -- [UPDATE] Menggunakan Helper RenderImages
                 if TabMain.Images and #TabMain.Images > 0 then
                     local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
                     if imagesContainer then
-                        for _, imageData in ipairs(TabMain.Images) do
-                            local isCard = false
-                            if typeof(imageData) == "table" and (imageData.Quantity or imageData.Gradient or imageData.Card) then
-                                isCard = true
-                            end
-                            
-                            if isCard then
-                                local CardSize = imageData.Size or Dropdown.ImageSize or UDim2.new(0, 60, 0, 60)
-                                local CardTitle = imageData.Title or TabMain.Name
-                                local CardQuantity = imageData.Quantity or ""
-                                local CardRate = imageData.Rate or "" 
-                                local CardImage = imageData.Image or ""
-                                local CardGradient = imageData.Gradient
-                                
-                                local GradientColor
-                                if typeof(CardGradient) == "ColorSequence" then
-                                    GradientColor = CardGradient
-                                elseif typeof(CardGradient) == "Color3" then
-                                    GradientColor = ColorSequence.new(CardGradient)
-                                else
-                                    GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
-                                end
-                                
-                                -- Mengambil warna untuk border dari warna pertama di Gradient
-                                local BorderColor
-                                if typeof(CardGradient) == "ColorSequence" and CardGradient.Keypoints[1] then
-                                    BorderColor = CardGradient.Keypoints[1].Value
-                                elseif typeof(CardGradient) == "Color3" then
-                                    BorderColor = CardGradient
-                                else
-                                    BorderColor = Color3.fromRGB(80, 80, 80)
-                                end
-                                
-                                local borderThickness = 3 -- Ketebalan border
-
-                                -- [FIX STRUKTUR CARD] Menggunakan Layering untuk Border + Inner Shadow yang akurat
-                                
-                                -- 1. Layer Terluar: Base Border (Squircle Shape berwarna)
-                                local Card = Creator.NewRoundFrame(8, "Squircle", {
-                                    Size = CardSize,
-                                    Parent = imagesContainer,
-                                    ImageColor3 = BorderColor, -- Warna Border diambil dari gradient
-                                    ClipsDescendants = true,
-                                }, {
-                                    -- 2. Layer Shadow: Gambar bayangan di dalam border
-                                    New("ImageLabel", {
-                                        Image = "rbxassetid://5554236805", -- Asset shadow generik
-                                        ScaleType = Enum.ScaleType.Slice,
-                                        SliceCenter = Rect.new(23,23,277,277),
-                                        Size = UDim2.new(1,0,1,0),
-                                        BackgroundTransparency = 1,
-                                        ImageColor3 = Color3.new(0,0,0),
-                                        ImageTransparency = 0.4, -- Tingkat kegelapan inner shadow
-                                        ZIndex = 2,
-                                    }),
-
-                                    -- 3. Layer Konten Dalam: Container untuk isi kartu, ukurannya dikurangi ketebalan border
-                                    Creator.NewRoundFrame(8, "Squircle", {
-                                        Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2), -- Kurangi ukuran untuk membuat efek border
-                                        Position = UDim2.new(0.5, 0, 0.5, 0),
-                                        AnchorPoint = Vector2.new(0.5, 0.5),
-                                        ImageColor3 = Color3.new(1,1,1), -- Base warna putih untuk gradient
-                                        ClipsDescendants = true, -- Penting agar title bar terpotong rapi mengikuti bentuk squircle
-                                        ZIndex = 3,
-                                    }, {
-                                        -- Gradient Utama (Isi Kartu)
-                                        New("UIGradient", {
-                                            Color = GradientColor,
-                                            Rotation = 45,
-                                        }),
-                                        
-                                        -- Background Image Item
-                                        New("ImageLabel", {
-                                            Image = CardImage,
-                                            Size = UDim2.new(0.65, 0, 0.65, 0),
-                                            AnchorPoint = Vector2.new(0.5, 0.5),
-                                            Position = UDim2.new(0.5, 0, 0.45, 0),
-                                            BackgroundTransparency = 1,
-                                            ScaleType = "Fit",
-                                            ZIndex = 4,
-                                        }),
-                                        
-                                        -- Quantity (Kiri Atas) + Text Stroke Hitam
-                                        New("TextLabel", {
-                                            Text = CardQuantity,
-                                            Size = UDim2.new(0.5, 0, 0, 12),
-                                            Position = UDim2.new(0, 4, 0, 2),
-                                            BackgroundTransparency = 1,
-                                            TextXAlignment = Enum.TextXAlignment.Left,
-                                            TextColor3 = Color3.new(1, 1, 1),
-                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 10,
-                                            TextStrokeTransparency = 0, 
-                                            TextStrokeColor3 = Color3.new(0,0,0),
-                                            ZIndex = 5,
-                                        }),
-
-                                        -- Rate (Kanan Atas) + Text Stroke Hitam
-                                        New("TextLabel", {
-                                            Text = CardRate,
-                                            Size = UDim2.new(0.5, -4, 0, 12),
-                                            Position = UDim2.new(1, -4, 0, 2),
-                                            AnchorPoint = Vector2.new(1, 0),
-                                            BackgroundTransparency = 1,
-                                            TextXAlignment = Enum.TextXAlignment.Right, 
-                                            TextColor3 = Color3.new(1, 1, 1),
-                                            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                            TextSize = 10,
-                                            TextStrokeTransparency = 0,
-                                            TextStrokeColor3 = Color3.new(0,0,0),
-                                            ZIndex = 5,
-                                        }),
-
-                                        -- [FIX] Title Bar Menyatu (Lebih rapi karena diclip oleh parent Squircle)
-                                        New("Frame", {
-                                            Size = UDim2.new(1, 0, 0, 20), -- Tinggi title bar
-                                            Position = UDim2.new(0, 0, 1, 0), -- Posisi di bawah
-                                            AnchorPoint = Vector2.new(0, 1),
-                                            BackgroundColor3 = Color3.new(0, 0, 0),
-                                            BackgroundTransparency = 0.4, -- Transparan hitam
-                                            BorderSizePixel = 0,
-                                            ZIndex = 6,
-                                        }, {
-                                            -- Text Title
-                                            New("TextLabel", {
-                                                Text = CardTitle,
-                                                Size = UDim2.new(1, 0, 1, 0), 
-                                                Position = UDim2.new(0, 0, 0, 0),
-                                                BackgroundTransparency = 1,
-                                                TextXAlignment = Enum.TextXAlignment.Center, 
-                                                TextColor3 = Color3.new(1, 1, 1),
-                                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                                                TextSize = 9, 
-                                                TextWrapped = true,
-                                                TextTruncate = "AtEnd",
-                                                ZIndex = 7,
-                                            }),
-                                        })
-                                    })
-                                })
-                            else
-                                local imageId
-                                if typeof(imageData) == "table" then
-                                    imageId = imageData.Image or imageData.Icon or imageData.Id or imageData
-                                else
-                                    imageId = imageData
-                                end
-                                local imgFrame = Creator.Image(
-                                    imageId,
-                                    tostring(imageId) .. ":" .. TabMain.Name,
-                                    6,
-                                    Config.Window.Folder,
-                                    "Dropdown",
-                                    false
-                                )
-                                imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
-                                imgFrame.Parent = imagesContainer
-                            end
-                        end
+                        RenderImages(imagesContainer, TabMain.Images)
                     end
                 end
                 
@@ -770,73 +768,80 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         end)
     end
 
-    -- [FITUR BARU] Edit Item Tanpa Refresh
+    -- [FITUR BARU] Edit Item Tanpa Refresh (Support Card & Images)
     function DropdownModule:Edit(TargetName, NewData)
-        -- Loop melalui Tabs yang sudah dibuat (Cache UI)
         for Index, TabData in ipairs(Dropdown.Tabs) do
-            -- Cek apakah nama item cocok
             if TabData.Name == TargetName then
                 
-                -- 1. Update Internal Data (Agar saat di-refresh manual nanti datanya tidak kembali ke lama)
-                -- Kita update Dropdown.Values (Source Data)
-                if Dropdown.Values[Index] then
-                    if type(Dropdown.Values[Index]) == "table" then
-                        if NewData.Title then Dropdown.Values[Index].Title = NewData.Title end
-                        if NewData.Desc then Dropdown.Values[Index].Desc = NewData.Desc end
-                        if NewData.Image then Dropdown.Values[Index].Image = NewData.Image end
-                        -- Update Value Internal Tab
-                        if NewData.Title then TabData.Original.Title = NewData.Title end
-                        if NewData.Desc then TabData.Original.Desc = NewData.Desc end
-                    elseif type(Dropdown.Values[Index]) == "string" and NewData.Title then
-                         -- Jika aslinya string, kita ubah jadi string baru
-                         Dropdown.Values[Index] = NewData.Title
-                    end
+                -- 1. Update Internal Data Source
+                local SourceVal = Dropdown.Values[Index]
+                if SourceVal and type(SourceVal) == "table" then
+                     if NewData.Title then SourceVal.Title = NewData.Title end
+                     if NewData.Desc then SourceVal.Desc = NewData.Desc end
+                     if NewData.Icon then SourceVal.Icon = NewData.Icon end
+                     if NewData.Images then SourceVal.Images = NewData.Images end -- Simpan data image baru
+                     
+                     -- Update Tab Data Internal
+                     if NewData.Title then TabData.Name = NewData.Title end
+                     if NewData.Desc then TabData.Original.Desc = NewData.Desc end
+                     if NewData.Images then TabData.Original.Images = NewData.Images end
                 end
 
-                -- 2. Update UI Langsung (Hemat Resource)
+                -- 2. Update UI Visual
                 local TabUI = TabData.UIElements
                 if TabUI and TabUI.TabItem then
                     local TitleFrame = TabUI.TabItem:FindFirstChild("Frame") and TabUI.TabItem.Frame:FindFirstChild("Title")
                     
                     if TitleFrame then
-                        -- Update Title
+                        -- Update Judul
                         if NewData.Title then
-                            local TitleLabel = TitleFrame:FindFirstChild("TextLabel") -- TextLabel pertama biasanya Title (LayoutOrder 1)
-                            if TitleLabel then 
-                                TitleLabel.Text = NewData.Title 
-                                TabData.Name = NewData.Title -- Update nama di cache agar pencarian berikutnya pakai nama baru
-                            end
+                            local TitleLabel = TitleFrame:FindFirstChild("TextLabel") 
+                            if TitleLabel then TitleLabel.Text = NewData.Title end
                         end
 
-                        -- Update Description (Level/Power)
+                        -- Update Deskripsi (HP Musuh, Level, dll)
                         if NewData.Desc then
                             local DescLabel = TitleFrame:FindFirstChild("Desc")
                             if DescLabel then
                                 DescLabel.Text = NewData.Desc
                                 DescLabel.Visible = true
+                            end
+                        end
+
+                        -- [SUPPORT CARD] Update Images / Drops
+                        if NewData.Images then
+                            local ImagesScroll = TitleFrame:FindFirstChild("Images")
+                            -- Jika ScrollingFrame Images belum ada (sebelumnya kosong), kita harus membuatnya visible atau resize
+                            if ImagesScroll then
+                                ImagesScroll.Visible = true
+                                -- Panggil Helper kita tadi
+                                RenderImages(ImagesScroll, NewData.Images)
                                 
-                                -- Jika sebelumnya tidak ada desc, kita mungkin perlu trigger resize
+                                -- Auto Resize TabItem jika layout berubah
                                 if TabData.UIElements.TabItem.AutomaticSize == Enum.AutomaticSize.None then
                                      TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                                 end
                             end
                         end
                     end
-
-                    -- Update Icon/Image (Opsional, jika ingin update avatar karakter juga)
-                    if NewData.Image and TabUI.TabIcon then
-                        -- Cari ImageLabel di dalam komponen Icon
+                    
+                    -- Update Icon Utama Item (Kiri)
+                    if NewData.Icon and TabUI.TabIcon then
                         local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
                         if RealImage then
-                            RealImage.Image = NewData.Image
+                            -- Cek Gradient pada icon utama juga
+                            if NewData.Gradient then
+                                local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
+                                grad.Color = NewData.Gradient
+                            end
+                            RealImage.Image = NewData.Icon
                         end
                     end
                 end
                 
-                -- Recalculate Canvas (Jaga-jaga jika teks desc menjadi lebih panjang/pendek 2 baris)
+                -- Recalculate Layout agar tidak bug visual
                 RecalculateCanvasSize()
-                
-                break -- Berhenti loop setelah ketemu
+                break 
             end
         end
     end

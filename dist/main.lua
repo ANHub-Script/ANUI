@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.173  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.174  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.173",
+    "version": "1.0.174",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7373,6 +7373,161 @@ MaxSize=Vector2.new(300,400),
 })
 })
 
+
+local function RenderImages(ar,as)
+
+for at,au in ipairs(ar:GetChildren())do
+if not au:IsA"UIListLayout"and not au:IsA"UIPadding"then
+au:Destroy()
+end
+end
+
+if not as or#as==0 then return end
+
+for at,au in ipairs(as)do
+local av=false
+if typeof(au)=="table"and(au.Quantity or au.Gradient or au.Card)then
+av=true
+end
+
+if av then
+local aw=au.Size or am.ImageSize or UDim2.new(0,60,0,60)
+local ax=au.Title or"Item"
+local ay=au.Quantity or""
+local az=au.Rate or""
+local aA=au.Image or""
+local aB=au.Gradient
+
+local d
+if typeof(aB)=="ColorSequence"then
+d=aB
+elseif typeof(aB)=="Color3"then
+d=ColorSequence.new(aB)
+else
+d=ColorSequence.new(Color3.fromRGB(80,80,80))
+end
+
+
+local e
+if typeof(aB)=="ColorSequence"and aB.Keypoints[1]then
+e=aB.Keypoints[1].Value
+elseif typeof(aB)=="Color3"then
+e=aB
+else
+e=Color3.fromRGB(80,80,80)
+end
+
+local f=3
+
+
+ai.NewRoundFrame(8,"Squircle",{
+Size=aw,
+Parent=ar,
+ImageColor3=e,
+ClipsDescendants=true,
+},{
+aj("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+ZIndex=2,
+}),
+ai.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-f*2,1,-f*2),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+ZIndex=3,
+},{
+aj("UIGradient",{Color=d,Rotation=45}),
+aj("ImageLabel",{
+Image=aA,
+Size=UDim2.new(0.65,0,0.65,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.45,0),
+BackgroundTransparency=1,
+ScaleType="Fit",
+ZIndex=4,
+}),
+aj("TextLabel",{
+Text=ay,
+Size=UDim2.new(0.5,0,0,12),
+Position=UDim2.new(0,4,0,2),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Left,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+ZIndex=5,
+}),
+aj("TextLabel",{
+Text=az,
+Size=UDim2.new(0.5,-4,0,12),
+Position=UDim2.new(1,-4,0,2),
+AnchorPoint=Vector2.new(1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+ZIndex=5,
+}),
+aj("Frame",{
+Size=UDim2.new(1,0,0,18),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=6,
+},{
+aj("TextLabel",{
+Text=ax,
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Center,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=9,
+TextWrapped=true,
+TextTruncate="AtEnd",
+ZIndex=7,
+}),
+})
+})
+})
+else
+
+local aw
+if typeof(au)=="table"then
+aw=au.Image or au.Icon or au.Id or au
+else
+aw=au
+end
+local ax=ai.Image(
+aw,
+tostring(aw),
+6,
+al.Window.Folder,
+"Dropdown",
+false
+)
+ax.Size=am.ImageSize or UDim2.new(0,30,0,30)
+ax.Parent=ar
+end
+end
+end
+
 local function RecalculateCanvasSize()
 am.UIElements.Menu.Frame.ScrollingFrame.CanvasSize=UDim2.fromOffset(0,am.UIElements.UIListLayout.AbsoluteContentSize.Y)
 end
@@ -7686,168 +7841,11 @@ FillDirection="Vertical",
 })
 },true)
 
+
 if aw.Images and#aw.Images>0 then
 local ay=aw.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
 if ay then
-for az,aA in ipairs(aw.Images)do
-local aB=false
-if typeof(aA)=="table"and(aA.Quantity or aA.Gradient or aA.Card)then
-aB=true
-end
-
-if aB then
-local d=aA.Size or am.ImageSize or UDim2.new(0,60,0,60)
-local e=aA.Title or aw.Name
-local f=aA.Quantity or""
-local g=aA.Rate or""
-local h=aA.Image or""
-local j=aA.Gradient
-
-local l
-if typeof(j)=="ColorSequence"then
-l=j
-elseif typeof(j)=="Color3"then
-l=ColorSequence.new(j)
-else
-l=ColorSequence.new(Color3.fromRGB(80,80,80))
-end
-
-
-local m
-if typeof(j)=="ColorSequence"and j.Keypoints[1]then
-m=j.Keypoints[1].Value
-elseif typeof(j)=="Color3"then
-m=j
-else
-m=Color3.fromRGB(80,80,80)
-end
-
-local p=3
-
-
-
-
-ai.NewRoundFrame(8,"Squircle",{
-Size=d,
-Parent=ay,
-ImageColor3=m,
-ClipsDescendants=true,
-},{
-
-aj("ImageLabel",{
-Image="rbxassetid://5554236805",
-ScaleType=Enum.ScaleType.Slice,
-SliceCenter=Rect.new(23,23,277,277),
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.4,
-ZIndex=2,
-}),
-
-
-ai.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-p*2,1,-p*2),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.new(1,1,1),
-ClipsDescendants=true,
-ZIndex=3,
-},{
-
-aj("UIGradient",{
-Color=l,
-Rotation=45,
-}),
-
-
-aj("ImageLabel",{
-Image=h,
-Size=UDim2.new(0.65,0,0.65,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.45,0),
-BackgroundTransparency=1,
-ScaleType="Fit",
-ZIndex=4,
-}),
-
-
-aj("TextLabel",{
-Text=f,
-Size=UDim2.new(0.5,0,0,12),
-Position=UDim2.new(0,4,0,2),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Left,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-
-
-aj("TextLabel",{
-Text=g,
-Size=UDim2.new(0.5,-4,0,12),
-Position=UDim2.new(1,-4,0,2),
-AnchorPoint=Vector2.new(1,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Right,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-
-
-aj("Frame",{
-Size=UDim2.new(1,0,0,20),
-Position=UDim2.new(0,0,1,0),
-AnchorPoint=Vector2.new(0,1),
-BackgroundColor3=Color3.new(0,0,0),
-BackgroundTransparency=0.4,
-BorderSizePixel=0,
-ZIndex=6,
-},{
-
-aj("TextLabel",{
-Text=e,
-Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0,0,0,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Center,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=9,
-TextWrapped=true,
-TextTruncate="AtEnd",
-ZIndex=7,
-}),
-})
-})
-})
-else
-local d
-if typeof(aA)=="table"then
-d=aA.Image or aA.Icon or aA.Id or aA
-else
-d=aA
-end
-local e=ai.Image(
-d,
-tostring(d)..":"..aw.Name,
-6,
-al.Window.Folder,
-"Dropdown",
-false
-)
-e.Size=am.ImageSize or UDim2.new(0,30,0,30)
-e.Parent=ay
-end
-end
+RenderImages(ay,aw.Images)
 end
 end
 
@@ -8058,48 +8056,52 @@ end
 
 
 function aq.Edit(as,at,au)
-
 for av,aw in ipairs(am.Tabs)do
-
 if aw.Name==at then
 
 
+local ax=am.Values[av]
+if ax and type(ax)=="table"then
+if au.Title then ax.Title=au.Title end
+if au.Desc then ax.Desc=au.Desc end
+if au.Icon then ax.Icon=au.Icon end
+if au.Images then ax.Images=au.Images end
 
-if am.Values[av]then
-if type(am.Values[av])=="table"then
-if au.Title then am.Values[av].Title=au.Title end
-if au.Desc then am.Values[av].Desc=au.Desc end
-if au.Image then am.Values[av].Image=au.Image end
 
-if au.Title then aw.Original.Title=au.Title end
+if au.Title then aw.Name=au.Title end
 if au.Desc then aw.Original.Desc=au.Desc end
-elseif type(am.Values[av])=="string"and au.Title then
-
-am.Values[av]=au.Title
-end
+if au.Images then aw.Original.Images=au.Images end
 end
 
 
-local ax=aw.UIElements
-if ax and ax.TabItem then
-local ay=ax.TabItem:FindFirstChild"Frame"and ax.TabItem.Frame:FindFirstChild"Title"
+local ay=aw.UIElements
+if ay and ay.TabItem then
+local az=ay.TabItem:FindFirstChild"Frame"and ay.TabItem.Frame:FindFirstChild"Title"
 
-if ay then
+if az then
 
 if au.Title then
-local az=ay:FindFirstChild"TextLabel"
-if az then
-az.Text=au.Title
-aw.Name=au.Title
-end
+local aA=az:FindFirstChild"TextLabel"
+if aA then aA.Text=au.Title end
 end
 
 
 if au.Desc then
-local az=ay:FindFirstChild"Desc"
-if az then
-az.Text=au.Desc
-az.Visible=true
+local aA=az:FindFirstChild"Desc"
+if aA then
+aA.Text=au.Desc
+aA.Visible=true
+end
+end
+
+
+if au.Images then
+local aA=az:FindFirstChild"Images"
+
+if aA then
+aA.Visible=true
+
+RenderImages(aA,au.Images)
 
 
 if aw.UIElements.TabItem.AutomaticSize==Enum.AutomaticSize.None then
@@ -8110,18 +8112,21 @@ end
 end
 
 
-if au.Image and ax.TabIcon then
+if au.Icon and ay.TabIcon then
+local aA=ay.TabIcon:FindFirstChild"ImageLabel"
+if aA then
 
-local az=ax.TabIcon:FindFirstChild"ImageLabel"
-if az then
-az.Image=au.Image
+if au.Gradient then
+local aB=aA:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aA})
+aB.Color=au.Gradient
+end
+aA.Image=au.Icon
 end
 end
 end
 
 
 RecalculateCanvasSize()
-
 break
 end
 end
