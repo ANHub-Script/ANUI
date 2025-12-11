@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.178  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.179  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.178",
+    "version": "1.0.179",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7999,6 +7999,155 @@ aq:Refresh(am.Values)
 end
 
 
+function aq.EditDrop(as,at,au)
+local av
+local aw
+
+
+if type(at)=="number"then
+av=at
+aw=am.Tabs[at]
+else
+for ax,ay in ipairs(am.Tabs)do
+if ay.Name==at then
+av=ax
+aw=ay
+break
+end
+end
+end
+
+if aw and av then
+
+local ax=am.Values[av]
+
+
+if type(ax)~="table"then
+ax={Title=ax,Value=ax}
+am.Values[av]=ax
+end
+
+
+if au.Title then ax.Title=au.Title end
+if au.Desc then ax.Desc=au.Desc end
+if au.Icon then ax.Icon=au.Icon end
+if au.Images then ax.Images=au.Images end
+if au.Gradient then ax.Gradient=au.Gradient end
+if au.Value then ax.Value=au.Value end
+
+
+if au.Title then aw.Name=au.Title end
+if au.Desc then
+aw.Desc=au.Desc
+aw.Original.Desc=au.Desc
+end
+if au.Images then
+aw.Images=au.Images
+aw.Original.Images=au.Images
+end
+
+for ay,az in pairs(au)do
+aw.Original[ay]=az
+end
+
+
+local ay=aw.UIElements
+if ay and ay.TabItem then
+local az=ay.TabItem:FindFirstChild"Frame"
+local aA=az and az:FindFirstChild"Title"
+
+if aA then
+
+if au.Title then
+local aB=aA:FindFirstChild"TextLabel"
+if aB then aB.Text=au.Title end
+end
+
+if au.Desc then
+local aB=aA:FindFirstChild"Desc"
+if aB then
+aB.Text=au.Desc
+aB.Visible=true
+aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
+end
+end
+
+if au.Images then
+local aB=aA:FindFirstChild"Images"
+if aB then
+aB.Visible=true
+RenderImages(aB,au.Images)
+aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
+end
+end
+end
+
+
+if au.Icon and ay.TabIcon then
+local aB=ay.TabIcon:FindFirstChild"ImageLabel"
+if aB then
+local d=ai.Icon(au.Icon)
+if d then
+aB.Image=d[1]
+aB.ImageRectOffset=d[2].ImageRectPosition
+aB.ImageRectSize=d[2].ImageRectSize
+else
+aB.Image=au.Icon
+aB.ImageRectOffset=Vector2.new(0,0)
+aB.ImageRectSize=Vector2.new(0,0)
+end
+
+
+if au.Gradient then
+local e=aB:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aB})
+e.Color=au.Gradient
+end
+end
+end
+end
+
+
+
+local az=am.Value
+
+local aA=false
+
+
+if not am.Multi and az==ax then
+aA=true
+end
+
+
+if aA then
+
+if am.UIElements.Dropdown and au.Title then
+local aB=am.UIElements.Dropdown:FindFirstChild"Frame"
+local d=aB and aB:FindFirstChild"Frame"
+local e=d and d:FindFirstChild"TextLabel"
+if e then e.Text=au.Title end
+end
+
+
+if au.Desc then aq:SetDesc(au.Desc)end
+
+
+if au.Icon then
+aq:SetValueImage(au.Icon)
+if au.Gradient then
+aq:SetMainImage({Image=au.Icon,Quantity="",Gradient=au.Gradient},50)
+else
+aq:SetMainImage(au.Icon)
+end
+end
+end
+
+
+RecalculateCanvasSize()
+RecalculateListSize()
+end
+end
+
+
 function aq.Edit(as,at,au)
 for av,aw in ipairs(am.Tabs)do
 
@@ -8571,6 +8720,10 @@ end
 
 function an.Edit(ap,aq,ar)
 an.DropdownMenu:Edit(aq,ar)
+end
+
+function an.EditDrop(ap,aq,ar)
+an.DropdownMenu:EditDrop(aq,ar)
 end
 
 if an.Locked then

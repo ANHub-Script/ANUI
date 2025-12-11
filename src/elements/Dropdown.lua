@@ -382,6 +382,10 @@ function Element:New(Config)
     function Dropdown:Edit(ItemName, NewData)
         Dropdown.DropdownMenu:Edit(ItemName, NewData)
     end
+    -- Ekspos fungsi Edit ke user
+    function Dropdown:EditDrop(Target, NewData)
+        Dropdown.DropdownMenu:EditDrop(Target, NewData)
+    end
     
     if Dropdown.Locked then
         Dropdown:Lock()
