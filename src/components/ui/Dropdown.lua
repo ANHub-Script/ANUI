@@ -6,13 +6,11 @@ local UserInputService = cloneref(game:GetService("UserInputService"))
 local Mouse = cloneref(game:GetService("Players")).LocalPlayer:GetMouse()
 local Camera = cloneref(game:GetService("Workspace")).CurrentCamera
 
-local CurrentCamera = workspace.CurrentCamera
-
-local CreateInput = require("./Input").New
-
 local Creator = require("../../modules/Creator")
 local New = Creator.New
 local Tween = Creator.Tween
+
+local CurrentCamera = workspace.CurrentCamera
 
 function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     local DropdownModule = {}
@@ -21,213 +19,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
-    Dropdown.UIElements.UIListLayout = New("UIListLayout", {
-        Padding = UDim.new(0,Element.MenuPadding/1.5),
-        FillDirection = "Vertical",
-        HorizontalAlignment = "Center",
-    })
-
-    Dropdown.UIElements.Menu = Creator.NewRoundFrame(Element.MenuCorner, "Squircle", {
-        ThemeTag = {
-            ImageColor3 = "Background",
-        },
-        ImageTransparency = 1, -- 0.05
-        Size = UDim2.new(1,0,1,0),
-        AnchorPoint = Vector2.new(1,0),
-        Position = UDim2.new(1,0,0,0),
-    }, {
-        New("UIPadding", {
-            PaddingTop = UDim.new(0, Element.MenuPadding),
-            PaddingLeft = UDim.new(0, Element.MenuPadding),
-            PaddingRight = UDim.new(0, Element.MenuPadding),
-            PaddingBottom = UDim.new(0, Element.MenuPadding),
-        }),
-        New("UIListLayout", {
-            FillDirection = "Vertical",
-            Padding = UDim.new(0,Element.MenuPadding)
-        }),
-        New("Frame", {
-            BackgroundTransparency = 1,
-            Size = UDim2.new(1,0,1,Dropdown.SearchBarEnabled and -Element.MenuPadding-Element.SearchBarHeight ),
-            Name = "Frame",
-            ClipsDescendants = true,
-            LayoutOrder = 999,
-        }, {
-            New("UICorner", {
-                CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding),
-            }),
-            New("ScrollingFrame", {
-                Size = UDim2.new(1,0,1,0),
-                ScrollBarThickness = 0,
-                ScrollingDirection = "Y",
-                AutomaticCanvasSize = "Y",
-                CanvasSize = UDim2.new(0,0,0,0),
-                BackgroundTransparency = 1,
-                ScrollBarImageTransparency = 1,
-            }, {
-                Dropdown.UIElements.UIListLayout,
-            })
-        })
-    })
-
-    Dropdown.UIElements.MenuCanvas = New("Frame", {
-        Size = UDim2.new(0,Dropdown.MenuWidth,0,300),
-        BackgroundTransparency = 1,
-        Position = UDim2.new(-10,0,-10,0),
-        Visible = false,
-        Active = false,
-        --GroupTransparency = 1, -- 0
-        Parent = Config.ANUI.DropdownGui,
-        AnchorPoint = Vector2.new(1,0),
-    }, {
-        Dropdown.UIElements.Menu,
-        New("UISizeConstraint", {
-            MinSize = Vector2.new(170,0),
-            MaxSize = Vector2.new(300,400),
-        })
-    })
-    
-    local function RecalculateCanvasSize()
-        Dropdown.UIElements.Menu.Frame.ScrollingFrame.CanvasSize = UDim2.fromOffset(0, Dropdown.UIElements.UIListLayout.AbsoluteContentSize.Y)
-    end
-
-    local function RecalculateListSize()
-        local MaxHeight = CurrentCamera.ViewportSize.Y * 0.6
-            
-        local ContentY = Dropdown.UIElements.UIListLayout.AbsoluteContentSize.Y 
-        local SearchBarOffset = Dropdown.SearchBarEnabled and (Element.SearchBarHeight + (Element.MenuPadding*3)) or (Element.MenuPadding*2)
-        local TotalY = (ContentY) + SearchBarOffset
-            
-        if TotalY > MaxHeight then
-            Dropdown.UIElements.MenuCanvas.Size = UDim2.fromOffset(
-                Dropdown.UIElements.MenuCanvas.AbsoluteSize.X,
-                MaxHeight
-            )
-        else
-            Dropdown.UIElements.MenuCanvas.Size = UDim2.fromOffset(
-                Dropdown.UIElements.MenuCanvas.AbsoluteSize.X,
-                TotalY
-            )
-        end
-    end
-    
-    function UpdatePosition()
-        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
-        local menu = Dropdown.UIElements.MenuCanvas
-        
-        local availableSpaceBelow = Camera.ViewportSize.Y - (button.AbsolutePosition.Y + button.AbsoluteSize.Y) - Element.MenuPadding - 54
-        local requiredSpace = menu.AbsoluteSize.Y + Element.MenuPadding
-        
-        local offset = -54 -- topbar offset
-            if availableSpaceBelow < requiredSpace then
-            offset = requiredSpace - availableSpaceBelow - 54
-        end
-        
-        menu.Position = UDim2.new(
-            0, 
-            button.AbsolutePosition.X + button.AbsoluteSize.X,
-            0, 
-            button.AbsolutePosition.Y + button.AbsoluteSize.Y - offset + (Element.MenuPadding*2) 
-        )
-    end
-    
-    local SearchLabel
-    
-    function DropdownModule:Display()
-        local Values = Dropdown.Values
-        local Str = ""
-    
-        if Dropdown.Multi then
-            local selected = {}
-            if typeof(Dropdown.Value) == "table" then
-                for _, item in ipairs(Dropdown.Value) do
-                    local title = typeof(item) == "table" and item.Title or item
-                    selected[title] = true
-                end
-            end
-    
-            for _, value in ipairs(Values) do
-                local title = typeof(value) == "table" and value.Title or value
-                if selected[title] then
-                    Str = Str .. title .. ", "
-                end
-            end
-            
-            if #Str > 0 then
-                Str = Str:sub(1, #Str - 2)
-            end
-        else
-            Str = typeof(Dropdown.Value) == "table" and Dropdown.Value.Title or Dropdown.Value or ""
-        end
-    
-        if Dropdown.UIElements.Dropdown then
-            Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel.Text = (Str == "" and "--" or Str)
-        end
-    end
-    
-    local function Callback(customCallback)
-        DropdownModule:Display()
-        if Dropdown.Callback then
-            task.spawn(function()
-                Creator.SafeCallback(Dropdown.Callback, Dropdown.Value)
-            end)
-        else
-            task.spawn(function()
-                Creator.SafeCallback(customCallback)
-            end)
-        end
-    end
-    
-    function DropdownModule:LockValues(lockedItems)
-        if not lockedItems then return end
-        
-        for _, tab in next, Dropdown.Tabs do
-            if tab and tab.UIElements and tab.UIElements.TabItem then
-                local itemName = tab.Name
-                local isLocked = false
-                
-                for _, lockedItem in next, lockedItems do
-                    if itemName == lockedItem then
-                        isLocked = true
-                        break
-                    end
-                end
-                
-                if isLocked then
-                    Tween(tab.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                    Tween(tab.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                    Tween(tab.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0.6}):Play()
-                    if tab.UIElements.TabIcon then
-                        Tween(tab.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0.6}):Play()
-                    end
-                    
-                    tab.UIElements.TabItem.Active = false
-                    tab.Locked = true
-                else
-                    if tab.Selected then
-                        Tween(tab.UIElements.TabItem, 0.1, {ImageTransparency = 0.95}):Play()
-                        Tween(tab.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 0.75}):Play()
-                        Tween(tab.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
-                        if tab.UIElements.TabIcon then
-                            Tween(tab.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
-                        end
-                    else
-                        Tween(tab.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                        Tween(tab.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                        Tween(tab.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = Type == "Dropdown" and 0.4 or 0.05}):Play()
-                        if tab.UIElements.TabIcon then
-                            Tween(tab.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = Type == "Dropdown" and 0.2 or 0}):Play()
-                        end
-                    end
-                    
-                    tab.UIElements.TabItem.Active = true
-                    tab.Locked = false
-                end
-            end
-        end
-    end
-
-    -- [HELPER] Fungsi Render Card (Dipakai di Refresh & Edit)
+    -- [RENDER IMAGES HELPER] - Dipindahkan ke sini agar bisa diakses oleh Edit & Refresh
     local function RenderImages(Container, ImagesData)
         -- Bersihkan container lama
         for _, child in ipairs(Container:GetChildren()) do
@@ -261,16 +53,8 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     GradientColor = ColorSequence.new(Color3.fromRGB(80, 80, 80))
                 end
                 
-                local BorderColor
-                if typeof(CardGradient) == "ColorSequence" and CardGradient.Keypoints[1] then
-                    BorderColor = CardGradient.Keypoints[1].Value
-                elseif typeof(CardGradient) == "Color3" then
-                    BorderColor = CardGradient
-                else
-                    BorderColor = Color3.fromRGB(80, 80, 80)
-                end
-                
-                local borderThickness = 3
+                local BorderColor = GradientColor.Keypoints[1].Value
+                local borderThickness = 2
 
                 -- Render Struktur Card
                 local Card = Creator.NewRoundFrame(8, "Squircle", {
@@ -279,7 +63,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     ImageColor3 = BorderColor,
                     ClipsDescendants = true,
                 }, {
-                    -- Shadow Inner
                     New("ImageLabel", {
                         Image = "rbxassetid://5554236805",
                         ScaleType = Enum.ScaleType.Slice,
@@ -291,7 +74,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         ZIndex = 2,
                     }),
                     
-                    -- [PERBAIKAN] Tambahkan tanda kurung ( ) di sini agar tidak error
                     (Creator.NewRoundFrame(8, "Squircle", {
                         Size = UDim2.new(1, -borderThickness*2, 1, -borderThickness*2),
                         Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -310,7 +92,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             ScaleType = "Fit",
                             ZIndex = 4,
                         }),
-                        New("TextLabel", {
+                        CardQuantity and New("TextLabel", {
                             Text = CardQuantity,
                             Size = UDim2.new(0.5, 0, 0, 12),
                             Position = UDim2.new(0, 4, 0, 2),
@@ -322,8 +104,8 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             TextStrokeTransparency = 0, 
                             TextStrokeColor3 = Color3.new(0,0,0),
                             ZIndex = 5,
-                        }),
-                        New("TextLabel", {
+                        }) or nil,
+                        CardRate and New("TextLabel", {
                             Text = CardRate,
                             Size = UDim2.new(0.5, -4, 0, 12),
                             Position = UDim2.new(1, -4, 0, 2),
@@ -336,7 +118,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             TextStrokeTransparency = 0,
                             TextStrokeColor3 = Color3.new(0,0,0),
                             ZIndex = 5,
-                        }),
+                        }) or nil,
                         New("Frame", {
                             Size = UDim2.new(1, 0, 0, 18),
                             Position = UDim2.new(0, 0, 1, 0),
@@ -348,8 +130,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         }, {
                             New("TextLabel", {
                                 Text = CardTitle,
-                                Size = UDim2.new(1, 0, 1, 0), 
-                                Position = UDim2.new(0, 0, 0, 0),
+                                Size = UDim2.new(1, -2, 1, 0),
+                                Position = UDim2.new(0.5, 0, 0, 0),
+                                AnchorPoint = Vector2.new(0.5, 0),
                                 BackgroundTransparency = 1,
                                 TextXAlignment = Enum.TextXAlignment.Center, 
                                 TextColor3 = Color3.new(1, 1, 1),
@@ -360,32 +143,140 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 ZIndex = 7,
                             }),
                         })
-                    })) -- Tutup kurung perbaikan
+                    }))
                 })
             else
-                -- Render Gambar Biasa (Bukan Card)
                 local imageId = (typeof(imageData) == "table" and (imageData.Image or imageData.Icon or imageData.Id)) or imageData
-                local imgFrame = Creator.Image(
-                    imageId,
-                    tostring(imageId),
-                    6,
-                    Config.Window.Folder,
-                    "Dropdown",
-                    false
-                )
+                local imgFrame = Creator.Image(imageId, tostring(imageId), 6, Config.Window.Folder, "Dropdown", false)
                 imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
                 imgFrame.Parent = Container
             end
         end
     end
+
+    -- Setup UI List Layouts
+    Dropdown.UIElements.UIListLayout = New("UIListLayout", {
+        Padding = UDim.new(0,Element.MenuPadding/1.5),
+        FillDirection = "Vertical",
+        HorizontalAlignment = "Center",
+    })
+
+    Dropdown.UIElements.Menu = Creator.NewRoundFrame(Element.MenuCorner, "Squircle", {
+        ThemeTag = { ImageColor3 = "Background" },
+        ImageTransparency = 1,
+        Size = UDim2.new(1,0,1,0),
+        AnchorPoint = Vector2.new(1,0),
+        Position = UDim2.new(1,0,0,0),
+    }, {
+        New("UIPadding", {
+            PaddingTop = UDim.new(0, Element.MenuPadding),
+            PaddingLeft = UDim.new(0, Element.MenuPadding),
+            PaddingRight = UDim.new(0, Element.MenuPadding),
+            PaddingBottom = UDim.new(0, Element.MenuPadding),
+        }),
+        New("UIListLayout", { FillDirection = "Vertical", Padding = UDim.new(0,Element.MenuPadding) }),
+        New("Frame", {
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1,0,1,Dropdown.SearchBarEnabled and -Element.MenuPadding-Element.SearchBarHeight ),
+            Name = "Frame",
+            ClipsDescendants = true,
+            LayoutOrder = 999,
+        }, {
+            New("UICorner", { CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding) }),
+            New("ScrollingFrame", {
+                Size = UDim2.new(1,0,1,0),
+                ScrollBarThickness = 0,
+                ScrollingDirection = "Y",
+                AutomaticCanvasSize = "Y",
+                CanvasSize = UDim2.new(0,0,0,0),
+                BackgroundTransparency = 1,
+                ScrollBarImageTransparency = 1,
+            }, {
+                Dropdown.UIElements.UIListLayout,
+            })
+        })
+    })
+
+    Dropdown.UIElements.MenuCanvas = New("Frame", {
+        Size = UDim2.new(0,Dropdown.MenuWidth,0,300),
+        BackgroundTransparency = 1,
+        Position = UDim2.new(-10,0,-10,0),
+        Visible = false,
+        Active = false,
+        Parent = Config.ANUI.DropdownGui,
+        AnchorPoint = Vector2.new(1,0),
+    }, {
+        Dropdown.UIElements.Menu,
+        New("UISizeConstraint", {
+            MinSize = Vector2.new(170,0),
+            MaxSize = Vector2.new(300,400),
+        })
+    })
     
+    local function RecalculateCanvasSize()
+        Dropdown.UIElements.Menu.Frame.ScrollingFrame.CanvasSize = UDim2.fromOffset(0, Dropdown.UIElements.UIListLayout.AbsoluteContentSize.Y)
+    end
+    local function RecalculateListSize()
+        local MaxHeight = CurrentCamera.ViewportSize.Y * 0.6
+        local ContentY = Dropdown.UIElements.UIListLayout.AbsoluteContentSize.Y 
+        local SearchBarOffset = Dropdown.SearchBarEnabled and (Element.SearchBarHeight + (Element.MenuPadding*3)) or (Element.MenuPadding*2)
+        local TotalY = (ContentY) + SearchBarOffset
+        if TotalY > MaxHeight then
+            Dropdown.UIElements.MenuCanvas.Size = UDim2.fromOffset(Dropdown.UIElements.MenuCanvas.AbsoluteSize.X, MaxHeight)
+        else
+            Dropdown.UIElements.MenuCanvas.Size = UDim2.fromOffset(Dropdown.UIElements.MenuCanvas.AbsoluteSize.X, TotalY)
+        end
+    end
+    
+    function UpdatePosition()
+        local button = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
+        local menu = Dropdown.UIElements.MenuCanvas
+        local availableSpaceBelow = Camera.ViewportSize.Y - (button.AbsolutePosition.Y + button.AbsoluteSize.Y) - Element.MenuPadding - 54
+        local requiredSpace = menu.AbsoluteSize.Y + Element.MenuPadding
+        local offset = -54 
+        if availableSpaceBelow < requiredSpace then offset = requiredSpace - availableSpaceBelow - 54 end
+        menu.Position = UDim2.new(0, button.AbsolutePosition.X + button.AbsoluteSize.X, 0, button.AbsolutePosition.Y + button.AbsoluteSize.Y - offset + (Element.MenuPadding*2))
+    end
+    
+    local SearchLabel
+    
+    function DropdownModule:Display()
+        local Values = Dropdown.Values
+        local Str = ""
+        if Dropdown.Multi then
+            local selected = {}
+            if typeof(Dropdown.Value) == "table" then
+                for _, item in ipairs(Dropdown.Value) do
+                    local title = typeof(item) == "table" and item.Title or item
+                    selected[title] = true
+                end
+            end
+            for _, value in ipairs(Values) do
+                local title = typeof(value) == "table" and value.Title or value
+                if selected[title] then Str = Str .. title .. ", " end
+            end
+            if #Str > 0 then Str = Str:sub(1, #Str - 2) end
+        else
+            Str = typeof(Dropdown.Value) == "table" and Dropdown.Value.Title or Dropdown.Value or ""
+        end
+        if Dropdown.UIElements.Dropdown then
+            Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel.Text = (Str == "" and "--" or Str)
+        end
+    end
+    
+    local function Callback(customCallback)
+        DropdownModule:Display()
+        if Dropdown.Callback then
+            task.spawn(function() Creator.SafeCallback(Dropdown.Callback, Dropdown.Value) end)
+        else
+            task.spawn(function() Creator.SafeCallback(customCallback) end)
+        end
+    end
+
     function DropdownModule:Refresh(Values)
         for _, Elementt in next, Dropdown.UIElements.Menu.Frame.ScrollingFrame:GetChildren() do
-            if not Elementt:IsA("UIListLayout") then
-                Elementt:Destroy()
-            end
+            if not Elementt:IsA("UIListLayout") then Elementt:Destroy() end
         end
-        
         Dropdown.Tabs = {}
         
         if Dropdown.SearchBarEnabled then
@@ -421,14 +312,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 }
                 local TabIcon
                 if TabMain.Icon then
-                    TabIcon = Creator.Image(
-                        TabMain.Icon,
-                        TabMain.Icon,
-                        0,
-                        Config.Window.Folder,
-                        "Dropdown",
-                        true
-                    )
+                    TabIcon = Creator.Image(TabMain.Icon, TabMain.Icon, 0, Config.Window.Folder, "Dropdown", true)
                     TabIcon.Size = UDim2.new(0,Element.TabIcon,0,Element.TabIcon)
                     TabIcon.ImageLabel.ImageTransparency = Type == "Dropdown" and .2 or 0
                     TabMain.UIElements.TabIcon = TabIcon
@@ -436,7 +320,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 TabMain.UIElements.TabItem = Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "Squircle", {
                     Size = UDim2.new(1,0,0,36),
                     AutomaticSize = ((TabMain.Desc or (TabMain.Images and #TabMain.Images > 0)) and "Y") or nil,
-                    ImageTransparency = 1, -- .95
+                    ImageTransparency = 1, 
                     Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame,
                     ImageColor3 = Color3.new(1,1,1),
                     Active = not TabMain.Locked,
@@ -444,7 +328,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "SquircleOutline", {
                         Size = UDim2.new(1,0,1,0),
                         ImageColor3 = Color3.new(1,1,1),
-                        ImageTransparency = 1, -- .75
+                        ImageTransparency = 1,
                         Name = "Highlight",
                     }, {
                         New("UIGradient", {
@@ -466,20 +350,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         BackgroundTransparency = 1,
                         Name = "Frame",
                     }, {
-                        New("UIListLayout", {
-                            Padding = UDim.new(0, Element.TabPadding),
-                            FillDirection = "Horizontal",
-                            VerticalAlignment = "Center",
-                        }),
+                        New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding), FillDirection = "Horizontal", VerticalAlignment = "Center" }),
                         New("UIPadding", {
                             PaddingTop = UDim.new(0,Element.TabPadding),
                             PaddingLeft = UDim.new(0,Element.TabPadding),
                             PaddingRight = UDim.new(0,Element.TabPadding),
                             PaddingBottom = UDim.new(0,Element.TabPadding),
                         }),
-                        New("UICorner", {
-                            CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding)
-                        }),
+                        New("UICorner", { CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding) }),
                         TabIcon,
                         New("Frame", {
                             Size = UDim2.new(1,TabIcon and -Element.TabPadding-Element.TabIcon or 0,0,0),
@@ -491,10 +369,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Text = TabMain.Name,
                                 TextXAlignment = "Left",
                                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
-                                ThemeTag = {
-                                    TextColor3 = "Text",
-                                    BackgroundColor3 = "Text"
-                                },
+                                ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
                                 TextSize = 15,
                                 BackgroundTransparency = 1,
                                 TextTransparency = Type == "Dropdown" and .4 or .05,
@@ -506,10 +381,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Text = TabMain.Desc or "",
                                 TextXAlignment = "Left",
                                 FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
-                                ThemeTag = {
-                                    TextColor3 = "Text",
-                                    BackgroundColor3 = "Text"
-                                },
+                                ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
                                 TextSize = 15,
                                 BackgroundTransparency = 1,
                                 TextTransparency = Type == "Dropdown" and .6 or .35,
@@ -532,38 +404,22 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 LayoutOrder = 3,
                                 Name = "Images",
                             }, {
-                                New("UIListLayout", {
-                                    FillDirection = "Horizontal",
-                                    Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3),
-                                    VerticalAlignment = "Center",
-                                }),
-                                New("UIPadding", {
-                                    PaddingLeft = UDim.new(0, 2),
-                                    PaddingRight = UDim.new(0, 2),
-                                    PaddingTop = UDim.new(0, 2),
-                                    PaddingBottom = UDim.new(0, 2),
-                                })
+                                New("UIListLayout", { FillDirection = "Horizontal", Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3), VerticalAlignment = "Center" }),
+                                New("UIPadding", { PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 2), PaddingTop = UDim.new(0, 2), PaddingBottom = UDim.new(0, 2) })
                             }),
-                            New("UIListLayout", {
-                                Padding = UDim.new(0, Element.TabPadding/3),
-                                FillDirection = "Vertical",
-                            }), 
+                            New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding/3), FillDirection = "Vertical" }), 
                         })
                     })
                 }, true)
 
                 if TabMain.Images and #TabMain.Images > 0 then
                     local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
-                    if imagesContainer then
-                        RenderImages(imagesContainer, TabMain.Images)
-                    end
+                    if imagesContainer then RenderImages(imagesContainer, TabMain.Images) end
                 end
                 
                 if TabMain.Locked then
                     TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0.6
-                    if TabMain.UIElements.TabIcon then
-                        TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6
-                    end
+                    if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6 end
                 end
 
                 if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
@@ -581,10 +437,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     if typeof(Dropdown.Value) == "table" then
                         for _, item in ipairs(Dropdown.Value) do
                             local itemName = typeof(item) == "table" and item.Title or item
-                            if itemName == TabMain.Name then
-                                found = true
-                                break
-                            end
+                            if itemName == TabMain.Name then found = true break end
                         end
                     end
                     TabMain.Selected = found
@@ -597,41 +450,30 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     TabMain.UIElements.TabItem.ImageTransparency = .95
                     TabMain.UIElements.TabItem.Highlight.ImageTransparency = .75
                     TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0
-                    if TabMain.UIElements.TabIcon then
-                        TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0
-                    end
+                    if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0 end
                 end
                 
                 Dropdown.Tabs[Index] = TabMain
-                
                 DropdownModule:Display()
                 
                 if Type == "Dropdown" then
                     Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
                         if TabMain.Locked then return end 
-                        
                         if Dropdown.Multi then
                             if not TabMain.Selected then
                                 TabMain.Selected = true
                                 Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
                                 Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
                                 Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
-                                if TabMain.UIElements.TabIcon then
-                                    Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
-                                end
+                                if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
                                 table.insert(Dropdown.Value, TabMain.Original)
                             else
-                                if not Dropdown.AllowNone and #Dropdown.Value == 1 then
-                                    return
-                                end
+                                if not Dropdown.AllowNone and #Dropdown.Value == 1 then return end
                                 TabMain.Selected = false
                                 Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
                                 Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
                                 Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                if TabMain.UIElements.TabIcon then
-                                    Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
-                                end
-                                
+                                if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
                                 for i, v in next, Dropdown.Value do
                                     if typeof(v) == "table" and (v.Title == TabMain.Name) or (v == TabMain.Name) then
                                         table.remove(Dropdown.Value, i)
@@ -644,214 +486,55 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
                                 Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
                                 Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                if TabPisun.UIElements.TabIcon then
-                                    Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play()
-                                end
+                                if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
                                 TabPisun.Selected = false
                             end
                             TabMain.Selected = true
                             Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
                             Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
                             Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
-                            if TabMain.UIElements.TabIcon then
-                                Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play()
-                            end
+                            if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
                             Dropdown.Value = TabMain.Original
                         end
                         Callback()
                     end)
                 elseif Type == "Menu" then
                     if not TabMain.Locked then
-                        Creator.AddSignal(TabMain.UIElements.TabItem.MouseEnter, function()
-                            Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = .95}):Play()
-                        end)
-                        Creator.AddSignal(TabMain.UIElements.TabItem.InputEnded, function()
-                            Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = 1}):Play()
-                        end)
+                        Creator.AddSignal(TabMain.UIElements.TabItem.MouseEnter, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = .95}):Play() end)
+                        Creator.AddSignal(TabMain.UIElements.TabItem.InputEnded, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = 1}):Play() end)
                     end
                     Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
                         if TabMain.Locked then return end 
                         Callback(Tab.Callback or function() end)
                     end)
                 end
-                
                 RecalculateCanvasSize()
                 RecalculateListSize()
             else
                 require("../../elements/Divider"):New({ Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame })
             end
         end
-            
         local maxWidth = Dropdown.MenuWidth or 0
         if maxWidth == 0 then
             for _, tabmain in next, Dropdown.Tabs do
-                if tabmain.UIElements.TabItem.Frame.UIListLayout then
-                    maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X)
-                end
+                if tabmain.UIElements.TabItem.Frame.UIListLayout then maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X) end
             end
         end
-        
         Dropdown.UIElements.MenuCanvas.Size = UDim2.new(0, maxWidth + 6 + 6 + 5 + 5 + 18 + 6 + 6, Dropdown.UIElements.MenuCanvas.Size.Y.Scale, Dropdown.UIElements.MenuCanvas.Size.Y.Offset)
         Callback()
-        
         Dropdown.Values = Values
     end
       
     DropdownModule:Refresh(Dropdown.Values)
     
     function DropdownModule:Select(Items)
-        if Items then
-            Dropdown.Value = Items
-        else
-            if Dropdown.Multi then
-                Dropdown.Value = {}
-            else
-                Dropdown.Value = nil
-            end
+        if Items then Dropdown.Value = Items else
+            if Dropdown.Multi then Dropdown.Value = {} else Dropdown.Value = nil end
         end
         DropdownModule:Refresh(Dropdown.Values)
     end
 
-    -- [MODIFIED] Edit Fungsi untuk Support Index & Header Update
-    function DropdownModule:EditDrop(Target, NewData)
-        local TargetIndex = nil
-        local TabData = nil
-
-        -- 1. Cari Target berdasarkan Angka (Index) atau Nama (String)
-        if type(Target) == "number" then
-            TargetIndex = Target
-            TabData = Dropdown.Tabs[Target]
-        else
-            for i, tab in ipairs(Dropdown.Tabs) do
-                if tab.Name == Target then
-                    TargetIndex = i
-                    TabData = tab
-                    break
-                end
-            end
-        end
-
-        if TabData and TargetIndex then
-            -- 2. Update Internal Data Source
-            local SourceVal = Dropdown.Values[TargetIndex]
-            
-            -- Pastikan SourceVal berbentuk table agar bisa menyimpan properti
-            if type(SourceVal) ~= "table" then
-                SourceVal = { Title = SourceVal, Value = SourceVal }
-                Dropdown.Values[TargetIndex] = SourceVal
-            end
-
-            -- Update Properti Internal
-            if NewData.Title then SourceVal.Title = NewData.Title end
-            if NewData.Desc then SourceVal.Desc = NewData.Desc end
-            if NewData.Icon then SourceVal.Icon = NewData.Icon end
-            if NewData.Images then SourceVal.Images = NewData.Images end
-            if NewData.Gradient then SourceVal.Gradient = NewData.Gradient end
-            if NewData.Value then SourceVal.Value = NewData.Value end
-            
-            -- 3. Update Data Tab (Visual List)
-            if NewData.Title then TabData.Name = NewData.Title end
-            if NewData.Desc then 
-                TabData.Desc = NewData.Desc
-                TabData.Original.Desc = NewData.Desc 
-            end
-            if NewData.Images then 
-                TabData.Images = NewData.Images
-                TabData.Original.Images = NewData.Images 
-            end
-            -- Sync Original
-            for k, v in pairs(NewData) do
-                TabData.Original[k] = v
-            end
-
-            -- 4. Update Visual Element di dalam List (Saat menu dibuka)
-            local TabUI = TabData.UIElements
-            if TabUI and TabUI.TabItem then
-                local Frame = TabUI.TabItem:FindFirstChild("Frame")
-                local TitleFrame = Frame and Frame:FindFirstChild("Title")
-
-                if TitleFrame then
-                     -- Update Text
-                    if NewData.Title then
-                        local TitleLabel = TitleFrame:FindFirstChild("TextLabel")
-                        if TitleLabel then TitleLabel.Text = NewData.Title end
-                    end
-                    if NewData.Desc then
-                        local DescLabel = TitleFrame:FindFirstChild("Desc")
-                        if DescLabel then 
-                            DescLabel.Text = NewData.Desc 
-                            DescLabel.Visible = true
-                            TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
-                        end
-                    end
-                    -- Update Cards/Images
-                    if NewData.Images then
-                        local ImagesScroll = TitleFrame:FindFirstChild("Images")
-                        if ImagesScroll then
-                            ImagesScroll.Visible = true
-                            -- Panggil fungsi RenderImages yang ada di local scope file Dropdown.lua
-                            RenderImages(ImagesScroll, NewData.Images)
-                            TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
-                        end
-                    end
-                end
-                
-                 -- Update Icon Kecil di List
-                if NewData.Icon and TabUI.TabIcon then
-                    local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
-                    if RealImage then
-                         local IconData = Creator.Icon(NewData.Icon)
-                         if IconData then
-                             RealImage.Image = IconData[1]
-                             RealImage.ImageRectOffset = IconData[2].ImageRectPosition
-                             RealImage.ImageRectSize = IconData[2].ImageRectSize
-                         else
-                             RealImage.Image = NewData.Icon
-                             RealImage.ImageRectOffset = Vector2.new(0,0)
-                             RealImage.ImageRectSize = Vector2.new(0,0)
-                         end
-                         
-                         -- Update Gradient Icon Kecil
-                         if NewData.Gradient then
-                             local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
-                             grad.Color = NewData.Gradient
-                         end
-                    end
-                end
-            end
-
-            -- 5. [PENTING] Update HEADER UTAMA jika item ini sedang dipilih!
-            if TabData.Selected then
-                -- Update Judul Header
-                if Dropdown.UIElements.Dropdown and NewData.Title then
-                     local outerFrame = Dropdown.UIElements.Dropdown:FindFirstChild("Frame")
-                     local innerFrame = outerFrame and outerFrame:FindFirstChild("Frame")
-                     local label = innerFrame and innerFrame:FindFirstChild("TextLabel")
-                     if label then label.Text = NewData.Title end
-                end
-                
-                -- Update Value Internal Library agar callback selanjutnya benar
-                Dropdown.Value = SourceVal
-
-                -- Update Deskripsi Header (HP)
-                if NewData.Desc then DropdownModule:SetDesc(NewData.Desc) end
-                
-                -- Update Gambar Utama (Kiri) & Value Image (Kanan)
-                if NewData.Icon then
-                    DropdownModule:SetValueImage(NewData.Icon)
-                    if NewData.Gradient then
-                        DropdownModule:SetMainImage({Image = NewData.Icon, Quantity = "", Gradient = NewData.Gradient}, 50)
-                    else
-                        DropdownModule:SetMainImage(NewData.Icon)
-                    end
-                end
-            end
-
-            -- Rapikan ukuran
-            RecalculateCanvasSize()
-            RecalculateListSize()
-        end
-    end
+    
     
     -- [PERBAIKAN] Edit Item Tanpa Refresh (Support All Properties)
     function DropdownModule:Edit(TargetName, NewData)
@@ -949,6 +632,137 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             end
         end
     end
+    
+    -- [MODIFIED] Edit by Index (Fixed: Image Rendering & Header Update)
+    function DropdownModule:EditDrop(Target, NewData)
+        local TargetIndex = nil
+        local TabData = nil
+
+        -- 1. Cari Target berdasarkan Angka (Index) atau Nama (String)
+        if type(Target) == "number" then
+            TargetIndex = Target
+            TabData = Dropdown.Tabs[Target]
+        else
+            for i, tab in ipairs(Dropdown.Tabs) do
+                if tab.Name == Target then
+                    TargetIndex = i
+                    TabData = tab
+                    break
+                end
+            end
+        end
+
+        if TabData and TargetIndex then
+            -- 2. Update Internal Data Source
+            local SourceVal = Dropdown.Values[TargetIndex]
+            if type(SourceVal) ~= "table" then
+                SourceVal = { Title = SourceVal, Value = SourceVal }
+                Dropdown.Values[TargetIndex] = SourceVal
+            end
+
+            -- Update Properties
+            if NewData.Title then SourceVal.Title = NewData.Title end
+            if NewData.Desc then SourceVal.Desc = NewData.Desc end
+            if NewData.Icon then SourceVal.Icon = NewData.Icon end
+            if NewData.Images then SourceVal.Images = NewData.Images end
+            if NewData.Gradient then SourceVal.Gradient = NewData.Gradient end
+            if NewData.Value then SourceVal.Value = NewData.Value end
+            
+            -- Update Tab Data
+            if NewData.Title then TabData.Name = NewData.Title end
+            if NewData.Desc then 
+                TabData.Desc = NewData.Desc
+                TabData.Original.Desc = NewData.Desc 
+            end
+            if NewData.Images then 
+                TabData.Images = NewData.Images
+                TabData.Original.Images = NewData.Images 
+            end
+            for k, v in pairs(NewData) do TabData.Original[k] = v end
+
+            -- 3. Update Visual List Item
+            local TabUI = TabData.UIElements
+            if TabUI and TabUI.TabItem then
+                local Frame = TabUI.TabItem:FindFirstChild("Frame")
+                local TitleFrame = Frame and Frame:FindFirstChild("Title")
+
+                if TitleFrame then
+                    if NewData.Title then
+                        local TitleLabel = TitleFrame:FindFirstChild("TextLabel")
+                        if TitleLabel then TitleLabel.Text = NewData.Title end
+                    end
+                    if NewData.Desc then
+                        local DescLabel = TitleFrame:FindFirstChild("Desc")
+                        if DescLabel then 
+                            DescLabel.Text = NewData.Desc 
+                            DescLabel.Visible = true
+                            TabUI.TabItem.AutomaticSize = Enum.AutomaticSize.Y
+                        end
+                    end
+                    -- [CRITICAL] Re-render Images with forced Visible
+                    if NewData.Images then
+                        local ImagesScroll = TitleFrame:FindFirstChild("Images")
+                        if ImagesScroll then
+                            ImagesScroll.Visible = (NewData.Images and #NewData.Images > 0)
+                            RenderImages(ImagesScroll, NewData.Images)
+                            TabUI.TabItem.AutomaticSize = Enum.AutomaticSize.Y
+                        end
+                    end
+                end
+                
+                if NewData.Icon and TabUI.TabIcon then
+                    local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
+                    if RealImage then
+                         local IconData = Creator.Icon(NewData.Icon)
+                         if IconData then
+                             RealImage.Image = IconData[1]
+                             RealImage.ImageRectOffset = IconData[2].ImageRectPosition
+                             RealImage.ImageRectSize = IconData[2].ImageRectSize
+                         else
+                             RealImage.Image = NewData.Icon
+                             RealImage.ImageRectOffset = Vector2.new(0,0)
+                             RealImage.ImageRectSize = Vector2.new(0,0)
+                         end
+                         
+                         if NewData.Gradient then
+                             local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
+                             grad.Color = NewData.Gradient
+                         end
+                    end
+                end
+            end
+
+            -- 4. Update Header Utama (Visual Luar) jika item ini terpilih
+            local currentSelected = Dropdown.Value
+            local isSelected = false
+            if not Dropdown.Multi and currentSelected == SourceVal then isSelected = true end
+            
+            if isSelected then
+                if Dropdown.UIElements.Dropdown and NewData.Title then
+                     local outerFrame = Dropdown.UIElements.Dropdown:FindFirstChild("Frame")
+                     local innerFrame = outerFrame and outerFrame:FindFirstChild("Frame")
+                     local label = innerFrame and innerFrame:FindFirstChild("TextLabel")
+                     if label then label.Text = NewData.Title end
+                end
+                
+                Dropdown.Value = SourceVal
+
+                if NewData.Desc then DropdownModule:SetDesc(NewData.Desc) end
+                
+                if NewData.Icon then
+                    DropdownModule:SetValueImage(NewData.Icon)
+                    if NewData.Gradient then
+                        DropdownModule:SetMainImage({Image = NewData.Icon, Quantity = "", Gradient = NewData.Gradient}, 50)
+                    else
+                        DropdownModule:SetMainImage(NewData.Icon)
+                    end
+                end
+            end
+
+            RecalculateCanvasSize()
+            RecalculateListSize()
+        end
+    end
 
     RecalculateListSize()
     RecalculateCanvasSize()
@@ -958,48 +772,18 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             Dropdown.UIElements.Menu.Visible = true
             Dropdown.UIElements.MenuCanvas.Visible = true
             Dropdown.UIElements.MenuCanvas.Active = true
-            Dropdown.UIElements.Menu.Size = UDim2.new(
-                1, 0,
-                0, 0
-            )
-            Tween(Dropdown.UIElements.Menu, 0.1, {
-                Size = UDim2.new(
-                    1, 0,
-                    1, 0
-                ),
-                ImageTransparency = 0.05
-            }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-            
-            task.spawn(function()
-                task.wait(.1)
-                Dropdown.Opened = true
-            end)
-            
+            Dropdown.UIElements.Menu.Size = UDim2.new(1, 0, 0, 0)
+            Tween(Dropdown.UIElements.Menu, 0.1, { Size = UDim2.new(1, 0, 1, 0), ImageTransparency = 0.05 }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
+            task.spawn(function() task.wait(.1) Dropdown.Opened = true end)
             UpdatePosition()
         end
     end
     
     function DropdownModule:Close()
         Dropdown.Opened = false
-        
-        Tween(Dropdown.UIElements.Menu, 0.25, {
-            Size = UDim2.new(
-                1, 0,
-                0, 0
-            ),
-            ImageTransparency = 1,
-        }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
-        
-        task.spawn(function()
-            task.wait(.1)
-            Dropdown.UIElements.Menu.Visible = false
-        end)
-        
-        task.spawn(function()
-            task.wait(.25)
-            Dropdown.UIElements.MenuCanvas.Visible = false
-            Dropdown.UIElements.MenuCanvas.Active = false
-        end)
+        Tween(Dropdown.UIElements.Menu, 0.25, { Size = UDim2.new(1, 0, 0, 0), ImageTransparency = 1 }, Enum.EasingStyle.Quart, Enum.EasingDirection.Out):Play()
+        task.spawn(function() task.wait(.1) Dropdown.UIElements.Menu.Visible = false end)
+        task.spawn(function() task.wait(.25) Dropdown.UIElements.MenuCanvas.Visible = false Dropdown.UIElements.MenuCanvas.Active = false end)
     end
     
     Creator.AddSignal((Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.MouseButton1Click or Dropdown.DropdownFrame.UIElements.Main.MouseButton1Click), function()
@@ -1010,22 +794,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
             local menuCanvas = Dropdown.UIElements.MenuCanvas
             local AbsPos, AbsSize = menuCanvas.AbsolutePosition, menuCanvas.AbsoluteSize
-            
             local DropdownButton = Dropdown.UIElements.Dropdown or Dropdown.DropdownFrame.UIElements.Main
             local ButtonAbsPos = DropdownButton.AbsolutePosition
             local ButtonAbsSize = DropdownButton.AbsoluteSize
             
-            local isClickOnDropdown = 
-                Mouse.X >= ButtonAbsPos.X and 
-                Mouse.X <= ButtonAbsPos.X + ButtonAbsSize.X and 
-                Mouse.Y >= ButtonAbsPos.Y and 
-                Mouse.Y <= ButtonAbsPos.Y + ButtonAbsSize.Y
-            
-            local isClickOnMenu = 
-                Mouse.X >= AbsPos.X and 
-                Mouse.X <= AbsPos.X + AbsSize.X and 
-                Mouse.Y >= AbsPos.Y and 
-                Mouse.Y <= AbsPos.Y + AbsSize.Y
+            local isClickOnDropdown = Mouse.X >= ButtonAbsPos.X and Mouse.X <= ButtonAbsPos.X + ButtonAbsSize.X and Mouse.Y >= ButtonAbsPos.Y and Mouse.Y <= ButtonAbsPos.Y + ButtonAbsSize.Y
+            local isClickOnMenu = Mouse.X >= AbsPos.X and Mouse.X <= AbsPos.X + AbsSize.X and Mouse.Y >= AbsPos.Y and Mouse.Y <= AbsPos.Y + AbsSize.Y
             
             if Config.Window.CanDropdown and Dropdown.Opened and not isClickOnDropdown and not isClickOnMenu then
                 DropdownModule:Close()
@@ -1034,8 +808,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     end)
     
     Creator.AddSignal(
-        Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown:GetPropertyChangedSignal("AbsolutePosition") or
-        Dropdown.DropdownFrame.UIElements.Main:GetPropertyChangedSignal("AbsolutePosition"), 
+        Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown:GetPropertyChangedSignal("AbsolutePosition") or Dropdown.DropdownFrame.UIElements.Main:GetPropertyChangedSignal("AbsolutePosition"), 
         UpdatePosition
     )
     
