@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.179  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.180  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.179",
+    "version": "1.0.180",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8062,7 +8062,6 @@ if au.Title then
 local aB=aA:FindFirstChild"TextLabel"
 if aB then aB.Text=au.Title end
 end
-
 if au.Desc then
 local aB=aA:FindFirstChild"Desc"
 if aB then
@@ -8076,6 +8075,7 @@ if au.Images then
 local aB=aA:FindFirstChild"Images"
 if aB then
 aB.Visible=true
+
 RenderImages(aB,au.Images)
 aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
 end
@@ -8107,25 +8107,17 @@ end
 end
 
 
-
-local az=am.Value
-
-local aA=false
-
-
-if not am.Multi and az==ax then
-aA=true
-end
-
-
-if aA then
+if aw.Selected then
 
 if am.UIElements.Dropdown and au.Title then
-local aB=am.UIElements.Dropdown:FindFirstChild"Frame"
-local d=aB and aB:FindFirstChild"Frame"
-local e=d and d:FindFirstChild"TextLabel"
-if e then e.Text=au.Title end
+local az=am.UIElements.Dropdown:FindFirstChild"Frame"
+local aA=az and az:FindFirstChild"Frame"
+local aB=aA and aA:FindFirstChild"TextLabel"
+if aB then aB.Text=au.Title end
 end
+
+
+am.Value=ax
 
 
 if au.Desc then aq:SetDesc(au.Desc)end

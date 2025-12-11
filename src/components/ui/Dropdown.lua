@@ -712,12 +712,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         DropdownModule:Refresh(Dropdown.Values)
     end
 
-    -- [MODIFIED] Edit by Index or Name (Support Full Content Replace)
+    -- [MODIFIED] Edit Fungsi untuk Support Index & Header Update
     function DropdownModule:EditDrop(Target, NewData)
         local TargetIndex = nil
         local TabData = nil
 
-        -- Cek apakah Target adalah Angka (Index) atau String (Nama)
+        -- 1. Cari Target berdasarkan Angka (Index) atau Nama (String)
         if type(Target) == "number" then
             TargetIndex = Target
             TabData = Dropdown.Tabs[Target]
@@ -732,16 +732,16 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         end
 
         if TabData and TargetIndex then
-            -- 1. Update Internal Data Source (PENTING: Agar data tersimpan di memori library)
+            -- 2. Update Internal Data Source
             local SourceVal = Dropdown.Values[TargetIndex]
             
-            -- Konversi source jadi table jika sebelumnya cuma string
+            -- Pastikan SourceVal berbentuk table agar bisa menyimpan properti
             if type(SourceVal) ~= "table" then
                 SourceVal = { Title = SourceVal, Value = SourceVal }
                 Dropdown.Values[TargetIndex] = SourceVal
             end
 
-            -- Update semua property internal
+            -- Update Properti Internal
             if NewData.Title then SourceVal.Title = NewData.Title end
             if NewData.Desc then SourceVal.Desc = NewData.Desc end
             if NewData.Icon then SourceVal.Icon = NewData.Icon end
@@ -749,7 +749,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             if NewData.Gradient then SourceVal.Gradient = NewData.Gradient end
             if NewData.Value then SourceVal.Value = NewData.Value end
             
-            -- Update Tab Data (Untuk pencarian/display selanjutnya)
+            -- 3. Update Data Tab (Visual List)
             if NewData.Title then TabData.Name = NewData.Title end
             if NewData.Desc then 
                 TabData.Desc = NewData.Desc
@@ -759,24 +759,23 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 TabData.Images = NewData.Images
                 TabData.Original.Images = NewData.Images 
             end
-            -- Update Original Reference (Agar sync dengan data baru)
+            -- Sync Original
             for k, v in pairs(NewData) do
                 TabData.Original[k] = v
             end
 
-            -- 2. Update Visual List (Tampilan di dalam menu dropdown)
+            -- 4. Update Visual Element di dalam List (Saat menu dibuka)
             local TabUI = TabData.UIElements
             if TabUI and TabUI.TabItem then
                 local Frame = TabUI.TabItem:FindFirstChild("Frame")
                 local TitleFrame = Frame and Frame:FindFirstChild("Title")
 
                 if TitleFrame then
-                     -- Update Judul List
+                     -- Update Text
                     if NewData.Title then
                         local TitleLabel = TitleFrame:FindFirstChild("TextLabel")
                         if TitleLabel then TitleLabel.Text = NewData.Title end
                     end
-                    -- Update Deskripsi List
                     if NewData.Desc then
                         local DescLabel = TitleFrame:FindFirstChild("Desc")
                         if DescLabel then 
@@ -785,11 +784,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                         end
                     end
-                    -- Update Cards/Images Grid
+                    -- Update Cards/Images
                     if NewData.Images then
                         local ImagesScroll = TitleFrame:FindFirstChild("Images")
                         if ImagesScroll then
                             ImagesScroll.Visible = true
+                            -- Panggil fungsi RenderImages yang ada di local scope file Dropdown.lua
                             RenderImages(ImagesScroll, NewData.Images)
                             TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                         end
@@ -811,7 +811,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                              RealImage.ImageRectSize = Vector2.new(0,0)
                          end
                          
-                         -- Update Gradient Icon
+                         -- Update Gradient Icon Kecil
                          if NewData.Gradient then
                              local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
                              grad.Color = NewData.Gradient
@@ -820,19 +820,8 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 end
             end
 
-            -- 3. Update Header Utama (Visual Luar) Jika Item Ini Sedang Dipilih
-            -- Kita cek apakah item yang diedit adalah item yang sedang aktif di Dropdown.Value
-            local currentSelected = Dropdown.Value
-            -- Cek apakah kita sedang memilih item ini (bisa via index atau value)
-            local isSelected = false
-            
-            -- Jika single select, cek apakah SourceVal (data yang baru diedit) adalah data yang aktif
-            if not Dropdown.Multi and currentSelected == SourceVal then
-                isSelected = true
-            end
-            
-            -- Jika item ini terseleksi, update tampilan luar
-            if isSelected then
+            -- 5. [PENTING] Update HEADER UTAMA jika item ini sedang dipilih!
+            if TabData.Selected then
                 -- Update Judul Header
                 if Dropdown.UIElements.Dropdown and NewData.Title then
                      local outerFrame = Dropdown.UIElements.Dropdown:FindFirstChild("Frame")
@@ -841,10 +830,13 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                      if label then label.Text = NewData.Title end
                 end
                 
-                -- Update Deskripsi Header
+                -- Update Value Internal Library agar callback selanjutnya benar
+                Dropdown.Value = SourceVal
+
+                -- Update Deskripsi Header (HP)
                 if NewData.Desc then DropdownModule:SetDesc(NewData.Desc) end
                 
-                -- Update Icon Header
+                -- Update Gambar Utama (Kiri) & Value Image (Kanan)
                 if NewData.Icon then
                     DropdownModule:SetValueImage(NewData.Icon)
                     if NewData.Gradient then
@@ -855,7 +847,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 end
             end
 
-            -- Recalculate size agar rapi
+            -- Rapikan ukuran
             RecalculateCanvasSize()
             RecalculateListSize()
         end
