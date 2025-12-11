@@ -712,12 +712,13 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         DropdownModule:Refresh(Dropdown.Values)
     end
     
-    -- [FITUR BARU] Edit Item Tanpa Refresh (Support Card & Images)
+    -- [PERBAIKAN] Edit Item Tanpa Refresh (Support All Properties)
     function DropdownModule:Edit(TargetName, NewData)
         for Index, TabData in ipairs(Dropdown.Tabs) do
+            -- Cek kesesuaian Nama Item
             if TabData.Name == TargetName then
                 
-                -- 1. Update Internal Data Source
+                -- 1. Update Internal Data Source (Agar data tersimpan di memori)
                 local SourceVal = Dropdown.Values[Index]
                 if SourceVal and type(SourceVal) == "table" then
                      if NewData.Title then SourceVal.Title = NewData.Title end
@@ -725,16 +726,23 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                      if NewData.Icon then SourceVal.Icon = NewData.Icon end
                      if NewData.Images then SourceVal.Images = NewData.Images end 
                      
-                     -- Update Tab Data Internal
+                     -- Update Tab Data Internal UI Library
                      if NewData.Title then TabData.Name = NewData.Title end
-                     if NewData.Desc then TabData.Original.Desc = NewData.Desc end
-                     if NewData.Images then TabData.Original.Images = NewData.Images end
+                     if NewData.Desc then 
+                        TabData.Desc = NewData.Desc
+                        TabData.Original.Desc = NewData.Desc 
+                     end
+                     if NewData.Images then 
+                        TabData.Images = NewData.Images
+                        TabData.Original.Images = NewData.Images 
+                     end
                 end
 
                 -- 2. Update UI Visual
                 local TabUI = TabData.UIElements
                 if TabUI and TabUI.TabItem then
-                    local TitleFrame = TabUI.TabItem:FindFirstChild("Frame") and TabUI.TabItem.Frame:FindFirstChild("Title")
+                    local Frame = TabUI.TabItem:FindFirstChild("Frame")
+                    local TitleFrame = Frame and Frame:FindFirstChild("Title")
                     
                     if TitleFrame then
                         -- Update Judul
@@ -743,25 +751,27 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             if TitleLabel then TitleLabel.Text = NewData.Title end
                         end
 
-                        -- Update Deskripsi (HP Musuh, Level, dll)
+                        -- Update Deskripsi
                         if NewData.Desc then
                             local DescLabel = TitleFrame:FindFirstChild("Desc")
                             if DescLabel then
                                 DescLabel.Text = NewData.Desc
                                 DescLabel.Visible = true
+                                -- Paksa tinggi otomatis agar deskripsi muat
+                                TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                             end
                         end
 
-                        -- [SUPPORT CARD] Update Images / Drops
+                        -- Update Images / Cards Grid
                         if NewData.Images then
                             local ImagesScroll = TitleFrame:FindFirstChild("Images")
                             if ImagesScroll then
                                 ImagesScroll.Visible = true
+                                -- Panggil helper RenderImages yang sudah ada di script lokal
                                 RenderImages(ImagesScroll, NewData.Images)
                                 
-                                if TabData.UIElements.TabItem.AutomaticSize == Enum.AutomaticSize.None then
-                                     TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
-                                end
+                                -- Paksa tinggi otomatis agar gambar muat
+                                TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                             end
                         end
                     end
@@ -770,16 +780,30 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     if NewData.Icon and TabUI.TabIcon then
                         local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
                         if RealImage then
+                            -- Support Lucide Icons / Asset ID biasa
+                            local IconData = Creator.Icon(NewData.Icon)
+                            if IconData then
+                                RealImage.Image = IconData[1]
+                                RealImage.ImageRectOffset = IconData[2].ImageRectPosition
+                                RealImage.ImageRectSize = IconData[2].ImageRectSize
+                            else
+                                RealImage.Image = NewData.Icon
+                                RealImage.ImageRectOffset = Vector2.new(0,0)
+                                RealImage.ImageRectSize = Vector2.new(0,0)
+                            end
+
+                            -- Support Gradient pada Icon
                             if NewData.Gradient then
                                 local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
                                 grad.Color = NewData.Gradient
                             end
-                            RealImage.Image = NewData.Icon
                         end
                     end
                 end
                 
+                -- 3. Hitung ulang ukuran Menu agar pas dengan konten baru
                 RecalculateCanvasSize()
+                RecalculateListSize()
                 break 
             end
         end

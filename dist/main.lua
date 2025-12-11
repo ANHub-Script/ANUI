@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.176  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.177  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.176",
+    "version": "1.0.177",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8001,6 +8001,7 @@ end
 
 function aq.Edit(as,at,au)
 for av,aw in ipairs(am.Tabs)do
+
 if aw.Name==at then
 
 
@@ -8013,59 +8014,82 @@ if au.Images then ax.Images=au.Images end
 
 
 if au.Title then aw.Name=au.Title end
-if au.Desc then aw.Original.Desc=au.Desc end
-if au.Images then aw.Original.Images=au.Images end
+if au.Desc then
+aw.Desc=au.Desc
+aw.Original.Desc=au.Desc
+end
+if au.Images then
+aw.Images=au.Images
+aw.Original.Images=au.Images
+end
 end
 
 
 local ay=aw.UIElements
 if ay and ay.TabItem then
-local az=ay.TabItem:FindFirstChild"Frame"and ay.TabItem.Frame:FindFirstChild"Title"
+local az=ay.TabItem:FindFirstChild"Frame"
+local aA=az and az:FindFirstChild"Title"
 
-if az then
+if aA then
 
 if au.Title then
-local aA=az:FindFirstChild"TextLabel"
-if aA then aA.Text=au.Title end
+local aB=aA:FindFirstChild"TextLabel"
+if aB then aB.Text=au.Title end
 end
 
 
 if au.Desc then
-local aA=az:FindFirstChild"Desc"
-if aA then
-aA.Text=au.Desc
-aA.Visible=true
+local aB=aA:FindFirstChild"Desc"
+if aB then
+aB.Text=au.Desc
+aB.Visible=true
+
+aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
 end
 end
 
 
 if au.Images then
-local aA=az:FindFirstChild"Images"
-if aA then
-aA.Visible=true
-RenderImages(aA,au.Images)
+local aB=aA:FindFirstChild"Images"
+if aB then
+aB.Visible=true
 
-if aw.UIElements.TabItem.AutomaticSize==Enum.AutomaticSize.None then
+RenderImages(aB,au.Images)
+
+
 aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
-end
 end
 end
 end
 
 
 if au.Icon and ay.TabIcon then
-local aA=ay.TabIcon:FindFirstChild"ImageLabel"
-if aA then
-if au.Gradient then
-local aB=aA:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aA})
-aB.Color=au.Gradient
+local aB=ay.TabIcon:FindFirstChild"ImageLabel"
+if aB then
+
+local d=ai.Icon(au.Icon)
+if d then
+aB.Image=d[1]
+aB.ImageRectOffset=d[2].ImageRectPosition
+aB.ImageRectSize=d[2].ImageRectSize
+else
+aB.Image=au.Icon
+aB.ImageRectOffset=Vector2.new(0,0)
+aB.ImageRectSize=Vector2.new(0,0)
 end
-aA.Image=au.Icon
+
+
+if au.Gradient then
+local e=aB:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aB})
+e.Color=au.Gradient
+end
 end
 end
 end
 
+
 RecalculateCanvasSize()
+RecalculateListSize()
 break
 end
 end
