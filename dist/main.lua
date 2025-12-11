@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.174  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.175  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.174",
+    "version": "1.0.175",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7373,161 +7373,6 @@ MaxSize=Vector2.new(300,400),
 })
 })
 
-
-local function RenderImages(ar,as)
-
-for at,au in ipairs(ar:GetChildren())do
-if not au:IsA"UIListLayout"and not au:IsA"UIPadding"then
-au:Destroy()
-end
-end
-
-if not as or#as==0 then return end
-
-for at,au in ipairs(as)do
-local av=false
-if typeof(au)=="table"and(au.Quantity or au.Gradient or au.Card)then
-av=true
-end
-
-if av then
-local aw=au.Size or am.ImageSize or UDim2.new(0,60,0,60)
-local ax=au.Title or"Item"
-local ay=au.Quantity or""
-local az=au.Rate or""
-local aA=au.Image or""
-local aB=au.Gradient
-
-local d
-if typeof(aB)=="ColorSequence"then
-d=aB
-elseif typeof(aB)=="Color3"then
-d=ColorSequence.new(aB)
-else
-d=ColorSequence.new(Color3.fromRGB(80,80,80))
-end
-
-
-local e
-if typeof(aB)=="ColorSequence"and aB.Keypoints[1]then
-e=aB.Keypoints[1].Value
-elseif typeof(aB)=="Color3"then
-e=aB
-else
-e=Color3.fromRGB(80,80,80)
-end
-
-local f=3
-
-
-ai.NewRoundFrame(8,"Squircle",{
-Size=aw,
-Parent=ar,
-ImageColor3=e,
-ClipsDescendants=true,
-},{
-aj("ImageLabel",{
-Image="rbxassetid://5554236805",
-ScaleType=Enum.ScaleType.Slice,
-SliceCenter=Rect.new(23,23,277,277),
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ImageColor3=Color3.new(0,0,0),
-ImageTransparency=0.4,
-ZIndex=2,
-}),
-ai.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-f*2,1,-f*2),
-Position=UDim2.new(0.5,0,0.5,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-ImageColor3=Color3.new(1,1,1),
-ClipsDescendants=true,
-ZIndex=3,
-},{
-aj("UIGradient",{Color=d,Rotation=45}),
-aj("ImageLabel",{
-Image=aA,
-Size=UDim2.new(0.65,0,0.65,0),
-AnchorPoint=Vector2.new(0.5,0.5),
-Position=UDim2.new(0.5,0,0.45,0),
-BackgroundTransparency=1,
-ScaleType="Fit",
-ZIndex=4,
-}),
-aj("TextLabel",{
-Text=ay,
-Size=UDim2.new(0.5,0,0,12),
-Position=UDim2.new(0,4,0,2),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Left,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-aj("TextLabel",{
-Text=az,
-Size=UDim2.new(0.5,-4,0,12),
-Position=UDim2.new(1,-4,0,2),
-AnchorPoint=Vector2.new(1,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Right,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=10,
-TextStrokeTransparency=0,
-TextStrokeColor3=Color3.new(0,0,0),
-ZIndex=5,
-}),
-aj("Frame",{
-Size=UDim2.new(1,0,0,18),
-Position=UDim2.new(0,0,1,0),
-AnchorPoint=Vector2.new(0,1),
-BackgroundColor3=Color3.new(0,0,0),
-BackgroundTransparency=0.4,
-BorderSizePixel=0,
-ZIndex=6,
-},{
-aj("TextLabel",{
-Text=ax,
-Size=UDim2.new(1,0,1,0),
-Position=UDim2.new(0,0,0,0),
-BackgroundTransparency=1,
-TextXAlignment=Enum.TextXAlignment.Center,
-TextColor3=Color3.new(1,1,1),
-FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
-TextSize=9,
-TextWrapped=true,
-TextTruncate="AtEnd",
-ZIndex=7,
-}),
-})
-})
-})
-else
-
-local aw
-if typeof(au)=="table"then
-aw=au.Image or au.Icon or au.Id or au
-else
-aw=au
-end
-local ax=ai.Image(
-aw,
-tostring(aw),
-6,
-al.Window.Folder,
-"Dropdown",
-false
-)
-ax.Size=am.ImageSize or UDim2.new(0,30,0,30)
-ax.Parent=ar
-end
-end
-end
-
 local function RecalculateCanvasSize()
 am.UIElements.Menu.Frame.ScrollingFrame.CanvasSize=UDim2.fromOffset(0,am.UIElements.UIListLayout.AbsoluteContentSize.Y)
 end
@@ -7664,6 +7509,152 @@ end
 av.UIElements.TabItem.Active=true
 av.Locked=false
 end
+end
+end
+end
+
+
+local function RenderImages(as,at)
+for au,av in ipairs(as:GetChildren())do
+if not av:IsA"UIListLayout"and not av:IsA"UIPadding"then
+av:Destroy()
+end
+end
+
+if not at or#at==0 then return end
+
+for au,av in ipairs(at)do
+local aw=false
+if typeof(av)=="table"and(av.Quantity or av.Gradient or av.Card)then
+aw=true
+end
+
+if aw then
+local ax=av.Size or am.ImageSize or UDim2.new(0,60,0,60)
+local ay=av.Title or"Item"
+local az=av.Quantity or""
+local aA=av.Rate or""
+local aB=av.Image or""
+local d=av.Gradient
+
+local e
+if typeof(d)=="ColorSequence"then
+e=d
+elseif typeof(d)=="Color3"then
+e=ColorSequence.new(d)
+else
+e=ColorSequence.new(Color3.fromRGB(80,80,80))
+end
+
+local f
+if typeof(d)=="ColorSequence"and d.Keypoints[1]then
+f=d.Keypoints[1].Value
+elseif typeof(d)=="Color3"then
+f=d
+else
+f=Color3.fromRGB(80,80,80)
+end
+
+local g=3
+
+ai.NewRoundFrame(8,"Squircle",{
+Size=ax,
+Parent=as,
+ImageColor3=f,
+ClipsDescendants=true,
+},{
+aj("ImageLabel",{
+Image="rbxassetid://5554236805",
+ScaleType=Enum.ScaleType.Slice,
+SliceCenter=Rect.new(23,23,277,277),
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ImageColor3=Color3.new(0,0,0),
+ImageTransparency=0.4,
+ZIndex=2,
+}),
+ai.NewRoundFrame(8,"Squircle",{
+Size=UDim2.new(1,-g*2,1,-g*2),
+Position=UDim2.new(0.5,0,0.5,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+ImageColor3=Color3.new(1,1,1),
+ClipsDescendants=true,
+ZIndex=3,
+},{
+aj("UIGradient",{Color=e,Rotation=45}),
+aj("ImageLabel",{
+Image=aB,
+Size=UDim2.new(0.65,0,0.65,0),
+AnchorPoint=Vector2.new(0.5,0.5),
+Position=UDim2.new(0.5,0,0.45,0),
+BackgroundTransparency=1,
+ScaleType="Fit",
+ZIndex=4,
+}),
+aj("TextLabel",{
+Text=az,
+Size=UDim2.new(0.5,0,0,12),
+Position=UDim2.new(0,4,0,2),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Left,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+ZIndex=5,
+}),
+aj("TextLabel",{
+Text=aA,
+Size=UDim2.new(0.5,-4,0,12),
+Position=UDim2.new(1,-4,0,2),
+AnchorPoint=Vector2.new(1,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Right,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=10,
+TextStrokeTransparency=0,
+TextStrokeColor3=Color3.new(0,0,0),
+ZIndex=5,
+}),
+aj("Frame",{
+Size=UDim2.new(1,0,0,18),
+Position=UDim2.new(0,0,1,0),
+AnchorPoint=Vector2.new(0,1),
+BackgroundColor3=Color3.new(0,0,0),
+BackgroundTransparency=0.4,
+BorderSizePixel=0,
+ZIndex=6,
+},{
+aj("TextLabel",{
+Text=ay,
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
+BackgroundTransparency=1,
+TextXAlignment=Enum.TextXAlignment.Center,
+TextColor3=Color3.new(1,1,1),
+FontFace=Font.new(ai.Font,Enum.FontWeight.Bold),
+TextSize=9,
+TextWrapped=true,
+TextTruncate="AtEnd",
+ZIndex=7,
+}),
+})
+})
+})
+else
+local ax=(typeof(av)=="table"and(av.Image or av.Icon or av.Id))or av
+local ay=ai.Image(
+ax,
+tostring(ax),
+6,
+al.Window.Folder,
+"Dropdown",
+false
+)
+ay.Size=am.ImageSize or UDim2.new(0,30,0,30)
+ay.Parent=as
 end
 end
 end
@@ -7841,7 +7832,6 @@ FillDirection="Vertical",
 })
 },true)
 
-
 if aw.Images and#aw.Images>0 then
 local ay=aw.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
 if ay then
@@ -8002,6 +7992,79 @@ end
 aq:Refresh(am.Values)
 end
 
+
+function aq.Edit(as,at,au)
+for av,aw in ipairs(am.Tabs)do
+if aw.Name==at then
+
+
+local ax=am.Values[av]
+if ax and type(ax)=="table"then
+if au.Title then ax.Title=au.Title end
+if au.Desc then ax.Desc=au.Desc end
+if au.Icon then ax.Icon=au.Icon end
+if au.Images then ax.Images=au.Images end
+
+
+if au.Title then aw.Name=au.Title end
+if au.Desc then aw.Original.Desc=au.Desc end
+if au.Images then aw.Original.Images=au.Images end
+end
+
+
+local ay=aw.UIElements
+if ay and ay.TabItem then
+local az=ay.TabItem:FindFirstChild"Frame"and ay.TabItem.Frame:FindFirstChild"Title"
+
+if az then
+
+if au.Title then
+local aA=az:FindFirstChild"TextLabel"
+if aA then aA.Text=au.Title end
+end
+
+
+if au.Desc then
+local aA=az:FindFirstChild"Desc"
+if aA then
+aA.Text=au.Desc
+aA.Visible=true
+end
+end
+
+
+if au.Images then
+local aA=az:FindFirstChild"Images"
+if aA then
+aA.Visible=true
+RenderImages(aA,au.Images)
+
+if aw.UIElements.TabItem.AutomaticSize==Enum.AutomaticSize.None then
+aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
+end
+end
+end
+end
+
+
+if au.Icon and ay.TabIcon then
+local aA=ay.TabIcon:FindFirstChild"ImageLabel"
+if aA then
+if au.Gradient then
+local aB=aA:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aA})
+aB.Color=au.Gradient
+end
+aA.Image=au.Icon
+end
+end
+end
+
+RecalculateCanvasSize()
+break
+end
+end
+end
+
 RecalculateListSize()
 RecalculateCanvasSize()
 
@@ -8052,84 +8115,6 @@ task.wait(.25)
 am.UIElements.MenuCanvas.Visible=false
 am.UIElements.MenuCanvas.Active=false
 end)
-end
-
-
-function aq.Edit(as,at,au)
-for av,aw in ipairs(am.Tabs)do
-if aw.Name==at then
-
-
-local ax=am.Values[av]
-if ax and type(ax)=="table"then
-if au.Title then ax.Title=au.Title end
-if au.Desc then ax.Desc=au.Desc end
-if au.Icon then ax.Icon=au.Icon end
-if au.Images then ax.Images=au.Images end
-
-
-if au.Title then aw.Name=au.Title end
-if au.Desc then aw.Original.Desc=au.Desc end
-if au.Images then aw.Original.Images=au.Images end
-end
-
-
-local ay=aw.UIElements
-if ay and ay.TabItem then
-local az=ay.TabItem:FindFirstChild"Frame"and ay.TabItem.Frame:FindFirstChild"Title"
-
-if az then
-
-if au.Title then
-local aA=az:FindFirstChild"TextLabel"
-if aA then aA.Text=au.Title end
-end
-
-
-if au.Desc then
-local aA=az:FindFirstChild"Desc"
-if aA then
-aA.Text=au.Desc
-aA.Visible=true
-end
-end
-
-
-if au.Images then
-local aA=az:FindFirstChild"Images"
-
-if aA then
-aA.Visible=true
-
-RenderImages(aA,au.Images)
-
-
-if aw.UIElements.TabItem.AutomaticSize==Enum.AutomaticSize.None then
-aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
-end
-end
-end
-end
-
-
-if au.Icon and ay.TabIcon then
-local aA=ay.TabIcon:FindFirstChild"ImageLabel"
-if aA then
-
-if au.Gradient then
-local aB=aA:FindFirstChildOfClass"UIGradient"or aj("UIGradient",{Parent=aA})
-aB.Color=au.Gradient
-end
-aA.Image=au.Icon
-end
-end
-end
-
-
-RecalculateCanvasSize()
-break
-end
-end
 end
 
 ai.AddSignal((am.UIElements.Dropdown and am.UIElements.Dropdown.MouseButton1Click or am.DropdownFrame.UIElements.Main.MouseButton1Click),function()
