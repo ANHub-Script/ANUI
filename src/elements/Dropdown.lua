@@ -378,6 +378,10 @@ function Element:New(Config)
         CanCallback = true
         return Dropdown.DropdownFrame:Unlock()
     end
+    -- Ekspos fungsi Edit ke user
+    function Dropdown:Edit(ItemName, NewData)
+        Dropdown.DropdownMenu:Edit(ItemName, NewData)
+    end
     
     if Dropdown.Locked then
         Dropdown:Lock()

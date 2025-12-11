@@ -769,6 +769,77 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             Dropdown.UIElements.MenuCanvas.Active = false
         end)
     end
+
+    -- [FITUR BARU] Edit Item Tanpa Refresh
+    function DropdownModule:Edit(TargetName, NewData)
+        -- Loop melalui Tabs yang sudah dibuat (Cache UI)
+        for Index, TabData in ipairs(Dropdown.Tabs) do
+            -- Cek apakah nama item cocok
+            if TabData.Name == TargetName then
+                
+                -- 1. Update Internal Data (Agar saat di-refresh manual nanti datanya tidak kembali ke lama)
+                -- Kita update Dropdown.Values (Source Data)
+                if Dropdown.Values[Index] then
+                    if type(Dropdown.Values[Index]) == "table" then
+                        if NewData.Title then Dropdown.Values[Index].Title = NewData.Title end
+                        if NewData.Desc then Dropdown.Values[Index].Desc = NewData.Desc end
+                        if NewData.Image then Dropdown.Values[Index].Image = NewData.Image end
+                        -- Update Value Internal Tab
+                        if NewData.Title then TabData.Original.Title = NewData.Title end
+                        if NewData.Desc then TabData.Original.Desc = NewData.Desc end
+                    elseif type(Dropdown.Values[Index]) == "string" and NewData.Title then
+                         -- Jika aslinya string, kita ubah jadi string baru
+                         Dropdown.Values[Index] = NewData.Title
+                    end
+                end
+
+                -- 2. Update UI Langsung (Hemat Resource)
+                local TabUI = TabData.UIElements
+                if TabUI and TabUI.TabItem then
+                    local TitleFrame = TabUI.TabItem:FindFirstChild("Frame") and TabUI.TabItem.Frame:FindFirstChild("Title")
+                    
+                    if TitleFrame then
+                        -- Update Title
+                        if NewData.Title then
+                            local TitleLabel = TitleFrame:FindFirstChild("TextLabel") -- TextLabel pertama biasanya Title (LayoutOrder 1)
+                            if TitleLabel then 
+                                TitleLabel.Text = NewData.Title 
+                                TabData.Name = NewData.Title -- Update nama di cache agar pencarian berikutnya pakai nama baru
+                            end
+                        end
+
+                        -- Update Description (Level/Power)
+                        if NewData.Desc then
+                            local DescLabel = TitleFrame:FindFirstChild("Desc")
+                            if DescLabel then
+                                DescLabel.Text = NewData.Desc
+                                DescLabel.Visible = true
+                                
+                                -- Jika sebelumnya tidak ada desc, kita mungkin perlu trigger resize
+                                if TabData.UIElements.TabItem.AutomaticSize == Enum.AutomaticSize.None then
+                                     TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
+                                end
+                            end
+                        end
+                    end
+
+                    -- Update Icon/Image (Opsional, jika ingin update avatar karakter juga)
+                    if NewData.Image and TabUI.TabIcon then
+                        -- Cari ImageLabel di dalam komponen Icon
+                        local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
+                        if RealImage then
+                            RealImage.Image = NewData.Image
+                        end
+                    end
+                end
+                
+                -- Recalculate Canvas (Jaga-jaga jika teks desc menjadi lebih panjang/pendek 2 baris)
+                RecalculateCanvasSize()
+                
+                break -- Berhenti loop setelah ketemu
+            end
+        end
+    end
     
     Creator.AddSignal((Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.MouseButton1Click or Dropdown.DropdownFrame.UIElements.Main.MouseButton1Click), function()
         DropdownModule:Open()

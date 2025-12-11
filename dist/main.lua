@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.172  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.173  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.172",
+    "version": "1.0.173",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -8056,6 +8056,77 @@ am.UIElements.MenuCanvas.Active=false
 end)
 end
 
+
+function aq.Edit(as,at,au)
+
+for av,aw in ipairs(am.Tabs)do
+
+if aw.Name==at then
+
+
+
+if am.Values[av]then
+if type(am.Values[av])=="table"then
+if au.Title then am.Values[av].Title=au.Title end
+if au.Desc then am.Values[av].Desc=au.Desc end
+if au.Image then am.Values[av].Image=au.Image end
+
+if au.Title then aw.Original.Title=au.Title end
+if au.Desc then aw.Original.Desc=au.Desc end
+elseif type(am.Values[av])=="string"and au.Title then
+
+am.Values[av]=au.Title
+end
+end
+
+
+local ax=aw.UIElements
+if ax and ax.TabItem then
+local ay=ax.TabItem:FindFirstChild"Frame"and ax.TabItem.Frame:FindFirstChild"Title"
+
+if ay then
+
+if au.Title then
+local az=ay:FindFirstChild"TextLabel"
+if az then
+az.Text=au.Title
+aw.Name=au.Title
+end
+end
+
+
+if au.Desc then
+local az=ay:FindFirstChild"Desc"
+if az then
+az.Text=au.Desc
+az.Visible=true
+
+
+if aw.UIElements.TabItem.AutomaticSize==Enum.AutomaticSize.None then
+aw.UIElements.TabItem.AutomaticSize=Enum.AutomaticSize.Y
+end
+end
+end
+end
+
+
+if au.Image and ax.TabIcon then
+
+local az=ax.TabIcon:FindFirstChild"ImageLabel"
+if az then
+az.Image=au.Image
+end
+end
+end
+
+
+RecalculateCanvasSize()
+
+break
+end
+end
+end
+
 ai.AddSignal((am.UIElements.Dropdown and am.UIElements.Dropdown.MouseButton1Click or am.DropdownFrame.UIElements.Main.MouseButton1Click),function()
 aq:Open()
 end)
@@ -8476,6 +8547,10 @@ function an.Unlock(ap)
 an.Locked=false
 ao=true
 return an.DropdownFrame:Unlock()
+end
+
+function an.Edit(ap,aq,ar)
+an.DropdownMenu:Edit(aq,ar)
 end
 
 if an.Locked then
