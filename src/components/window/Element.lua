@@ -208,6 +208,11 @@ return function(Config)
 
     -- [FUNGSI OPTIMASI LAG] UpdateDesc dengan Reuse Instance
     local function UpdateDesc(text)
+        -- [REQUEST USER] Antisipasi Lag: Cek jika window tertutup
+        if Config.Window and Config.Window.Closed then 
+            return 
+        end
+
         if not text or text == "" then
             DescContainer.Visible = false
             return
@@ -289,9 +294,7 @@ return function(Config)
                     if itemData.Type == "Text" then
                         itemFrame = CreateText(itemData.Content, "Desc")
                         itemFrame.Parent = lineFrame
-                        itemFrame.Size = UDim2.new(0,0,0,0)
-                        itemFrame.AutomaticSize = Enum.AutomaticSize.XY
-                        itemFrame.TextWrapped = false
+                        -- Size & AutomaticSize akan diatur di bawah (Update Properti)
                     else
                         itemFrame = New("ImageLabel", {
                             Parent = lineFrame,
@@ -311,6 +314,20 @@ return function(Config)
                 if itemData.Type == "Text" then
                     if itemFrame.Text ~= itemData.Content then
                          itemFrame.Text = itemData.Content
+                    end
+                    
+                    -- [FIX WRAPPING LOGIC]
+                    -- Jika baris ini HANYA berisi 1 item text, kita izinkan full wrapping (Size 100% width, Auto Y)
+                    if #items == 1 then
+                        itemFrame.Size = UDim2.new(1, 0, 0, 0)
+                        itemFrame.AutomaticSize = Enum.AutomaticSize.Y
+                        itemFrame.TextWrapped = true
+                    else
+                        -- Jika baris campuran (ada icon ditengah text), kita pakai logic lama (Auto XY)
+                        -- Agar text tidak menabrak icon
+                        itemFrame.Size = UDim2.new(0, 0, 0, 0)
+                        itemFrame.AutomaticSize = Enum.AutomaticSize.XY
+                        itemFrame.TextWrapped = false 
                     end
                 else
                     if itemFrame.Image ~= itemData.Content then

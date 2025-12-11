@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.171  |  2025-12-10  |  Roblox UI Library for scripts
+    v1.0.172  |  2025-12-11  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.171",
+    "version": "1.0.172",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5193,6 +5193,11 @@ Padding=UDim.new(0,2),
 
 
 local function UpdateDesc(ao)
+
+if ae.Window and ae.Window.Closed then
+return
+end
+
 if not ao or ao==""then
 an.Visible=false
 return
@@ -5274,9 +5279,7 @@ if not ay then
 if ax.Type=="Text"then
 ay=CreateText(ax.Content,"Desc")
 ay.Parent=au
-ay.Size=UDim2.new(0,0,0,0)
-ay.AutomaticSize=Enum.AutomaticSize.XY
-ay.TextWrapped=false
+
 else
 ay=ab("ImageLabel",{
 Parent=au,
@@ -5296,6 +5299,20 @@ ay.Visible=true
 if ax.Type=="Text"then
 if ay.Text~=ax.Content then
 ay.Text=ax.Content
+end
+
+
+
+if#at==1 then
+ay.Size=UDim2.new(1,0,0,0)
+ay.AutomaticSize=Enum.AutomaticSize.Y
+ay.TextWrapped=true
+else
+
+
+ay.Size=UDim2.new(0,0,0,0)
+ay.AutomaticSize=Enum.AutomaticSize.XY
+ay.TextWrapped=false
 end
 else
 if ay.Image~=ax.Content then
