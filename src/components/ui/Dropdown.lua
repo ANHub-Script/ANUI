@@ -460,6 +460,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
                         if TabMain.Locked then return end 
                         if Dropdown.Multi then
+                            if typeof(Dropdown.Value) ~= "table" then
+                                Dropdown.Value = {}
+                            end
                             if not TabMain.Selected then
                                 TabMain.Selected = true
                                 Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()

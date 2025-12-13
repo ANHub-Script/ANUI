@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.181  |  2025-12-11  |  Roblox UI Library for scripts
+    v1.0.182  |  2025-12-13  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.181",
+    "version": "1.0.182",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7746,6 +7746,9 @@ if ao=="Dropdown"then
 ag.AddSignal(av.UIElements.TabItem.MouseButton1Click,function()
 if av.Locked then return end
 if al.Multi then
+if typeof(al.Value)~="table"then
+al.Value={}
+end
 if not av.Selected then
 av.Selected=true
 ai(av.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
@@ -8102,6 +8105,7 @@ return ap
 end
 
 return aa end function a.K()
+
 local aa=(cloneref or clonereference or function(aa)return aa end)
 
 aa(game:GetService"UserInputService")
