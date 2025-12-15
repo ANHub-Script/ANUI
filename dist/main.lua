@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.185  |  2025-12-15  |  Roblox UI Library for scripts
+    v1.0.186  |  2025-12-15  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.185",
+    "version": "1.0.186",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7560,19 +7560,31 @@ end
 end
 
 function ap.Refresh(ar,as)
-for at,au in next,al.UIElements.Menu.Frame.ScrollingFrame:GetChildren()do
-if not au:IsA"UIListLayout"then au:Destroy()end
+
+if al._ActiveRefreshTask then
+task.cancel(al._ActiveRefreshTask)
+al._ActiveRefreshTask=nil
 end
+
+
+local at=al.UIElements.Menu.Frame.ScrollingFrame
+for au,av in next,at:GetChildren()do
+if not av:IsA"UIListLayout"and not av:IsA"UIPadding"and av.Name~="SearchBar"then
+av:Destroy()
+end
+end
+
 al.Tabs={}
+
 
 if al.SearchBarEnabled then
 if not aq then
-aq=CreateInput("Search...","search",al.UIElements.Menu,nil,function(at)
-for au,av in next,al.Tabs do
-if string.find(string.lower(av.Name),string.lower(at),1,true)then
-av.UIElements.TabItem.Visible=true
+aq=CreateInput("Search...","search",al.UIElements.Menu,nil,function(au)
+for av,aw in next,al.Tabs do
+if string.find(string.lower(aw.Name),string.lower(au),1,true)then
+aw.UIElements.TabItem.Visible=true
 else
-av.UIElements.TabItem.Visible=false
+aw.UIElements.TabItem.Visible=false
 end
 RecalculateListSize()
 RecalculateCanvasSize()
@@ -7581,35 +7593,45 @@ end,true)
 aq.Size=UDim2.new(1,0,0,am.SearchBarHeight)
 aq.Position=UDim2.new(0,0,0,0)
 aq.Name="SearchBar"
+else
+
+aq.Parent=al.UIElements.Menu
 end
 end
 
-for at,au in next,as do
-if(au.Type~="Divider")then
-local av={
-Name=typeof(au)=="table"and au.Title or au,
-Desc=typeof(au)=="table"and au.Desc or nil,
-Icon=typeof(au)=="table"and au.Icon or nil,
-Images=typeof(au)=="table"and au.Images or nil,
-Original=au,
+
+al._ActiveRefreshTask=task.spawn(function()
+local au=0
+local av=15
+
+for aw,ax in next,as do
+if(ax.Type~="Divider")then
+local ay={
+Name=typeof(ax)=="table"and ax.Title or ax,
+Desc=typeof(ax)=="table"and ax.Desc or nil,
+Icon=typeof(ax)=="table"and ax.Icon or nil,
+Images=typeof(ax)=="table"and ax.Images or nil,
+Original=ax,
 Selected=false,
-Locked=typeof(au)=="table"and au.Locked or false,
+Locked=typeof(ax)=="table"and ax.Locked or false,
 UIElements={},
 }
-local aw
-if av.Icon then
-aw=ag.Image(av.Icon,av.Icon,0,ak.Window.Folder,"Dropdown",true)
-aw.Size=UDim2.new(0,am.TabIcon,0,am.TabIcon)
-aw.ImageLabel.ImageTransparency=ao=="Dropdown"and.2 or 0
-av.UIElements.TabIcon=aw
+local az
+if ay.Icon then
+az=ag.Image(ay.Icon,ay.Icon,0,ak.Window.Folder,"Dropdown",true)
+az.Size=UDim2.new(0,am.TabIcon,0,am.TabIcon)
+az.ImageLabel.ImageTransparency=ao=="Dropdown"and.2 or 0
+ay.UIElements.TabIcon=az
 end
-av.UIElements.TabItem=ag.NewRoundFrame(am.MenuCorner-am.MenuPadding,"Squircle",{
+
+
+ay.UIElements.TabItem=ag.NewRoundFrame(am.MenuCorner-am.MenuPadding,"Squircle",{
 Size=UDim2.new(1,0,0,36),
-AutomaticSize=((av.Desc or(av.Images and#av.Images>0))and"Y")or nil,
+AutomaticSize=((ay.Desc or(ay.Images and#ay.Images>0))and"Y")or nil,
 ImageTransparency=1,
 Parent=al.UIElements.Menu.Frame.ScrollingFrame,
 ImageColor3=Color3.new(1,1,1),
-Active=not av.Locked,
+Active=not ay.Locked,
 },{
 ag.NewRoundFrame(am.MenuCorner-am.MenuPadding,"SquircleOutline",{
 Size=UDim2.new(1,0,1,0),
@@ -7644,15 +7666,15 @@ PaddingRight=UDim.new(0,am.TabPadding),
 PaddingBottom=UDim.new(0,am.TabPadding),
 }),
 ah("UICorner",{CornerRadius=UDim.new(0,am.MenuCorner-am.MenuPadding)}),
-aw,
+az,
 ah("Frame",{
-Size=UDim2.new(1,aw and-am.TabPadding-am.TabIcon or 0,0,0),
+Size=UDim2.new(1,az and-am.TabPadding-am.TabIcon or 0,0,0),
 BackgroundTransparency=1,
 AutomaticSize="Y",
 Name="Title",
 },{
 ah("TextLabel",{
-Text=av.Name,
+Text=ay.Name,
 TextXAlignment="Left",
 FontFace=Font.new(ag.Font,Enum.FontWeight.Medium),
 ThemeTag={TextColor3="Text",BackgroundColor3="Text"},
@@ -7664,7 +7686,7 @@ AutomaticSize="Y",
 Size=UDim2.new(1,0,0,0),
 }),
 ah("TextLabel",{
-Text=av.Desc or"",
+Text=ay.Desc or"",
 TextXAlignment="Left",
 FontFace=Font.new(ag.Font,Enum.FontWeight.Regular),
 ThemeTag={TextColor3="Text",BackgroundColor3="Text"},
@@ -7675,7 +7697,7 @@ LayoutOrder=2,
 AutomaticSize="Y",
 TextWrapped=true,
 Size=UDim2.new(1,0,0,0),
-Visible=av.Desc and true or false,
+Visible=ay.Desc and true or false,
 Name="Desc",
 }),
 ah("ScrollingFrame",{
@@ -7686,7 +7708,7 @@ AutomaticCanvasSize=Enum.AutomaticSize.X,
 ScrollingDirection=Enum.ScrollingDirection.X,
 ScrollBarThickness=0,
 CanvasSize=UDim2.new(0,0,0,0),
-Visible=(av.Images and#av.Images>0)and true or false,
+Visible=(ay.Images and#ay.Images>0)and true or false,
 LayoutOrder=3,
 Name="Images",
 },{
@@ -7698,120 +7720,134 @@ ah("UIListLayout",{Padding=UDim.new(0,am.TabPadding/3),FillDirection="Vertical"}
 })
 },true)
 
-if av.Images and#av.Images>0 then
-local ax=av.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
-if ax then RenderImages(ax,av.Images)end
+if ay.Images and#ay.Images>0 then
+local aA=ay.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
+if aA then RenderImages(aA,ay.Images)end
 end
 
-if av.Locked then
-av.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency=0.6
-if av.UIElements.TabIcon then av.UIElements.TabIcon.ImageLabel.ImageTransparency=0.6 end
+if ay.Locked then
+ay.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency=0.6
+if ay.UIElements.TabIcon then ay.UIElements.TabIcon.ImageLabel.ImageTransparency=0.6 end
 end
+
 
 if al.Multi and typeof(al.Value)=="string"then
-for ax,ay in next,al.Values do
-if typeof(ay)=="table"then
-if ay.Title==al.Value then al.Value={ay}end
+for aA,aB in next,al.Values do
+if typeof(aB)=="table"then
+if aB.Title==al.Value then al.Value={aB}end
 else
-if ay==al.Value then al.Value={al.Value}end
+if aB==al.Value then al.Value={al.Value}end
 end
 end
 end
 
 if al.Multi then
-local ax=false
+local aA=false
 if typeof(al.Value)=="table"then
-for ay,az in ipairs(al.Value)do
-local aA=typeof(az)=="table"and az.Title or az
-if aA==av.Name then ax=true break end
+for aB,d in ipairs(al.Value)do
+local e=typeof(d)=="table"and d.Title or d
+if e==ay.Name then aA=true break end
 end
 end
-av.Selected=ax
+ay.Selected=aA
 else
-local ax=typeof(al.Value)=="table"and al.Value.Title or al.Value
-av.Selected=ax==av.Name
+local aA=typeof(al.Value)=="table"and al.Value.Title or al.Value
+ay.Selected=aA==ay.Name
 end
 
-if av.Selected and not av.Locked then
-av.UIElements.TabItem.ImageTransparency=.95
-av.UIElements.TabItem.Highlight.ImageTransparency=.75
-av.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency=0
-if av.UIElements.TabIcon then av.UIElements.TabIcon.ImageLabel.ImageTransparency=0 end
+if ay.Selected and not ay.Locked then
+ay.UIElements.TabItem.ImageTransparency=.95
+ay.UIElements.TabItem.Highlight.ImageTransparency=.75
+ay.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency=0
+if ay.UIElements.TabIcon then ay.UIElements.TabIcon.ImageLabel.ImageTransparency=0 end
 end
 
-al.Tabs[at]=av
-ap:Display()
+al.Tabs[aw]=ay
+
 
 if ao=="Dropdown"then
-ag.AddSignal(av.UIElements.TabItem.MouseButton1Click,function()
-if av.Locked then return end
+ag.AddSignal(ay.UIElements.TabItem.MouseButton1Click,function()
+if ay.Locked then return end
 if al.Multi then
 if typeof(al.Value)~="table"then
 al.Value={}
 end
-if not av.Selected then
-av.Selected=true
-ai(av.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
-ai(av.UIElements.TabItem.Highlight,0.1,{ImageTransparency=.75}):Play()
-ai(av.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=0}):Play()
-if av.UIElements.TabIcon then ai(av.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=0}):Play()end
-table.insert(al.Value,av.Original)
+if not ay.Selected then
+ay.Selected=true
+ai(ay.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
+ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=.75}):Play()
+ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=0}):Play()
+if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=0}):Play()end
+table.insert(al.Value,ay.Original)
 else
 if not al.AllowNone and#al.Value==1 then return end
-av.Selected=false
-ai(av.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
-ai(av.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
-ai(av.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
-if av.UIElements.TabIcon then ai(av.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()end
-for ax,ay in next,al.Value do
-if typeof(ay)=="table"and(ay.Title==av.Name)or(ay==av.Name)then
-table.remove(al.Value,ax)
+ay.Selected=false
+ai(ay.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
+ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
+ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
+if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()end
+for aA,aB in next,al.Value do
+if typeof(aB)=="table"and(aB.Title==ay.Name)or(aB==ay.Name)then
+table.remove(al.Value,aA)
 break
 end
 end
 end
 else
-for ax,ay in next,al.Tabs do
-ai(ay.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
-ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
-ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
-if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()end
-ay.Selected=false
+for aA,aB in next,al.Tabs do
+ai(aB.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
+ai(aB.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
+ai(aB.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
+if aB.UIElements.TabIcon then ai(aB.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()end
+aB.Selected=false
 end
-av.Selected=true
-ai(av.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
-ai(av.UIElements.TabItem.Highlight,0.1,{ImageTransparency=.75}):Play()
-ai(av.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=0}):Play()
-if av.UIElements.TabIcon then ai(av.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=0}):Play()end
-al.Value=av.Original
+ay.Selected=true
+ai(ay.UIElements.TabItem,0.1,{ImageTransparency=.95}):Play()
+ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=.75}):Play()
+ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=0}):Play()
+if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=0}):Play()end
+al.Value=ay.Original
 end
 Callback()
 end)
 elseif ao=="Menu"then
-if not av.Locked then
-ag.AddSignal(av.UIElements.TabItem.MouseEnter,function()ai(av.UIElements.TabItem,0.08,{ImageTransparency=.95}):Play()end)
-ag.AddSignal(av.UIElements.TabItem.InputEnded,function()ai(av.UIElements.TabItem,0.08,{ImageTransparency=1}):Play()end)
+if not ay.Locked then
+ag.AddSignal(ay.UIElements.TabItem.MouseEnter,function()ai(ay.UIElements.TabItem,0.08,{ImageTransparency=.95}):Play()end)
+ag.AddSignal(ay.UIElements.TabItem.InputEnded,function()ai(ay.UIElements.TabItem,0.08,{ImageTransparency=1}):Play()end)
 end
-ag.AddSignal(av.UIElements.TabItem.MouseButton1Click,function()
-if av.Locked then return end
-Callback(au.Callback or function()end)
+ag.AddSignal(ay.UIElements.TabItem.MouseButton1Click,function()
+if ay.Locked then return end
+Callback(ax.Callback or function()end)
 end)
 end
-RecalculateCanvasSize()
-RecalculateListSize()
 else a.load'I'
 :New{Parent=al.UIElements.Menu.Frame.ScrollingFrame}
 end
+
+
+au=au+1
+if au%av==0 then
+
+RecalculateCanvasSize()
+task.wait()
 end
-local at=al.MenuWidth or 0
-if at==0 then
-for au,av in next,al.Tabs do
-if av.UIElements.TabItem.Frame.UIListLayout then at=math.max(at,av.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X)end
+end
+
+
+local aw=al.MenuWidth or 0
+if aw==0 then
+for ax,ay in next,al.Tabs do
+if ay.UIElements.TabItem.Frame.UIListLayout then aw=math.max(aw,ay.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X)end
 end
 end
-al.UIElements.MenuCanvas.Size=UDim2.new(0,at+6+6+5+5+18+6+6,al.UIElements.MenuCanvas.Size.Y.Scale,al.UIElements.MenuCanvas.Size.Y.Offset)
+al.UIElements.MenuCanvas.Size=UDim2.new(0,aw+6+6+5+5+18+6+6,al.UIElements.MenuCanvas.Size.Y.Scale,al.UIElements.MenuCanvas.Size.Y.Offset)
 Callback()
 al.Values=as
+RecalculateCanvasSize()
+RecalculateListSize()
+
+al._ActiveRefreshTask=nil
+end)
 end
 
 ap:Refresh(al.Values)

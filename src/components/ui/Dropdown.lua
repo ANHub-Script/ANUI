@@ -274,11 +274,23 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     end
 
     function DropdownModule:Refresh(Values)
-        for _, Elementt in next, Dropdown.UIElements.Menu.Frame.ScrollingFrame:GetChildren() do
-            if not Elementt:IsA("UIListLayout") then Elementt:Destroy() end
+        -- [OPTIMISASI 1] Batalkan render sebelumnya jika Refresh dipanggil lagi saat masih loading
+        if Dropdown._ActiveRefreshTask then 
+            task.cancel(Dropdown._ActiveRefreshTask) 
+            Dropdown._ActiveRefreshTask = nil
         end
+
+        -- Bersihkan elemen lama (Kecuali UIListLayout & SearchBar)
+        local ScrollFrame = Dropdown.UIElements.Menu.Frame.ScrollingFrame
+        for _, Elementt in next, ScrollFrame:GetChildren() do
+            if not Elementt:IsA("UIListLayout") and not Elementt:IsA("UIPadding") and Elementt.Name ~= "SearchBar" then 
+                Elementt:Destroy() 
+            end
+        end
+        
         Dropdown.Tabs = {}
         
+        -- Setup SearchBar (Logic asli tetap dipertahankan)
         if Dropdown.SearchBarEnabled then
             if not SearchLabel then
                 SearchLabel = CreateInput("Search...", "search", Dropdown.UIElements.Menu, nil, function(val)
@@ -295,237 +307,261 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 SearchLabel.Size = UDim2.new(1,0,0,Element.SearchBarHeight)
                 SearchLabel.Position = UDim2.new(0,0,0,0)
                 SearchLabel.Name = "SearchBar"
+            else
+                -- Pastikan SearchBar tetap ada di urutan teratas/benar
+                SearchLabel.Parent = Dropdown.UIElements.Menu -- Re-parenting untuk keamanan
             end
         end
         
-        for Index,Tab in next, Values do
-            if (Tab.Type ~= "Divider") then
-                local TabMain = {
-                    Name = typeof(Tab) == "table" and Tab.Title or Tab,
-                    Desc = typeof(Tab) == "table" and Tab.Desc or nil,
-                    Icon = typeof(Tab) == "table" and Tab.Icon or nil,
-                    Images = typeof(Tab) == "table" and Tab.Images or nil,
-                    Original = Tab,
-                    Selected = false,
-                    Locked = typeof(Tab) == "table" and Tab.Locked or false,
-                    UIElements = {},
-                }
-                local TabIcon
-                if TabMain.Icon then
-                    TabIcon = Creator.Image(TabMain.Icon, TabMain.Icon, 0, Config.Window.Folder, "Dropdown", true)
-                    TabIcon.Size = UDim2.new(0,Element.TabIcon,0,Element.TabIcon)
-                    TabIcon.ImageLabel.ImageTransparency = Type == "Dropdown" and .2 or 0
-                    TabMain.UIElements.TabIcon = TabIcon
-                end
-                TabMain.UIElements.TabItem = Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "Squircle", {
-                    Size = UDim2.new(1,0,0,36),
-                    AutomaticSize = ((TabMain.Desc or (TabMain.Images and #TabMain.Images > 0)) and "Y") or nil,
-                    ImageTransparency = 1, 
-                    Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame,
-                    ImageColor3 = Color3.new(1,1,1),
-                    Active = not TabMain.Locked,
-                }, {
-                    Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "SquircleOutline", {
-                        Size = UDim2.new(1,0,1,0),
+        -- [OPTIMISASI 2] Jalankan pembuatan item dalam Thread terpisah
+        Dropdown._ActiveRefreshTask = task.spawn(function()
+            local ProcessedCount = 0
+            local BatchSize = 15 -- Render 15 item per frame (bisa diatur)
+
+            for Index, Tab in next, Values do
+                if (Tab.Type ~= "Divider") then
+                    local TabMain = {
+                        Name = typeof(Tab) == "table" and Tab.Title or Tab,
+                        Desc = typeof(Tab) == "table" and Tab.Desc or nil,
+                        Icon = typeof(Tab) == "table" and Tab.Icon or nil,
+                        Images = typeof(Tab) == "table" and Tab.Images or nil,
+                        Original = Tab,
+                        Selected = false,
+                        Locked = typeof(Tab) == "table" and Tab.Locked or false,
+                        UIElements = {},
+                    }
+                    local TabIcon
+                    if TabMain.Icon then
+                        TabIcon = Creator.Image(TabMain.Icon, TabMain.Icon, 0, Config.Window.Folder, "Dropdown", true)
+                        TabIcon.Size = UDim2.new(0,Element.TabIcon,0,Element.TabIcon)
+                        TabIcon.ImageLabel.ImageTransparency = Type == "Dropdown" and .2 or 0
+                        TabMain.UIElements.TabIcon = TabIcon
+                    end
+
+                    -- Pembuatan Frame Item
+                    TabMain.UIElements.TabItem = Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "Squircle", {
+                        Size = UDim2.new(1,0,0,36),
+                        AutomaticSize = ((TabMain.Desc or (TabMain.Images and #TabMain.Images > 0)) and "Y") or nil,
+                        ImageTransparency = 1, 
+                        Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame,
                         ImageColor3 = Color3.new(1,1,1),
-                        ImageTransparency = 1,
-                        Name = "Highlight",
+                        Active = not TabMain.Locked,
                     }, {
-                        New("UIGradient", {
-                            Rotation = 80,
-                            Color = ColorSequence.new({
-                                ColorSequenceKeypoint.new(0.0, Color3.fromRGB(255, 255, 255)),
-                                ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
-                                ColorSequenceKeypoint.new(1.0, Color3.fromRGB(255, 255, 255)),
-                            }),
-                            Transparency = NumberSequence.new({
-                                NumberSequenceKeypoint.new(0.0, 0.1),
-                                NumberSequenceKeypoint.new(0.5, 1),
-                                NumberSequenceKeypoint.new(1.0, 0.1),
-                            })
-                        }),
-                    }),
-                    New("Frame", {
-                        Size = UDim2.new(1,0,1,0),
-                        BackgroundTransparency = 1,
-                        Name = "Frame",
-                    }, {
-                        New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding), FillDirection = "Horizontal", VerticalAlignment = "Center" }),
-                        New("UIPadding", {
-                            PaddingTop = UDim.new(0,Element.TabPadding),
-                            PaddingLeft = UDim.new(0,Element.TabPadding),
-                            PaddingRight = UDim.new(0,Element.TabPadding),
-                            PaddingBottom = UDim.new(0,Element.TabPadding),
-                        }),
-                        New("UICorner", { CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding) }),
-                        TabIcon,
-                        New("Frame", {
-                            Size = UDim2.new(1,TabIcon and -Element.TabPadding-Element.TabIcon or 0,0,0),
-                            BackgroundTransparency = 1,
-                            AutomaticSize = "Y",
-                            Name = "Title",
+                        Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "SquircleOutline", {
+                            Size = UDim2.new(1,0,1,0),
+                            ImageColor3 = Color3.new(1,1,1),
+                            ImageTransparency = 1,
+                            Name = "Highlight",
                         }, {
-                            New("TextLabel", {
-                                Text = TabMain.Name,
-                                TextXAlignment = "Left",
-                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
-                                ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
-                                TextSize = 15,
-                                BackgroundTransparency = 1,
-                                TextTransparency = Type == "Dropdown" and .4 or .05,
-                                LayoutOrder = 1,
-                                AutomaticSize = "Y",
-                                Size = UDim2.new(1,0,0,0),
+                            New("UIGradient", {
+                                Rotation = 80,
+                                Color = ColorSequence.new({
+                                    ColorSequenceKeypoint.new(0.0, Color3.fromRGB(255, 255, 255)),
+                                    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(255, 255, 255)),
+                                    ColorSequenceKeypoint.new(1.0, Color3.fromRGB(255, 255, 255)),
+                                }),
+                                Transparency = NumberSequence.new({
+                                    NumberSequenceKeypoint.new(0.0, 0.1),
+                                    NumberSequenceKeypoint.new(0.5, 1),
+                                    NumberSequenceKeypoint.new(1.0, 0.1),
+                                })
                             }),
-                            New("TextLabel", {
-                                Text = TabMain.Desc or "",
-                                TextXAlignment = "Left",
-                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
-                                ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
-                                TextSize = 15,
-                                BackgroundTransparency = 1,
-                                TextTransparency = Type == "Dropdown" and .6 or .35,
-                                LayoutOrder = 2,
-                                AutomaticSize = "Y",
-                                TextWrapped = true,
-                                Size = UDim2.new(1,0,0,0),
-                                Visible = TabMain.Desc and true or false,
-                                Name = "Desc",
+                        }),
+                        New("Frame", {
+                            Size = UDim2.new(1,0,1,0),
+                            BackgroundTransparency = 1,
+                            Name = "Frame",
+                        }, {
+                            New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding), FillDirection = "Horizontal", VerticalAlignment = "Center" }),
+                            New("UIPadding", {
+                                PaddingTop = UDim.new(0,Element.TabPadding),
+                                PaddingLeft = UDim.new(0,Element.TabPadding),
+                                PaddingRight = UDim.new(0,Element.TabPadding),
+                                PaddingBottom = UDim.new(0,Element.TabPadding),
                             }),
-                            New("ScrollingFrame", {
-                                Size = UDim2.new(1,0,0,70), 
+                            New("UICorner", { CornerRadius = UDim.new(0,Element.MenuCorner - Element.MenuPadding) }),
+                            TabIcon,
+                            New("Frame", {
+                                Size = UDim2.new(1,TabIcon and -Element.TabPadding-Element.TabIcon or 0,0,0),
                                 BackgroundTransparency = 1,
-                                AutomaticSize = Enum.AutomaticSize.None,
-                                AutomaticCanvasSize = Enum.AutomaticSize.X,
-                                ScrollingDirection = Enum.ScrollingDirection.X,
-                                ScrollBarThickness = 0,
-                                CanvasSize = UDim2.new(0,0,0,0),
-                                Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
-                                LayoutOrder = 3,
-                                Name = "Images",
+                                AutomaticSize = "Y",
+                                Name = "Title",
                             }, {
-                                New("UIListLayout", { FillDirection = "Horizontal", Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3), VerticalAlignment = "Center" }),
-                                New("UIPadding", { PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 2), PaddingTop = UDim.new(0, 2), PaddingBottom = UDim.new(0, 2) })
-                            }),
-                            New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding/3), FillDirection = "Vertical" }), 
+                                New("TextLabel", {
+                                    Text = TabMain.Name,
+                                    TextXAlignment = "Left",
+                                    FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
+                                    ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
+                                    TextSize = 15,
+                                    BackgroundTransparency = 1,
+                                    TextTransparency = Type == "Dropdown" and .4 or .05,
+                                    LayoutOrder = 1,
+                                    AutomaticSize = "Y",
+                                    Size = UDim2.new(1,0,0,0),
+                                }),
+                                New("TextLabel", {
+                                    Text = TabMain.Desc or "",
+                                    TextXAlignment = "Left",
+                                    FontFace = Font.new(Creator.Font, Enum.FontWeight.Regular),
+                                    ThemeTag = { TextColor3 = "Text", BackgroundColor3 = "Text" },
+                                    TextSize = 15,
+                                    BackgroundTransparency = 1,
+                                    TextTransparency = Type == "Dropdown" and .6 or .35,
+                                    LayoutOrder = 2,
+                                    AutomaticSize = "Y",
+                                    TextWrapped = true,
+                                    Size = UDim2.new(1,0,0,0),
+                                    Visible = TabMain.Desc and true or false,
+                                    Name = "Desc",
+                                }),
+                                New("ScrollingFrame", {
+                                    Size = UDim2.new(1,0,0,70), 
+                                    BackgroundTransparency = 1,
+                                    AutomaticSize = Enum.AutomaticSize.None,
+                                    AutomaticCanvasSize = Enum.AutomaticSize.X,
+                                    ScrollingDirection = Enum.ScrollingDirection.X,
+                                    ScrollBarThickness = 0,
+                                    CanvasSize = UDim2.new(0,0,0,0),
+                                    Visible = (TabMain.Images and #TabMain.Images > 0) and true or false,
+                                    LayoutOrder = 3,
+                                    Name = "Images",
+                                }, {
+                                    New("UIListLayout", { FillDirection = "Horizontal", Padding = UDim.new(0, Dropdown.ImagePadding or Element.TabPadding/3), VerticalAlignment = "Center" }),
+                                    New("UIPadding", { PaddingLeft = UDim.new(0, 2), PaddingRight = UDim.new(0, 2), PaddingTop = UDim.new(0, 2), PaddingBottom = UDim.new(0, 2) })
+                                }),
+                                New("UIListLayout", { Padding = UDim.new(0, Element.TabPadding/3), FillDirection = "Vertical" }), 
+                            })
                         })
-                    })
-                }, true)
+                    }, true)
 
-                if TabMain.Images and #TabMain.Images > 0 then
-                    local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
-                    if imagesContainer then RenderImages(imagesContainer, TabMain.Images) end
-                end
-                
-                if TabMain.Locked then
-                    TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0.6
-                    if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6 end
-                end
+                    if TabMain.Images and #TabMain.Images > 0 then
+                        local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
+                        if imagesContainer then RenderImages(imagesContainer, TabMain.Images) end
+                    end
+                    
+                    if TabMain.Locked then
+                        TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0.6
+                        if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6 end
+                    end
 
-                if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
-                    for _, i in next, Dropdown.Values do
-                        if typeof(i) == "table" then
-                            if i.Title == Dropdown.Value then Dropdown.Value = { i } end
-                        else
-                            if i == Dropdown.Value then Dropdown.Value = { Dropdown.Value } end
-                        end
-                    end
-                end
-                
-                if Dropdown.Multi then
-                    local found = false
-                    if typeof(Dropdown.Value) == "table" then
-                        for _, item in ipairs(Dropdown.Value) do
-                            local itemName = typeof(item) == "table" and item.Title or item
-                            if itemName == TabMain.Name then found = true break end
-                        end
-                    end
-                    TabMain.Selected = found
-                else
-                    local currentValue = typeof(Dropdown.Value) == "table" and Dropdown.Value.Title or Dropdown.Value
-                    TabMain.Selected = currentValue == TabMain.Name
-                end
-                
-                if TabMain.Selected and not TabMain.Locked then
-                    TabMain.UIElements.TabItem.ImageTransparency = .95
-                    TabMain.UIElements.TabItem.Highlight.ImageTransparency = .75
-                    TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0
-                    if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0 end
-                end
-                
-                Dropdown.Tabs[Index] = TabMain
-                DropdownModule:Display()
-                
-                if Type == "Dropdown" then
-                    Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
-                        if TabMain.Locked then return end 
-                        if Dropdown.Multi then
-                            if typeof(Dropdown.Value) ~= "table" then
-                                Dropdown.Value = {}
+                    -- Update Selection Logic
+                    if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
+                        for _, i in next, Dropdown.Values do
+                            if typeof(i) == "table" then
+                                if i.Title == Dropdown.Value then Dropdown.Value = { i } end
+                            else
+                                if i == Dropdown.Value then Dropdown.Value = { Dropdown.Value } end
                             end
-                            if not TabMain.Selected then
+                        end
+                    end
+                    
+                    if Dropdown.Multi then
+                        local found = false
+                        if typeof(Dropdown.Value) == "table" then
+                            for _, item in ipairs(Dropdown.Value) do
+                                local itemName = typeof(item) == "table" and item.Title or item
+                                if itemName == TabMain.Name then found = true break end
+                            end
+                        end
+                        TabMain.Selected = found
+                    else
+                        local currentValue = typeof(Dropdown.Value) == "table" and Dropdown.Value.Title or Dropdown.Value
+                        TabMain.Selected = currentValue == TabMain.Name
+                    end
+                    
+                    if TabMain.Selected and not TabMain.Locked then
+                        TabMain.UIElements.TabItem.ImageTransparency = .95
+                        TabMain.UIElements.TabItem.Highlight.ImageTransparency = .75
+                        TabMain.UIElements.TabItem.Frame.Title.TextLabel.TextTransparency = 0
+                        if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0 end
+                    end
+                    
+                    Dropdown.Tabs[Index] = TabMain
+                    
+                    -- Event Connections
+                    if Type == "Dropdown" then
+                        Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
+                            if TabMain.Locked then return end 
+                            if Dropdown.Multi then
+                                if typeof(Dropdown.Value) ~= "table" then
+                                    Dropdown.Value = {}
+                                end
+                                if not TabMain.Selected then
+                                    TabMain.Selected = true
+                                    Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
+                                    if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
+                                    table.insert(Dropdown.Value, TabMain.Original)
+                                else
+                                    if not Dropdown.AllowNone and #Dropdown.Value == 1 then return end
+                                    TabMain.Selected = false
+                                    Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
+                                    if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
+                                    for i, v in next, Dropdown.Value do
+                                        if typeof(v) == "table" and (v.Title == TabMain.Name) or (v == TabMain.Name) then
+                                            table.remove(Dropdown.Value, i)
+                                            break
+                                        end
+                                    end
+                                end
+                            else
+                                for Index, TabPisun in next, Dropdown.Tabs do
+                                    Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
+                                    if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
+                                    TabPisun.Selected = false
+                                end
                                 TabMain.Selected = true
                                 Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
                                 Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
                                 Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
                                 if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
-                                table.insert(Dropdown.Value, TabMain.Original)
-                            else
-                                if not Dropdown.AllowNone and #Dropdown.Value == 1 then return end
-                                TabMain.Selected = false
-                                Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                                Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                                Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
-                                for i, v in next, Dropdown.Value do
-                                    if typeof(v) == "table" and (v.Title == TabMain.Name) or (v == TabMain.Name) then
-                                        table.remove(Dropdown.Value, i)
-                                        break
-                                    end
-                                end
+                                Dropdown.Value = TabMain.Original
                             end
-                        else
-                            for Index, TabPisun in next, Dropdown.Tabs do
-                                Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                                Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                                Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
-                                TabPisun.Selected = false
-                            end
-                            TabMain.Selected = true
-                            Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
-                            Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
-                            Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
-                            if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
-                            Dropdown.Value = TabMain.Original
+                            Callback()
+                        end)
+                    elseif Type == "Menu" then
+                        if not TabMain.Locked then
+                            Creator.AddSignal(TabMain.UIElements.TabItem.MouseEnter, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = .95}):Play() end)
+                            Creator.AddSignal(TabMain.UIElements.TabItem.InputEnded, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = 1}):Play() end)
                         end
-                        Callback()
-                    end)
-                elseif Type == "Menu" then
-                    if not TabMain.Locked then
-                        Creator.AddSignal(TabMain.UIElements.TabItem.MouseEnter, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = .95}):Play() end)
-                        Creator.AddSignal(TabMain.UIElements.TabItem.InputEnded, function() Tween(TabMain.UIElements.TabItem, 0.08, {ImageTransparency = 1}):Play() end)
+                        Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
+                            if TabMain.Locked then return end 
+                            Callback(Tab.Callback or function() end)
+                        end)
                     end
-                    Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
-                        if TabMain.Locked then return end 
-                        Callback(Tab.Callback or function() end)
-                    end)
+                else
+                    require("../../elements/Divider"):New({ Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame })
                 end
-                RecalculateCanvasSize()
-                RecalculateListSize()
-            else
-                require("../../elements/Divider"):New({ Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame })
+                
+                -- [OPTIMISASI 3] Counter dan Yield
+                ProcessedCount = ProcessedCount + 1
+                if ProcessedCount % BatchSize == 0 then
+                    -- Update visual sementara agar tidak menunggu semua selesai
+                    RecalculateCanvasSize()
+                    task.wait() 
+                end
             end
-        end
-        local maxWidth = Dropdown.MenuWidth or 0
-        if maxWidth == 0 then
-            for _, tabmain in next, Dropdown.Tabs do
-                if tabmain.UIElements.TabItem.Frame.UIListLayout then maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X) end
+            
+            -- Hitung ulang final setelah loop selesai
+            local maxWidth = Dropdown.MenuWidth or 0
+            if maxWidth == 0 then
+                for _, tabmain in next, Dropdown.Tabs do
+                    if tabmain.UIElements.TabItem.Frame.UIListLayout then maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X) end
+                end
             end
-        end
-        Dropdown.UIElements.MenuCanvas.Size = UDim2.new(0, maxWidth + 6 + 6 + 5 + 5 + 18 + 6 + 6, Dropdown.UIElements.MenuCanvas.Size.Y.Scale, Dropdown.UIElements.MenuCanvas.Size.Y.Offset)
-        Callback()
-        Dropdown.Values = Values
+            Dropdown.UIElements.MenuCanvas.Size = UDim2.new(0, maxWidth + 6 + 6 + 5 + 5 + 18 + 6 + 6, Dropdown.UIElements.MenuCanvas.Size.Y.Scale, Dropdown.UIElements.MenuCanvas.Size.Y.Offset)
+            Callback()
+            Dropdown.Values = Values
+            RecalculateCanvasSize()
+            RecalculateListSize()
+            
+            Dropdown._ActiveRefreshTask = nil
+        end)
     end
       
     DropdownModule:Refresh(Dropdown.Values)
