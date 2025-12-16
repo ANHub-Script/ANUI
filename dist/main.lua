@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.188  |  2025-12-16  |  Roblox UI Library for scripts
+    v1.0.189  |  2025-12-16  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.188",
+    "version": "1.0.189",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7839,6 +7839,17 @@ end
 end
 end
 else
+
+if al.AllowNone and ay.Selected then
+
+ay.Selected=false
+ai(ay.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
+ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
+ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=.4}):Play()
+if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=.2}):Play()end
+al.Value=nil
+else
+
 for aA,aB in next,al.Tabs do
 ai(aB.UIElements.TabItem,0.1,{ImageTransparency=1}):Play()
 ai(aB.UIElements.TabItem.Highlight,0.1,{ImageTransparency=1}):Play()
@@ -7852,6 +7863,7 @@ ai(ay.UIElements.TabItem.Highlight,0.1,{ImageTransparency=.75}):Play()
 ai(ay.UIElements.TabItem.Frame.Title.TextLabel,0.1,{TextTransparency=0}):Play()
 if ay.UIElements.TabIcon then ai(ay.UIElements.TabIcon.ImageLabel,0.1,{ImageTransparency=0}):Play()end
 al.Value=ay.Original
+end
 end
 Callback()
 end)

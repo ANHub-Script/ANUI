@@ -553,19 +553,31 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     end
                                 end
                             else
-                                for Index, TabPisun in next, Dropdown.Tabs do
-                                    Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                                    Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                                    Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                    if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
-                                    TabPisun.Selected = false
+                                -- [PATCH BARU] Cek apakah 'AllowNone' aktif DAN item sudah dipilih?
+                                if Dropdown.AllowNone and TabMain.Selected then
+                                    -- A. Jika YA: Matikan pilihan (Deselect)
+                                    TabMain.Selected = false
+                                    Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
+                                    if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
+                                    Dropdown.Value = nil -- Set nilai jadi kosong
+                                else
+                                    -- B. Jika TIDAK: Pilih item seperti biasa (Normal Select)
+                                    for Index, TabPisun in next, Dropdown.Tabs do
+                                        Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
+                                        Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
+                                        Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
+                                        if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
+                                        TabPisun.Selected = false
+                                    end
+                                    TabMain.Selected = true
+                                    Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
+                                    Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
+                                    if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
+                                    Dropdown.Value = TabMain.Original
                                 end
-                                TabMain.Selected = true
-                                Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
-                                Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = .75}):Play()
-                                Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = 0}):Play()
-                                if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = 0}):Play() end
-                                Dropdown.Value = TabMain.Original
                             end
                             Callback()
                         end)
