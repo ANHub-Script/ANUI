@@ -46,6 +46,45 @@ function Element:New(Config)
         })
     })
 
+    -- [FIX START] - Logika Scroll Manual (Drag & Mouse Wheel)
+    MainFrame.Active = true -- Penting agar frame bisa menerima input
+    
+    local isDragging = false
+    local dragStart = Vector2.new()
+    local startCanvasPos = Vector2.new()
+
+    -- 1. Deteksi Klik untuk Mulai Drag
+    MainFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            isDragging = true
+            dragStart = input.Position
+            startCanvasPos = MainFrame.CanvasPosition
+        end
+    end)
+
+    -- 2. Deteksi Lepas Klik untuk Stop Drag
+    MainFrame.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            isDragging = false
+        end
+    end)
+    
+    -- 3. Deteksi Gerakan Mouse & Roda Mouse
+    MainFrame.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement then
+            if isDragging then
+                local delta = input.Position - dragStart
+                -- Menggeser CanvasPosition berdasarkan gerakan mouse
+                MainFrame.CanvasPosition = Vector2.new(startCanvasPos.X - delta.X, 0)
+            end
+        elseif input.UserInputType == Enum.UserInputType.MouseWheel then
+            -- Mengubah Scroll Atas/Bawah menjadi Kiri/Kanan
+            local scrollAmount = input.Position.Z * -35 -- Atur kecepatan scroll di sini (-35)
+            MainFrame.CanvasPosition = MainFrame.CanvasPosition + Vector2.new(scrollAmount, 0)
+        end
+    end)
+    -- [FIX END]
+
     local ButtonObjects = {}
     
     local function UpdateVisuals(selectedName)

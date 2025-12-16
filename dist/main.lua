@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.187  |  2025-12-16  |  Roblox UI Library for scripts
+    v1.0.188  |  2025-12-16  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.187",
+    "version": "1.0.188",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -10233,45 +10233,84 @@ PaddingRight=UDim.new(0,2),
 })
 })
 
-local an={}
 
-local function UpdateVisuals(ao)
-for ap,aq in pairs(an)do
-local ar=(ap==ao)
-local as=aa.Theme
+am.Active=true
 
-local at=aa.GetThemeProperty(ar and"Toggle"or"Button",as)
-local au=aa.GetThemeProperty("Text",as)
-local av=ar and 0 or 0.5
+local an=false
+local ao=Vector2.new()
+local ap=Vector2.new()
 
-ae(aq.Background,0.2,{ImageColor3=at}):Play()
-ae(aq.Title,0.2,{TextTransparency=av,TextColor3=au}):Play()
 
-if aq.Icon then
-ae(aq.Icon.ImageLabel,0.2,{ImageTransparency=av,ImageColor3=au}):Play()
+am.InputBegan:Connect(function(aq)
+if aq.UserInputType==Enum.UserInputType.MouseButton1 then
+an=true
+ao=aq.Position
+ap=am.CanvasPosition
+end
+end)
+
+
+am.InputEnded:Connect(function(aq)
+if aq.UserInputType==Enum.UserInputType.MouseButton1 then
+an=false
+end
+end)
+
+
+am.InputChanged:Connect(function(aq)
+if aq.UserInputType==Enum.UserInputType.MouseMovement then
+if an then
+local ar=aq.Position-ao
+
+am.CanvasPosition=Vector2.new(ap.X-ar.X,0)
+end
+elseif aq.UserInputType==Enum.UserInputType.MouseWheel then
+
+local ar=aq.Position.Z*-35
+am.CanvasPosition=am.CanvasPosition+Vector2.new(ar,0)
+end
+end)
+
+
+local aq={}
+
+local function UpdateVisuals(ar)
+for as,at in pairs(aq)do
+local au=(as==ar)
+local av=aa.Theme
+
+local aw=aa.GetThemeProperty(au and"Toggle"or"Button",av)
+local ax=aa.GetThemeProperty("Text",av)
+local ay=au and 0 or 0.5
+
+ae(at.Background,0.2,{ImageColor3=aw}):Play()
+ae(at.Title,0.2,{TextTransparency=ay,TextColor3=ax}):Play()
+
+if at.Icon then
+ae(at.Icon.ImageLabel,0.2,{ImageTransparency=ay,ImageColor3=ax}):Play()
 end
 end
 end
 
-for ao,ap in ipairs(ak.Options)do
-local aq=(type(ap)=="table"and ap.Title)or ap
-local ar=(type(ap)=="table"and ap.Icon)or nil
+for ar,as in ipairs(ak.Options)do
+local at=(type(as)=="table"and as.Title)or as
+local au=(type(as)=="table"and as.Icon)or nil
 
-local as=ad("TextButton",{
+local av=ad("TextButton",{
 AutoButtonColor=false,
 Size=UDim2.new(0,0,0,32),
 AutomaticSize=Enum.AutomaticSize.X,
 BackgroundTransparency=1,
 Text="",
 Parent=am,
-LayoutOrder=ao
+LayoutOrder=ar
 })
 
-local at=aa.NewRoundFrame(8,"Squircle",{
+local aw=aa.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ThemeTag={ImageColor3="Button"},
 Name="Background",
-Parent=as
+Parent=av
 },{
 ad("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
@@ -10285,37 +10324,37 @@ PaddingRight=UDim.new(0,12),
 })
 })
 
-local au
-if ar then
-au=aa.Image(ar,"Icon",0,aj.Window.Folder,"Icon",false)
-au.Size=UDim2.new(0,18,0,18)
-au.BackgroundTransparency=1
-au.ImageLabel.ImageTransparency=0.5
-au.Parent=at
+local ax
+if au then
+ax=aa.Image(au,"Icon",0,aj.Window.Folder,"Icon",false)
+ax.Size=UDim2.new(0,18,0,18)
+ax.BackgroundTransparency=1
+ax.ImageLabel.ImageTransparency=0.5
+ax.Parent=aw
 end
 
-local av=ad("TextLabel",{
-Text=aq,
+local ay=ad("TextLabel",{
+Text=at,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
 TextSize=14,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
 ThemeTag={TextColor3="Text"},
 TextTransparency=0.5,
-Parent=at
+Parent=aw
 })
 
-an[aq]={
-Frame=as,
-Background=at,
-Title=av,
-Icon=au
+aq[at]={
+Frame=av,
+Background=aw,
+Title=ay,
+Icon=ax
 }
 
-aa.AddSignal(as.MouseButton1Click,function()
-UpdateVisuals(aq)
+aa.AddSignal(av.MouseButton1Click,function()
+UpdateVisuals(at)
 if ak.Callback then
-ak.Callback(aq)
+ak.Callback(at)
 end
 end)
 end
@@ -10323,9 +10362,9 @@ end
 if ak.Default then
 UpdateVisuals(ak.Default)
 elseif ak.Options[1]then
-local ao=ak.Options[1]
-local ap=(type(ao)=="table"and ao.Title)or ao
-UpdateVisuals(ap)
+local ar=ak.Options[1]
+local as=(type(ar)=="table"and ar.Title)or ar
+UpdateVisuals(as)
 end
 
 
