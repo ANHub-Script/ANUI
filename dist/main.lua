@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.186  |  2025-12-15  |  Roblox UI Library for scripts
+    v1.0.187  |  2025-12-16  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.186",
+    "version": "1.0.187",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7722,7 +7722,52 @@ ah("UIListLayout",{Padding=UDim.new(0,am.TabPadding/3),FillDirection="Vertical"}
 
 if ay.Images and#ay.Images>0 then
 local aA=ay.UIElements.TabItem.Frame.Title:FindFirstChild"Images"
-if aA then RenderImages(aA,ay.Images)end
+if aA then
+
+aA.Active=true
+
+
+local aB=false
+local d=Vector2.new()
+local e=Vector2.new()
+
+
+aA.InputBegan:Connect(function(f)
+if f.UserInputType==Enum.UserInputType.MouseButton1 then
+aB=true
+d=f.Position
+e=aA.CanvasPosition
+end
+end)
+
+
+aA.InputEnded:Connect(function(f)
+if f.UserInputType==Enum.UserInputType.MouseButton1 then
+aB=false
+end
+end)
+
+
+aA.InputChanged:Connect(function(f)
+
+if f.UserInputType==Enum.UserInputType.MouseMovement then
+if aB then
+local g=f.Position-d
+
+aA.CanvasPosition=Vector2.new(e.X-g.X,0)
+end
+
+
+elseif f.UserInputType==Enum.UserInputType.MouseWheel then
+
+local g=f.Position.Z*-35
+aA.CanvasPosition=aA.CanvasPosition+Vector2.new(g,0)
+end
+end)
+
+
+RenderImages(aA,ay.Images)
+end
 end
 
 if ay.Locked then

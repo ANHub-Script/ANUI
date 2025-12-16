@@ -436,7 +436,52 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 
                     if TabMain.Images and #TabMain.Images > 0 then
                         local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
-                        if imagesContainer then RenderImages(imagesContainer, TabMain.Images) end
+                        if imagesContainer then 
+                            -- [FIX] Tambahkan properti Active agar bisa menerima input mouse
+                            imagesContainer.Active = true 
+
+                            -- [FIX] Logic Custom Scrolling untuk PC
+                            local isDragging = false
+                            local dragStart = Vector2.new()
+                            local startCanvasPos = Vector2.new()
+
+                            -- Event: Mulai Drag (Klik Kiri)
+                            imagesContainer.InputBegan:Connect(function(input)
+                                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                    isDragging = true
+                                    dragStart = input.Position
+                                    startCanvasPos = imagesContainer.CanvasPosition
+                                end
+                            end)
+
+                            -- Event: Selesai Drag (Lepas Klik)
+                            imagesContainer.InputEnded:Connect(function(input)
+                                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                                    isDragging = false
+                                end
+                            end)
+                            
+                            -- Event: Saat Mouse Bergerak atau Scroll Wheel diputar
+                            imagesContainer.InputChanged:Connect(function(input)
+                                -- Logic: Dragging (Geser Kiri/Kanan)
+                                if input.UserInputType == Enum.UserInputType.MouseMovement then
+                                    if isDragging then
+                                        local delta = input.Position - dragStart
+                                        -- Kurangi delta dari posisi awal untuk efek "grab" yang natural
+                                        imagesContainer.CanvasPosition = Vector2.new(startCanvasPos.X - delta.X, 0)
+                                    end
+                                
+                                -- Logic: Mouse Wheel (Ubah scroll vertikal jadi horizontal)
+                                elseif input.UserInputType == Enum.UserInputType.MouseWheel then
+                                    -- Angka -35 adalah sensitivitas scroll (bisa diatur)
+                                    local scrollAmount = input.Position.Z * -35
+                                    imagesContainer.CanvasPosition = imagesContainer.CanvasPosition + Vector2.new(scrollAmount, 0)
+                                end
+                            end)
+
+                            -- Render gambar seperti biasa
+                            RenderImages(imagesContainer, TabMain.Images) 
+                        end
                     end
                     
                     if TabMain.Locked then
