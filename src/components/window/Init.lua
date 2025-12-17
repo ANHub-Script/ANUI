@@ -1689,7 +1689,7 @@ return function(Config)
                         Variant = "Secondary",
                     },
                     {
-                        Title = "Close Window",
+                        Title = "Close",
                         --Icon = "chevron-down",
                         Callback = function() Window:Destroy() end,
                         Variant = "Primary",
