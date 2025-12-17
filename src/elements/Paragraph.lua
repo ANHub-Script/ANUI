@@ -32,7 +32,78 @@ function Element:New(ElementConfig)
     local Paragraph = require("../components/window/Element")(ElementConfig)  
     ParagraphModule.ParagraphFrame = Paragraph  
 
-    -- [NEW FEATURE] Image/Card Grid Support (CLICKABLE)
+    -- [FUNGSI BARU: Update Judul]
+    function ParagraphModule:SetTitle(text)
+        self.Title = text
+        if self.ParagraphFrame.UIElements.Title then
+            self.ParagraphFrame.UIElements.Title.Text = text
+        end
+    end
+
+    -- [FUNGSI BARU: Update Deskripsi]
+    function ParagraphModule:SetDesc(text)
+        self.Desc = text
+        if self.ParagraphFrame.UIElements.Description then
+            self.ParagraphFrame.UIElements.Description.Text = text
+        end
+    end
+
+    -- [FUNGSI BARU: Menampilkan Model 3D (Viewport)]
+    function ParagraphModule:SetViewport(model, cameraConfig)
+        if not self.ParagraphFrame then return end
+        
+        -- Bersihkan Viewport lama jika ada
+        if self.ViewportFrame then
+            self.ViewportFrame:Destroy()
+        end
+
+        local main = self.ParagraphFrame.UIElements.Main
+        
+        -- Buat ViewportFrame
+        local viewport = New("ViewportFrame", {
+            Name = "ModelPreview",
+            Size = UDim2.new(0, 90, 0, 90),
+            Position = UDim2.new(1, -95, 0.5, -45), -- Posisi di sisi kanan
+            BackgroundTransparency = 1,
+            Parent = main,
+            ZIndex = 10
+        })
+
+        local worldModel = New("WorldModel", {
+            Parent = viewport
+        })
+
+        if model then
+            local clone = model:Clone()
+            if clone:IsA("Model") then
+                clone:PivotTo(CFrame.new(0, 0, 0))
+            elseif clone:IsA("BasePart") then
+                clone.CFrame = CFrame.new(0, 0, 0)
+            end
+            clone.Parent = worldModel
+
+            local cam = New("Camera", {
+                FieldOfView = 50,
+                Parent = viewport
+            })
+            
+            -- Atur posisi kamera (Default atau dari Config)
+            local offset = cameraConfig or Vector3.new(0, 1.2, -4.5)
+            cam.CFrame = CFrame.lookAt(offset, clone:GetPivot().Position + Vector3.new(0, 1, 0))
+            
+            viewport.CurrentCamera = cam
+            
+            -- Geser Padding Teks agar tidak bertabrakan dengan Model di kanan
+            if main:FindFirstChild("UIElements") and main.UIElements:FindFirstChild("Content") then
+                main.UIElements.Content.PaddingRight = UDim.new(0, 100)
+            end
+        end
+
+        self.ViewportFrame = viewport
+        return viewport
+    end
+
+    -- [FEATURE] Image/Card Grid Support (CLICKABLE)
     if ElementConfig.Images and #ElementConfig.Images > 0 then
         local GridContainer = New("Frame", {
             Size = UDim2.new(1, 0, 0, 0),
@@ -60,18 +131,14 @@ function Element:New(ElementConfig)
             local ImageId = imgData.Image
             local GradientColor = GetGradientData(imgData.Gradient)
             local BorderColor = GradientColor.Keypoints[1].Value
-            
-            -- Cek apakah kartu ini punya fungsi klik
             local IsInteractive = (type(imgData.Callback) == "function")
 
-            -- 1. Outer Frame (Card Base)
             local Card = Creator.NewRoundFrame(8, "Squircle", {
                 ImageColor3 = BorderColor,
                 ClipsDescendants = true,
                 Parent = GridContainer,
-                Active = IsInteractive -- PENTING: Agar bisa menerima input klik
+                Active = IsInteractive 
             }, {
-                -- 2. Inner Shadow
                 New("ImageLabel", {
                     Image = "rbxassetid://5554236805",
                     ScaleType = Enum.ScaleType.Slice,
@@ -83,7 +150,6 @@ function Element:New(ElementConfig)
                     ZIndex = 2,
                 }),
                 
-                -- 3. Content Container
                 Creator.NewRoundFrame(8, "Squircle", {
                     Size = UDim2.new(1, -4, 1, -4),
                     Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -130,9 +196,8 @@ function Element:New(ElementConfig)
                         })
                     })
                 })
-            }, IsInteractive) -- Mode Button
+            }, IsInteractive) 
 
-            -- Fix Image Size agar pas di dalam kartu
             local imgLabel = Card:FindFirstChild("ImageLabel", true)
             if imgLabel then
                 imgLabel.Size = UDim2.new(0.65, 0, 0.65, 0)
@@ -143,13 +208,11 @@ function Element:New(ElementConfig)
                 imgLabel.ZIndex = 4
             end
 
-            -- Event Listener untuk Klik
             if IsInteractive then
                 Creator.AddSignal(Card.MouseButton1Click, function()
                     imgData.Callback()
                 end)
                 
-                -- Animasi Klik Sedikit (Kecil lalu Kembali)
                 Creator.AddSignal(Card.MouseButton1Down, function()
                     Tween(Card, 0.1, {Size = UDim2.new(0, ElementConfig.ImageSize.X.Offset * 0.95, 0, ElementConfig.ImageSize.Y.Offset * 0.95)}):Play()
                 end)
@@ -163,7 +226,7 @@ function Element:New(ElementConfig)
         end
     end
 
-    -- Button Logic Lama (Tetap dipertahankan)
+    -- Button Logic
     if ElementConfig.Buttons and #ElementConfig.Buttons > 0 then  
         local ButtonsContainer = New("Frame", {  
             Size = UDim2.new(1,0,0,38),  

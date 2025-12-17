@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.191  |  2025-12-17  |  Roblox UI Library for scripts
+    v1.0.192  |  2025-12-17  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.191",
+    "version": "1.0.192",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5843,6 +5843,77 @@ local ai=a.load'z'(ag)
 ah.ParagraphFrame=ai
 
 
+function ah.SetTitle(aj,ak)
+aj.Title=ak
+if aj.ParagraphFrame.UIElements.Title then
+aj.ParagraphFrame.UIElements.Title.Text=ak
+end
+end
+
+
+function ah.SetDesc(aj,ak)
+aj.Desc=ak
+if aj.ParagraphFrame.UIElements.Description then
+aj.ParagraphFrame.UIElements.Description.Text=ak
+end
+end
+
+
+function ah.SetViewport(aj,ak,al)
+if not aj.ParagraphFrame then return end
+
+
+if aj.ViewportFrame then
+aj.ViewportFrame:Destroy()
+end
+
+local am=aj.ParagraphFrame.UIElements.Main
+
+
+local an=ab("ViewportFrame",{
+Name="ModelPreview",
+Size=UDim2.new(0,90,0,90),
+Position=UDim2.new(1,-95,0.5,-45),
+BackgroundTransparency=1,
+Parent=am,
+ZIndex=10
+})
+
+local ao=ab("WorldModel",{
+Parent=an
+})
+
+if ak then
+local ap=ak:Clone()
+if ap:IsA"Model"then
+ap:PivotTo(CFrame.new(0,0,0))
+elseif ap:IsA"BasePart"then
+ap.CFrame=CFrame.new(0,0,0)
+end
+ap.Parent=ao
+
+local aq=ab("Camera",{
+FieldOfView=50,
+Parent=an
+})
+
+
+local ar=al or Vector3.new(0,1.2,-4.5)
+aq.CFrame=CFrame.lookAt(ar,ap:GetPivot().Position+Vector3.new(0,1,0))
+
+an.CurrentCamera=aq
+
+
+if am:FindFirstChild"UIElements"and am.UIElements:FindFirstChild"Content"then
+am.UIElements.Content.PaddingRight=UDim.new(0,100)
+end
+end
+
+aj.ViewportFrame=an
+return an
+end
+
+
 if ag.Images and#ag.Images>0 then
 local aj=ab("Frame",{
 Size=UDim2.new(1,0,0,0),
@@ -5870,10 +5941,7 @@ local an=al.Quantity
 local ao=al.Image
 local ap=GetGradientData(al.Gradient)
 local aq=ap.Keypoints[1].Value
-
-
 local ar=(type(al.Callback)=="function")
-
 
 local as=aa.NewRoundFrame(8,"Squircle",{
 ImageColor3=aq,
@@ -5881,7 +5949,6 @@ ClipsDescendants=true,
 Parent=aj,
 Active=ar
 },{
-
 ab("ImageLabel",{
 Image="rbxassetid://5554236805",
 ScaleType=Enum.ScaleType.Slice,
@@ -5892,7 +5959,6 @@ ImageColor3=Color3.new(0,0,0),
 ImageTransparency=0.4,
 ZIndex=2,
 }),
-
 
 aa.NewRoundFrame(8,"Squircle",{
 Size=UDim2.new(1,-4,1,-4),
@@ -5942,7 +6008,6 @@ ZIndex=7,
 })
 },ar)
 
-
 local at=as:FindFirstChild("ImageLabel",true)
 if at then
 at.Size=UDim2.new(0.65,0,0.65,0)
@@ -5953,12 +6018,10 @@ at.ScaleType=Enum.ScaleType.Fit
 at.ZIndex=4
 end
 
-
 if ar then
 aa.AddSignal(as.MouseButton1Click,function()
 al.Callback()
 end)
-
 
 aa.AddSignal(as.MouseButton1Down,function()
 ac(as,0.1,{Size=UDim2.new(0,ag.ImageSize.X.Offset*0.95,0,ag.ImageSize.Y.Offset*0.95)}):Play()
