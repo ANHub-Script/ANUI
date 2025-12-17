@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.192  |  2025-12-17  |  Roblox UI Library for scripts
+    v1.0.193  |  2025-12-17  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.192",
+    "version": "1.0.193",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5850,7 +5850,6 @@ aj.ParagraphFrame.UIElements.Title.Text=ak
 end
 end
 
-
 function ah.SetDesc(aj,ak)
 aj.Desc=ak
 if aj.ParagraphFrame.UIElements.Description then
@@ -5862,51 +5861,53 @@ end
 function ah.SetViewport(aj,ak,al)
 if not aj.ParagraphFrame then return end
 
-
 if aj.ViewportFrame then
 aj.ViewportFrame:Destroy()
 end
 
 local am=aj.ParagraphFrame.UIElements.Main
 
-
 local an=ab("ViewportFrame",{
 Name="ModelPreview",
-Size=UDim2.new(0,90,0,90),
-Position=UDim2.new(1,-95,0.5,-45),
+Size=UDim2.new(0,95,0,95),
+Position=UDim2.new(1,-100,0.5,-47),
 BackgroundTransparency=1,
 Parent=am,
 ZIndex=10
 })
 
-local ao=ab("WorldModel",{
-Parent=an
-})
+local ao=ab("WorldModel",{Parent=an})
 
 if ak then
 local ap=ak:Clone()
-if ap:IsA"Model"then
-ap:PivotTo(CFrame.new(0,0,0))
-elseif ap:IsA"BasePart"then
-ap.CFrame=CFrame.new(0,0,0)
-end
-ap.Parent=ao
 
-local aq=ab("Camera",{
+ap:PivotTo(CFrame.new(0,0,0))
+ap.Parent=ao local
+
+
+aq, ar=ap:GetBoundingBox()
+local as=Vector3.new(0,ar.Y/2,0)
+
+local at=ab("Camera",{
 FieldOfView=50,
 Parent=an
 })
 
 
-local ar=al or Vector3.new(0,1.2,-4.5)
-aq.CFrame=CFrame.lookAt(ar,ap:GetPivot().Position+Vector3.new(0,1,0))
+local au=al or Vector3.new(0,0.8,-4.2)
 
-an.CurrentCamera=aq
+
+at.CFrame=CFrame.lookAt(as+au,as)
+an.CurrentCamera=at
+
+
+aj._ModelCenter=as
+aj._CamOffset=au
+end
 
 
 if am:FindFirstChild"UIElements"and am.UIElements:FindFirstChild"Content"then
-am.UIElements.Content.PaddingRight=UDim.new(0,100)
-end
+am.UIElements.Content.PaddingRight=UDim.new(0,105)
 end
 
 aj.ViewportFrame=an
@@ -6019,19 +6020,12 @@ at.ZIndex=4
 end
 
 if ar then
-aa.AddSignal(as.MouseButton1Click,function()
-al.Callback()
-end)
-
+aa.AddSignal(as.MouseButton1Click,function()al.Callback()end)
 aa.AddSignal(as.MouseButton1Down,function()
 ac(as,0.1,{Size=UDim2.new(0,ag.ImageSize.X.Offset*0.95,0,ag.ImageSize.Y.Offset*0.95)}):Play()
 end)
-aa.AddSignal(as.MouseButton1Up,function()
-ac(as,0.1,{Size=ag.ImageSize}):Play()
-end)
-aa.AddSignal(as.MouseLeave,function()
-ac(as,0.1,{Size=ag.ImageSize}):Play()
-end)
+aa.AddSignal(as.MouseButton1Up,function()ac(as,0.1,{Size=ag.ImageSize}):Play()end)
+aa.AddSignal(as.MouseLeave,function()ac(as,0.1,{Size=ag.ImageSize}):Play()end)
 end
 end
 end

@@ -32,7 +32,7 @@ function Element:New(ElementConfig)
     local Paragraph = require("../components/window/Element")(ElementConfig)  
     ParagraphModule.ParagraphFrame = Paragraph  
 
-    -- [FUNGSI BARU: Update Judul]
+    -- [UPDATE FUNCTIONS]
     function ParagraphModule:SetTitle(text)
         self.Title = text
         if self.ParagraphFrame.UIElements.Title then
@@ -40,7 +40,6 @@ function Element:New(ElementConfig)
         end
     end
 
-    -- [FUNGSI BARU: Update Deskripsi]
     function ParagraphModule:SetDesc(text)
         self.Desc = text
         if self.ParagraphFrame.UIElements.Description then
@@ -48,62 +47,64 @@ function Element:New(ElementConfig)
         end
     end
 
-    -- [FUNGSI BARU: Menampilkan Model 3D (Viewport)]
-    function ParagraphModule:SetViewport(model, cameraConfig)
+    -- [PERBAIKAN VIEWPORT - STABIL & PRESISI]
+    function ParagraphModule:SetViewport(model, cameraOffset)
         if not self.ParagraphFrame then return end
         
-        -- Bersihkan Viewport lama jika ada
         if self.ViewportFrame then
             self.ViewportFrame:Destroy()
         end
 
         local main = self.ParagraphFrame.UIElements.Main
         
-        -- Buat ViewportFrame
         local viewport = New("ViewportFrame", {
             Name = "ModelPreview",
-            Size = UDim2.new(0, 90, 0, 90),
-            Position = UDim2.new(1, -95, 0.5, -45), -- Posisi di sisi kanan
+            Size = UDim2.new(0, 95, 0, 95),
+            Position = UDim2.new(1, -100, 0.5, -47),
             BackgroundTransparency = 1,
             Parent = main,
             ZIndex = 10
         })
 
-        local worldModel = New("WorldModel", {
-            Parent = viewport
-        })
+        local worldModel = New("WorldModel", { Parent = viewport })
 
         if model then
             local clone = model:Clone()
-            if clone:IsA("Model") then
-                clone:PivotTo(CFrame.new(0, 0, 0))
-            elseif clone:IsA("BasePart") then
-                clone.CFrame = CFrame.new(0, 0, 0)
-            end
+            -- Paksa posisi model ke titik nol mutlak agar tidak geser
+            clone:PivotTo(CFrame.new(0, 0, 0))
             clone.Parent = worldModel
 
+            -- Hitung bounding box untuk mendapatkan titik tengah tinggi model
+            local _, size = clone:GetBoundingBox()
+            local centerPos = Vector3.new(0, size.Y / 2, 0) 
+            
             local cam = New("Camera", {
                 FieldOfView = 50,
                 Parent = viewport
             })
             
-            -- Atur posisi kamera (Default atau dari Config)
-            local offset = cameraConfig or Vector3.new(0, 1.2, -4.5)
-            cam.CFrame = CFrame.lookAt(offset, clone:GetPivot().Position + Vector3.new(0, 1, 0))
+            -- Gunakan offset dari decompile: Vector3.new(0, 0.8, -4.2)
+            local offset = cameraOffset or Vector3.new(0, 0.8, -4.2)
             
+            -- Posisikan kamera tepat menghadap titik tengah model
+            cam.CFrame = CFrame.lookAt(centerPos + offset, centerPos)
             viewport.CurrentCamera = cam
             
-            -- Geser Padding Teks agar tidak bertabrakan dengan Model di kanan
-            if main:FindFirstChild("UIElements") and main.UIElements:FindFirstChild("Content") then
-                main.UIElements.Content.PaddingRight = UDim.new(0, 100)
-            end
+            -- Simpan referensi center untuk rotasi di script utama
+            self._ModelCenter = centerPos
+            self._CamOffset = offset
+        end
+
+        -- Beri padding teks agar tidak tertutup model di kanan
+        if main:FindFirstChild("UIElements") and main.UIElements:FindFirstChild("Content") then
+            main.UIElements.Content.PaddingRight = UDim.new(0, 105)
         end
 
         self.ViewportFrame = viewport
         return viewport
     end
 
-    -- [FEATURE] Image/Card Grid Support (CLICKABLE)
+    -- [IMAGE GRID LOGIC]
     if ElementConfig.Images and #ElementConfig.Images > 0 then
         local GridContainer = New("Frame", {
             Size = UDim2.new(1, 0, 0, 0),
@@ -209,24 +210,17 @@ function Element:New(ElementConfig)
             end
 
             if IsInteractive then
-                Creator.AddSignal(Card.MouseButton1Click, function()
-                    imgData.Callback()
-                end)
-                
+                Creator.AddSignal(Card.MouseButton1Click, function() imgData.Callback() end)
                 Creator.AddSignal(Card.MouseButton1Down, function()
                     Tween(Card, 0.1, {Size = UDim2.new(0, ElementConfig.ImageSize.X.Offset * 0.95, 0, ElementConfig.ImageSize.Y.Offset * 0.95)}):Play()
                 end)
-                Creator.AddSignal(Card.MouseButton1Up, function()
-                    Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play()
-                end)
-                Creator.AddSignal(Card.MouseLeave, function()
-                    Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play()
-                end)
+                Creator.AddSignal(Card.MouseButton1Up, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
+                Creator.AddSignal(Card.MouseLeave, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
             end
         end
     end
 
-    -- Button Logic
+    -- [BUTTONS LOGIC]
     if ElementConfig.Buttons and #ElementConfig.Buttons > 0 then  
         local ButtonsContainer = New("Frame", {  
             Size = UDim2.new(1,0,0,38),  
