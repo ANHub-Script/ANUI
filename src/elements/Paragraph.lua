@@ -47,10 +47,13 @@ function Element:New(ElementConfig)
         end
     end
 
-    -- [PERBAIKAN VIEWPORT - STABIL & PRESISI]
+    -- [DI DALAM src/elements/Paragraph.lua]
+
+    -- Fungsi SetViewport yang diperbaiki (Stay Diam / Statis)
     function ParagraphModule:SetViewport(model, cameraOffset)
         if not self.ParagraphFrame then return end
         
+        -- Bersihkan Viewport lama jika ada
         if self.ViewportFrame then
             self.ViewportFrame:Destroy()
         end
@@ -70,11 +73,11 @@ function Element:New(ElementConfig)
 
         if model then
             local clone = model:Clone()
-            -- Paksa posisi model ke titik nol mutlak agar tidak geser
+            -- Letakkan model di titik nol mutlak agar presisi
             clone:PivotTo(CFrame.new(0, 0, 0))
             clone.Parent = worldModel
 
-            -- Hitung bounding box untuk mendapatkan titik tengah tinggi model
+            -- Hitung titik tengah model agar kamera selalu pas di badan model
             local _, size = clone:GetBoundingBox()
             local centerPos = Vector3.new(0, size.Y / 2, 0) 
             
@@ -83,19 +86,15 @@ function Element:New(ElementConfig)
                 Parent = viewport
             })
             
-            -- Gunakan offset dari decompile: Vector3.new(0, 0.8, -4.2)
+            -- Offset kamera: Tetap diam menghadap depan (z = -4.2)
             local offset = cameraOffset or Vector3.new(0, 0.8, -4.2)
             
-            -- Posisikan kamera tepat menghadap titik tengah model
+            -- Set kamera agar menatap titik tengah model dari posisi depan yang tetap
             cam.CFrame = CFrame.lookAt(centerPos + offset, centerPos)
             viewport.CurrentCamera = cam
-            
-            -- Simpan referensi center untuk rotasi di script utama
-            self._ModelCenter = centerPos
-            self._CamOffset = offset
         end
 
-        -- Beri padding teks agar tidak tertutup model di kanan
+        -- Beri jarak teks agar tidak bertabrakan dengan Model di kanan
         if main:FindFirstChild("UIElements") and main.UIElements:FindFirstChild("Content") then
             main.UIElements.Content.PaddingRight = UDim.new(0, 105)
         end

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.193  |  2025-12-17  |  Roblox UI Library for scripts
+    v1.0.194  |  2025-12-17  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.193",
+    "version": "1.0.194",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5858,8 +5858,11 @@ end
 end
 
 
+
+
 function ah.SetViewport(aj,ak,al)
 if not aj.ParagraphFrame then return end
+
 
 if aj.ViewportFrame then
 aj.ViewportFrame:Destroy()
@@ -5899,10 +5902,6 @@ local au=al or Vector3.new(0,0.8,-4.2)
 
 at.CFrame=CFrame.lookAt(as+au,as)
 an.CurrentCamera=at
-
-
-aj._ModelCenter=as
-aj._CamOffset=au
 end
 
 
