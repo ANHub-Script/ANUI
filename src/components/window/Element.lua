@@ -731,8 +731,9 @@ return function(Config)
         Main:Destroy()
     end
     
-    function Element:Lock()
+    function Element:Lock(text) -- Tambahkan 'text' di dalam kurung
         CanHover = false
+        LockedTitle.Text = text or "Locked" -- Tambahkan baris ini untuk ganti teksnya
         Locked.Active = true
         Locked.Visible = true
     end

@@ -368,10 +368,10 @@ function Element:New(Config)
         Parent = Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.Frame or Dropdown.DropdownFrame.UIElements.Main
     })
     
-    function Dropdown:Lock()
+    function Dropdown:Lock(text) -- Tambahkan 'text'
         Dropdown.Locked = true
         CanCallback = false
-        return Dropdown.DropdownFrame:Lock()
+        return Dropdown.DropdownFrame:Lock(text) -- Kirim 'text' ke frame
     end
     function Dropdown:Unlock()
         Dropdown.Locked = false

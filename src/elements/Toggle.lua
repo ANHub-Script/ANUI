@@ -240,10 +240,10 @@ function Element:New(Config)
     end
     
 
-    function Toggle:Lock()
+    function Toggle:Lock(text) -- Tambahkan 'text'
         Toggle.Locked = true
         CanCallback = false
-        return Toggle.ToggleFrame:Lock()
+        return Toggle.ToggleFrame:Lock(text) -- Kirim 'text' ke frame
     end
     function Toggle:Unlock()
         Toggle.Locked = false

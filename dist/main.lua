@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.194  |  2025-12-17  |  Roblox UI Library for scripts
+    v1.0.195  |  2025-12-21  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.194",
+    "version": "1.0.195",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5716,8 +5716,9 @@ function af.Destroy(e)
 aB:Destroy()
 end
 
-function af.Lock(e)
+function af.Lock(e,f)
 ai=false
+ap.Text=f or"Locked"
 ar.Active=true
 ar.Visible=true
 end
@@ -6754,10 +6755,10 @@ ai:SetMainImage(ai.Image,ai.ImageSize)
 end
 
 
-function ai.Lock(al)
+function ai.Lock(al,am)
 ai.Locked=true
 ak=false
-return ai.ToggleFrame:Lock()
+return ai.ToggleFrame:Lock(am)
 end
 function ai.Unlock(al)
 ai.Locked=false
@@ -8624,10 +8625,10 @@ AnchorPoint=Vector2.new(1,0.5),
 Parent=an.UIElements.Dropdown and an.UIElements.Dropdown.Frame or an.DropdownFrame.UIElements.Main
 })
 
-function an.Lock(ap)
+function an.Lock(ap,aq)
 an.Locked=true
 ao=false
-return an.DropdownFrame:Lock()
+return an.DropdownFrame:Lock(aq)
 end
 function an.Unlock(ap)
 an.Locked=false
