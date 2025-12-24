@@ -853,8 +853,7 @@ function GetCurrentMapStatus()
 end
 function CheckIsFightingZone()
     local mapName = GetCurrentMapStatus()
-    -- Tambahkan "Christmas" ke dalam tabel di bawah ini
-    local fightingKeywords = {"Dungeon", "Raid", "Defense", "PirateTower", "ShadowGate", "Christmas"}
+    local fightingKeywords = {"Dungeon", "Raid", "Defense", "PirateTower", "ShadowGate"}
 
     for _, keyword in ipairs(fightingKeywords) do
         if string.find(mapName, keyword) then 
@@ -1452,7 +1451,7 @@ function LogicGamemodes()
 
         local EnemiesFolder = Workspace:FindFirstChild("Enemies")
         local hasEnemies = EnemiesFolder and #EnemiesFolder:GetChildren() > 0
-        local isFightingZone = (string.find(currentMap, ":") and (string.find(currentMap, "Dungeon") or string.find(currentMap, "Raid") or string.find(currentMap, "Defense") or string.find(currentMap, "Christmas") or currentMap == "PirateTower" or currentMap == "ShadowGate") or (currentMap == "PirateTower" or currentMap == "ShadowGate" or currentMap == "ChristmasRaid" or currentMap == "Christmas"))
+        local isFightingZone = (string.find(currentMap, ":") and (string.find(currentMap, "Dungeon") or string.find(currentMap, "Raid") or string.find(currentMap, "Defense") or currentMap == "PirateTower" or currentMap == "ShadowGate") or (currentMap == "PirateTower" or currentMap == "ShadowGate" or currentMap == "ChristmasRaid"))
         
         if currentMap == "Raid" then isFightingZone = true 
         elseif currentMap == "Defense" then isFightingZone = hasEnemies
