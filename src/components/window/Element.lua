@@ -208,10 +208,6 @@ return function(Config)
 
     -- [FUNGSI OPTIMASI LAG] UpdateDesc dengan Reuse Instance
     local function UpdateDesc(text)
-        -- [REQUEST USER] Antisipasi Lag: Cek jika window tertutup
-        if Config.Window and Config.Window.Closed then 
-            return 
-        end
 
         if not text or text == "" then
             DescContainer.Visible = false

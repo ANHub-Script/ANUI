@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.209  |  2026-01-06  |  Roblox UI Library for scripts
+    v1.0.210  |  2026-01-06  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.209",
+    "version": "1.0.210",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5193,10 +5193,6 @@ Padding=UDim.new(0,2),
 
 
 local function UpdateDesc(ao)
-
-if ae.Window and ae.Window.Closed then
-return
-end
 
 if not ao or ao==""then
 an.Visible=false
