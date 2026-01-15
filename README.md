@@ -6,7 +6,7 @@
 
 [![Beta](https://img.shields.io/badge/Status-Beta-yellow)](https://github.com/ANHub-Script/ANUI)
 [![Documentation](https://img.shields.io/badge/Docs-Complete-green)](https://ANHub-Script.github.io/ANUI-Docs/)
-[![Discord](https://img.shields.io/badge/Discord-Join-7289da)](https://discord.gg/cy6uMRmeZ)
+[![Discord](https://img.shields.io/badge/Discord-Join-7289da)](https://discord.gg/bUkCZvmrpH)
 
 </div>
 
@@ -115,7 +115,7 @@ Tab:Button({
 
 ## 🔗 Links
 
-- 💬 **[Discord Server](https://discord.gg/cy6uMRmeZ)** - Community support
+- 💬 **[Discord Server](https://discord.gg/bUkCZvmrpH)** - Community support
 - 📚 **[Example Script](/main_example.lua)** - Live demo (WIP)
 - 🐛 **[Report Issues](https://github.com/ANHub-Script/ANUI/issues)** - Bug reports
 - 💡 **[Feature Requests](https://github.com/ANHub-Script/ANUI/issues)** - Suggest improvements
@@ -140,6 +140,6 @@ This project is in **Beta** and actively maintained. Feel free to use, modify, a
 
 **Made with ❤️ by the ANUI Team**
 
-[Documentation](https://ANHub-Script.github.io/ANUI-Docs/) • [Discord](https://discord.gg/cy6uMRmeZ) • [GitHub](https://github.com/ANHub-Script/ANUI)
+[Documentation](https://ANHub-Script.github.io/ANUI-Docs/) • [Discord](https://discord.gg/bUkCZvmrpH) • [GitHub](https://github.com/ANHub-Script/ANUI)
 
 </div>

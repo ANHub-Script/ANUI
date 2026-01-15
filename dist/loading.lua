@@ -5,6 +5,26 @@ local function PlayFixedPremiumLoading()
     local CoreGui = game:GetService("CoreGui")
     local Players = game:GetService("Players")
     local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
+    
+    local _GENV = (getgenv and getgenv()) or _G
+    _GENV.SLoading = _GENV.SLoading or {}
+    local LoadingConfig = _GENV.SLoading
+    local function GetSubTitleText()
+        local v = LoadingConfig.SubTitle
+        if v == nil then
+            return "Anime Weapons"
+        end
+        return tostring(v)
+    end
+    if not LoadingConfig.__SubTitleEvent or typeof(LoadingConfig.__SubTitleEvent) ~= "Instance" or not LoadingConfig.__SubTitleEvent:IsA("BindableEvent") then
+        LoadingConfig.__SubTitleEvent = Instance.new("BindableEvent")
+    end
+    LoadingConfig.SetSubTitle = function(text)
+        LoadingConfig.SubTitle = text
+        pcall(function()
+            LoadingConfig.__SubTitleEvent:Fire(text)
+        end)
+    end
 
     -- CONFIGURATION (Warna Tema Dark Premium)
     local DarkBG = Color3.fromRGB(25, 25, 30) -- Background Hitam Abu Premium
@@ -99,11 +119,22 @@ local function PlayFixedPremiumLoading()
     SubTitle.Position = UDim2.new(0, 30, 0, 70)
     SubTitle.Size = UDim2.new(1, -60, 0, 20)
     SubTitle.Font = Enum.Font.GothamMedium
-    SubTitle.Text = "Anime Weapons"
+    SubTitle.Text = GetSubTitleText()
     SubTitle.TextColor3 = AccentColor1
     SubTitle.TextSize = 14
     SubTitle.TextTransparency = 0.2
     SubTitle.TextXAlignment = Enum.TextXAlignment.Left
+    
+    local subConn
+    subConn = LoadingConfig.__SubTitleEvent.Event:Connect(function(newText)
+        if not SubTitle or not SubTitle.Parent then
+            if subConn then
+                pcall(function() subConn:Disconnect() end)
+            end
+            return
+        end
+        SubTitle.Text = tostring(newText)
+    end)
 
     -- Status Text
     local StatusText = Instance.new("TextLabel")
@@ -226,6 +257,9 @@ local function PlayFixedPremiumLoading()
     TweenService:Create(Overlay, TweenInfo.new(0.5), {BackgroundTransparency = 1}):Play()
 
     PopOut.Completed:Wait()
+    if subConn then
+        pcall(function() subConn:Disconnect() end)
+    end
     ScreenGui:Destroy()
     Blur:Destroy()
 end

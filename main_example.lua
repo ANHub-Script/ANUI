@@ -48,7 +48,7 @@ local BaseProfile = {
 			Title = "Discord",
 			Desc = "Join ANHUB Discord",
 			Callback = function()
-				setclipboard("https://discord.gg/cy6uMRmeZ")
+				setclipboard("https://discord.gg/bUkCZvmrpH")
 				if ANUI then
 					ANUI:Notify({
 						Title = "Discord",
@@ -217,7 +217,7 @@ do
 			Icon = "geist:logo-discord",
 			Desc = "Join ANHUB Discord",
 			Callback = function()
-				setclipboard("https://discord.gg/cy6uMRmeZ")
+				setclipboard("https://discord.gg/bUkCZvmrpH")
 				if ANUI then
 					ANUI:Notify({
 						Title = "Discord",
