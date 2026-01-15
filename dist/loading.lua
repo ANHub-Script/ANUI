@@ -7,8 +7,15 @@ local function PlayFixedPremiumLoading()
     local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
     
     local _GENV = (getgenv and getgenv()) or _G
-    _GENV.SLoading = _GENV.SLoading or {}
-    local LoadingConfig = _GENV.SLoading
+    if type(_GENV.ANHUB_Loading) ~= "table" then
+        _GENV.ANHUB_Loading = nil
+    end
+    if type(_GENV.SLoading) ~= "table" then
+        _GENV.SLoading = nil
+    end
+    _GENV.ANHUB_Loading = _GENV.ANHUB_Loading or _GENV.SLoading or {}
+    _GENV.SLoading = _GENV.SLoading or _GENV.ANHUB_Loading
+    local LoadingConfig = _GENV.ANHUB_Loading
     local function GetSubTitleText()
         local v = LoadingConfig.SubTitle
         if v == nil then
