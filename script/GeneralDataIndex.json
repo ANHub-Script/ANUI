@@ -1,0 +1,2680 @@
+{
+    "All": [{
+        "Value": 24,
+        "Name": "Move_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Star_Luck_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Ki_Critical_Multiplier",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Auras_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 5,
+        "Name": "Star_Amount",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Damage_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Super_Energy_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Energy_Critical_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighters_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Weapons_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 3,
+        "Name": "Pets_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Roll_Amount",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Enchantment_Amount",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Stands_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Zeni_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 10,
+        "Name": "Max_Mana",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Super_Energy_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Luck",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Coins_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Energy_II",
+        "Category": "Default"
+    }, {
+        "Value": 1.1,
+        "Name": "Critical_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Exp_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Energy",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Walk_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1000,
+        "Name": "Mics_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Science_Materials",
+        "Category": "Default"
+    }, {
+        "Value": 2000,
+        "Name": "Resources_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 1000,
+        "Name": "Accessories_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Enchantment_Luck",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Chance_To_Get_Shiny",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Avatar_Soul_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Shadows_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Star_Luck_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Character_Size",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Critical_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Ki_Critical_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Stat_Point_Multiplier",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Stat_Point_II_Multiplier",
+        "Category": "Default"
+    }, {
+        "Value": 3.5,
+        "Name": "Roll_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Super_Damage_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1.1,
+        "Name": "Ki_Critical_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Star_Luck_II_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Attack_Range_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Token_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Christmas_Materials_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Zombies_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 2000,
+        "Name": "Powers_II_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 5,
+        "Name": "Health_Regeneration",
+        "Category": "Default"
+    }, {
+        "Value": 1.1,
+        "Name": "Super_Critical_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Runes_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Christmas_Materials",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Ki",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Walk_Speed_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Sprint_Speed_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0.01,
+        "Name": "Critical_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Super_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Coins",
+        "Category": "Default"
+    }, {
+        "Value": 0.5,
+        "Name": "Sprint_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Titans_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Christmas_Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Energy_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Critical_Energy",
+        "Category": "Default"
+    }, {
+        "Value": 0.15,
+        "Name": "Click_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Super_Critical_Multiplier",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Pets_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0.35,
+        "Name": "Slow_Auto_Click_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Attack_Speed_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Luck_II",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Shadow_Soul_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 3.5,
+        "Name": "Enchantment_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Rune_Multiplier",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Energy_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Super_Energy",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Ki_Damage_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 10000,
+        "Name": "Powers_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Chance_To_Get_Rainbow",
+        "Category": "Default"
+    }, {
+        "Value": 0.01,
+        "Name": "Super_Critical_Damage_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 1000,
+        "Name": "Jewelry_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Max_Stamina",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Sprint_Speed_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Exp_II",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Shadow_Soul",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Star_Luck_II",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Avatar_Soul_II_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Exp",
+        "Category": "Default"
+    }, {
+        "Value": 2000,
+        "Name": "Avatars_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Jump_Height",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Christmas_Materials_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Jewelry_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Attack_Range",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Exp_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Shadow_Soul_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0.01,
+        "Name": "Ki_Critical_Damage_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Ki_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 2000,
+        "Name": "Powers_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Star_Luck_II_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Super_Critical_Chance",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Christmas_Damage_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Potions_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Ki_Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Attack_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Token_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Exp_II_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Chance_To_Get_Golden",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Damage_II",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Token",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Science_Materials_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Exp_II_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Super_Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Stamina_Regeneration",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Christmas_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1000,
+        "Name": "Auras_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 3,
+        "Name": "Star_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Roll_Luck",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Science_Materials_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Star_Luck",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Critical_Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Zeni_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Shadows_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Avatar_Soul_II_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Ki_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Avatar_Soul_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Avatar_Soul_II",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Damage_Multiply",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Energy",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Zeni",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Coins",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Fighter_Critical_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Avatar_Soul",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Runes_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 10000,
+        "Name": "Powers_II_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Coins_Percent",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Ki_Damage",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Mana_Regeneration",
+        "Category": "Default"
+    }, {
+        "Value": 100,
+        "Name": "Max_Health",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Accessories_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Zombies_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 0.15,
+        "Name": "Fast_Auto_Click_Speed",
+        "Category": "Default"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Coins_II",
+        "Category": "Default"
+    }, {
+        "Value": 9,
+        "Name": "Click_Range",
+        "Category": "Default"
+    }, {
+        "Value": 1,
+        "Name": "Stands_Equip",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Titans_Inv",
+        "Category": "Default"
+    }, {
+        "Value": 50,
+        "Name": "Weapons_Inv",
+        "Category": "Default"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Dungeon Easy II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Restaurant Raid III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid III",
+        "Value": 0.5,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXIV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Dungeon Insane II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Pets_Equip",
+        "Category": "[Achievements] Dungeon Hard V"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Ice_Raid XVII",
+        "Value": 0.5,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXXII",
+        "Value": 2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXII",
+        "Value": 1,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid VII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Dungeon Crazy II",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy VII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Dungeon Easy III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Time Played II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins VIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Pets_Equip",
+        "Category": "[Achievements] Dungeon Easy V"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXVIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid XIV",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXIX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins VI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Ice_Raid XVIII",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Cursed Raid X",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Restaurant Raid I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLVII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid XXXIII",
+        "Value": 1.75,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXVI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Dungeon Hard I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XVIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XIX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy IX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid XII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Ice_Raid XXVII",
+        "Value": 0.75,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXVI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XVII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid XXI",
+        "Value": 1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Titan Defense VII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Ice_Raid V",
+        "Value": 0.5,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLIX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXIX",
+        "Value": 1.5,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Progression Raid II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats VI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Dungeon Insane III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid XV",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XVI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Ice_Raid VI",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid X",
+        "Value": 0.6,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Dungeon Medium IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLVIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy X",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy X",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Dungeon Insane IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Restaurant Raid IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Dungeon Insane I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXIX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXIX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid IX",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins VII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Dungeon Medium I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XIV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Cursed Raid VIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats VII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Dungeon Hard III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XIV",
+        "Value": 0.75,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Restaurant Raid VII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Star_Amount",
+        "Category": "[Achievements] Stars IV"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXXVII",
+        "Value": 2.5,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Time Played I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid VIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid XXXVI",
+        "Value": 1.5,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Time Played III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Time Played III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Time Played III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Cursed Raid VII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid X",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXVIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid VII",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXXIV",
+        "Value": 2.5,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Dungeon Crazy III",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins X",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXVII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Titan Defense VIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Titan Defense III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Titan Defense II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Pets_Equip",
+        "Category": "[Achievements] Dungeon Insane V"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Cursed Raid IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins IX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Dungeon Medium II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Cursed Raid II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins XI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid IX",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid XIII",
+        "Value": 0.75,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXVII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXVII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Restaurant Raid VIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Titan Defense V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Progression Raid X",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Dungeon Easy I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Dungeon Hard IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Restaurant Raid IX",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid IX",
+        "Value": 0.6,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Dungeon Easy IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Progression Raid I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Progression Raid IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Progression Raid IV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid I",
+        "Value": 0.5,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Star_Amount",
+        "Category": "[Achievements] Stars III"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Leaf Raid V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XXXIV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Cursed Raid IX",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XI",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Cursed Raid III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Pets_Equip",
+        "Category": "[Achievements] Dungeon Medium V"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Progression Raid VIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Ice_Raid XXVI",
+        "Value": 1.25,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLIV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XLIV",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Defeats II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Leaf Raid XIII",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Dungeon Hard II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Titan Defense IX",
+        "Value": 0.15,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Restaurant Raid X",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Dungeon Medium III",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 1,
+        "Name": "Star_Amount",
+        "Category": "[Achievements] Stars II"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Friends Bonus II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Friends Bonus II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Friends Bonus II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Friends Bonus II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Friends Bonus II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Titan Defense X",
+        "Value": 0.2,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Achievements] Dungeon Crazy I",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XX",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Cursed Raid V",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Achievements] Ice_Raid XXV",
+        "Value": 1.25,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Restaurant Raid II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Achievements] Total Coins II",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Achievements] Total Energy XIII",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 25,
+        "Name": "Pets_Inv",
+        "Category": "[Achievements] Stars I"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "Index_Avatars_Tier_1",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_6",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_7",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "Index_Champions_Tier_8",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Value": 1,
+        "Name": "Weapons_Equip",
+        "Category": "[Gamepass] Double_Weapon"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.03,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.03,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.04,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.03,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.04,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.02,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.01,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.01,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.03,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.01,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.02,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.02,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.02,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Quests] Quest #2",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.03,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.04,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Quests] Quest #5",
+        "Value": 0.01,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #6",
+        "Value": 0.04,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #1",
+        "Value": 0.05,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Quests] Quest #4",
+        "Value": 0.04,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Quests] Quest #3",
+        "Value": 0.02,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Value": 124,
+        "Name": "Primary_Energy"
+    }, {
+        "Main_Stat": "Christmas_Materials",
+        "Category": "[Progression] Christmas_Materials_Upgrade Christmas_Materials",
+        "Value": 36.7,
+        "Multiply": true,
+        "Name": "Christmas_Materials_Multiply"
+    }, {
+        "Value": 1000,
+        "Name": "Christmas_Damage",
+        "Category": "[Progression] Christmas_Damage_Upgrade Christmas_Damage"
+    }, {
+        "Main_Stat": "Christmas_Damage",
+        "Category": "[Progression] Christmas_Damage_Upgrade_2 Christmas_Damage",
+        "Value": 100,
+        "Multiply": true,
+        "Name": "Christmas_Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Progression] Exp_Obelisk Exp",
+        "Value": 0.1,
+        "Multiply": true,
+        "Name": "Exp_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Granny_Obelisk Obelisk",
+        "Value": 0.15,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Granny_Obelisk Obelisk",
+        "Value": 0.25,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Granny_Obelisk Obelisk",
+        "Value": 0.035,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Dragon_Obelisk Obelisk",
+        "Value": 0.15,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Dragon_Obelisk Obelisk",
+        "Value": 0.25,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Dragon_Obelisk Obelisk",
+        "Value": 0.035,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Pirate_Obelisk Obelisk",
+        "Value": 0.15,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Pirate_Obelisk Obelisk",
+        "Value": 0.25,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Pirate_Obelisk Obelisk",
+        "Value": 0.035,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Sorcerer_Obelisk Obelisk",
+        "Value": 0.15,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Sorcerer_Obelisk Obelisk",
+        "Value": 0.25,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Sorcerer_Obelisk Obelisk",
+        "Value": 0.035,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Value": 3,
+        "Name": "Click_Range",
+        "Category": "[Upgrades] Attack_Range_2 Attack_Range"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Chakra_Progression Chakra",
+        "Value": 0.98,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Rank_Up Rank",
+        "Value": 4611686018427390000,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Haki_Upgrade Haki_Upgrade",
+        "Value": 0.1,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Avatar_Soul",
+        "Category": "[Upgrades] Upgrades Avatar_Souls_Drop",
+        "Value": 0.65,
+        "Multiply": true,
+        "Name": "Avatar_Soul_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Upgrades Exp",
+        "Value": 0.3,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Value": -0.5,
+        "Name": "Roll_Speed",
+        "Category": "[Upgrades] Upgrades Fast_Roll"
+    }, {
+        "Value": 10,
+        "Name": "Pets_Inv",
+        "Category": "[Upgrades] Upgrades Champions_Inventory_Slots"
+    }, {
+        "Value": -0.5,
+        "Name": "Star_Speed",
+        "Category": "[Upgrades] Upgrades Star_Speed"
+    }, {
+        "Main_Stat": "Coins",
+        "Category": "[Upgrades] Upgrades Coins",
+        "Value": 0.65,
+        "Percent": true,
+        "Name": "Coins_Percent"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Upgrades Damage",
+        "Value": 0.7,
+        "Percent": true,
+        "Name": "Damage_Percent"
+    }, {
+        "Value": 0.55,
+        "Name": "Star_Luck",
+        "Category": "[Upgrades] Upgrades Star_Luck"
+    }, {
+        "Main_Stat": "Token",
+        "Category": "[Upgrades] Upgrades Drops",
+        "Value": 0.6,
+        "Multiply": true,
+        "Name": "Token_Multiply"
+    }, {
+        "Value": 1,
+        "Name": "Roll_Amount",
+        "Category": "[Upgrades] Upgrades Roll_Amount"
+    }, {
+        "Value": 1,
+        "Name": "Enchantment_Amount",
+        "Category": "[Upgrades] Upgrades Roll_Amount"
+    }, {
+        "Value": 0.015,
+        "Name": "Energy_Critical_Chance",
+        "Category": "[Upgrades] Upgrades Energy_Critical_Chance"
+    }, {
+        "Value": 0.35,
+        "Name": "Sprint_Speed",
+        "Category": "[Upgrades] Upgrades Movement_Speed"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Upgrades Energy",
+        "Value": 0.8,
+        "Percent": true,
+        "Name": "Energy_Percent"
+    }, {
+        "Value": 0.03,
+        "Name": "Critical_Energy",
+        "Category": "[Upgrades] Upgrades Critical_Energy"
+    }, {
+        "Value": 9,
+        "Name": "Click_Range",
+        "Category": "[Upgrades] Attack_Range Attack_Range"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Upgrades] Soul_Obelisk Obelisk",
+        "Value": 0.15,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Upgrades] Soul_Obelisk Obelisk",
+        "Value": 0.25,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Upgrades] Soul_Obelisk Obelisk",
+        "Value": 0.035,
+        "Percent": true,
+        "Name": "Exp_Percent"
+    }, {
+        "Main_Stat": "Star_Luck",
+        "Category": "[Auras] Luck_Aura",
+        "Value": 0.1,
+        "Percent": true,
+        "Name": "Star_Luck_Percent"
+    }, {
+        "Value": 35506673157215100,
+        "Name": "Energy",
+        "Category": "[Pets] Bulam_Red"
+    }, {
+        "Value": 476837,
+        "Name": "Energy",
+        "Category": "[Pets] Melyon"
+    }, {
+        "Value": 429153,
+        "Name": "Energy",
+        "Category": "[Pets] Eran"
+    }, {
+        "Value": 357628,
+        "Name": "Energy",
+        "Category": "[Pets] Bane"
+    }, {
+        "Value": 357628,
+        "Name": "Energy",
+        "Category": "[Pets] Bane"
+    }, {
+        "Value": 357628,
+        "Name": "Energy",
+        "Category": "[Pets] Bane"
+    }, {
+        "Value": 357628,
+        "Name": "Energy",
+        "Category": "[Pets] Bane"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Jewelry] Bronze_Bracelet",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Jewelry] Bronze_Necklace",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Jewelry] Bronze_Bracelet",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Jewelry] Bronze_Necklace",
+        "Value": 0.05,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Shadows] [S]_Ken_Turbo",
+        "Value": 0.028,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Value": 478292349725961500,
+        "Name": "Energy",
+        "Category": "[Avatars] [Av]_Bulam_Red"
+    }, {
+        "Value": 0.75,
+        "Name": "Coins",
+        "Category": "[Accessories] Red_Scarf"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Accessories] Armless_Cloak",
+        "Value": 0.03,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Exp",
+        "Category": "[Accessories] Armless_Cloak",
+        "Value": 0.03,
+        "Multiply": true,
+        "Name": "Exp_Multiply"
+    }, {
+        "Value": 0.5,
+        "Name": "Sprint_Speed",
+        "Category": "[Accessories] Shinobi_Flops"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Accessories] Shinobi_Flops",
+        "Value": 0.5,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Value": 0.5,
+        "Name": "Coins",
+        "Category": "[Accessories] 4_Star_Hat"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Frostbound_Deity",
+        "Value": 23,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Powers] Frostbound_Deity",
+        "Value": 1.5,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Verdant_Calamity",
+        "Value": 8,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Powers] Mythical_Chef",
+        "Value": 7,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Value": 0.04,
+        "Name": "Critical_Energy",
+        "Category": "[Powers] Mythical_Curse"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Powers] Mythical_Curse",
+        "Value": 4,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Emotion_Splitting",
+        "Value": 5,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Christmas_Damage",
+        "Category": "[Powers] Supreme_Christmas_Glove",
+        "Value": 40,
+        "Multiply": true,
+        "Name": "Christmas_Damage_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Full_Power_Super_Saiyan",
+        "Value": 8,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Uneven_Breath",
+        "Value": 1,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Kinetic_Absorption",
+        "Value": 5,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] C-Rank",
+        "Value": 4,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Value": 3,
+        "Name": "Star_Amount",
+        "Category": "[Powers] Power_of_Stars_VI"
+    }, {
+        "Value": 0.15,
+        "Name": "Star_Luck",
+        "Category": "[Powers] Power_of_Stars_VI"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Beast_Pirates",
+        "Value": 5,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Majin",
+        "Value": 8,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Evil_Spirit",
+        "Value": 1,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Red_Reiatsu",
+        "Value": 10,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Powers] Quake_Fruit",
+        "Value": 12,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }, {
+        "Main_Stat": "Damage",
+        "Category": "[Powers] Senbonzakura",
+        "Value": 5,
+        "Multiply": true,
+        "Name": "Damage_Multiply"
+    }, {
+        "Main_Stat": "Christmas_Damage",
+        "Category": "[Weapons] Ice_Sword",
+        "Value": 15.005,
+        "Multiply": true,
+        "Name": "Christmas_Damage_Multiply"
+    }, {
+        "Main_Stat": "Christmas_Materials",
+        "Category": "[Weapons] Ice_Sword",
+        "Value": 15.005,
+        "Multiply": true,
+        "Name": "Christmas_Materials_Multiply"
+    }, {
+        "Main_Stat": "Christmas_Damage",
+        "Category": "[Weapons] Ice_Sword",
+        "Value": 15.005,
+        "Multiply": true,
+        "Name": "Christmas_Damage_Multiply"
+    }, {
+        "Main_Stat": "Christmas_Materials",
+        "Category": "[Weapons] Ice_Sword",
+        "Value": 15.005,
+        "Multiply": true,
+        "Name": "Christmas_Materials_Multiply"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Luck"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Energy"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Damage"
+    }, {
+        "Value": 0,
+        "Name": "Primary_Coins"
+    }, {
+        "Main_Stat": "Energy",
+        "Category": "[Level Stat] Primary_Energy",
+        "Value": 1.24,
+        "Multiply": true,
+        "Name": "Energy_Multiply"
+    }],
+    "Total": {
+        "Move_Speed": 24,
+        "Star_Luck_Multiply": 0,
+        "Ki_Critical_Multiplier": 1,
+        "Auras_Equip": 1,
+        "Exp_II_Multiply": 0,
+        "Damage_Percent": 12.7,
+        "Super_Energy_Multiply": 0,
+        "Energy_Critical_Chance": 0.015,
+        "Fighters_Inv": 0,
+        "Damage": 26858.825684,
+        "Weapons_Equip": 2,
+        "Pets_Equip": 7,
+        "Roll_Amount": 2,
+        "Enchantment_Amount": 2,
+        "Stands_Inv": 50,
+        "Ki_Damage_Multiply": 0,
+        "Max_Mana": 10,
+        "Science_Materials_Percent": 1,
+        "Primary_Luck": 0,
+        "Coins_Multiply": 0,
+        "Potions_Inv": 50,
+        "Critical_Damage": 1.1,
+        "Exp_Percent": 1.475,
+        "Primary_Energy": 124,
+        "Fighter_Walk_Speed": 0,
+        "Mics_Inv": 1000,
+        "Science_Materials": 1,
+        "Resources_Inv": 1000,
+        "Accessories_Equip": 1000,
+        "Enchantment_Luck": 1,
+        "Chance_To_Get_Shiny": 0,
+        "Avatar_Soul_Multiply": 0,
+        "Shadows_Equip": 1,
+        "Star_Luck_Percent": 1.8,
+        "Character_Size": 1,
+        "Fighter_Critical_Chance": 0,
+        "Ki_Critical_Chance": 0,
+        "Stat_Point_Multiplier": 1,
+        "Stat_Point_II_Multiplier": 1,
+        "Exp_Multiply": 0,
+        "Super_Damage_Percent": 1,
+        "Ki_Critical_Damage": 1.1,
+        "Star_Luck_II_Percent": 1,
+        "Fighter_Attack_Range_Multiply": 0,
+        "Shadow_Soul": 1,
+        "Avatar_Soul_II": 1,
+        "Fighter_Damage": 0,
+        "Zeni": 1,
+        "Powers_II_Inv": 1000,
+        "Health_Regeneration": 5,
+        "Super_Critical_Damage": 1.1,
+        "Runes_Equip": 1,
+        "Christmas_Materials": 9657.232943,
+        "Ki": 1,
+        "Fighter_Walk_Speed_Multiply": 0,
+        "Sprint_Speed_Percent": 1,
+        "Critical_Chance": 0.01,
+        "Avatars_Inv": 1000,
+        "Coins": 10.35,
+        "Sprint_Speed": 1.35,
+        "Titans_Equip": 1,
+        "Christmas_Damage_Multiply": 0,
+        "Energy_Percent": 21.64,
+        "Critical_Energy": 1.07,
+        "Click_Speed": 0.15,
+        "Super_Critical_Multiplier": 1,
+        "Pets_Inv": 85,
+        "Slow_Auto_Click_Speed": 0.35,
+        "Fighter_Attack_Speed_Multiply": 0,
+        "Primary_Luck_II": 0,
+        "Star_Speed": 2.5,
+        "Enchantment_Speed": 3.5,
+        "Original_Sprint_Speed": 1.35,
+        "Rune_Multiplier": 1,
+        "Energy_Multiply": 0,
+        "Original_Move_Speed": 24,
+        "Ki_Damage_Percent": 1,
+        "Powers_Equip": 1000,
+        "Roll_Luck": 1,
+        "Super_Critical_Damage_Chance": 0.01,
+        "Jewelry_Equip": 1000,
+        "Max_Stamina": 0,
+        "Roll_Speed": 3,
+        "Sprint_Speed_Multiply": 0,
+        "Token_Multiply": 0,
+        "Star_Amount": 11,
+        "Star_Luck_II": 1,
+        "Star_Luck_II_Multiply": 0,
+        "Exp": 1.671175,
+        "Super_Energy_Percent": 1,
+        "Jump_Height": 50,
+        "Ki_Critical_Damage_Chance": 0.01,
+        "Jewelry_Inv": 50,
+        "Fighter_Attack_Range": 0,
+        "Super_Energy": 1,
+        "Shadow_Soul_Percent": 1,
+        "Christmas_Materials_Multiply": 0,
+        "Ki_Multiply": 0,
+        "Powers_Inv": 1000,
+        "Avatar_Soul": 1.65,
+        "Chance_To_Get_Rainbow": 0,
+        "Zeni_Percent": 1,
+        "Coins_Percent": 4.6,
+        "Fast_Auto_Click_Speed": 0.15,
+        "Christmas_Damage": 1061819422.188526,
+        "Runes_Inv": 50,
+        "Super_Critical_Chance": 0,
+        "Token_Percent": 1,
+        "Zeni_Multiply": 0,
+        "Chance_To_Get_Golden": 0,
+        "Primary_Damage_II": 0,
+        "Token": 1.6,
+        "Science_Materials_Multiply": 0,
+        "Avatar_Soul_II_Percent": 1,
+        "Fighter_Critical_Damage": 0,
+        "Stamina_Regeneration": 1,
+        "Ki_Damage": 1,
+        "Auras_Inv": 1000,
+        "Shadows_Inv": 50,
+        "Shadow_Soul_Multiply": 0,
+        "Christmas_Materials_Percent": 1,
+        "Zombies_Equip": 1,
+        "Fighter_Critical_Damage_Multiply": 0,
+        "Stands_Equip": 1,
+        "Star_Luck": 3.06,
+        "Fighter_Attack_Speed": 0,
+        "Ki_Percent": 1,
+        "Avatar_Soul_Percent": 1,
+        "Primary_Energy_II": 0,
+        "Fighter_Damage_Multiply": 0,
+        "Damage_Multiply": 0,
+        "Avatar_Soul_II_Multiply": 0,
+        "Primary_Coins": 0,
+        "Weapons_Inv": 50,
+        "Exp_II_Percent": 1,
+        "Zombies_Inv": 50,
+        "Powers_II_Equip": 1000,
+        "Primary_Damage": 0,
+        "Click_Range": 21,
+        "Mana_Regeneration": 1,
+        "Christmas_Damage_Percent": 1,
+        "Super_Damage": 1,
+        "Accessories_Inv": 50,
+        "Energy": 1.4101470835865944e49,
+        "Primary_Coins_II": 0,
+        "Super_Damage_Multiply": 0,
+        "Max_Health": 100,
+        "Titans_Inv": 50,
+        "Exp_II": 1
+    },
+    "InGame": []
+}

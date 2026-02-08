@@ -1,0 +1,4050 @@
+{
+        "Dungeon_Labyrinth": {
+            "Is_Notification": false,
+            "MapId": 0,
+            "Id": 21,
+            "ImageId": "rbxassetid://127161221839297",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 250000000000000000000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Labyrinth_Power_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 4244566,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.01,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 10,
+                },
+            },
+            "Name": "Dungeon_Labyrinth",
+            "Price": {
+                "Id": "Labyrinth_Key",
+                "Amount": -1,
+            },
+        },
+        "Only_Forward": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 2,
+            "Display_Rewards": {
+            },
+            "Name": "Only_Forward",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Restaurant_Raid_x2": {
+            "Is_Notification": false,
+            "MapId": 2,
+            "Id": 20,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 2,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 200000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.25,
+                    "Id": "Avatar_Soul",
+                    "Amount": 2,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                5: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Restaurant_Box",
+                },
+                6: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Chef_Power_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 2,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 2,
+                },
+            },
+            "Name": "Restaurant_Raid_x2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Restaurant_Key",
+                "Amount": -2,
+            },
+        },
+        "Normal": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 1,
+            "Display_Rewards": {
+            },
+            "Name": "Normal",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Progression_Raid": {
+            "Is_Notification": false,
+            "MapId": 9,
+            "Id": 22,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 7500000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 5000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Progression_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key",
+                "Amount": -1,
+            },
+        },
+        "Chainsaw_Defense": {
+            "Is_Notification": false,
+            "MapId": 18,
+            "Id": 3,
+            "ImageId": "rbxassetid://108173911756523",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.4,
+                    "Id": "Chainsaw_TD_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 5000000000000000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1267278,
+                },
+                5: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "Pokita_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Chainsaw_Defense",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Chainsaw_Key",
+                "Amount": -1,
+            },
+        },
+        "Cursed_Raid_x3": {
+            "Is_Notification": false,
+            "MapId": 4,
+            "Id": 30,
+            "ImageId": "rbxassetid://103785441399200",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 300000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 3000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 3,
+                },
+                4: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Cursed_Power_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 3,
+                },
+                6: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Cursed_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 3,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 3,
+                },
+            },
+            "Name": "Cursed_Raid_x3",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Cursed_Key",
+                "Amount": -3,
+            },
+        },
+        "One_Hero_Raid_x2": {
+            "Is_Notification": false,
+            "MapId": 23,
+            "Id": 32,
+            "ImageId": "rbxassetid://102634768992920",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 6e+24,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 255751986,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 2,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 2,
+                },
+                5: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "One_Hero_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 2,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 2,
+                },
+            },
+            "Name": "One_Hero_Raid_x2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "One_Hero_Key",
+                "Amount": -2,
+            },
+        },
+        "Cursed_Raid": {
+            "Is_Notification": false,
+            "MapId": 4,
+            "Id": 28,
+            "ImageId": "rbxassetid://103785441399200",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Cursed_Power_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Cursed_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Cursed_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Cursed_Key",
+                "Amount": -1,
+            },
+        },
+        "Restaurant_Raid_x3": {
+            "Is_Notification": false,
+            "MapId": 2,
+            "Id": 21,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 3,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 300000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.25,
+                    "Id": "Avatar_Soul",
+                    "Amount": 3,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1500,
+                },
+                5: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Restaurant_Box",
+                },
+                6: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Chef_Power_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 3,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 3,
+                },
+            },
+            "Name": "Restaurant_Raid_x3",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Restaurant_Key",
+                "Amount": -3,
+            },
+        },
+        "Cursed_Raid_x2": {
+            "Is_Notification": false,
+            "MapId": 4,
+            "Id": 29,
+            "ImageId": "rbxassetid://103785441399200",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 200000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 2000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 2,
+                },
+                4: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Cursed_Power_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 2,
+                },
+                6: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Cursed_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 2,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 2,
+                },
+            },
+            "Name": "Cursed_Raid_x2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Cursed_Key",
+                "Amount": -2,
+            },
+        },
+        "Maze_Level_5": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 32,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+36,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL5]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 858908520923,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Rune_Box_VII",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Legendary_Maze_Power",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Maze_Key_6",
+                    "Amount": 1,
+                },
+                9: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 5,
+                },
+            },
+            "Id": 19,
+            "Name": "Maze_Level_5",
+            "ImageId": "rbxassetid://111642614576030",
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Ice_Raid": {
+            "Is_Notification": false,
+            "MapId": 1,
+            "Id": 15,
+            "ImageId": "rbxassetid://84865516591949",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Ice_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Ice_Raid",
+            "Is_Waves": true,
+        },
+        "Maze_Level_3": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 17,
+            "ImageId": "rbxassetid://117824205811263",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+30,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL3]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 3157695915,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Rune_Box_V",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Rare_Maze_Power",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Maze_Key_4",
+                    "Amount": 1,
+                },
+                9: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 30,
+                },
+            },
+            "Name": "Maze_Level_3",
+            "Price": {
+                "Id": "Maze_Key_3",
+                "Amount": -1,
+            },
+        },
+        "Hollow_Raid": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 8,
+            "ImageId": "rbxassetid://71979616170456",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "Hollow_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 1.5e+21,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 8024882,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Hollow_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Hollow_Key",
+                "Amount": -1,
+            },
+        },
+        "Crimson_Canyon": {
+            "Is_Notification": false,
+            "MapId": 31,
+            "Id": 22,
+            "ImageId": "rbxassetid://135897492903996",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+35,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 127383144429,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Crimson_Canyon",
+            "Price": {
+                "Id": "Crimson_Canyon_Key",
+                "Amount": -1,
+            },
+        },
+        "Gleam_Raid": {
+            "Is_Notification": false,
+            "MapId": 15,
+            "Id": 2,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 90000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 500000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Gleam_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Gleam_Key",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Custom_Test": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 25,
+            "Display_Rewards": {
+            },
+            "Name": "Dungeon_Custom_Test",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Santa_Raid": {
+            "Is_Notification": false,
+            "MapId": 1,
+            "Id": 16,
+            "ImageId": "rbxassetid://80314855395086",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Santa_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Santa_Raid",
+            "Is_Waves": true,
+        },
+        "Breathing_Raid": {
+            "Is_Notification": false,
+            "MapId": 5,
+            "Id": 14,
+            "ImageId": "rbxassetid://104788284543297",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Breathing_Raid",
+            "Is_Waves": true,
+        },
+        "Titan_Defense": {
+            "Is_Notification": false,
+            "MapId": 11,
+            "Id": 2,
+            "ImageId": "rbxassetid://130560186686465",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Titan_Defense_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 50500000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 15000,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.01,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Titan_Defense",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Titan_Defense_Key",
+                "Amount": -1,
+            },
+        },
+        "Tower_Defense_Easy": {
+            "Is_Notification": false,
+            "MapId": 0,
+            "Id": 1,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Test_Token",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Tower_Defense_Easy",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Admin_Token",
+                "Amount": -1,
+            },
+        },
+        "Body_Improvement_Challenge": {
+            "Is_Notification": false,
+            "MapId": 32,
+            "Id": 13,
+            "ImageId": "rbxassetid://130741865042487",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+35,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 233000000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.03,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Body_Improvement_Challenge",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Body_Improvement_Key",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Suffering": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 12,
+            "ImageId": "rbxassetid://134910738691149",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 7e+21,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.4,
+                    "Id": "[S]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 11749230,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Power_of_Suffering",
+                },
+            },
+            "Name": "Dungeon_Suffering",
+            "Price": {
+                "Id": "Key_of_Suffering",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Test": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 24,
+            "Display_Rewards": {
+            },
+            "Name": "Dungeon_Test",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Leaf_Raid": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">17m</font>",
+            "MapId": 0,
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Leaf_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 5050000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Id": 1,
+            "Name": "Leaf_Raid",
+            "Is_Waves": true,
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Halloween_Raid": {
+            "Is_Notification": false,
+            "MapId": 1,
+            "Id": 11,
+            "ImageId": "rbxassetid://136889027877047",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Max_Amount": 5,
+                    "Chance": 0.35,
+                    "Id": "Halloween_Candy",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.01,
+                    "Id": "Spooky_Empty_Flask",
+                    "Amount": 1,
+                },
+                3: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.35,
+                    "Id": "Box_of_Bones",
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.03,
+                    "Id": "Imp_Tail",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Graveyard_Key",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Halloween_Raid",
+            "Is_Waves": true,
+        },
+        "Maze_Test": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 20,
+            "Display_Rewards": {
+            },
+            "Id": 26,
+            "Name": "Maze_Test",
+            "Price": {
+                "Id": "Maze_Key_1",
+                "Amount": -1,
+            },
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Running_Track_Raid": {
+            "Is_Notification": false,
+            "MapId": 0,
+            "Id": 10,
+            "ImageId": "rbxassetid://77636918307328",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_No_Wave",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Running_Track_Coin",
+                    "Amount": 10,
+                },
+            },
+            "Name": "Running_Track_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Running_Track_Key",
+                "Amount": -1,
+            },
+        },
+        "Progression_Raid_x3": {
+            "Is_Notification": false,
+            "MapId": 9,
+            "Id": 24,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 22500000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 15000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 3,
+                },
+                4: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 3,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 3,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 3,
+                },
+            },
+            "Name": "Progression_Raid_x3",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key",
+                "Amount": -3,
+            },
+        },
+        "Graveyard_Defense": {
+            "Is_Notification": false,
+            "MapId": 1,
+            "Id": 5,
+            "ImageId": "rbxassetid://99563808085074",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Max_Amount": 5,
+                    "Chance": 0.35,
+                    "Id": "Halloween_Eyeball",
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.35,
+                    "Id": "Box_with_Ghosts",
+                },
+                3: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.001,
+                    "Id": "Halloween_Coffin",
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Graveyard_Defense",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Graveyard_Key",
+                "Amount": -1,
+            },
+        },
+        "Green_Planet_Raid": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 6,
+            "ImageId": "rbxassetid://84495591901166",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.001,
+                    "Id": "Eternal_Dragon",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 1.5e+21,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.25,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 8024882,
+                },
+                5: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.4,
+                    "Id": "Green_Planet_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Green_Planet_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Green_Planet_Key",
+                "Amount": -1,
+            },
+        },
+        "Maze_Level_1": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 15,
+            "ImageId": "rbxassetid://101466249995335",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+28,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL1]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 2537695915,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Rune_Box_III",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Common_Maze_Power",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Maze_Key_2",
+                    "Amount": 1,
+                },
+                9: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 10,
+                },
+            },
+            "Name": "Maze_Level_1",
+            "Price": {
+                "Id": "Maze_Key_1",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Medium": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">12m</font>",
+            "MapId": 0,
+            "Id": 6,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 300000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Dungeon_Box",
+                },
+                3: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Silver_Parts_Box",
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Chance": 0.4,
+                    "Id": "Blue_Crystal",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 2500,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Medium",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Dungeon_Adventurer": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 20,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 7e+25,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[Adv]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 321789946,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 10,
+                },
+                7: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Rune_Box_I",
+                },
+            },
+            "Id": 13,
+            "Name": "Dungeon_Adventurer",
+            "Price": {
+                "Id": "Adventurer_Key",
+                "Amount": -1,
+            },
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Staight_With_Turns": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 3,
+            "Display_Rewards": {
+            },
+            "Name": "Staight_With_Turns",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Progression_Raid_2": {
+            "Is_Notification": false,
+            "MapId": 16,
+            "Id": 25,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 50000000000000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 310000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_2_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Progression_Raid_2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key_2",
+                "Amount": -1,
+            },
+        },
+        "Ghoul_Raid": {
+            "Is_Notification": false,
+            "MapId": 17,
+            "Id": 3,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 900000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 750000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "Ghoul_Mask_Box",
+                },
+                5: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Ghoul_Raid_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Ghoul_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Ghoul_Key",
+                "Amount": -1,
+            },
+        },
+        "Tomb_Arena_Raid": {
+            "Is_Notification": false,
+            "MapId": 24,
+            "Id": 12,
+            "ImageId": "rbxassetid://119847216211607",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.35,
+                    "Id": "Tomb_Arena_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 7e+25,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 321789946,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.04,
+                    "Id": "Jalbathar_Mask",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.03,
+                    "Id": "Jalbathar_Wings",
+                },
+                9: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.02,
+                    "Id": "Jalbathar_Tail",
+                },
+            },
+            "Name": "Tomb_Arena_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Tomb_Arena_Key",
+                "Amount": -1,
+            },
+        },
+        "Progression_Raid": {
+            "Is_Notification": false,
+            "MapId": 9,
+            "Id": 22,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 7500000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 5000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Progression_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key",
+                "Amount": -1,
+            },
+        },
+        "Progression_Raid_2_x2": {
+            "Is_Notification": false,
+            "MapId": 16,
+            "Id": 26,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000000000000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 620000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 2,
+                },
+                4: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_2_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 2,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 2,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 2,
+                },
+            },
+            "Name": "Progression_Raid_2_x2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key_2",
+                "Amount": -2,
+            },
+        },
+        "Mundo_Raid": {
+            "Is_Notification": false,
+            "MapId": 21,
+            "Id": 7,
+            "ImageId": "rbxassetid://126511707280656",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 3e+22,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 24434727,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Mundo_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Mundo_Key",
+                "Amount": -1,
+            },
+        },
+        "Calamity_Raid": {
+            "Is_Notification": false,
+            "MapId": 37,
+            "Id": 17,
+            "ImageId": "rbxassetid://106987513738035",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+40,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 7710000000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.03,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Calamity_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Calamity_Key",
+                "Amount": -1,
+            },
+        },
+        "Progression_Raid_x2": {
+            "Is_Notification": false,
+            "MapId": 9,
+            "Id": 23,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 15000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 10000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 2,
+                },
+                4: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 2,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 2,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 2,
+                },
+            },
+            "Name": "Progression_Raid_x2",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key",
+                "Amount": -2,
+            },
+        },
+        "One_Hero_Raid": {
+            "Is_Notification": false,
+            "MapId": 23,
+            "Id": 31,
+            "ImageId": "rbxassetid://102634768992920",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 3e+24,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 127875993,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                5: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "One_Hero_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "One_Hero_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "One_Hero_Key",
+                "Amount": -1,
+            },
+        },
+        "Progression_Raid_2_x3": {
+            "Is_Notification": false,
+            "MapId": 16,
+            "Id": 27,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 150000000000000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 930000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 3,
+                },
+                4: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Progression_Raid_2_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 3,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 3,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 3,
+                },
+            },
+            "Name": "Progression_Raid_2_x3",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Progression_Key_2",
+                "Amount": -3,
+            },
+        },
+        "Dungeon_Hard": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">20m</font>",
+            "MapId": 0,
+            "Id": 7,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 1750000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "[H]_Dungeon_Box",
+                },
+                3: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Gold_Parts_Box",
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Chance": 0.4,
+                    "Id": "Red_Crystal",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 4000,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Hard",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Netherworld_Defense": {
+            "Is_Notification": false,
+            "MapId": 19,
+            "Id": 4,
+            "ImageId": "rbxassetid://99563808085074",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Netherworld_TD_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000000000000000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 3189005,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Netherworld_Defense",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Netherworld_Key",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Insane": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">27m</font>",
+            "MapId": 0,
+            "Id": 8,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 2550000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.75,
+                    "Id": "[I]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Chance": 0.4,
+                    "Id": "Yellow_Crystal",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 6000,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Rose_Gold_Parts_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Insane",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Dungeon_Torment": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 20,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+27,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[Tor]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 2037695915,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.4,
+                    "Id": "Rune_Box_II",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 5,
+                },
+            },
+            "Id": 14,
+            "Name": "Dungeon_Torment",
+            "Price": {
+                "Id": "Torment_Key",
+                "Amount": -1,
+            },
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Sin_Raid": {
+            "Is_Notification": false,
+            "MapId": 12,
+            "Id": 5,
+            "ImageId": "rbxassetid://96232851151095",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 5000000000000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.25,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 20000,
+                },
+                4: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.35,
+                    "Id": "Sin_Box",
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Sin_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Sin_Key",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Nightmare": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">22m</font>",
+            "MapId": 0,
+            "Id": 11,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 90000000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.75,
+                    "Id": "[N]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 250000,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Nightmare",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Kaiju_Dungeon": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000000000000,
+                },
+                2: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Max_Amount": 5,
+                    "Chance": 0.25,
+                    "Id": "Kaiju_Energy_Token",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 42160,
+                },
+                5: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Max_Amount": 5,
+                    "Chance": 0.1,
+                    "Id": "Fortitude_Level_Token",
+                },
+                6: {
+                    "Amount": 2,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Max_Amount": 5,
+                    "Chance": 0.1,
+                    "Id": "Kaiju_Token",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 5,
+                },
+            },
+            "Id": 10,
+            "Name": "Kaiju_Dungeon",
+            "Price": {
+                "Id": "Kaiju_Key",
+                "Amount": -1,
+            },
+            "UI_Name": "Dungeons_Raid",
+        },
+        "Tournament_Raid": {
+            "Is_Notification": false,
+            "MapId": 1,
+            "Id": 4,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Tournament_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Tournament_Key",
+                "Amount": -1,
+            },
+        },
+        "Maze_Level_2": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 16,
+            "ImageId": "rbxassetid://106174017280999",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+29,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL2]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 2757695915,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.02,
+                    "Id": "Rune_IV_Fragments",
+                    "Amount": 1,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Uncommon_Maze_Power",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Maze_Key_3",
+                    "Amount": 1,
+                },
+                9: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 20,
+                },
+            },
+            "Name": "Maze_Level_2",
+            "Price": {
+                "Id": "Maze_Key_2",
+                "Amount": -1,
+            },
+        },
+        "Restaurant_Raid": {
+            "Is_Notification": false,
+            "MapId": 2,
+            "Id": 19,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 100000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.25,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 500,
+                },
+                5: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Restaurant_Box",
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.1,
+                    "Id": "Chef_Power_Box",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Restaurant_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Restaurant_Key",
+                "Amount": -1,
+            },
+        },
+        "Dragon_Room_Raid": {
+            "Is_Notification": false,
+            "MapId": 14,
+            "Id": 9,
+            "ImageId": "rbxassetid://136889027877047",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Dragon_Room_Box",
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 2000000000000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 102697,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+                7: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.15,
+                    "Id": "Storm_Dragon_Box",
+                },
+            },
+            "Name": "Dragon_Room_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Storm_Dragon_Key",
+                "Amount": -1,
+            },
+        },
+        "Maze_Level_4": {
+            "Is_Notification": false,
+            "MapId": 20,
+            "Id": 18,
+            "ImageId": "rbxassetid://124986548716581",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+30,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL4]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 3157695915,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Rune_Box_VI",
+                },
+                7: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Epic_Maze_Power",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Maze_Key_5",
+                    "Amount": 1,
+                },
+                9: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Maze_Level_4",
+            "Price": {
+                "Id": "Maze_Key_4",
+                "Amount": -1,
+            },
+        },
+        "Maze_Level_6": {
+            "Is_Notification": false,
+            "MapId": 35,
+            "Id": 20,
+            "ImageId": "rbxassetid://115660553869706",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+37,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "[MLvL6]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 8589085209230,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.25,
+                    "Id": "Rune_Box_VIII",
+                },
+                7: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.45,
+                    "Id": "Maze_6_Power_Box",
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 5,
+                },
+            },
+            "Name": "Maze_Level_6",
+            "Price": {
+                "Id": "Maze_Key_6",
+                "Amount": -1,
+            },
+        },
+        "Test_Quest": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 4,
+            "Display_Rewards": {
+            },
+            "Name": "Test_Quest",
+            "UI_Name": "Dungeons_Default",
+        },
+        "One_Hero_Raid_x3": {
+            "Is_Notification": false,
+            "MapId": 23,
+            "Id": 33,
+            "ImageId": "rbxassetid://102634768992920",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+24,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 383627979,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 3,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 3,
+                },
+                5: {
+                    "Amount": 3,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.3,
+                    "Id": "One_Hero_Box",
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 3,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 3,
+                },
+            },
+            "Name": "One_Hero_Raid_x3",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "One_Hero_Key",
+                "Amount": -3,
+            },
+        },
+        "Test_Raid": {
+            "Is_Notification": false,
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "MapId": 0,
+            "Id": 27,
+            "Display_Rewards": {
+            },
+            "Name": "Test_Raid",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Mugen_Dungeon": {
+            "Is_Notification": false,
+            "MapId": 33,
+            "Id": 23,
+            "ImageId": "rbxassetid://94972853867868",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Default",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+35,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 426651692159,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+            },
+            "Name": "Mugen_Dungeon",
+            "Price": {
+                "Id": "Mugen_Key",
+                "Amount": -1,
+            },
+        },
+        "Marineford_Defense": {
+            "Is_Notification": false,
+            "MapId": 40,
+            "Id": 6,
+            "ImageId": "rbxassetid://99563808085074",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+            },
+            "Name": "Marineford_Defense",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Graveyard_Key",
+                "Amount": -1,
+            },
+        },
+        "Dungeon_Easy": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">02m</font>",
+            "MapId": 0,
+            "Id": 5,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 22000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.5,
+                    "Id": "Dungeon_Box",
+                },
+                3: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 1,
+                    "Id": "Bronze_Parts_Box",
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "Boss_Room",
+                        2: "End_Room",
+                    },
+                    "Chance": 0.4,
+                    "Id": "Green_Crystal",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 1000,
+                },
+                7: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                8: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Easy",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Dungeon_Crazy": {
+            "Is_Notification": false,
+            "Portal_Text": "Starts In: <font color="##00ff11">12m</font>",
+            "MapId": 0,
+            "Id": 9,
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9000000,
+                },
+                2: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.75,
+                    "Id": "[C]_Dungeon_Box",
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 15000,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "End_Room",
+                    },
+                    "Chance": 1,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 40,
+                },
+            },
+            "Name": "Dungeon_Crazy",
+            "UI_Name": "Dungeons_Default",
+        },
+        "Sand_Raid": {
+            "Is_Notification": false,
+            "MapId": 30,
+            "Id": 18,
+            "ImageId": "rbxassetid://82808016631985",
+            "Portal_Text": "<font color="#00ff11">Open</font>",
+            "UI_Name": "Dungeons_Raid",
+            "Display_Rewards": {
+                1: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Coins",
+                    "Amount": 9e+32,
+                },
+                2: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 1,
+                    "Id": "Exp",
+                    "Amount": 52300000000,
+                },
+                3: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.3,
+                    "Id": "Avatar_Soul",
+                    "Amount": 1,
+                },
+                4: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.005,
+                    "Id": "Lunch_Box",
+                    "Amount": 1,
+                },
+                5: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.2,
+                    "Id": "Shadow_Soul",
+                    "Amount": 1,
+                },
+                6: {
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Chance": 0.03,
+                    "Id": "Obelisk_Coin",
+                    "Amount": 1,
+                },
+                7: {
+                    "Amount": 1,
+                    "Drops_From": {
+                        1: "All",
+                    },
+                    "Auto_Open": true,
+                    "Chance": 0.4,
+                    "Id": "Sand_Box",
+                },
+            },
+            "Name": "Sand_Raid",
+            "Is_Waves": true,
+            "Price": {
+                "Id": "Sand_Key",
+                "Amount": -1,
+            },
+        },
+    }
