@@ -19,7 +19,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
-    -- [RENDER IMAGES HELPER] - Dipindahkan ke sini agar bisa diakses oleh Edit & Refresh
+    -- [HELPER] Fungsi Render Gambar
     local function RenderImages(Container, ImagesData)
         -- Bersihkan container lama
         for _, child in ipairs(Container:GetChildren()) do
@@ -273,14 +273,15 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         end
     end
 
+    -- [[ BAGIAN YANG SUDAH DIOPTIMALISASI ANTI-FREEZE ]] --
     function DropdownModule:Refresh(Values)
-        -- [OPTIMISASI 1] Batalkan render sebelumnya jika Refresh dipanggil lagi saat masih loading
+        -- 1. Hentikan tugas refresh lama jika ada (Anti-Tabrakan)
         if Dropdown._ActiveRefreshTask then 
             task.cancel(Dropdown._ActiveRefreshTask) 
             Dropdown._ActiveRefreshTask = nil
         end
 
-        -- Bersihkan elemen lama (Kecuali UIListLayout & SearchBar)
+        -- 2. Bersihkan Item Lama (Kecuali SearchBar)
         local ScrollFrame = Dropdown.UIElements.Menu.Frame.ScrollingFrame
         for _, Elementt in next, ScrollFrame:GetChildren() do
             if not Elementt:IsA("UIListLayout") and not Elementt:IsA("UIPadding") and Elementt.Name ~= "SearchBar" then 
@@ -290,7 +291,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         
         Dropdown.Tabs = {}
         
-        -- Setup SearchBar (Logic asli tetap dipertahankan)
+        -- Setup SearchBar
         if Dropdown.SearchBarEnabled then
             if not SearchLabel then
                 SearchLabel = CreateInput("Search...", "search", Dropdown.UIElements.Menu, nil, function(val)
@@ -300,26 +301,28 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         else
                             tab.UIElements.TabItem.Visible = false
                         end
-                        RecalculateListSize()
-                        RecalculateCanvasSize()
                     end
+                    RecalculateListSize()
+                    RecalculateCanvasSize()
                 end, true)
                 SearchLabel.Size = UDim2.new(1,0,0,Element.SearchBarHeight)
                 SearchLabel.Position = UDim2.new(0,0,0,0)
                 SearchLabel.Name = "SearchBar"
             else
-                -- Pastikan SearchBar tetap ada di urutan teratas/benar
-                SearchLabel.Parent = Dropdown.UIElements.Menu -- Re-parenting untuk keamanan
+                SearchLabel.Parent = Dropdown.UIElements.Menu 
             end
         end
         
-        -- [OPTIMISASI 2] Jalankan pembuatan item dalam Thread terpisah
+        -- 3. [ANTI-LAG] Jalankan Loop Render dengan Beban Terukur
         Dropdown._ActiveRefreshTask = task.spawn(function()
-            local ProcessedCount = 0
-            local BatchSize = 15 -- Render 15 item per frame (bisa diatur)
-
+            local CurrentLoad = 0
+            
             for Index, Tab in next, Values do
+                -- Stop jika UI hancur ditengah jalan
+                if not Dropdown.UIElements.Menu or not Dropdown.UIElements.Menu.Parent then break end
+
                 if (Tab.Type ~= "Divider") then
+                    -- Pembuatan Data Tab
                     local TabMain = {
                         Name = typeof(Tab) == "table" and Tab.Title or Tab,
                         Desc = typeof(Tab) == "table" and Tab.Desc or nil,
@@ -330,6 +333,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         Locked = typeof(Tab) == "table" and Tab.Locked or false,
                         UIElements = {},
                     }
+
                     local TabIcon
                     if TabMain.Icon then
                         TabIcon = Creator.Image(TabMain.Icon, TabMain.Icon, 0, Config.Window.Folder, "Dropdown", true)
@@ -434,18 +438,17 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         })
                     }, true)
 
+                    -- Render Gambar jika ada
+                    local ImageLoadCost = 0
                     if TabMain.Images and #TabMain.Images > 0 then
                         local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
                         if imagesContainer then 
-                            -- [FIX] Tambahkan properti Active agar bisa menerima input mouse
                             imagesContainer.Active = true 
-
-                            -- [FIX] Logic Custom Scrolling untuk PC
+                            
+                            -- Logic Drag Scrolling
                             local isDragging = false
                             local dragStart = Vector2.new()
                             local startCanvasPos = Vector2.new()
-
-                            -- Event: Mulai Drag (Klik Kiri)
                             imagesContainer.InputBegan:Connect(function(input)
                                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                                     isDragging = true
@@ -453,34 +456,23 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     startCanvasPos = imagesContainer.CanvasPosition
                                 end
                             end)
-
-                            -- Event: Selesai Drag (Lepas Klik)
                             imagesContainer.InputEnded:Connect(function(input)
-                                if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                                    isDragging = false
-                                end
+                                if input.UserInputType == Enum.UserInputType.MouseButton1 then isDragging = false end
                             end)
-                            
-                            -- Event: Saat Mouse Bergerak atau Scroll Wheel diputar
                             imagesContainer.InputChanged:Connect(function(input)
-                                -- Logic: Dragging (Geser Kiri/Kanan)
-                                if input.UserInputType == Enum.UserInputType.MouseMovement then
-                                    if isDragging then
-                                        local delta = input.Position - dragStart
-                                        -- Kurangi delta dari posisi awal untuk efek "grab" yang natural
-                                        imagesContainer.CanvasPosition = Vector2.new(startCanvasPos.X - delta.X, 0)
-                                    end
-                                
-                                -- Logic: Mouse Wheel (Ubah scroll vertikal jadi horizontal)
+                                if input.UserInputType == Enum.UserInputType.MouseMovement and isDragging then
+                                    local delta = input.Position - dragStart
+                                    imagesContainer.CanvasPosition = Vector2.new(startCanvasPos.X - delta.X, 0)
                                 elseif input.UserInputType == Enum.UserInputType.MouseWheel then
-                                    -- Angka -35 adalah sensitivitas scroll (bisa diatur)
                                     local scrollAmount = input.Position.Z * -35
                                     imagesContainer.CanvasPosition = imagesContainer.CanvasPosition + Vector2.new(scrollAmount, 0)
                                 end
                             end)
 
-                            -- Render gambar seperti biasa
                             RenderImages(imagesContainer, TabMain.Images) 
+                            
+                            -- HITUNG BEBAN: Setiap gambar reward dihitung 2 poin
+                            ImageLoadCost = #TabMain.Images * 2
                         end
                     end
                     
@@ -489,31 +481,20 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6 end
                     end
 
-                    -- Update Selection Logic
+                    -- Selection Logic
                     if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
                         for _, i in next, Dropdown.Values do
-                            if typeof(i) == "table" then
-                                if i.Title == Dropdown.Value then Dropdown.Value = { i } end
-                            else
-                                if i == Dropdown.Value then Dropdown.Value = { Dropdown.Value } end
-                            end
+                            if typeof(i) == "table" then if i.Title == Dropdown.Value then Dropdown.Value = { i } end else if i == Dropdown.Value then Dropdown.Value = { Dropdown.Value } end end
                         end
                     end
-                    
+                    local found = false
                     if Dropdown.Multi then
-                        local found = false
-                        if typeof(Dropdown.Value) == "table" then
-                            for _, item in ipairs(Dropdown.Value) do
-                                local itemName = typeof(item) == "table" and item.Title or item
-                                if itemName == TabMain.Name then found = true break end
-                            end
-                        end
-                        TabMain.Selected = found
+                        if typeof(Dropdown.Value) == "table" then for _, item in ipairs(Dropdown.Value) do local itemName = typeof(item) == "table" and item.Title or item if itemName == TabMain.Name then found = true break end end end
                     else
                         local currentValue = typeof(Dropdown.Value) == "table" and Dropdown.Value.Title or Dropdown.Value
-                        TabMain.Selected = currentValue == TabMain.Name
+                        found = (currentValue == TabMain.Name)
                     end
-                    
+                    TabMain.Selected = found
                     if TabMain.Selected and not TabMain.Locked then
                         TabMain.UIElements.TabItem.ImageTransparency = .95
                         TabMain.UIElements.TabItem.Highlight.ImageTransparency = .75
@@ -523,14 +504,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     
                     Dropdown.Tabs[Index] = TabMain
                     
-                    -- Event Connections
+                    -- Event Click
                     if Type == "Dropdown" then
                         Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
                             if TabMain.Locked then return end 
                             if Dropdown.Multi then
-                                if typeof(Dropdown.Value) ~= "table" then
-                                    Dropdown.Value = {}
-                                end
+                                if typeof(Dropdown.Value) ~= "table" then Dropdown.Value = {} end
                                 if not TabMain.Selected then
                                     TabMain.Selected = true
                                     Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
@@ -553,23 +532,20 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                     end
                                 end
                             else
-                                -- [PATCH BARU] Cek apakah 'AllowNone' aktif DAN item sudah dipilih?
                                 if Dropdown.AllowNone and TabMain.Selected then
-                                    -- A. Jika YA: Matikan pilihan (Deselect)
                                     TabMain.Selected = false
                                     Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
                                     Tween(TabMain.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
                                     Tween(TabMain.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
                                     if TabMain.UIElements.TabIcon then Tween(TabMain.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
-                                    Dropdown.Value = nil -- Set nilai jadi kosong
+                                    Dropdown.Value = nil
                                 else
-                                    -- B. Jika TIDAK: Pilih item seperti biasa (Normal Select)
-                                    for Index, TabPisun in next, Dropdown.Tabs do
-                                        Tween(TabPisun.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
-                                        Tween(TabPisun.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
-                                        Tween(TabPisun.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
-                                        if TabPisun.UIElements.TabIcon then Tween(TabPisun.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
-                                        TabPisun.Selected = false
+                                    for _, t in next, Dropdown.Tabs do 
+                                        Tween(t.UIElements.TabItem, 0.1, {ImageTransparency = 1}):Play()
+                                        Tween(t.UIElements.TabItem.Highlight, 0.1, {ImageTransparency = 1}):Play()
+                                        Tween(t.UIElements.TabItem.Frame.Title.TextLabel, 0.1, {TextTransparency = .4}):Play()
+                                        if t.UIElements.TabIcon then Tween(t.UIElements.TabIcon.ImageLabel, 0.1, {ImageTransparency = .2}):Play() end
+                                        t.Selected = false 
                                     end
                                     TabMain.Selected = true
                                     Tween(TabMain.UIElements.TabItem, 0.1, {ImageTransparency = .95}):Play()
@@ -591,27 +567,36 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             Callback(Tab.Callback or function() end)
                         end)
                     end
+                    
+                    -- [AKUMULASI BEBAN]
+                    -- Beban Dasar (1) + Beban Gambar.
+                    -- Jika ada 7 reward, bebannya = 1 + (7 * 2) = 15.
+                    CurrentLoad = CurrentLoad + 1 + ImageLoadCost
+
                 else
                     require("../../elements/Divider"):New({ Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame })
+                    CurrentLoad = CurrentLoad + 1
                 end
                 
-                -- [OPTIMISASI 3] Counter dan Yield
-                ProcessedCount = ProcessedCount + 1
-                if ProcessedCount % BatchSize == 0 then
-                    -- Update visual sementara agar tidak menunggu semua selesai
+                -- [CEK BATAS BEBAN]
+                -- Jika beban sudah > 8, istirahat 1 frame.
+                -- Dengan 7 reward, ini berarti merender 1 Musuh per frame (Sangat Smooth).
+                if CurrentLoad >= 8 then
                     RecalculateCanvasSize()
                     task.wait() 
+                    CurrentLoad = 0
                 end
             end
             
-            -- Hitung ulang final setelah loop selesai
+            -- Finalisasi
             local maxWidth = Dropdown.MenuWidth or 0
             if maxWidth == 0 then
                 for _, tabmain in next, Dropdown.Tabs do
-                    if tabmain.UIElements.TabItem.Frame.UIListLayout then maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X) end
+                    if tabmain.UIElements.TabItem and tabmain.UIElements.TabItem.Frame.UIListLayout then maxWidth = math.max(maxWidth, tabmain.UIElements.TabItem.Frame.UIListLayout.AbsoluteContentSize.X) end
                 end
             end
-            Dropdown.UIElements.MenuCanvas.Size = UDim2.new(0, maxWidth + 6 + 6 + 5 + 5 + 18 + 6 + 6, Dropdown.UIElements.MenuCanvas.Size.Y.Scale, Dropdown.UIElements.MenuCanvas.Size.Y.Offset)
+            Dropdown.UIElements.MenuCanvas.Size = UDim2.new(0, maxWidth + 30, Dropdown.UIElements.MenuCanvas.Size.Y.Scale, Dropdown.UIElements.MenuCanvas.Size.Y.Offset)
+            
             Callback()
             Dropdown.Values = Values
             RecalculateCanvasSize()
@@ -630,15 +615,10 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         DropdownModule:Refresh(Dropdown.Values)
     end
 
-    
-    
-    -- [PERBAIKAN] Edit Item Tanpa Refresh (Support All Properties)
     function DropdownModule:Edit(TargetName, NewData)
         for Index, TabData in ipairs(Dropdown.Tabs) do
-            -- Cek kesesuaian Nama Item
             if TabData.Name == TargetName then
-                
-                -- 1. Update Internal Data Source (Agar data tersimpan di memori)
+                -- Update Internal Data Source
                 local SourceVal = Dropdown.Values[Index]
                 if SourceVal and type(SourceVal) == "table" then
                      if NewData.Title then SourceVal.Title = NewData.Title end
@@ -646,61 +626,43 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                      if NewData.Icon then SourceVal.Icon = NewData.Icon end
                      if NewData.Images then SourceVal.Images = NewData.Images end 
                      
-                     -- Update Tab Data Internal UI Library
                      if NewData.Title then TabData.Name = NewData.Title end
-                     if NewData.Desc then 
-                        TabData.Desc = NewData.Desc
-                        TabData.Original.Desc = NewData.Desc 
-                     end
-                     if NewData.Images then 
-                        TabData.Images = NewData.Images
-                        TabData.Original.Images = NewData.Images 
-                     end
+                     if NewData.Desc then TabData.Desc = NewData.Desc TabData.Original.Desc = NewData.Desc end
+                     if NewData.Images then TabData.Images = NewData.Images TabData.Original.Images = NewData.Images end
                 end
 
-                -- 2. Update UI Visual
+                -- Update UI Visual
                 local TabUI = TabData.UIElements
                 if TabUI and TabUI.TabItem then
                     local Frame = TabUI.TabItem:FindFirstChild("Frame")
                     local TitleFrame = Frame and Frame:FindFirstChild("Title")
                     
                     if TitleFrame then
-                        -- Update Judul
                         if NewData.Title then
                             local TitleLabel = TitleFrame:FindFirstChild("TextLabel") 
                             if TitleLabel then TitleLabel.Text = NewData.Title end
                         end
-
-                        -- Update Deskripsi
                         if NewData.Desc then
                             local DescLabel = TitleFrame:FindFirstChild("Desc")
                             if DescLabel then
                                 DescLabel.Text = NewData.Desc
                                 DescLabel.Visible = true
-                                -- Paksa tinggi otomatis agar deskripsi muat
                                 TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                             end
                         end
-
-                        -- Update Images / Cards Grid
                         if NewData.Images then
                             local ImagesScroll = TitleFrame:FindFirstChild("Images")
                             if ImagesScroll then
-                                ImagesScroll.Visible = true
-                                -- Panggil helper RenderImages yang sudah ada di script lokal
+                                ImagesScroll.Visible = (NewData.Images and #NewData.Images > 0)
                                 RenderImages(ImagesScroll, NewData.Images)
-                                
-                                -- Paksa tinggi otomatis agar gambar muat
                                 TabData.UIElements.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                             end
                         end
                     end
                     
-                    -- Update Icon Utama Item (Kiri)
                     if NewData.Icon and TabUI.TabIcon then
                         local RealImage = TabUI.TabIcon:FindFirstChild("ImageLabel")
                         if RealImage then
-                            -- Support Lucide Icons / Asset ID biasa
                             local IconData = Creator.Icon(NewData.Icon)
                             if IconData then
                                 RealImage.Image = IconData[1]
@@ -711,8 +673,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 RealImage.ImageRectOffset = Vector2.new(0,0)
                                 RealImage.ImageRectSize = Vector2.new(0,0)
                             end
-
-                            -- Support Gradient pada Icon
                             if NewData.Gradient then
                                 local grad = RealImage:FindFirstChildOfClass("UIGradient") or New("UIGradient", {Parent=RealImage})
                                 grad.Color = NewData.Gradient
@@ -721,7 +681,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     end
                 end
                 
-                -- 3. Hitung ulang ukuran Menu agar pas dengan konten baru
                 RecalculateCanvasSize()
                 RecalculateListSize()
                 break 
@@ -729,34 +688,26 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         end
     end
     
-    -- [MODIFIED] Edit by Index (Fixed: Image Rendering & Header Update)
     function DropdownModule:EditDrop(Target, NewData)
         local TargetIndex = nil
         local TabData = nil
 
-        -- 1. Cari Target berdasarkan Angka (Index) atau Nama (String)
         if type(Target) == "number" then
             TargetIndex = Target
             TabData = Dropdown.Tabs[Target]
         else
             for i, tab in ipairs(Dropdown.Tabs) do
-                if tab.Name == Target then
-                    TargetIndex = i
-                    TabData = tab
-                    break
-                end
+                if tab.Name == Target then TargetIndex = i TabData = tab break end
             end
         end
 
         if TabData and TargetIndex then
-            -- 2. Update Internal Data Source
             local SourceVal = Dropdown.Values[TargetIndex]
             if type(SourceVal) ~= "table" then
                 SourceVal = { Title = SourceVal, Value = SourceVal }
                 Dropdown.Values[TargetIndex] = SourceVal
             end
 
-            -- Update Properties
             if NewData.Title then SourceVal.Title = NewData.Title end
             if NewData.Desc then SourceVal.Desc = NewData.Desc end
             if NewData.Icon then SourceVal.Icon = NewData.Icon end
@@ -764,19 +715,11 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             if NewData.Gradient then SourceVal.Gradient = NewData.Gradient end
             if NewData.Value then SourceVal.Value = NewData.Value end
             
-            -- Update Tab Data
             if NewData.Title then TabData.Name = NewData.Title end
-            if NewData.Desc then 
-                TabData.Desc = NewData.Desc
-                TabData.Original.Desc = NewData.Desc 
-            end
-            if NewData.Images then 
-                TabData.Images = NewData.Images
-                TabData.Original.Images = NewData.Images 
-            end
+            if NewData.Desc then TabData.Desc = NewData.Desc TabData.Original.Desc = NewData.Desc end
+            if NewData.Images then TabData.Images = NewData.Images TabData.Original.Images = NewData.Images end
             for k, v in pairs(NewData) do TabData.Original[k] = v end
 
-            -- 3. Update Visual List Item
             local TabUI = TabData.UIElements
             if TabUI and TabUI.TabItem then
                 local Frame = TabUI.TabItem:FindFirstChild("Frame")
@@ -795,7 +738,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             TabUI.TabItem.AutomaticSize = Enum.AutomaticSize.Y
                         end
                     end
-                    -- [CRITICAL] Re-render Images with forced Visible
                     if NewData.Images then
                         local ImagesScroll = TitleFrame:FindFirstChild("Images")
                         if ImagesScroll then
@@ -828,7 +770,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 end
             end
 
-            -- 4. Update Header Utama (Visual Luar) jika item ini terpilih
             local currentSelected = Dropdown.Value
             local isSelected = false
             if not Dropdown.Multi and currentSelected == SourceVal then isSelected = true end
