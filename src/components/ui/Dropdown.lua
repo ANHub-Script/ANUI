@@ -19,7 +19,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
-    -- [HELPER] Fungsi Render Gambar
+    -- [UPDATE] Fungsi Helper Render Images dengan "Micro-Yielding"
     local function RenderImages(Container, ImagesData)
         -- Bersihkan container lama
         for _, child in ipairs(Container:GetChildren()) do
@@ -30,7 +30,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 
         if not ImagesData or #ImagesData == 0 then return end
 
-        for _, imageData in ipairs(ImagesData) do
+        for i, imageData in ipairs(ImagesData) do
             local isCard = false
             if typeof(imageData) == "table" and (imageData.Quantity or imageData.Gradient or imageData.Card) then
                 isCard = true
@@ -150,6 +150,13 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 local imgFrame = Creator.Image(imageId, tostring(imageId), 6, Config.Window.Folder, "Dropdown", false)
                 imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
                 imgFrame.Parent = Container
+            end
+            
+            -- [[ ULTIMATE SMOOTH FIX ]] --
+            -- Setiap selesai membuat 2 kartu reward, istirahat 1 frame.
+            -- Ini memecah beban render berat menjadi potongan-potongan sangat kecil.
+            if i % 2 == 0 then
+                task.wait()
             end
         end
     end
@@ -273,15 +280,14 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         end
     end
 
-    -- [[ BAGIAN YANG SUDAH DIOPTIMALISASI ANTI-FREEZE ]] --
     function DropdownModule:Refresh(Values)
-        -- 1. Hentikan tugas refresh lama jika ada (Anti-Tabrakan)
+        -- 1. STOP PROSES LAMA
         if Dropdown._ActiveRefreshTask then 
             task.cancel(Dropdown._ActiveRefreshTask) 
             Dropdown._ActiveRefreshTask = nil
         end
 
-        -- 2. Bersihkan Item Lama (Kecuali SearchBar)
+        -- 2. BERSIHKAN ITEM LAMA
         local ScrollFrame = Dropdown.UIElements.Menu.Frame.ScrollingFrame
         for _, Elementt in next, ScrollFrame:GetChildren() do
             if not Elementt:IsA("UIListLayout") and not Elementt:IsA("UIPadding") and Elementt.Name ~= "SearchBar" then 
@@ -313,16 +319,16 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
             end
         end
         
-        -- 3. [ANTI-LAG] Jalankan Loop Render dengan Beban Terukur
+        -- 3. [UPDATE] LOOP RENDERING DENGAN LOGIKA SUPER STABIL
         Dropdown._ActiveRefreshTask = task.spawn(function()
             local CurrentLoad = 0
+            local LoadLimit = 3 -- Batas beban sangat rendah (3) agar frame rate terjaga
             
             for Index, Tab in next, Values do
-                -- Stop jika UI hancur ditengah jalan
                 if not Dropdown.UIElements.Menu or not Dropdown.UIElements.Menu.Parent then break end
 
                 if (Tab.Type ~= "Divider") then
-                    -- Pembuatan Data Tab
+                    -- ... (Proses Pembuatan Tab Data - TIDAK BERUBAH) ...
                     local TabMain = {
                         Name = typeof(Tab) == "table" and Tab.Title or Tab,
                         Desc = typeof(Tab) == "table" and Tab.Desc or nil,
@@ -342,7 +348,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         TabMain.UIElements.TabIcon = TabIcon
                     end
 
-                    -- Pembuatan Frame Item
+                    -- Frame Utama Item
                     TabMain.UIElements.TabItem = Creator.NewRoundFrame(Element.MenuCorner - Element.MenuPadding, "Squircle", {
                         Size = UDim2.new(1,0,0,36),
                         AutomaticSize = ((TabMain.Desc or (TabMain.Images and #TabMain.Images > 0)) and "Y") or nil,
@@ -438,8 +444,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         })
                     }, true)
 
-                    -- Render Gambar jika ada
-                    local ImageLoadCost = 0
+                    -- [POINT PENTING] Render Images dengan Reset Beban
                     if TabMain.Images and #TabMain.Images > 0 then
                         local imagesContainer = TabMain.UIElements.TabItem.Frame.Title:FindFirstChild("Images")
                         if imagesContainer then 
@@ -469,11 +474,17 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                                 end
                             end)
 
+                            -- Panggil fungsi RenderImages (Yang sekarang sudah punya internal wait)
                             RenderImages(imagesContainer, TabMain.Images) 
                             
-                            -- HITUNG BEBAN: Setiap gambar reward dihitung 2 poin
-                            ImageLoadCost = #TabMain.Images * 2
+                            -- Karena RenderImages sudah melakukan 'wait' di dalamnya,
+                            -- kita bisa mereset beban 'CurrentLoad' menjadi 0.
+                            -- Ini artinya frame baru sudah dimulai.
+                            CurrentLoad = 0 
                         end
+                    else
+                        -- Jika item biasa (tanpa gambar), tambah beban sedikit (+1)
+                        CurrentLoad = CurrentLoad + 1
                     end
                     
                     if TabMain.Locked then
@@ -481,7 +492,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                         if TabMain.UIElements.TabIcon then TabMain.UIElements.TabIcon.ImageLabel.ImageTransparency = 0.6 end
                     end
 
-                    -- Selection Logic
+                    -- Logic Selection (Tetap Sama)
                     if Dropdown.Multi and typeof(Dropdown.Value) == "string" then
                         for _, i in next, Dropdown.Values do
                             if typeof(i) == "table" then if i.Title == Dropdown.Value then Dropdown.Value = { i } end else if i == Dropdown.Value then Dropdown.Value = { Dropdown.Value } end end
@@ -504,7 +515,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                     
                     Dropdown.Tabs[Index] = TabMain
                     
-                    -- Event Click
+                    -- Event Click (Copy Paste Logic Asli)
                     if Type == "Dropdown" then
                         Creator.AddSignal(TabMain.UIElements.TabItem.MouseButton1Click, function()
                             if TabMain.Locked then return end 
@@ -567,28 +578,22 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                             Callback(Tab.Callback or function() end)
                         end)
                     end
-                    
-                    -- [AKUMULASI BEBAN]
-                    -- Beban Dasar (1) + Beban Gambar.
-                    -- Jika ada 7 reward, bebannya = 1 + (7 * 2) = 15.
-                    CurrentLoad = CurrentLoad + 1 + ImageLoadCost
 
                 else
                     require("../../elements/Divider"):New({ Parent = Dropdown.UIElements.Menu.Frame.ScrollingFrame })
                     CurrentLoad = CurrentLoad + 1
                 end
                 
-                -- [CEK BATAS BEBAN]
-                -- Jika beban sudah > 8, istirahat 1 frame.
-                -- Dengan 7 reward, ini berarti merender 1 Musuh per frame (Sangat Smooth).
-                if CurrentLoad >= 8 then
+                -- [CEK BEBAN GLOBAL]
+                -- Jika item-item kecil (tanpa gambar) sudah menumpuk sebanyak 3 buah, istirahat dulu.
+                if CurrentLoad >= LoadLimit then
                     RecalculateCanvasSize()
                     task.wait() 
                     CurrentLoad = 0
                 end
             end
             
-            -- Finalisasi
+            -- Finalisasi UI (Hitung Ukuran Akhir)
             local maxWidth = Dropdown.MenuWidth or 0
             if maxWidth == 0 then
                 for _, tabmain in next, Dropdown.Tabs do
@@ -608,6 +613,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
       
     DropdownModule:Refresh(Dropdown.Values)
     
+    -- Fungsi Select dan Edit (Logic Tetap Sama)
     function DropdownModule:Select(Items)
         if Items then Dropdown.Value = Items else
             if Dropdown.Multi then Dropdown.Value = {} else Dropdown.Value = nil end
@@ -618,7 +624,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     function DropdownModule:Edit(TargetName, NewData)
         for Index, TabData in ipairs(Dropdown.Tabs) do
             if TabData.Name == TargetName then
-                -- Update Internal Data Source
                 local SourceVal = Dropdown.Values[Index]
                 if SourceVal and type(SourceVal) == "table" then
                      if NewData.Title then SourceVal.Title = NewData.Title end
@@ -631,7 +636,6 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                      if NewData.Images then TabData.Images = NewData.Images TabData.Original.Images = NewData.Images end
                 end
 
-                -- Update UI Visual
                 local TabUI = TabData.UIElements
                 if TabUI and TabUI.TabItem then
                     local Frame = TabUI.TabItem:FindFirstChild("Frame")
