@@ -125,98 +125,107 @@ function Element:New(ElementConfig)
             })
         })
 
-        for _, imgData in ipairs(ElementConfig.Images) do
-            local Title = imgData.Title or "Item"
-            local Quantity = imgData.Quantity
-            local ImageId = imgData.Image
-            local GradientColor = GetGradientData(imgData.Gradient)
-            local BorderColor = GradientColor.Keypoints[1].Value
-            local IsInteractive = (type(imgData.Callback) == "function")
+        -- [PERUBAHAN: Membungkus loop dengan task.spawn untuk render di background thread]
+        task.spawn(function()
+            for index, imgData in ipairs(ElementConfig.Images) do
+                local Title = imgData.Title or "Item"
+                local Quantity = imgData.Quantity
+                local ImageId = imgData.Image
+                local GradientColor = GetGradientData(imgData.Gradient)
+                local BorderColor = GradientColor.Keypoints[1].Value
+                local IsInteractive = (type(imgData.Callback) == "function")
 
-            local Card = Creator.NewRoundFrame(8, "Squircle", {
-                ImageColor3 = BorderColor,
-                ClipsDescendants = true,
-                Parent = GridContainer,
-                Active = IsInteractive 
-            }, {
-                New("ImageLabel", {
-                    Image = "rbxassetid://5554236805",
-                    ScaleType = Enum.ScaleType.Slice,
-                    SliceCenter = Rect.new(23,23,277,277),
-                    Size = UDim2.new(1,0,1,0),
-                    BackgroundTransparency = 1,
-                    ImageColor3 = Color3.new(0,0,0),
-                    ImageTransparency = 0.4,
-                    ZIndex = 2,
-                }),
-                
-                Creator.NewRoundFrame(8, "Squircle", {
-                    Size = UDim2.new(1, -4, 1, -4),
-                    Position = UDim2.new(0.5, 0, 0.5, 0),
-                    AnchorPoint = Vector2.new(0.5, 0.5),
-                    ImageColor3 = Color3.new(1,1,1),
+                local Card = Creator.NewRoundFrame(8, "Squircle", {
+                    ImageColor3 = BorderColor,
                     ClipsDescendants = true,
-                    ZIndex = 3,
+                    Parent = GridContainer,
+                    Active = IsInteractive 
                 }, {
-                    New("UIGradient", { Color = GradientColor, Rotation = 45 }),
-                    Creator.Image(ImageId, Title, 0, ElementConfig.Window.Folder, "CardIcon", false).ImageLabel,
-                    
-                    Quantity and New("TextLabel", {
-                        Text = Quantity,
-                        Size = UDim2.new(1, -8, 0, 12),
-                        Position = UDim2.new(0, 4, 0, 2),
+                    New("ImageLabel", {
+                        Image = "rbxassetid://5554236805",
+                        ScaleType = Enum.ScaleType.Slice,
+                        SliceCenter = Rect.new(23,23,277,277),
+                        Size = UDim2.new(1,0,1,0),
                         BackgroundTransparency = 1,
-                        TextXAlignment = Enum.TextXAlignment.Left,
-                        TextColor3 = Color3.new(1, 1, 1),
-                        FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                        TextSize = 10,
-                        TextStrokeTransparency = 0.5,
-                        ZIndex = 5,
-                    }) or nil,
-
-                    New("Frame", {
-                        Size = UDim2.new(1, 0, 0, 18),
-                        Position = UDim2.new(0, 0, 1, 0),
-                        AnchorPoint = Vector2.new(0, 1),
-                        BackgroundColor3 = Color3.new(0,0,0),
-                        BackgroundTransparency = 0.4,
-                        BorderSizePixel = 0,
-                        ZIndex = 6,
+                        ImageColor3 = Color3.new(0,0,0),
+                        ImageTransparency = 0.4,
+                        ZIndex = 2,
+                    }),
+                    
+                    Creator.NewRoundFrame(8, "Squircle", {
+                        Size = UDim2.new(1, -4, 1, -4),
+                        Position = UDim2.new(0.5, 0, 0.5, 0),
+                        AnchorPoint = Vector2.new(0.5, 0.5),
+                        ImageColor3 = Color3.new(1,1,1),
+                        ClipsDescendants = true,
+                        ZIndex = 3,
                     }, {
-                        New("TextLabel", {
-                            Text = Title,
-                            Size = UDim2.new(1, 0, 1, 0),
+                        New("UIGradient", { Color = GradientColor, Rotation = 45 }),
+                        Creator.Image(ImageId, Title, 0, ElementConfig.Window.Folder, "CardIcon", false).ImageLabel,
+                        
+                        Quantity and New("TextLabel", {
+                            Text = Quantity,
+                            Size = UDim2.new(1, -8, 0, 12),
+                            Position = UDim2.new(0, 4, 0, 2),
                             BackgroundTransparency = 1,
-                            TextXAlignment = Enum.TextXAlignment.Center,
+                            TextXAlignment = Enum.TextXAlignment.Left,
                             TextColor3 = Color3.new(1, 1, 1),
                             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-                            TextSize = 9,
-                            TextTruncate = Enum.TextTruncate.AtEnd,
-                            ZIndex = 7,
+                            TextSize = 10,
+                            TextStrokeTransparency = 0.5,
+                            ZIndex = 5,
+                        }) or nil,
+
+                        New("Frame", {
+                            Size = UDim2.new(1, 0, 0, 18),
+                            Position = UDim2.new(0, 0, 1, 0),
+                            AnchorPoint = Vector2.new(0, 1),
+                            BackgroundColor3 = Color3.new(0,0,0),
+                            BackgroundTransparency = 0.4,
+                            BorderSizePixel = 0,
+                            ZIndex = 6,
+                        }, {
+                            New("TextLabel", {
+                                Text = Title,
+                                Size = UDim2.new(1, 0, 1, 0),
+                                BackgroundTransparency = 1,
+                                TextXAlignment = Enum.TextXAlignment.Center,
+                                TextColor3 = Color3.new(1, 1, 1),
+                                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                                TextSize = 9,
+                                TextTruncate = Enum.TextTruncate.AtEnd,
+                                ZIndex = 7,
+                            })
                         })
                     })
-                })
-            }, IsInteractive) 
+                }, IsInteractive) 
 
-            local imgLabel = Card:FindFirstChild("ImageLabel", true)
-            if imgLabel then
-                imgLabel.Size = UDim2.new(0.65, 0, 0.65, 0)
-                imgLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-                imgLabel.Position = UDim2.new(0.5, 0, 0.45, 0)
-                imgLabel.BackgroundTransparency = 1
-                imgLabel.ScaleType = Enum.ScaleType.Fit
-                imgLabel.ZIndex = 4
-            end
+                local imgLabel = Card:FindFirstChild("ImageLabel", true)
+                if imgLabel then
+                    imgLabel.Size = UDim2.new(0.65, 0, 0.65, 0)
+                    imgLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+                    imgLabel.Position = UDim2.new(0.5, 0, 0.45, 0)
+                    imgLabel.BackgroundTransparency = 1
+                    imgLabel.ScaleType = Enum.ScaleType.Fit
+                    imgLabel.ZIndex = 4
+                end
 
-            if IsInteractive then
-                Creator.AddSignal(Card.MouseButton1Click, function() imgData.Callback() end)
-                Creator.AddSignal(Card.MouseButton1Down, function()
-                    Tween(Card, 0.1, {Size = UDim2.new(0, ElementConfig.ImageSize.X.Offset * 0.95, 0, ElementConfig.ImageSize.Y.Offset * 0.95)}):Play()
-                end)
-                Creator.AddSignal(Card.MouseButton1Up, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
-                Creator.AddSignal(Card.MouseLeave, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
+                if IsInteractive then
+                    Creator.AddSignal(Card.MouseButton1Click, function() imgData.Callback() end)
+                    Creator.AddSignal(Card.MouseButton1Down, function()
+                        Tween(Card, 0.1, {Size = UDim2.new(0, ElementConfig.ImageSize.X.Offset * 0.95, 0, ElementConfig.ImageSize.Y.Offset * 0.95)}):Play()
+                    end)
+                    Creator.AddSignal(Card.MouseButton1Up, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
+                    Creator.AddSignal(Card.MouseLeave, function() Tween(Card, 0.1, {Size = ElementConfig.ImageSize}):Play() end)
+                end
+
+                -- [PERUBAHAN: Memberi jeda waktu kepada game engine]
+                -- Render 3 item per frame (bisa diubah angkanya jika ingin lebih cepat/lambat)
+                if index % 3 == 0 then
+                    task.wait() 
+                end
             end
-        end
+        end)
     end
 
     -- [BUTTONS LOGIC]

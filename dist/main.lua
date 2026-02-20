@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.225  |  2026-02-18  |  Roblox UI Library for scripts
+    v1.0.226  |  2026-02-20  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.225",
+    "version": "1.0.226",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5932,6 +5932,8 @@ PaddingBottom=UDim.new(0,10)
 })
 })
 
+
+task.spawn(function()
 for ak,al in ipairs(ag.Images)do
 local am=al.Title or"Item"
 local an=al.Quantity
@@ -6023,7 +6025,14 @@ end)
 aa.AddSignal(as.MouseButton1Up,function()ac(as,0.1,{Size=ag.ImageSize}):Play()end)
 aa.AddSignal(as.MouseLeave,function()ac(as,0.1,{Size=ag.ImageSize}):Play()end)
 end
+
+
+
+if ak%3==0 then
+task.wait()
 end
+end
+end)
 end
 
 
