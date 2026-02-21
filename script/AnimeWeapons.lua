@@ -4213,9 +4213,11 @@ if Reliable then
             EnemyDropdownNeedsRefresh = true
             task.spawn(function()
                 local freshEnemies = RefreshEnemyData();
-                EnemyDropdown_SetPendingValues(freshEnemies)
-                if EnemyDropdown and EnemyDropdown.Opened then
-                    pcall(EnemyDropdown_ApplyPendingRefresh)
+                if EnemyDropdown and EnemyDropdown.Refresh and CurrentZoneEnemiesSignature ~= EnemyDropdownLastAppliedSignature then
+                    EnemyDropdown:Refresh(freshEnemies)
+                    EnemyDropdownLastAppliedSignature = CurrentZoneEnemiesSignature
+                elseif EnemyDropdown and EnemyDropdown.Display then
+                    pcall(function() EnemyDropdown.Display() end)
                 end
                 pcall(function()
                     if EnemyDropdown and EnemyDropdown.SetTitle then EnemyDropdown:SetTitle("Select Enemy") end
@@ -4235,6 +4237,7 @@ if Reliable then
                     end
                 end;
                 EnemyDropdown_SetValueOnlyFromConfig()
+                EnemyDropdownNeedsRefresh = false
                 IsLoadingConfig = false;
                 IsTeleporting = false;
             end);
