@@ -1,0 +1,7934 @@
+{
+  "Chat_Tips": [
+    {
+      "Id": 1,
+      "Description": "<font color=\"#00FF00\">[Tips]</font> You can auto delete <font color=\"#FFFF00\">Accessories</font> in index \"Auto Delete\"",
+      "Cooldown": 600,
+      "Color": null
+    },
+    {
+      "Id": 2,
+      "Description": "<font color=\"#00FF00\">[Tips]</font> In our game we have three types of stats: Energy Base, Energy Percent and Energy Multiply (Check Stats UI to understand what is what).",
+      "Cooldown": 660,
+      "Color": null
+    }
+  ],
+  "Stats": [
+    {
+      "Is_NPC": true,
+      "Name": "Max_Health",
+      "High_Limit": 1e300,
+      "Id": 1,
+      "Low_Limit": 0,
+      "Default": 100
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Max_Mana",
+      "High_Limit": 1e300,
+      "Id": 2,
+      "Low_Limit": 0,
+      "Default": 10
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Max_Stamina",
+      "High_Limit": 1e300,
+      "Id": 3,
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Health_Regeneration",
+      "High_Limit": 1e32,
+      "Id": 4,
+      "Low_Limit": -1000000000000,
+      "Default": 5
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Mana_Regeneration",
+      "High_Limit": 1e32,
+      "Id": 5,
+      "Low_Limit": -1000000000000,
+      "Default": 1
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Stamina_Regeneration",
+      "High_Limit": 1e32,
+      "Id": 6,
+      "Low_Limit": -1000000000000,
+      "Default": 1
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 7,
+      "Default": 0,
+      "Name": "Primary_Damage"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 8,
+      "Default": 0,
+      "Name": "Primary_Energy"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 9,
+      "Default": 0,
+      "Name": "Primary_Coins"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 10,
+      "Default": 0,
+      "Name": "Primary_Luck"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 11,
+      "Default": 0,
+      "Name": "Primary_Damage_II"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 12,
+      "Default": 0,
+      "Name": "Primary_Energy_II"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 13,
+      "Default": 0,
+      "Name": "Primary_Coins_II"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1e32,
+      "Id": 14,
+      "Default": 0,
+      "Name": "Primary_Luck_II"
+    },
+    {
+      "Id": 15,
+      "Low_Limit": 0.1,
+      "Default": 0.15,
+      "Name": "Click_Speed"
+    },
+    {
+      "ImageId": "rbxassetid://136375469732470",
+      "Low_Limit": 1,
+      "Default": 9,
+      "High_Limit": 500,
+      "Id": 16,
+      "Name": "Click_Range",
+      "Display_Name": "Attack Range",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 17,
+      "Low_Limit": 0,
+      "Default": 0.35,
+      "Name": "Slow_Auto_Click_Speed"
+    },
+    {
+      "Id": 18,
+      "Low_Limit": 0,
+      "Default": 0.15,
+      "Name": "Fast_Auto_Click_Speed"
+    },
+    {
+      "Name": "Move_Speed",
+      "Is_NPC": true,
+      "Is_Player_Display": true,
+      "High_Limit": 50,
+      "Id": 19,
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://15585973018",
+      "Default": 24
+    },
+    {
+      "Is_Player_Display": true,
+      "Id": 20,
+      "ImageId": "rbxassetid://82007394557550",
+      "High_Limit": 10,
+      "Name": "Sprint_Speed",
+      "Is_Percentage": true,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "Display_Name": "Sprint_Speed",
+      "Default": 0.5
+    },
+    {
+      "ImageId": "rbxassetid://82007394557550",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 21,
+      "Format": "%s%%",
+      "Display_Name": "Sprint_Speed",
+      "Name": "Sprint_Speed_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://82007394557550",
+      "Name": "Sprint_Speed_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 22,
+      "Format": "%sx",
+      "Display_Name": "Sprint_Speed",
+      "Default": 0
+    },
+    {
+      "Is_NPC": true,
+      "Low_Limit": 0,
+      "Id": 23,
+      "Default": 50,
+      "ImageId": "rbxassetid://17242219831",
+      "Name": "Jump_Height"
+    },
+    {
+      "Is_NPC": true,
+      "Name": "Character_Size",
+      "Is_Percentage": true,
+      "Id": 24,
+      "High_Limit": 5,
+      "Low_Limit": 0.1,
+      "Default": 1
+    },
+    {
+      "High_Limit": 1,
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Percentage": true,
+      "Id": 25,
+      "Format": "%s%%",
+      "Description": "Opening Stars, Have Chance To Get Shiny",
+      "Name": "Chance_To_Get_Shiny"
+    },
+    {
+      "High_Limit": 1,
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Percentage": true,
+      "Id": 26,
+      "Format": "%s%%",
+      "Description": "Opening Stars, Have Chance To Get Golden",
+      "Name": "Chance_To_Get_Golden"
+    },
+    {
+      "High_Limit": 1,
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Percentage": true,
+      "Id": 27,
+      "Format": "%s%%",
+      "Description": "Opening Stars, Have Chance To Get Rainbow",
+      "Name": "Chance_To_Get_Rainbow"
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://71537117509507",
+      "Is_Player_Display": true,
+      "Name": "Star_Luck",
+      "Id": 28,
+      "Format": "%s",
+      "Display_Name": "Star Luck",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://71537117509507",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 29,
+      "Format": "%s%%",
+      "Display_Name": "Star Luck",
+      "Name": "Star_Luck_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://71537117509507",
+      "Name": "Star_Luck_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 30,
+      "Format": "%sx",
+      "Display_Name": "Star Luck",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "Name": "Star_Amount",
+      "High_Limit": 200,
+      "Id": 31,
+      "Default": 5,
+      "ImageId": "rbxassetid://128942769403711",
+      "Is_Player_Display": true
+    },
+    {
+      "Name": "Star_Speed",
+      "Id": 32,
+      "Low_Limit": 0.3,
+      "ImageId": "rbxassetid://83197604483953",
+      "Default": 3
+    },
+    {
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 33,
+      "Format": "%s%%",
+      "ImageId": "rbxassetid://15602591315",
+      "Name": "Roll_Luck"
+    },
+    {
+      "ImageId": "rbxassetid://112003037718637",
+      "Low_Limit": 0,
+      "High_Limit": 16,
+      "Id": 34,
+      "Name": "Roll_Amount",
+      "Display_Name": "Additional Gacha Rolls",
+      "Default": 1
+    },
+    {
+      "Low_Limit": 0.5,
+      "Default": 3.5,
+      "Id": 35,
+      "Is_Player_Display": true,
+      "ImageId": "rbxassetid://15980714868",
+      "Name": "Roll_Speed"
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 36,
+      "Format": "%s%%",
+      "Default": 1,
+      "Name": "Enchantment_Luck"
+    },
+    {
+      "ImageId": "rbxassetid://112003037718637",
+      "Low_Limit": 0,
+      "High_Limit": 16,
+      "Id": 37,
+      "Name": "Enchantment_Amount",
+      "Display_Name": "Additional Enchantment Rolls like Breathings, Bankais",
+      "Default": 1
+    },
+    {
+      "Id": 38,
+      "Low_Limit": 0.5,
+      "Default": 3.5,
+      "Name": "Enchantment_Speed"
+    },
+    {
+      "Description": "Fighter Damage: Proportional to your Damage value.",
+      "Id": 39,
+      "ImageId": "rbxassetid://126473577541417",
+      "High_Limit": 0,
+      "Default": 0,
+      "Is_Percentage": true,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "Category": "Fighter",
+      "Name": "Fighter_Damage"
+    },
+    {
+      "Category": "Fighter",
+      "Low_Limit": 0,
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 40,
+      "Format": "%sx",
+      "ImageId": "rbxassetid://126473577541417",
+      "Name": "Fighter_Damage_Multiply"
+    },
+    {
+      "Category": "Fighter",
+      "Low_Limit": 0,
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 41,
+      "Format": "%ss",
+      "ImageId": "rbxassetid://103171510095484",
+      "Name": "Fighter_Attack_Speed"
+    },
+    {
+      "Category": "Fighter",
+      "Low_Limit": 0,
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 42,
+      "Format": "%sx",
+      "ImageId": "rbxassetid://103171510095484",
+      "Name": "Fighter_Attack_Speed_Multiply"
+    },
+    {
+      "Id": 43,
+      "ImageId": "rbxassetid://118746849692990",
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Item_Display": false,
+      "Category": "Fighter",
+      "Format": "%s%%",
+      "High_Limit": 0,
+      "Name": "Fighter_Walk_Speed"
+    },
+    {
+      "Id": 44,
+      "ImageId": "rbxassetid://118746849692990",
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Item_Display": false,
+      "Category": "Fighter",
+      "Format": "%sx",
+      "High_Limit": 0,
+      "Name": "Fighter_Walk_Speed_Multiply"
+    },
+    {
+      "Is_Item_Display": false,
+      "Name": "Fighter_Attack_Range",
+      "High_Limit": 0,
+      "Id": 45,
+      "Low_Limit": 0,
+      "Category": "Fighter",
+      "Default": 0
+    },
+    {
+      "Is_Item_Display": false,
+      "Low_Limit": 0,
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 46,
+      "Format": "%sx",
+      "Category": "Fighter",
+      "Name": "Fighter_Attack_Range_Multiply"
+    },
+    {
+      "Id": 47,
+      "ImageId": "rbxassetid://99989442792640",
+      "Category": "Fighter",
+      "High_Limit": 0,
+      "Name": "Fighter_Critical_Chance",
+      "Is_Item_Display": false,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "Default": 0,
+      "Is_Percentage": true
+    },
+    {
+      "Id": 48,
+      "ImageId": "rbxassetid://99989442792640",
+      "Category": "Fighter",
+      "High_Limit": 0,
+      "Name": "Fighter_Critical_Damage",
+      "Is_Item_Display": false,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "Default": 0,
+      "Is_Percentage": true
+    },
+    {
+      "Id": 49,
+      "ImageId": "rbxassetid://99989442792640",
+      "Low_Limit": 0,
+      "Default": 0,
+      "Is_Item_Display": false,
+      "Category": "Fighter",
+      "Format": "%sx",
+      "High_Limit": 0,
+      "Name": "Fighter_Critical_Damage_Multiply"
+    },
+    {
+      "ImageId": "rbxassetid://135532354668820",
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 50,
+      "Name": "Pets_Inv",
+      "Display_Name": "Champions Inventory",
+      "Default": 50
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 51,
+      "Default": 50,
+      "ImageId": "rbxassetid://98298007545892",
+      "Name": "Accessories_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 52,
+      "Default": 50,
+      "Name": "Runes_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 53,
+      "Default": 50,
+      "ImageId": "rbxassetid://71668790246321",
+      "Name": "Jewelry_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 54,
+      "Default": 2000,
+      "ImageId": "rbxassetid://82259824405191",
+      "Name": "Avatars_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 55,
+      "Default": 50,
+      "Name": "Potions_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 56,
+      "Default": 50,
+      "ImageId": "rbxassetid://73036819543324",
+      "Name": "Weapons_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 57,
+      "Default": 2000,
+      "ImageId": "rbxassetid://96326391607498",
+      "Name": "Powers_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 58,
+      "Default": 2000,
+      "ImageId": "rbxassetid://96326391607498",
+      "Name": "Powers_II_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 59,
+      "Default": 200,
+      "ImageId": "rbxassetid://126252570816966",
+      "Name": "Auras_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 60,
+      "Default": 1000,
+      "ImageId": "rbxassetid://95761544419324",
+      "Name": "Mics_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 61,
+      "Default": 2000,
+      "ImageId": "rbxassetid://95761544419324",
+      "Name": "Resources_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 62,
+      "Default": 0,
+      "Name": "Fighters_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 63,
+      "Default": 50,
+      "ImageId": "rbxassetid://118544492730999",
+      "Name": "Shadows_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 64,
+      "Default": 50,
+      "ImageId": "rbxassetid://79540941876106",
+      "Name": "Titans_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 65,
+      "Default": 50,
+      "ImageId": "rbxassetid://126245549640226",
+      "Name": "Stands_Inv"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 66,
+      "Default": 50,
+      "ImageId": "rbxassetid://86823128016025",
+      "Name": "Zombies_Inv"
+    },
+    {
+      "ImageId": "rbxassetid://15377007670",
+      "Low_Limit": 0,
+      "High_Limit": 100,
+      "Id": 67,
+      "Name": "Pets_Equip",
+      "Display_Name": "Champions Equip",
+      "Default": 3
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 68,
+      "Default": 1000,
+      "Name": "Accessories_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 69,
+      "Default": 1,
+      "Name": "Runes_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 70,
+      "Default": 1000,
+      "Name": "Jewelry_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 3,
+      "Id": 71,
+      "Default": 1,
+      "Name": "Weapons_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 72,
+      "Default": 10000,
+      "Name": "Powers_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 1000,
+      "Id": 73,
+      "Default": 10000,
+      "Name": "Powers_II_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 100,
+      "Id": 74,
+      "Default": 1,
+      "Name": "Auras_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 10,
+      "Id": 75,
+      "Default": 1,
+      "ImageId": "rbxassetid://118544492730999",
+      "Name": "Shadows_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 10,
+      "Id": 76,
+      "Default": 1,
+      "Name": "Titans_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 10,
+      "Id": 77,
+      "Default": 1,
+      "Name": "Stands_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "High_Limit": 10,
+      "Id": 78,
+      "Default": 1,
+      "Name": "Zombies_Equip"
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://14348639012",
+      "Is_Player_Display": true,
+      "Name": "Damage",
+      "Id": 79,
+      "Format": "%s",
+      "Display_Name": "Damage",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://14348639012",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 80,
+      "Format": "%s%%",
+      "Display_Name": "Damage Percent",
+      "Name": "Damage_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://14348639012",
+      "Name": "Damage_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 81,
+      "Format": "%sx",
+      "Display_Name": "Damage Multiply",
+      "Default": 0
+    },
+    {
+      "Is_Player_Display": true,
+      "Id": 82,
+      "ImageId": "rbxassetid://17242188530",
+      "Default": 0.01,
+      "Is_Percentage": true,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "High_Limit": 1,
+      "Name": "Critical_Chance"
+    },
+    {
+      "Default": 1.1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 83,
+      "Format": "%s%%",
+      "Name": "Critical_Damage",
+      "Is_Player_Display": true
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://120297012101705",
+      "Is_Player_Display": true,
+      "Name": "Energy",
+      "Id": 84,
+      "Format": "%s",
+      "Display_Name": "Energy",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://120297012101705",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 85,
+      "Format": "%s%%",
+      "Display_Name": "Energy Percent",
+      "Name": "Energy_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://120297012101705",
+      "Name": "Energy_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 86,
+      "Format": "%sx",
+      "Display_Name": "Energy Multiply",
+      "Default": 0
+    },
+    {
+      "Is_Player_Display": true,
+      "Id": 87,
+      "ImageId": "rbxassetid://78265117357509",
+      "Default": 0,
+      "Is_Percentage": true,
+      "Low_Limit": 0,
+      "Format": "%s%%",
+      "High_Limit": 1,
+      "Name": "Energy_Critical_Chance"
+    },
+    {
+      "Low_Limit": 0,
+      "Name": "Critical_Energy",
+      "Is_Player_Display": true,
+      "Is_Percentage": true,
+      "Id": 88,
+      "Format": "%s%%",
+      "ImageId": "rbxassetid://78265117357509",
+      "Default": 1
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://119816620823008",
+      "Is_Player_Display": true,
+      "Name": "Coins",
+      "Id": 89,
+      "Format": "%s",
+      "Display_Name": "Coins",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://119816620823008",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 90,
+      "Format": "%s%%",
+      "Display_Name": "Coins Percent",
+      "Name": "Coins_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://119816620823008",
+      "Name": "Coins_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 91,
+      "Format": "%sx",
+      "Display_Name": "Coins Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://74454074689452",
+      "Is_Player_Display": true,
+      "Name": "Exp",
+      "Id": 92,
+      "Format": "%s",
+      "Display_Name": "EXP",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://74454074689452",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 93,
+      "Format": "%s%%",
+      "Display_Name": "EXP Percent",
+      "Name": "Exp_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://74454074689452",
+      "Name": "Exp_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 94,
+      "Format": "%sx",
+      "Display_Name": "EXP Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://106839456167497",
+      "Is_Player_Display": true,
+      "Name": "Token",
+      "Id": 95,
+      "Format": "%s",
+      "Display_Name": "Drop Amount",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://106839456167497",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 96,
+      "Format": "%s%%",
+      "Display_Name": "Drop Amount Percent",
+      "Name": "Token_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://106839456167497",
+      "Name": "Token_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 97,
+      "Format": "%sx",
+      "Display_Name": "Drop Amount Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://106839456167497",
+      "Is_Player_Display": true,
+      "Name": "Avatar_Soul",
+      "Id": 98,
+      "Format": "%s",
+      "Display_Name": "Avatar Soul Amount",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://106839456167497",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 99,
+      "Format": "%s%%",
+      "Display_Name": "Avatar Soul Amount Percent",
+      "Name": "Avatar_Soul_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://106839456167497",
+      "Name": "Avatar_Soul_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 100,
+      "Format": "%sx",
+      "Display_Name": "Avatar Soul Amount Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://85314176149606",
+      "Is_Player_Display": true,
+      "Name": "Shadow_Soul",
+      "Id": 101,
+      "Format": "%s",
+      "Display_Name": "Shadow Soul Amount",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://85314176149606",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 102,
+      "Format": "%s%%",
+      "Display_Name": "Shadow Soul Amount Percent",
+      "Name": "Shadow_Soul_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://85314176149606",
+      "Name": "Shadow_Soul_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 103,
+      "Format": "%sx",
+      "Display_Name": "Shadow Soul Amount Multiply",
+      "Default": 0
+    },
+    {
+      "Name": "Rune_Multiplier",
+      "Low_Limit": 0,
+      "High_Limit": 10,
+      "Id": 104,
+      "Format": "%s%%",
+      "Default": 1,
+      "Is_Percentage": true
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 105,
+      "Format": "%s%%",
+      "Default": 1,
+      "Name": "Stat_Point_Multiplier"
+    },
+    {
+      "Default": 1,
+      "Id": 106,
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Name": "Super_Damage"
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 107,
+      "Format": "%s%%",
+      "Default": 1,
+      "Name": "Super_Damage_Percent"
+    },
+    {
+      "Name": "Super_Damage_Multiply",
+      "High_Limit": 0,
+      "Id": 108,
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "Name": "Super_Critical_Damage_Chance",
+      "Low_Limit": 0,
+      "High_Limit": 1,
+      "Id": 109,
+      "Format": "%s%%",
+      "Default": 0.01,
+      "Is_Percentage": true
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 110,
+      "Format": "%s%%",
+      "Default": 1.1,
+      "Name": "Super_Critical_Damage"
+    },
+    {
+      "Low_Limit": 0,
+      "Default": 1,
+      "Id": 111,
+      "Format": "%s",
+      "ImageId": "rbxassetid://112657978486393",
+      "Name": "Super_Energy"
+    },
+    {
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 112,
+      "Format": "%s%%",
+      "ImageId": "rbxassetid://112657978486393",
+      "Name": "Super_Energy_Percent"
+    },
+    {
+      "Low_Limit": 0,
+      "Name": "Super_Energy_Multiply",
+      "High_Limit": 0,
+      "Id": 113,
+      "Format": "%sx",
+      "ImageId": "rbxassetid://112657978486393",
+      "Default": 0
+    },
+    {
+      "Name": "Super_Critical_Chance",
+      "Low_Limit": 0,
+      "High_Limit": 1,
+      "Id": 114,
+      "Format": "%s%%",
+      "Default": 0,
+      "Is_Percentage": true
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 115,
+      "Format": "%s%%",
+      "Default": 1,
+      "Name": "Super_Critical_Multiplier"
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://91912850939002",
+      "Is_Player_Display": true,
+      "Name": "Science_Materials",
+      "Id": 116,
+      "Format": "%s",
+      "Display_Name": "Science Materials Amount",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://91912850939002",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 117,
+      "Format": "%s%%",
+      "Display_Name": "Science Materials Amount Percent",
+      "Name": "Science_Materials_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://91912850939002",
+      "Name": "Science_Materials_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 118,
+      "Format": "%sx",
+      "Display_Name": "Science Materials Amount Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "ImageId": "rbxassetid://115811306851551",
+      "Is_Player_Display": true,
+      "Name": "Christmas_Materials",
+      "Id": 119,
+      "Format": "%s",
+      "Display_Name": "Christmas Materials Amount",
+      "Default": 1
+    },
+    {
+      "ImageId": "rbxassetid://115811306851551",
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 120,
+      "Format": "%s%%",
+      "Display_Name": "Christmas Materials Amount Percent",
+      "Name": "Christmas_Materials_Percent"
+    },
+    {
+      "ImageId": "rbxassetid://115811306851551",
+      "Name": "Christmas_Materials_Multiply",
+      "Low_Limit": 0,
+      "High_Limit": 0,
+      "Id": 121,
+      "Format": "%sx",
+      "Display_Name": "Christmas Materials Amount Multiply",
+      "Default": 0
+    },
+    {
+      "Low_Limit": 0,
+      "Is_Player_Display": true,
+      "Default": 1,
+      "Id": 122,
+      "Format": "%s",
+      "ImageId": "rbxassetid://89138381714621",
+      "Name": "Christmas_Damage"
+    },
+    {
+      "Default": 1,
+      "Low_Limit": 0,
+      "Is_Percentage": true,
+      "Id": 123,
+      "Format": "%s%%",
+      "ImageId": "rbxassetid://89138381714621",
+      "Name": "Christmas_Damage_Percent"
+    },
+    {
+      "Low_Limit": 0,
+      "Name": "Christmas_Damage_Multiply",
+      "High_Limit": 0,
+      "Id": 124,
+      "Format": "%sx",
+      "ImageId": "rbxassetid://89138381714621",
+      "Default": 0
+    },
+    {
+      "LayoutOrder": 9000,
+      "Is_Player_Display": true,
+      "Color": null,
+      "ImageId": "rbxassetid://109367300080973",
+      "Default": 1,
+      "Id": 125,
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Name": "Ki"
+    },
+    {
+      "LayoutOrder": 9001,
+      "Color": null,
+      "ImageId": "rbxassetid://109367300080973",
+      "Default": 1,
+      "Is_Percentage": true,
+      "Id": 126,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Ki_Percent"
+    },
+    {
+      "LayoutOrder": 9002,
+      "Color": null,
+      "ImageId": "rbxassetid://109367300080973",
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 127,
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Name": "Ki_Multiply"
+    },
+    {
+      "LayoutOrder": 9003,
+      "Is_Player_Display": true,
+      "Color": null,
+      "ImageId": "rbxassetid://14348639012",
+      "Default": 1,
+      "Id": 128,
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Name": "Ki_Damage"
+    },
+    {
+      "LayoutOrder": 9004,
+      "Color": null,
+      "ImageId": "rbxassetid://14348639012",
+      "Default": 1,
+      "Is_Percentage": true,
+      "Id": 129,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Ki_Damage_Percent"
+    },
+    {
+      "LayoutOrder": 9005,
+      "Color": null,
+      "ImageId": "rbxassetid://14348639012",
+      "Default": 0,
+      "High_Limit": 0,
+      "Id": 130,
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Name": "Ki_Damage_Multiply"
+    },
+    {
+      "LayoutOrder": 9006,
+      "Is_Player_Display": true,
+      "Id": 131,
+      "ImageId": "rbxassetid://17242188530",
+      "Color": null,
+      "Default": 0.01,
+      "Is_Percentage": true,
+      "High_Limit": 1,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Ki_Critical_Damage_Chance"
+    },
+    {
+      "LayoutOrder": 9007,
+      "Is_Player_Display": true,
+      "Color": null,
+      "Default": 1.1,
+      "Is_Percentage": true,
+      "Id": 132,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Ki_Critical_Damage"
+    },
+    {
+      "LayoutOrder": 9008,
+      "Is_Player_Display": true,
+      "Id": 133,
+      "ImageId": "rbxassetid://86846034044428",
+      "Name": "Star_Luck_II",
+      "Color": null,
+      "Display_Name": "Star Luck II",
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9009,
+      "Id": 134,
+      "ImageId": "rbxassetid://86846034044428",
+      "Color": null,
+      "Name": "Star_Luck_II_Percent",
+      "Is_Percentage": true,
+      "Display_Name": "Star Luck II Percent",
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9010,
+      "Id": 135,
+      "ImageId": "rbxassetid://86846034044428",
+      "Color": null,
+      "Name": "Star_Luck_II_Multiply",
+      "High_Limit": 0,
+      "Display_Name": "Star Luck II Multiply",
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "LayoutOrder": 9011,
+      "Is_Player_Display": true,
+      "Id": 136,
+      "Color": null,
+      "Name": "Ki_Critical_Chance",
+      "Is_Percentage": true,
+      "High_Limit": 1,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "LayoutOrder": 9012,
+      "Is_Player_Display": true,
+      "Color": null,
+      "Default": 1,
+      "Is_Percentage": true,
+      "Id": 137,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Ki_Critical_Multiplier"
+    },
+    {
+      "LayoutOrder": 9013,
+      "Is_Player_Display": true,
+      "Id": 138,
+      "ImageId": "rbxassetid://106350904800374",
+      "Name": "Zeni",
+      "Color": null,
+      "Display_Name": "Zeni",
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9014,
+      "Id": 139,
+      "ImageId": "rbxassetid://106350904800374",
+      "Color": null,
+      "Name": "Zeni_Percent",
+      "Is_Percentage": true,
+      "Display_Name": "Zeni Percent",
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9015,
+      "Id": 140,
+      "ImageId": "rbxassetid://106350904800374",
+      "Color": null,
+      "Name": "Zeni_Multiply",
+      "High_Limit": 0,
+      "Display_Name": "Zeni Multiply",
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "LayoutOrder": 9016,
+      "Is_Player_Display": true,
+      "Id": 141,
+      "ImageId": "rbxassetid://92825901504455",
+      "Name": "Exp_II",
+      "Color": null,
+      "Display_Name": "Exp II",
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9017,
+      "Id": 142,
+      "ImageId": "rbxassetid://92825901504455",
+      "Color": null,
+      "Name": "Exp_II_Percent",
+      "Is_Percentage": true,
+      "Display_Name": "Exp II Percent",
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9018,
+      "Id": 143,
+      "ImageId": "rbxassetid://92825901504455",
+      "Color": null,
+      "Name": "Exp_II_Multiply",
+      "High_Limit": 0,
+      "Display_Name": "Exp II Multiply",
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Default": 0
+    },
+    {
+      "LayoutOrder": 9019,
+      "Id": 144,
+      "Default": 1,
+      "Is_Percentage": true,
+      "Color": null,
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Name": "Stat_Point_II_Multiplier"
+    },
+    {
+      "LayoutOrder": 9020,
+      "Is_Player_Display": true,
+      "Id": 145,
+      "ImageId": "rbxassetid://88518721867752",
+      "Name": "Avatar_Soul_II",
+      "Color": null,
+      "Display_Name": "Avatar Soul II Amount",
+      "Format": "%s",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9021,
+      "Id": 146,
+      "ImageId": "rbxassetid://88518721867752",
+      "Color": null,
+      "Name": "Avatar_Soul_II_Percent",
+      "Is_Percentage": true,
+      "Display_Name": "Avatar Soul II Amount Percent",
+      "Format": "%s%%",
+      "Low_Limit": 0,
+      "Default": 1
+    },
+    {
+      "LayoutOrder": 9022,
+      "Id": 147,
+      "ImageId": "rbxassetid://88518721867752",
+      "Color": null,
+      "Name": "Avatar_Soul_II_Multiply",
+      "High_Limit": 0,
+      "Display_Name": "Avatar Soul II Amount Multiply",
+      "Format": "%sx",
+      "Low_Limit": 0,
+      "Default": 0
+    }
+  ],
+  "Guild": {
+    "Permissions": [
+      {
+        "Id": 1,
+        "Max_Per_Guild": 1,
+        "Name": "Owner"
+      },
+      {
+        "Id": 2,
+        "Max_Per_Guild": 2,
+        "Name": "Officer"
+      },
+      {
+        "Id": 3,
+        "Max_Per_Guild": 99,
+        "Name": "Member"
+      }
+    ],
+    "Player_Stats": [
+      {
+        "Is_Visible_To_Player": true,
+        "Id": 1,
+        "Is_Enabled": true,
+        "Min": 0,
+        "Category_Type": "Audio",
+        "Is_Slider": true,
+        "LayoutOrder": 1001,
+        "Max": 1,
+        "Default": 0.5,
+        "Is_Client_Changable": true,
+        "Name": "Music_Volume"
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Id": 2,
+        "Is_Enabled": true,
+        "Min": 0,
+        "Category_Type": "Audio",
+        "Is_Slider": true,
+        "LayoutOrder": 1002,
+        "Max": 1,
+        "Default": 0.5,
+        "Is_Client_Changable": true,
+        "Name": "Sound_Volume"
+      },
+      {
+        "LayoutOrder": 1003,
+        "Description": "punch or sword sounds when clicking",
+        "Id": 3,
+        "Is_Enabled": true,
+        "Category_Type": "Audio",
+        "Name": "Attack_Sounds",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Id": 4,
+        "Is_Enabled": true,
+        "Min": 0,
+        "Category_Type": "Gameplay",
+        "Is_Slider": true,
+        "LayoutOrder": 2001,
+        "Max": 1,
+        "Default": 1,
+        "Is_Client_Changable": true,
+        "Name": "Sprint_Speed"
+      },
+      {
+        "LayoutOrder": 2002,
+        "Description": "Auras / VFX",
+        "Id": 5,
+        "Is_Enabled": true,
+        "Category_Type": "Gameplay",
+        "Name": "Visual_Effects",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Gameplay",
+        "Name": "AFK_MODE",
+        "LayoutOrder": 2003,
+        "Id": 6,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 2004,
+        "Description": "Claim Rewards Automatically",
+        "Id": 7,
+        "Is_Enabled": true,
+        "Category_Type": "Gameplay",
+        "Name": "Auto_Hourly_Rewards",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 2005,
+        "Description": "Claim Rewards Automatically",
+        "Id": 8,
+        "Is_Enabled": true,
+        "Category_Type": "Gameplay",
+        "Name": "Auto_Daily_Rewards",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 2006,
+        "Description": "disable damage notifications around the enemies",
+        "Id": 9,
+        "Is_Enabled": true,
+        "Category_Type": "Gameplay",
+        "Name": "Hide_Your_Damage",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 2007,
+        "Category_Type": "Gameplay",
+        "Name": "Hide_Others_Damage",
+        "Is_Visible_To_Player": false,
+        "Id": 10,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Gameplay",
+        "Name": "Is_Auto_Items_Equip",
+        "LayoutOrder": 2008,
+        "Id": 11,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Description": "1 = Close, 2 = Far, 3 = Random *(In Fighter Range)",
+        "Id": 12,
+        "Is_Enabled": true,
+        "Min": 1,
+        "Category_Type": "Fighters",
+        "Name": "Fighters_Attack_Mode",
+        "LayoutOrder": 3001,
+        "Max": 3,
+        "Is_Client_Changable": true,
+        "Default": 1
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Fighters",
+        "Name": "Fighters_Auto_Attack",
+        "LayoutOrder": 3002,
+        "Id": 13,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 4001,
+        "Description": "Trees shaking",
+        "Id": 14,
+        "Is_Enabled": true,
+        "Category_Type": "Visuals",
+        "Name": "Is_Wind",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Display_Full_Avatar",
+        "LayoutOrder": 4002,
+        "Id": 15,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Accessories",
+        "LayoutOrder": 4003,
+        "Id": 16,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Weapons",
+        "LayoutOrder": 4004,
+        "Id": 17,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Powers",
+        "LayoutOrder": 4005,
+        "Id": 18,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Auras",
+        "LayoutOrder": 4006,
+        "Id": 19,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 4007,
+        "Category_Type": "Visuals",
+        "Name": "Show_Jewelry",
+        "Is_Visible_To_Player": false,
+        "Id": 20,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Pets",
+        "LayoutOrder": 4008,
+        "Id": 21,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Shadows",
+        "LayoutOrder": 4009,
+        "Id": 22,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Titans",
+        "LayoutOrder": 4010,
+        "Id": 23,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Stands",
+        "LayoutOrder": 4011,
+        "Id": 24,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Zombies",
+        "LayoutOrder": 4012,
+        "Id": 25,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Others_Pets",
+        "LayoutOrder": 4013,
+        "Id": 26,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Others_Shadows",
+        "LayoutOrder": 4014,
+        "Id": 27,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Others_Titans",
+        "LayoutOrder": 4015,
+        "Id": 28,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Others_Stands",
+        "LayoutOrder": 4016,
+        "Id": 29,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Visuals",
+        "Name": "Show_Others_Zombies",
+        "LayoutOrder": 4017,
+        "Id": 30,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Notifications",
+        "Name": "Chat_Tips",
+        "LayoutOrder": 5001,
+        "Id": 31,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Is_Round": true,
+        "Max": 120,
+        "Is_Enabled": true,
+        "Min": 1,
+        "Category_Type": "Notifications",
+        "Default": 3,
+        "LayoutOrder": 5002,
+        "Name": "Drop_Disappearing_Time",
+        "Id": 32,
+        "Is_Client_Changable": true,
+        "Is_Slider": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Notifications",
+        "Name": "Drop_Notifications",
+        "LayoutOrder": 5003,
+        "Id": 33,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Notifications",
+        "Name": "Small_Drop_Notifications",
+        "LayoutOrder": 5004,
+        "Id": 34,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 5005,
+        "Description": "In Chat and Pop Up",
+        "Id": 35,
+        "Is_Enabled": true,
+        "Category_Type": "Notifications",
+        "Name": "Dungeon_Notification",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 5006,
+        "Description": "Screen Pop-Up",
+        "Id": 36,
+        "Is_Enabled": true,
+        "Category_Type": "Notifications",
+        "Name": "Dungeon_Notification_Screen",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Category_Type": "Notifications",
+        "Name": "Screen_Notifications",
+        "LayoutOrder": 5007,
+        "Id": 37,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 5008,
+        "Description": "Update Log Pop-up when entering the game",
+        "Id": 38,
+        "Is_Enabled": true,
+        "Category_Type": "Notifications",
+        "Name": "Update_Log_Notifications",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Description": "1 = 100tsTG | 2 = Scientific 1e8 | 3 = Engineering 100e6 4 = 3 = Expanded 100000e3 (Works after 1e33 numbers) (1 zero is e1) (Numbers is not updating instantly)",
+        "Id": 39,
+        "Is_Enabled": true,
+        "Min": 1,
+        "Category_Type": "Misc",
+        "Name": "Number_Notation",
+        "LayoutOrder": 6000,
+        "Max": 4,
+        "Is_Client_Changable": true,
+        "Default": 1
+      },
+      {
+        "Is_Visible_To_Player": true,
+        "Description": "1 = damage per second, 2 = damage per minute",
+        "Id": 40,
+        "Is_Enabled": true,
+        "Min": 1,
+        "Category_Type": "Misc",
+        "Name": "Damage_Display_Mode",
+        "LayoutOrder": 6001,
+        "Max": 2,
+        "Is_Client_Changable": true,
+        "Default": 1
+      },
+      {
+        "LayoutOrder": 6002,
+        "Description": "rare rarity drop display in the chat",
+        "Id": 41,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Show_Others_Chat_Drop",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 6003,
+        "Description": "you and others will not see your chat tags",
+        "Id": 42,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Show_Your_Chat_Tags",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 6004,
+        "Description": "you wont see others chat tags",
+        "Id": 43,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Show_Others_Chat_Tags",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 6005,
+        "Description": "works for jewelry / exchanger",
+        "Id": 44,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Merchant_Confirmation",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 6006,
+        "Description": "show/hide button to inspect players ",
+        "Id": 45,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Players_Inspect_Enabled",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 6007,
+        "Description": "enable hover when clicking over the items for mobile",
+        "Id": 46,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Enable_Mobile_Items_Hover",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 6008,
+        "Description": "Auto start a new raid or defense when rejoining the server or after a shutdown, (taking the last entered raid).",
+        "Id": 47,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Is_Auto_Raid_Rejoin",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 6009,
+        "Description": "auto-start for a new raid or defense after finishing the previous one (not recommended with \"AFK MODE\")",
+        "Id": 48,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Is_Auto_New_Raid_On_Finish",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 6010,
+        "Description": "auto-start for a new raid or defense after you lost the previous one (not recommended with \"AFK MODE\")",
+        "Id": 49,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Is_Auto_New_Raid_On_Defeat",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 6011,
+        "Description": "IMPORTANT *disable keyboard / gamepad / (walking and in game actions) *only working on PC **only if player fully loaded in game",
+        "Id": 50,
+        "Is_Enabled": true,
+        "Category_Type": "Misc",
+        "Name": "Disable_All_Inputs_Actions",
+        "Is_Visible_To_Player": true,
+        "Is_Client_Changable": true,
+        "Color_Hex": "#FF0000",
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Id": 51,
+        "Is_Enabled": true,
+        "Min": 0.35,
+        "Category_Type": "Gameplay",
+        "Name": "Move_Speed",
+        "Is_Visible_To_Player": false,
+        "Max": 1,
+        "Is_Slider": true,
+        "Is_Client_Changable": false,
+        "Default": 1
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Fighters",
+        "Name": "IsTeleporting",
+        "Is_Visible_To_Player": false,
+        "Id": 52,
+        "Is_Enabled": true,
+        "Is_Client_Changable": false,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_Sprinting",
+        "Is_Visible_To_Player": false,
+        "Id": 53,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_Auto_Clicker",
+        "Is_Visible_To_Player": false,
+        "Id": 54,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_Auto_Rebirth",
+        "Is_Visible_To_Player": false,
+        "Id": 55,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_Auto_Rolling",
+        "Is_Visible_To_Player": false,
+        "Id": 56,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_AFK_Zone",
+        "Is_Visible_To_Player": false,
+        "Id": 57,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Is_Auto_Avatar_Leveling",
+        "Is_Visible_To_Player": false,
+        "Id": 58,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": false
+      },
+      {
+        "LayoutOrder": 9999,
+        "Max": 3,
+        "Is_Enabled": true,
+        "Min": 0,
+        "Category_Type": "Visuals",
+        "Name": "Inventory_Grid",
+        "Is_Visible_To_Player": false,
+        "Default": 0,
+        "Is_Client_Changable": true,
+        "Id": 59
+      },
+      {
+        "LayoutOrder": 9999,
+        "Category_Type": "Visuals",
+        "Name": "Inventory_Equip_All_Enabled",
+        "Is_Visible_To_Player": false,
+        "Id": 60,
+        "Is_Enabled": true,
+        "Is_Client_Changable": true,
+        "Default": true
+      },
+      {
+        "LayoutOrder": 9999,
+        "Max": 10000000,
+        "Is_Enabled": true,
+        "Min": 1,
+        "Category_Type": "Visuals",
+        "Name": "Teleport_Page",
+        "Is_Visible_To_Player": false,
+        "Default": 1,
+        "Is_Client_Changable": true,
+        "Id": 61
+      }
+    ],
+    "Guild_Stats": [
+      {
+        "Id": 1,
+        "Description": "Members In Guild",
+        "Default": 5,
+        "Name": "Guild_Slots"
+      }
+    ]
+  },
+  "Primary_Stats": {
+    "Primary_Energy": {
+      "Max_Level": 5500,
+      "Stats": [
+        {
+          "Main_Stat": "Energy",
+          "Category": "[Level Stat] Primary_Energy",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Energy_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Energy"
+    },
+    "Primary_Damage": {
+      "Max_Level": 5500,
+      "Stats": [
+        {
+          "Main_Stat": "Damage",
+          "Category": "[Level Stat] Primary_Damage",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Damage_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Damage"
+    },
+    "Primary_Luck": {
+      "Max_Level": 700,
+      "Stats": [
+        {
+          "Value": 0.0025,
+          "Name": "Star_Luck",
+          "Category": "[Level Stat] Primary_Luck"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Luck"
+    },
+    "Primary_Coins": {
+      "Max_Level": 2000,
+      "Stats": [
+        {
+          "Main_Stat": "Coins",
+          "Category": "[Level Stat] Primary_Coins",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Coins_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Coins"
+    }
+  },
+  "Stat_Bonuses": {
+    "Friends_Bonus": {
+      "Name": "Friends_Bonus",
+      "Stats": []
+    },
+    "Premium": {
+      "Name": "Premium",
+      "Stats": [
+        {
+          "Main_Stat": "Coins",
+          "Category": "Premium",
+          "Value": 0.1,
+          "Percent": true,
+          "Name": "Coins_Percent"
+        }
+      ]
+    }
+  },
+  "Stats_Statistics": [
+    {
+      "Id": 1,
+      "Is_Player_Display": true,
+      "Name": "Time_Played",
+      "Is_Time": true
+    },
+    {
+      "Id": 2,
+      "Is_Player_Display": true,
+      "Name": "Stars_Total"
+    },
+    {
+      "Id": 3,
+      "Display_Name": "Total Rolls",
+      "Name": "Gachas_Total",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 4,
+      "Is_Player_Display": true,
+      "Name": "Monsters_Total"
+    },
+    {
+      "Id": 5,
+      "Display_Name": "Total Energy",
+      "Name": "Resources_Energy",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 6,
+      "Display_Name": "Total Coins",
+      "Name": "Resources_Coins",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 7,
+      "Display_Name": "Total Ki",
+      "Name": "Resources_Ki",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 8,
+      "Display_Name": "Total Zeni",
+      "Name": "Resources_Zeni",
+      "Is_Player_Display": true
+    },
+    {
+      "Id": 9,
+      "Is_Player_Display": true,
+      "Name": "Robux_Spent"
+    }
+  ],
+  "Stats_Resources": [
+    {
+      "Id": 1,
+      "Is_Maximum": true,
+      "Is_Player_Display": true,
+      "Name": "Level"
+    },
+    {
+      "Id": 2,
+      "Name": "Health",
+      "Is_Maximum": true
+    },
+    {
+      "Id": 3,
+      "Name": "Mana",
+      "Is_Maximum": true
+    },
+    {
+      "Id": 4,
+      "Is_Maximum": true,
+      "Is_Player_Display": true,
+      "Name": "Level_II"
+    }
+  ],
+  "Category": {
+    "Fighters": {
+      "Is_Indexed_Equip": true,
+      "Is_Inventory": true,
+      "Name": "Fighters",
+      "IsVanity": true,
+      "Id": 10,
+      "SortBy": "Power",
+      "Slots_Name": "Fighters_Inv",
+      "Equip_Name": "Fighters_Equip"
+    },
+    "Mics": {
+      "Name": "Mics",
+      "Is_Inventory": true,
+      "Id": 8,
+      "SortBy": "Id",
+      "Slots_Name": "Mics_Inv",
+      "Equip_Name": "Mics_Equip"
+    },
+    "Auras": {
+      "IsVanity": true,
+      "Id": 7,
+      "Slots_Name": "Auras_Inv",
+      "Name": "Auras",
+      "IsRarity": true,
+      "IsTier": true,
+      "SortBy": "_Id",
+      "Is_Inventory": true,
+      "Equip_Name": "Auras_Equip"
+    },
+    "Pets": {
+      "Id": 4,
+      "Slots_Name": "Pets_Inv",
+      "Name_Change": true,
+      "Is_Indexed_Equip": true,
+      "IsTier": true,
+      "Name": "Pets",
+      "IsRarity": true,
+      "Display_Name": "Champions",
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Pets_Equip"
+    },
+    "Resources": {
+      "Name": "Resources",
+      "Is_Inventory": true,
+      "Id": 9,
+      "SortBy": "Id",
+      "Slots_Name": "Resources_Inv",
+      "Equip_Name": "Resources_Equip"
+    },
+    "Jewelry": {
+      "Name_Change": true,
+      "Is_Inventory": true,
+      "Name": "Jewelry",
+      "IsRarity": true,
+      "Id": 6,
+      "SortBy": "Power",
+      "Slots_Name": "Jewelry_Inv",
+      "Equip_Name": "Jewelry_Equip"
+    },
+    "Runes": {
+      "Id": 15,
+      "Slots_Name": "Runes_Inv",
+      "Name_Change": true,
+      "IsTier": true,
+      "Name": "Runes",
+      "IsRarity": true,
+      "Is_Primary_Skill": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Runes_Equip"
+    },
+    "Powers": {
+      "IsVanity": true,
+      "Is_Inventory": true,
+      "Name": "Powers",
+      "IsRarity": true,
+      "Id": 3,
+      "SortBy": "_Id",
+      "Slots_Name": "Powers_Inv",
+      "Equip_Name": "Powers_Equip"
+    },
+    "Empty_7": {
+      "Id": 17,
+      "Name": "Empty_7",
+      "Is_Inventory": false
+    },
+    "Titans": {
+      "IsVanity": true,
+      "Id": 12,
+      "Slots_Name": "Titans_Inv",
+      "Is_Indexed_Equip": true,
+      "Name_Change": true,
+      "Name": "Titans",
+      "IsRarity": true,
+      "IsTier": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Titans_Equip"
+    },
+    "Avatars": {
+      "IsVanity": true,
+      "Id": 1,
+      "Slots_Name": "Avatars_Inv",
+      "Display_Name": "Avatars",
+      "Is_Primary_Skill": true,
+      "Name": "Avatars",
+      "IsRarity": true,
+      "Name_Change": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Avatars_Equip"
+    },
+    "Box": {
+      "Id": 19,
+      "Name": "Box",
+      "Is_Inventory": false
+    },
+    "Zombies": {
+      "IsVanity": true,
+      "Id": 14,
+      "Slots_Name": "Zombies_Inv",
+      "Is_Indexed_Equip": true,
+      "Name_Change": true,
+      "Name": "Zombies",
+      "IsRarity": true,
+      "IsTier": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Zombies_Equip"
+    },
+    "Shadows": {
+      "IsVanity": true,
+      "Id": 11,
+      "Slots_Name": "Shadows_Inv",
+      "Is_Indexed_Equip": true,
+      "Name_Change": true,
+      "Name": "Shadows",
+      "IsRarity": true,
+      "IsTier": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Shadows_Equip"
+    },
+    "Accessories": {
+      "IsVanity": true,
+      "Id": 5,
+      "Slots_Name": "Accessories_Inv",
+      "Is_Primary_Skill": true,
+      "Name": "Accessories",
+      "IsRarity": true,
+      "Name_Change": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Accessories_Equip"
+    },
+    "Stars": {
+      "Id": 20,
+      "Name": "Stars",
+      "Is_Inventory": false
+    },
+    "Powers_II": {
+      "IsVanity": true,
+      "Is_Inventory": true,
+      "Name": "Powers_II",
+      "IsRarity": true,
+      "Id": 16,
+      "SortBy": "_Id",
+      "Slots_Name": "Powers_II_Inv",
+      "Equip_Name": "Powers_II_Equip"
+    },
+    "Weapons": {
+      "IsVanity": true,
+      "Id": 2,
+      "Name_Change": true,
+      "IsTier": true,
+      "IsLevels": true,
+      "SortBy": "Power",
+      "Name": "Weapons",
+      "IsRarity": true,
+      "Slots_Name": "Weapons_Inv",
+      "Is_Primary_Skill": true,
+      "Is_Inventory": true,
+      "Equip_Name": "Weapons_Equip"
+    },
+    "Stands": {
+      "IsVanity": true,
+      "Id": 13,
+      "Slots_Name": "Stands_Inv",
+      "Is_Indexed_Equip": true,
+      "Name_Change": true,
+      "Name": "Stands",
+      "IsRarity": true,
+      "IsTier": true,
+      "SortBy": "Power",
+      "Is_Inventory": true,
+      "Equip_Name": "Stands_Equip"
+    },
+    "Empty_8": {
+      "Id": 18,
+      "Name": "Empty_8",
+      "Is_Inventory": false
+    }
+  },
+  "Enemies_Tiers": {
+    "Fire_Force": {
+      "Chances": [0.5, 0.5],
+      "Name": "Fire_Force",
+      "List": [
+        {
+          "Drop_Chance_Multiplier": 1,
+          "Tier_Display": "",
+          "Rewards": [],
+          "Drop_Multiplier": 1,
+          "Name": "Fire_Force",
+          "Tier": "None",
+          "Health_Multiplier": 1,
+          "Index": 1,
+          "Chance": 0.5
+        },
+        {
+          "Drop_Chance_Multiplier": 2,
+          "Color": "#ff0000",
+          "Rewards": [],
+          "Drop_Multiplier": 2,
+          "Name": "Fire_Force",
+          "Tier": "Infernal",
+          "Health_Multiplier": 10,
+          "Tier_Display": "Infernal",
+          "Index": 2,
+          "Chance": 0.5
+        }
+      ]
+    }
+  },
+  "Event_Stats": {
+    "Energy_Multiply": {
+      "Min": 0,
+      "Name": "Energy_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 19,
+      "Default": 0
+    },
+    "Star_Luck_Multiply": {
+      "Min": 0,
+      "Name": "Star_Luck_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 3,
+      "Default": 0
+    },
+    "Critical_Chance": {
+      "Min": 0,
+      "Name": "Critical_Chance",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 15,
+      "Default": 0
+    },
+    "Avatar_Soul_Percent": {
+      "Min": 0,
+      "Name": "Avatar_Soul_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 30,
+      "Default": 0
+    },
+    "Star_Luck": {
+      "Min": 0,
+      "Name": "Star_Luck",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 1,
+      "Default": 0
+    },
+    "Star_Speed": {
+      "Id": 5,
+      "Name": "Star_Speed",
+      "Enable": true
+    },
+    "Coins": {
+      "Min": 0,
+      "Name": "Coins",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 20,
+      "Default": 0
+    },
+    "Enchantment_Speed": {
+      "Min": 0,
+      "Name": "Enchantment_Speed",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 11,
+      "Default": 0
+    },
+    "Avatar_Soul_Multiply": {
+      "Min": 0,
+      "Name": "Avatar_Soul_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 31,
+      "Default": 0
+    },
+    "Damage_Percent": {
+      "Min": 0,
+      "Name": "Damage_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 13,
+      "Default": 0
+    },
+    "Coins_Multiply": {
+      "Min": 0,
+      "Name": "Coins_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 22,
+      "Default": 0
+    },
+    "Star_Luck_Percent": {
+      "Min": 0,
+      "Name": "Star_Luck_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 2,
+      "Default": 0
+    },
+    "Token_Multiply": {
+      "Min": 0,
+      "Name": "Token_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 28,
+      "Default": 0
+    },
+    "Energy_Percent": {
+      "Min": 0,
+      "Name": "Energy_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 18,
+      "Default": 0
+    },
+    "Critical_Damage": {
+      "Min": 0,
+      "Name": "Critical_Damage",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 16,
+      "Default": 0
+    },
+    "Exp_Percent": {
+      "Min": 0,
+      "Name": "Exp_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 24,
+      "Default": 0
+    },
+    "Coins_Percent": {
+      "Min": 0,
+      "Name": "Coins_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 21,
+      "Default": 0
+    },
+    "Avatar_Soul": {
+      "Min": 0,
+      "Name": "Avatar_Soul",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 29,
+      "Default": 0
+    },
+    "Exp": {
+      "Min": 0,
+      "Name": "Exp",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 23,
+      "Default": 0
+    },
+    "Roll_Luck": {
+      "Min": 0,
+      "Name": "Roll_Luck",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 6,
+      "Default": 0
+    },
+    "Damage": {
+      "Min": 0,
+      "Name": "Damage",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 12,
+      "Default": 0
+    },
+    "Token_Percent": {
+      "Min": 0,
+      "Name": "Token_Percent",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 27,
+      "Default": 0
+    },
+    "Star_Amount": {
+      "Id": 4,
+      "Name": "Star_Amount",
+      "Enable": true
+    },
+    "Exp_Multiply": {
+      "Min": 0,
+      "Name": "Exp_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 25,
+      "Default": 0
+    },
+    "Damage_Multiply": {
+      "Min": 0,
+      "Name": "Damage_Multiply",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 14,
+      "Default": 0
+    },
+    "Token": {
+      "Min": 0,
+      "Name": "Token",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 26,
+      "Default": 0
+    },
+    "Roll_Amount": {
+      "Min": 0,
+      "Name": "Roll_Amount",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 7,
+      "Default": 0
+    },
+    "Roll_Speed": {
+      "Min": 0,
+      "Name": "Roll_Speed",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 8,
+      "Default": 0
+    },
+    "Enchantment_Amount": {
+      "Min": 0,
+      "Name": "Enchantment_Amount",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 10,
+      "Default": 0
+    },
+    "Energy": {
+      "Min": 0,
+      "Name": "Energy",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 17,
+      "Default": 0
+    },
+    "Enchantment_Luck": {
+      "Min": 0,
+      "Name": "Enchantment_Luck",
+      "Enable": true,
+      "Max": 1000000,
+      "Id": 9,
+      "Default": 0
+    }
+  },
+  "Rarity": {
+    "Roll": {
+      "TheRunes": {
+        "Id": 3,
+        "Chances": [0.36, 0.315, 0.15, 0.1, 0.05, 0.01, 0.0075, 0.005, 0.0025],
+        "Name": "TheRunes",
+        "List": [
+          {
+            "Chance": 0.36,
+            "Index": 1,
+            "Visible_Chance": 2.78,
+            "Rarity": 1
+          },
+          {
+            "Chance": 0.315,
+            "Index": 2,
+            "Visible_Chance": 3.17,
+            "Rarity": 2
+          },
+          {
+            "Chance": 0.15,
+            "Index": 3,
+            "Visible_Chance": 6.67,
+            "Rarity": 3
+          },
+          {
+            "Chance": 0.1,
+            "Index": 4,
+            "Visible_Chance": 10,
+            "Rarity": 4
+          },
+          {
+            "Chance": 0.05,
+            "Index": 5,
+            "Visible_Chance": 20,
+            "Rarity": 5
+          },
+          {
+            "Chance": 0.01,
+            "Index": 6,
+            "Visible_Chance": 100,
+            "Rarity": 6
+          },
+          {
+            "Chance": 0.0075,
+            "Index": 7,
+            "Visible_Chance": 133.33,
+            "Rarity": 7
+          },
+          {
+            "Chance": 0.005,
+            "Index": 8,
+            "Visible_Chance": 200,
+            "Rarity": 8
+          },
+          {
+            "Chance": 0.0025,
+            "Index": 9,
+            "Visible_Chance": 400,
+            "Rarity": 9
+          }
+        ]
+      },
+      "Shadows_Rarity": {
+        "Id": 2,
+        "Chances": [0.36, 0.244, 0.16, 0.1, 0.075, 0.05, 0.01, 0.001],
+        "Name": "Shadows_Rarity",
+        "List": [
+          {
+            "Chance": 0.36,
+            "Index": 1,
+            "Visible_Chance": 2.78,
+            "Rarity": 30
+          },
+          {
+            "Chance": 0.244,
+            "Index": 2,
+            "Visible_Chance": 4.1,
+            "Rarity": 31
+          },
+          {
+            "Chance": 0.16,
+            "Index": 3,
+            "Visible_Chance": 6.25,
+            "Rarity": 32
+          },
+          {
+            "Chance": 0.1,
+            "Index": 4,
+            "Visible_Chance": 10,
+            "Rarity": 33
+          },
+          {
+            "Chance": 0.075,
+            "Index": 5,
+            "Visible_Chance": 13.33,
+            "Rarity": 34
+          },
+          {
+            "Chance": 0.05,
+            "Index": 6,
+            "Visible_Chance": 20,
+            "Rarity": 35
+          },
+          {
+            "Chance": 0.01,
+            "Index": 7,
+            "Visible_Chance": 100,
+            "Rarity": 36
+          },
+          {
+            "Chance": 0.001,
+            "Index": 8,
+            "Visible_Chance": 1000,
+            "Rarity": 37
+          }
+        ]
+      },
+      "Default": {
+        "Id": 1,
+        "Chances": [0.36, 0.3175, 0.15, 0.1, 0.05, 0.01, 0.0075, 0.005],
+        "Name": "Default",
+        "List": [
+          {
+            "Chance": 0.36,
+            "Index": 1,
+            "Visible_Chance": 2.78,
+            "Rarity": 1
+          },
+          {
+            "Chance": 0.3175,
+            "Index": 2,
+            "Visible_Chance": 3.15,
+            "Rarity": 2
+          },
+          {
+            "Chance": 0.15,
+            "Index": 3,
+            "Visible_Chance": 6.67,
+            "Rarity": 3
+          },
+          {
+            "Chance": 0.1,
+            "Index": 4,
+            "Visible_Chance": 10,
+            "Rarity": 4
+          },
+          {
+            "Chance": 0.05,
+            "Index": 5,
+            "Visible_Chance": 20,
+            "Rarity": 5
+          },
+          {
+            "Chance": 0.01,
+            "Index": 6,
+            "Visible_Chance": 100,
+            "Rarity": 6
+          },
+          {
+            "Chance": 0.0075,
+            "Index": 7,
+            "Visible_Chance": 133.33,
+            "Rarity": 7
+          },
+          {
+            "Chance": 0.005,
+            "Index": 8,
+            "Visible_Chance": 200,
+            "Rarity": 8
+          }
+        ]
+      }
+    },
+    "List": [
+      {
+        "Stats": [],
+        "Name": "Common",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 0,
+        "Multiplier": 1,
+        "Id": 1
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Uncommon",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 3,
+        "Multiplier": 1.5,
+        "Id": 2
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Rare",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 7,
+        "Multiplier": 2,
+        "Id": 3
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 1.5,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Epic",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 10,
+        "Multiplier": 2.5,
+        "Id": 4
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Legendary",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 20,
+        "Multiplier": 3,
+        "Id": 5
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 2.5,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Mythical",
+        "AutoDelete": true,
+        "Color": null,
+        "Chance_Rarity": 100,
+        "Multiplier": 3.5,
+        "Id": 6
+      },
+      {
+        "Chance_Rarity": 200,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Phantom",
+        "Id": 7,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 5,
+        "AutoDelete": true
+      },
+      {
+        "Chance_Rarity": 400,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 6.5,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Supreme",
+        "Id": 8,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 7.5,
+        "AutoDelete": true
+      },
+      {
+        "Chance_Rarity": 1000,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Exotic",
+        "Id": 9,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 10,
+        "AutoDelete": true
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 11.5,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Radiant",
+        "Chance_Rarity": 1333,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 12.5,
+        "Id": 10
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 14,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Divine",
+        "Chance_Rarity": 2000,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 15,
+        "Id": 11
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          },
+          {
+            "Main_Stat": "Star_Luck",
+            "Category": "Rarity",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Star_Luck_Multiply"
+          }
+        ],
+        "Name": "Eternal",
+        "Chance_Rarity": 2500,
+        "Color": null,
+        "Chat_Server_Notify": true,
+        "Multiplier": 20,
+        "Id": 12
+      },
+      {
+        "Id": 13,
+        "Stats": [],
+        "Name": "Empty_4",
+        "Color": null
+      },
+      {
+        "Id": 14,
+        "Stats": [],
+        "Name": "Empty_5",
+        "Color": null
+      },
+      {
+        "Id": 15,
+        "Stats": [],
+        "Name": "Empty_6",
+        "Color": null
+      },
+      {
+        "Id": 16,
+        "Stats": [],
+        "Name": "Empty_7",
+        "Color": null
+      },
+      {
+        "Id": 17,
+        "Stats": [],
+        "Name": "Empty_8",
+        "Color": null
+      },
+      {
+        "Id": 18,
+        "Stats": [],
+        "Name": "Empty_9",
+        "Color": null
+      },
+      {
+        "Id": 19,
+        "Stats": [],
+        "Name": "Empty_10",
+        "Color": null
+      },
+      {
+        "Id": 20,
+        "Stats": [],
+        "Name": "Empty_11",
+        "Color": null
+      },
+      {
+        "Id": 21,
+        "Stats": [],
+        "Name": "Unknown",
+        "Color": null
+      },
+      {
+        "Id": 22,
+        "Stats": [],
+        "Name": "Exclusive",
+        "Color": null
+      },
+      {
+        "Id": 23,
+        "Stats": [],
+        "Name": "Empty_14",
+        "Color": null
+      },
+      {
+        "Id": 24,
+        "Stats": [],
+        "Name": "Empty_15",
+        "Color": null
+      },
+      {
+        "Id": 25,
+        "Stats": [],
+        "Name": "Empty_16",
+        "Color": null
+      },
+      {
+        "Id": 26,
+        "Stats": [],
+        "Name": "Empty_17",
+        "Color": null
+      },
+      {
+        "Id": 27,
+        "Stats": [],
+        "Name": "Empty_18",
+        "Color": null
+      },
+      {
+        "Id": 28,
+        "Stats": [],
+        "Name": "Empty_19",
+        "Color": null
+      },
+      {
+        "Id": 29,
+        "Stats": [],
+        "Name": "Empty_20",
+        "Color": null
+      },
+      {
+        "Stats": [],
+        "Name": "Rank E",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 1,
+        "Id": 30
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.05,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.05,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.05,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.05,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.05,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank D",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 1.5,
+        "Id": 31
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank C",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 2,
+        "Id": 32
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.15,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.15,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.15,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.15,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.15,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank B",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 2.5,
+        "Id": 33
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.25,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank A",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 3,
+        "Id": 34
+      },
+      {
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank S",
+        "Leveling_Price": 1,
+        "Color": null,
+        "AutoDelete": true,
+        "Multiplier": 3.5,
+        "Id": 35
+      },
+      {
+        "Id": 36,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.4,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.4,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.4,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.4,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.4,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank SS",
+        "Color": null,
+        "Leveling_Price": 1,
+        "Chat_Server_Notify": true,
+        "Multiplier": 5,
+        "AutoDelete": true
+      },
+      {
+        "Id": 37,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          },
+          {
+            "Main_Stat": "Sprint_Speed",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Sprint_Speed_Multiply"
+          },
+          {
+            "Main_Stat": "Exp",
+            "Category": "Rarity",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Exp_Multiply"
+          }
+        ],
+        "Name": "Rank SSS",
+        "Color": null,
+        "Leveling_Price": 1,
+        "Chat_Server_Notify": true,
+        "Multiplier": 7.5,
+        "AutoDelete": true
+      },
+      {
+        "Id": 38,
+        "Stats": [],
+        "Name": "Empty_22",
+        "Color": null
+      },
+      {
+        "Id": 39,
+        "Stats": [],
+        "Name": "Empty_23",
+        "Color": null
+      },
+      {
+        "Id": 40,
+        "Stats": [],
+        "Name": "Empty_24",
+        "Color": null
+      },
+      {
+        "Id": 41,
+        "Stats": [],
+        "Name": "Empty_25",
+        "Color": null
+      },
+      {
+        "Id": 42,
+        "Stats": [],
+        "Name": "Empty_26",
+        "Color": null
+      },
+      {
+        "Id": 43,
+        "Stats": [],
+        "Name": "Empty_27",
+        "Color": null
+      },
+      {
+        "Id": 44,
+        "Stats": [],
+        "Name": "Empty_28",
+        "Color": null
+      },
+      {
+        "Id": 45,
+        "Stats": [],
+        "Name": "Empty_29",
+        "Color": null
+      },
+      {
+        "Id": 46,
+        "Stats": [],
+        "Name": "Empty_30",
+        "Color": null
+      },
+      {
+        "Id": 47,
+        "Stats": [],
+        "Name": "Empty_31",
+        "Color": null
+      },
+      {
+        "Id": 48,
+        "Stats": [],
+        "Name": "Empty_32",
+        "Color": null
+      },
+      {
+        "Id": 49,
+        "Stats": [],
+        "Name": "Empty_33",
+        "Color": null
+      },
+      {
+        "Id": 50,
+        "Stats": [],
+        "Name": "Empty_34",
+        "Color": null
+      },
+      {
+        "Id": 51,
+        "Stats": [],
+        "Name": "Empty_35",
+        "Color": null
+      },
+      {
+        "Id": 52,
+        "Stats": [],
+        "Name": "Empty_36",
+        "Color": null
+      },
+      {
+        "Id": 53,
+        "Stats": [],
+        "Name": "Empty_37",
+        "Color": null
+      },
+      {
+        "Id": 54,
+        "Stats": [],
+        "Name": "Empty_38",
+        "Color": null
+      },
+      {
+        "Id": 55,
+        "Stats": [],
+        "Name": "Empty_39",
+        "Color": null
+      },
+      {
+        "Id": 56,
+        "Stats": [],
+        "Name": "Empty_40",
+        "Color": null
+      },
+      {
+        "Id": 57,
+        "Stats": [],
+        "Name": "Empty_41",
+        "Color": null
+      },
+      {
+        "Id": 58,
+        "Stats": [],
+        "Name": "Empty_42",
+        "Color": null
+      },
+      {
+        "Id": 59,
+        "Stats": [],
+        "Name": "Empty_43",
+        "Color": null
+      },
+      {
+        "Id": 60,
+        "Stats": [],
+        "Name": "Empty_44",
+        "Color": null
+      },
+      {
+        "Id": 61,
+        "Stats": [],
+        "Name": "Empty_45",
+        "Color": null
+      },
+      {
+        "Id": 62,
+        "Stats": [],
+        "Name": "Empty_46",
+        "Color": null
+      },
+      {
+        "Id": 63,
+        "Stats": [],
+        "Name": "Empty_47",
+        "Color": null
+      },
+      {
+        "Id": 64,
+        "Stats": [],
+        "Name": "Empty_48",
+        "Color": null
+      },
+      {
+        "Id": 65,
+        "Stats": [],
+        "Name": "Empty_49",
+        "Color": null
+      },
+      {
+        "Id": 66,
+        "Stats": [],
+        "Name": "Empty_50",
+        "Color": null
+      },
+      {
+        "Id": 67,
+        "Stats": [],
+        "Name": "Empty_51",
+        "Color": null
+      },
+      {
+        "Id": 68,
+        "Stats": [],
+        "Name": "Empty_52",
+        "Color": null
+      },
+      {
+        "Id": 69,
+        "Stats": [],
+        "Name": "Empty_53",
+        "Color": null
+      },
+      {
+        "Id": 70,
+        "Stats": [],
+        "Name": "Empty_54",
+        "Color": null
+      },
+      {
+        "Id": 71,
+        "Stats": [],
+        "Name": "Empty_55",
+        "Color": null
+      },
+      {
+        "Id": 72,
+        "Stats": [],
+        "Name": "Empty_56",
+        "Color": null
+      },
+      {
+        "Id": 73,
+        "Stats": [],
+        "Name": "Empty_57",
+        "Color": null
+      },
+      {
+        "Id": 74,
+        "Stats": [],
+        "Name": "Empty_58",
+        "Color": null
+      },
+      {
+        "Id": 75,
+        "Stats": [],
+        "Name": "Empty_59",
+        "Color": null
+      },
+      {
+        "Id": 76,
+        "Stats": [],
+        "Name": "Empty_60",
+        "Color": null
+      },
+      {
+        "Id": 77,
+        "Stats": [],
+        "Name": "Empty_61",
+        "Color": null
+      },
+      {
+        "Id": 78,
+        "Stats": [],
+        "Name": "Empty_62",
+        "Color": null
+      },
+      {
+        "Id": 79,
+        "Stats": [],
+        "Name": "Empty_63",
+        "Color": null
+      },
+      {
+        "Id": 80,
+        "Stats": [],
+        "Name": "Empty_64",
+        "Color": null
+      },
+      {
+        "Id": 81,
+        "Stats": [],
+        "Name": "Empty_65",
+        "Color": null
+      },
+      {
+        "Id": 82,
+        "Stats": [],
+        "Name": "Empty_66",
+        "Color": null
+      },
+      {
+        "Id": 83,
+        "Stats": [],
+        "Name": "Empty_67",
+        "Color": null
+      },
+      {
+        "Id": 84,
+        "Stats": [],
+        "Name": "Empty_68",
+        "Color": null
+      },
+      {
+        "Id": 85,
+        "Stats": [],
+        "Name": "Empty_69",
+        "Color": null
+      },
+      {
+        "Id": 86,
+        "Stats": [],
+        "Name": "Empty_70",
+        "Color": null
+      },
+      {
+        "Id": 87,
+        "Stats": [],
+        "Name": "Empty_71",
+        "Color": null
+      },
+      {
+        "Id": 88,
+        "Stats": [],
+        "Name": "Empty_72",
+        "Color": null
+      },
+      {
+        "Id": 89,
+        "Stats": [],
+        "Name": "Empty_73",
+        "Color": null
+      },
+      {
+        "Id": 90,
+        "Stats": [],
+        "Name": "Empty_74",
+        "Color": null
+      },
+      {
+        "Id": 91,
+        "Stats": [],
+        "Name": "Empty_75",
+        "Color": null
+      },
+      {
+        "Id": 92,
+        "Stats": [],
+        "Name": "Empty_76",
+        "Color": null
+      },
+      {
+        "Id": 93,
+        "Stats": [],
+        "Name": "Empty_77",
+        "Color": null
+      },
+      {
+        "Id": 94,
+        "Stats": [],
+        "Name": "Empty_78",
+        "Color": null
+      },
+      {
+        "Id": 95,
+        "Stats": [],
+        "Name": "Empty_79",
+        "Color": null
+      },
+      {
+        "Id": 96,
+        "Stats": [],
+        "Name": "Empty_80",
+        "Color": null
+      },
+      {
+        "Id": 97,
+        "Stats": [],
+        "Name": "Empty_81",
+        "Color": null
+      },
+      {
+        "Id": 98,
+        "Stats": [],
+        "Name": "Empty_82",
+        "Color": null
+      },
+      {
+        "Id": 99,
+        "Stats": [],
+        "Name": "Empty_83",
+        "Color": null
+      },
+      {
+        "Id": 100,
+        "Stats": [],
+        "Name": "Empty_84",
+        "Color": null
+      },
+      {
+        "Stats": [],
+        "Name": "Exp",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 101
+      },
+      {
+        "Stats": [],
+        "Name": "Coins",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 102
+      },
+      {
+        "Stats": [],
+        "Name": "Energy",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 103
+      },
+      {
+        "Stats": [],
+        "Name": "Exp II",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 104
+      },
+      {
+        "Stats": [],
+        "Name": "Zeni",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 105
+      },
+      {
+        "Stats": [],
+        "Name": "Ki",
+        "Color": null,
+        "Multiplier": 1,
+        "Id": 106
+      },
+      {
+        "Id": 107,
+        "Stats": [],
+        "Name": "Empty_91",
+        "Color": null
+      },
+      {
+        "Id": 108,
+        "Stats": [],
+        "Name": "Empty_92",
+        "Color": null
+      },
+      {
+        "Id": 109,
+        "Stats": [],
+        "Name": "Empty_93",
+        "Color": null
+      },
+      {
+        "Id": 110,
+        "Stats": [],
+        "Name": "Empty_94",
+        "Color": null
+      },
+      {
+        "Id": 111,
+        "Stats": [],
+        "Name": "Empty_95",
+        "Color": null
+      },
+      {
+        "Id": 112,
+        "Stats": [],
+        "Name": "Empty_96",
+        "Color": null
+      },
+      {
+        "Id": 113,
+        "Stats": [],
+        "Name": "Halloween",
+        "Color": null
+      },
+      {
+        "Id": 114,
+        "Stats": [],
+        "Name": "Rank Halloween",
+        "Color": null
+      },
+      {
+        "Id": 115,
+        "Stats": [],
+        "Name": "Thanksgiving",
+        "Color": null
+      },
+      {
+        "Id": 116,
+        "Stats": [],
+        "Name": "Christmas",
+        "Color": null
+      },
+      {
+        "Id": 117,
+        "Stats": [],
+        "Name": "Rank Christmas",
+        "Color": null
+      }
+    ]
+  },
+  "GroupId": 34873522,
+  "Benches_Map_Lock": [],
+  "Player_Settings": {
+    "Chat_Tips": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Notifications",
+      "Name": "Chat_Tips",
+      "LayoutOrder": 5001,
+      "Id": 31,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Move_Speed": {
+      "LayoutOrder": 9999,
+      "Id": 51,
+      "Is_Enabled": true,
+      "Min": 0.35,
+      "Category_Type": "Gameplay",
+      "Name": "Move_Speed",
+      "Is_Visible_To_Player": false,
+      "Max": 1,
+      "Is_Slider": true,
+      "Is_Client_Changable": false,
+      "Default": 1
+    },
+    "Show_Accessories": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Accessories",
+      "LayoutOrder": 4003,
+      "Id": 16,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Fighters_Attack_Mode": {
+      "Is_Visible_To_Player": true,
+      "Description": "1 = Close, 2 = Far, 3 = Random *(In Fighter Range)",
+      "Id": 12,
+      "Is_Enabled": true,
+      "Min": 1,
+      "Category_Type": "Fighters",
+      "Name": "Fighters_Attack_Mode",
+      "LayoutOrder": 3001,
+      "Max": 3,
+      "Is_Client_Changable": true,
+      "Default": 1
+    },
+    "Is_Wind": {
+      "LayoutOrder": 4001,
+      "Description": "Trees shaking",
+      "Id": 14,
+      "Is_Enabled": true,
+      "Category_Type": "Visuals",
+      "Name": "Is_Wind",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Show_Weapons": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Weapons",
+      "LayoutOrder": 4004,
+      "Id": 17,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Inventory_Grid": {
+      "LayoutOrder": 9999,
+      "Max": 3,
+      "Is_Enabled": true,
+      "Min": 0,
+      "Category_Type": "Visuals",
+      "Name": "Inventory_Grid",
+      "Is_Visible_To_Player": false,
+      "Default": 0,
+      "Is_Client_Changable": true,
+      "Id": 59
+    },
+    "Visual_Effects": {
+      "LayoutOrder": 2002,
+      "Description": "Auras / VFX",
+      "Id": 5,
+      "Is_Enabled": true,
+      "Category_Type": "Gameplay",
+      "Name": "Visual_Effects",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Small_Drop_Notifications": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Notifications",
+      "Name": "Small_Drop_Notifications",
+      "LayoutOrder": 5004,
+      "Id": 34,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Is_Auto_Clicker": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_Auto_Clicker",
+      "Is_Visible_To_Player": false,
+      "Id": 54,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Sprint_Speed": {
+      "Is_Visible_To_Player": true,
+      "Id": 4,
+      "Is_Enabled": true,
+      "Min": 0,
+      "Category_Type": "Gameplay",
+      "Is_Slider": true,
+      "LayoutOrder": 2001,
+      "Max": 1,
+      "Default": 1,
+      "Is_Client_Changable": true,
+      "Name": "Sprint_Speed"
+    },
+    "Hide_Others_Damage": {
+      "LayoutOrder": 2007,
+      "Category_Type": "Gameplay",
+      "Name": "Hide_Others_Damage",
+      "Is_Visible_To_Player": false,
+      "Id": 10,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Update_Log_Notifications": {
+      "LayoutOrder": 5008,
+      "Description": "Update Log Pop-up when entering the game",
+      "Id": 38,
+      "Is_Enabled": true,
+      "Category_Type": "Notifications",
+      "Name": "Update_Log_Notifications",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Inventory_Equip_All_Enabled": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Inventory_Equip_All_Enabled",
+      "Is_Visible_To_Player": false,
+      "Id": 60,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Jewelry": {
+      "LayoutOrder": 4007,
+      "Category_Type": "Visuals",
+      "Name": "Show_Jewelry",
+      "Is_Visible_To_Player": false,
+      "Id": 20,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Display_Full_Avatar": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Display_Full_Avatar",
+      "LayoutOrder": 4002,
+      "Id": 15,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Merchant_Confirmation": {
+      "LayoutOrder": 6005,
+      "Description": "works for jewelry / exchanger",
+      "Id": 44,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Merchant_Confirmation",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Number_Notation": {
+      "Is_Visible_To_Player": true,
+      "Description": "1 = 100tsTG | 2 = Scientific 1e8 | 3 = Engineering 100e6 4 = 3 = Expanded 100000e3 (Works after 1e33 numbers) (1 zero is e1) (Numbers is not updating instantly)",
+      "Id": 39,
+      "Is_Enabled": true,
+      "Min": 1,
+      "Category_Type": "Misc",
+      "Name": "Number_Notation",
+      "LayoutOrder": 6000,
+      "Max": 4,
+      "Is_Client_Changable": true,
+      "Default": 1
+    },
+    "Auto_Daily_Rewards": {
+      "LayoutOrder": 2005,
+      "Description": "Claim Rewards Automatically",
+      "Id": 8,
+      "Is_Enabled": true,
+      "Category_Type": "Gameplay",
+      "Name": "Auto_Daily_Rewards",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Show_Powers": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Powers",
+      "LayoutOrder": 4005,
+      "Id": 18,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Drop_Disappearing_Time": {
+      "Is_Visible_To_Player": true,
+      "Is_Round": true,
+      "Max": 120,
+      "Is_Enabled": true,
+      "Min": 1,
+      "Category_Type": "Notifications",
+      "Default": 3,
+      "LayoutOrder": 5002,
+      "Name": "Drop_Disappearing_Time",
+      "Id": 32,
+      "Is_Client_Changable": true,
+      "Is_Slider": true
+    },
+    "Show_Auras": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Auras",
+      "LayoutOrder": 4006,
+      "Id": 19,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_Auto_Raid_Rejoin": {
+      "LayoutOrder": 6008,
+      "Description": "Auto start a new raid or defense when rejoining the server or after a shutdown, (taking the last entered raid).",
+      "Id": 47,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Is_Auto_Raid_Rejoin",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Show_Others_Zombies": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Others_Zombies",
+      "LayoutOrder": 4017,
+      "Id": 30,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_Auto_Rebirth": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_Auto_Rebirth",
+      "Is_Visible_To_Player": false,
+      "Id": 55,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Is_Auto_New_Raid_On_Finish": {
+      "LayoutOrder": 6009,
+      "Description": "auto-start for a new raid or defense after finishing the previous one (not recommended with \"AFK MODE\")",
+      "Id": 48,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Is_Auto_New_Raid_On_Finish",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Is_Sprinting": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_Sprinting",
+      "Is_Visible_To_Player": false,
+      "Id": 53,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Disable_All_Inputs_Actions": {
+      "LayoutOrder": 6011,
+      "Description": "IMPORTANT *disable keyboard / gamepad / (walking and in game actions) *only working on PC **only if player fully loaded in game",
+      "Id": 50,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Disable_All_Inputs_Actions",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Color_Hex": "#FF0000",
+      "Default": false
+    },
+    "Is_Auto_New_Raid_On_Defeat": {
+      "LayoutOrder": 6010,
+      "Description": "auto-start for a new raid or defense after you lost the previous one (not recommended with \"AFK MODE\")",
+      "Id": 49,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Is_Auto_New_Raid_On_Defeat",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Teleport_Page": {
+      "LayoutOrder": 9999,
+      "Max": 10000000,
+      "Is_Enabled": true,
+      "Min": 1,
+      "Category_Type": "Visuals",
+      "Name": "Teleport_Page",
+      "Is_Visible_To_Player": false,
+      "Default": 1,
+      "Is_Client_Changable": true,
+      "Id": 61
+    },
+    "Show_Stands": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Stands",
+      "LayoutOrder": 4011,
+      "Id": 24,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Music_Volume": {
+      "Is_Visible_To_Player": true,
+      "Id": 1,
+      "Is_Enabled": true,
+      "Min": 0,
+      "Category_Type": "Audio",
+      "Is_Slider": true,
+      "LayoutOrder": 1001,
+      "Max": 1,
+      "Default": 0.5,
+      "Is_Client_Changable": true,
+      "Name": "Music_Volume"
+    },
+    "Show_Titans": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Titans",
+      "LayoutOrder": 4010,
+      "Id": 23,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Others_Pets": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Others_Pets",
+      "LayoutOrder": 4013,
+      "Id": 26,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Your_Chat_Tags": {
+      "LayoutOrder": 6003,
+      "Description": "you and others will not see your chat tags",
+      "Id": 42,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Show_Your_Chat_Tags",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Others_Stands": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Others_Stands",
+      "LayoutOrder": 4016,
+      "Id": 29,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_Auto_Avatar_Leveling": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_Auto_Avatar_Leveling",
+      "Is_Visible_To_Player": false,
+      "Id": 58,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Auto_Hourly_Rewards": {
+      "LayoutOrder": 2004,
+      "Description": "Claim Rewards Automatically",
+      "Id": 7,
+      "Is_Enabled": true,
+      "Category_Type": "Gameplay",
+      "Name": "Auto_Hourly_Rewards",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Drop_Notifications": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Notifications",
+      "Name": "Drop_Notifications",
+      "LayoutOrder": 5003,
+      "Id": 33,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_Auto_Rolling": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_Auto_Rolling",
+      "Is_Visible_To_Player": false,
+      "Id": 56,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Dungeon_Notification": {
+      "LayoutOrder": 5005,
+      "Description": "In Chat and Pop Up",
+      "Id": 35,
+      "Is_Enabled": true,
+      "Category_Type": "Notifications",
+      "Name": "Dungeon_Notification",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Zombies": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Zombies",
+      "LayoutOrder": 4012,
+      "Id": 25,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_Auto_Items_Equip": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Gameplay",
+      "Name": "Is_Auto_Items_Equip",
+      "LayoutOrder": 2008,
+      "Id": 11,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Others_Chat_Drop": {
+      "LayoutOrder": 6002,
+      "Description": "rare rarity drop display in the chat",
+      "Id": 41,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Show_Others_Chat_Drop",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Others_Titans": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Others_Titans",
+      "LayoutOrder": 4015,
+      "Id": 28,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Dungeon_Notification_Screen": {
+      "LayoutOrder": 5006,
+      "Description": "Screen Pop-Up",
+      "Id": 36,
+      "Is_Enabled": true,
+      "Category_Type": "Notifications",
+      "Name": "Dungeon_Notification_Screen",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Others_Shadows": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Others_Shadows",
+      "LayoutOrder": 4014,
+      "Id": 27,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Enable_Mobile_Items_Hover": {
+      "LayoutOrder": 6007,
+      "Description": "enable hover when clicking over the items for mobile",
+      "Id": 46,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Enable_Mobile_Items_Hover",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "IsTeleporting": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Fighters",
+      "Name": "IsTeleporting",
+      "Is_Visible_To_Player": false,
+      "Id": 52,
+      "Is_Enabled": true,
+      "Is_Client_Changable": false,
+      "Default": false
+    },
+    "Sound_Volume": {
+      "Is_Visible_To_Player": true,
+      "Id": 2,
+      "Is_Enabled": true,
+      "Min": 0,
+      "Category_Type": "Audio",
+      "Is_Slider": true,
+      "LayoutOrder": 1002,
+      "Max": 1,
+      "Default": 0.5,
+      "Is_Client_Changable": true,
+      "Name": "Sound_Volume"
+    },
+    "Damage_Display_Mode": {
+      "Is_Visible_To_Player": true,
+      "Description": "1 = damage per second, 2 = damage per minute",
+      "Id": 40,
+      "Is_Enabled": true,
+      "Min": 1,
+      "Category_Type": "Misc",
+      "Name": "Damage_Display_Mode",
+      "LayoutOrder": 6001,
+      "Max": 2,
+      "Is_Client_Changable": true,
+      "Default": 1
+    },
+    "Show_Others_Chat_Tags": {
+      "LayoutOrder": 6004,
+      "Description": "you wont see others chat tags",
+      "Id": 43,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Show_Others_Chat_Tags",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Attack_Sounds": {
+      "LayoutOrder": 1003,
+      "Description": "punch or sword sounds when clicking",
+      "Id": 3,
+      "Is_Enabled": true,
+      "Category_Type": "Audio",
+      "Name": "Attack_Sounds",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "AFK_MODE": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Gameplay",
+      "Name": "AFK_MODE",
+      "LayoutOrder": 2003,
+      "Id": 6,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Players_Inspect_Enabled": {
+      "LayoutOrder": 6006,
+      "Description": "show/hide button to inspect players ",
+      "Id": 45,
+      "Is_Enabled": true,
+      "Category_Type": "Misc",
+      "Name": "Players_Inspect_Enabled",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Is_AFK_Zone": {
+      "LayoutOrder": 9999,
+      "Category_Type": "Visuals",
+      "Name": "Is_AFK_Zone",
+      "Is_Visible_To_Player": false,
+      "Id": 57,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": false
+    },
+    "Show_Shadows": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Shadows",
+      "LayoutOrder": 4009,
+      "Id": 22,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Hide_Your_Damage": {
+      "LayoutOrder": 2006,
+      "Description": "disable damage notifications around the enemies",
+      "Id": 9,
+      "Is_Enabled": true,
+      "Category_Type": "Gameplay",
+      "Name": "Hide_Your_Damage",
+      "Is_Visible_To_Player": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Fighters_Auto_Attack": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Fighters",
+      "Name": "Fighters_Auto_Attack",
+      "LayoutOrder": 3002,
+      "Id": 13,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Show_Pets": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Visuals",
+      "Name": "Show_Pets",
+      "LayoutOrder": 4008,
+      "Id": 21,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    },
+    "Screen_Notifications": {
+      "Is_Visible_To_Player": true,
+      "Category_Type": "Notifications",
+      "Name": "Screen_Notifications",
+      "LayoutOrder": 5007,
+      "Id": 37,
+      "Is_Enabled": true,
+      "Is_Client_Changable": true,
+      "Default": true
+    }
+  },
+  "Leaderboards": {
+    "Dungeon_Hard_Total": {
+      "LayoutOrder": 1003,
+      "Name": "Dungeon_Hard_Total",
+      "Id": 21,
+      "Statistic_Name": "[D] Dungeon_Hard_Total",
+      "ImageId": "rbxassetid://112136291083677",
+      "Is_Display": true
+    },
+    "Prestige_II": {
+      "LayoutOrder": 22,
+      "Name": "Prestige_II",
+      "Id": 9,
+      "Resource_Name": "Prestige_II",
+      "ImageId": "rbxassetid://103345036524452",
+      "Is_Display": true
+    },
+    "Total_Zeni": {
+      "LayoutOrder": 28,
+      "Name": "Total_Zeni",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Statistic_Name": "Resources_Zeni",
+      "ImageId": "rbxassetid://106350904800374",
+      "Id": 10
+    },
+    "Coins": {
+      "LayoutOrder": 7,
+      "Name": "Coins",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Resource_Name": "Coins",
+      "ImageId": "rbxassetid://119816620823008",
+      "Id": 1
+    },
+    "Prestige": {
+      "LayoutOrder": 2,
+      "Name": "Prestige",
+      "Id": 4,
+      "Resource_Name": "Prestige",
+      "ImageId": "rbxassetid://75778712196470",
+      "Is_Display": true
+    },
+    "Enemies_Defeated": {
+      "LayoutOrder": 5,
+      "Name": "Enemies_Defeated",
+      "Id": 18,
+      "Statistic_Name": "Monsters_Total",
+      "ImageId": "rbxassetid://123841582366493",
+      "Is_Display": true
+    },
+    "Dungeon_Adventurer_Reached": {
+      "LayoutOrder": 1011,
+      "Name": "Dungeon_Adventurer_Reached",
+      "Id": 27,
+      "Statistic_Name": "[D] Dungeon_Adventurer_Reached",
+      "ImageId": "rbxassetid://90648235506243",
+      "Is_Display": true
+    },
+    "Stars_Total": {
+      "LayoutOrder": 6,
+      "Name": "Stars_Total",
+      "Id": 17,
+      "Statistic_Name": "Stars_Total",
+      "ImageId": "rbxassetid://130229207852006",
+      "Is_Display": true
+    },
+    "Maze_Level_6_Total": {
+      "LayoutOrder": 1018,
+      "Name": "Maze_Level_6_Total",
+      "Id": 34,
+      "Statistic_Name": "[D] Maze_Level_6_Total",
+      "ImageId": "rbxassetid://115660553869706",
+      "Is_Display": true
+    },
+    "Maze_Level_3_Total": {
+      "LayoutOrder": 1015,
+      "Name": "Maze_Level_3_Total",
+      "Id": 31,
+      "Statistic_Name": "[D] Maze_Level_3_Total",
+      "ImageId": "rbxassetid://117824205811263",
+      "Is_Display": true
+    },
+    "Ice_Raid_Waves": {
+      "LayoutOrder": 1203,
+      "Name": "Ice_Raid_Waves",
+      "Id": 39,
+      "Statistic_Name": "[D] Ice_Raid_Waves",
+      "ImageId": "rbxassetid://84865516591949",
+      "Is_Display": true
+    },
+    "Santa_Raid_Waves": {
+      "LayoutOrder": 1204,
+      "Name": "Santa_Raid_Waves",
+      "Id": 40,
+      "Statistic_Name": "[D] Santa_Raid_Waves",
+      "ImageId": "rbxassetid://80314855395086",
+      "Is_Display": true
+    },
+    "Calamity_Raid_Waves": {
+      "LayoutOrder": 1205,
+      "Name": "Calamity_Raid_Waves",
+      "Id": 41,
+      "Statistic_Name": "[D] Calamity_Raid_Waves",
+      "ImageId": "rbxassetid://106987513738035",
+      "Is_Display": true
+    },
+    "Mugen_Dungeon_Reached": {
+      "LayoutOrder": 1201,
+      "Name": "Mugen_Dungeon_Reached",
+      "Id": 37,
+      "Statistic_Name": "[D] Mugen_Dungeon_Reached",
+      "ImageId": "rbxassetid://94972853867868",
+      "Is_Display": true
+    },
+    "Robux_Spent": {
+      "LayoutOrder": 3,
+      "Name": "Robux_Spent",
+      "Id": 15,
+      "Statistic_Name": "Robux_Spent",
+      "ImageId": "rbxassetid://93364417647744",
+      "Is_Display": true
+    },
+    "Dungeon_Easy_Total": {
+      "LayoutOrder": 1001,
+      "Name": "Dungeon_Easy_Total",
+      "Id": 19,
+      "Statistic_Name": "[D] Dungeon_Easy_Total",
+      "ImageId": "rbxassetid://140143935979972",
+      "Is_Display": true
+    },
+    "Energy_Potion": {
+      "LayoutOrder": 1000,
+      "Name": "Energy_Potion",
+      "Id": 5,
+      "Resource_Name": "Energy_Potion",
+      "ImageId": "rbxassetid://15653613865",
+      "Is_Display": true
+    },
+    "Dungeon_Suffering_Total": {
+      "LayoutOrder": 1010,
+      "Name": "Dungeon_Suffering_Total",
+      "Id": 26,
+      "Statistic_Name": "[D] Dungeon_Suffering_Total",
+      "ImageId": "rbxassetid://134910738691149",
+      "Is_Display": true
+    },
+    "Dungeon_Crazy_Total": {
+      "LayoutOrder": 1005,
+      "Name": "Dungeon_Crazy_Total",
+      "Id": 23,
+      "Statistic_Name": "[D] Dungeon_Crazy_Total",
+      "ImageId": "rbxassetid://92837185412642",
+      "Is_Display": true
+    },
+    "Tournament_Raid_Waves": {
+      "LayoutOrder": 1008,
+      "Name": "Tournament_Raid_Waves",
+      "Id": 25,
+      "Statistic_Name": "[D] Tournament_Raid_Waves",
+      "ImageId": "rbxassetid://103250369022765",
+      "Is_Display": true
+    },
+    "Maze_Level_4_Total": {
+      "LayoutOrder": 1016,
+      "Name": "Maze_Level_4_Total",
+      "Id": 32,
+      "Statistic_Name": "[D] Maze_Level_4_Total",
+      "ImageId": "rbxassetid://124986548716581",
+      "Is_Display": true
+    },
+    "Total_Energy": {
+      "LayoutOrder": 10,
+      "Is_Big_Number": true,
+      "Is_Display": true,
+      "ImageId": "rbxassetid://120297012101705",
+      "Name": "Total_Energy",
+      "Max_Value": 1e299,
+      "Statistic_Name": "Resources_Energy",
+      "Id": 13,
+      "Not_Updating": true
+    },
+    "Total_Coins": {
+      "LayoutOrder": 8,
+      "Is_Big_Number": true,
+      "Is_Display": true,
+      "ImageId": "rbxassetid://119816620823008",
+      "Name": "Total_Coins",
+      "Max_Value": 1e299,
+      "Statistic_Name": "Resources_Coins",
+      "Id": 12,
+      "Not_Updating": true
+    },
+    "Level": {
+      "LayoutOrder": 1,
+      "Name": "Level",
+      "Id": 3,
+      "Resource_Name": "Level",
+      "ImageId": "rbxassetid://132362814336084",
+      "Is_Display": true
+    },
+    "Level_II": {
+      "LayoutOrder": 21,
+      "Name": "Level_II",
+      "Id": 8,
+      "Resource_Name": "Level_II",
+      "Is_Display": true
+    },
+    "Body_Improvement_Challenge_Waves": {
+      "LayoutOrder": 1101,
+      "Name": "Body_Improvement_Challenge_Waves",
+      "Id": 36,
+      "Statistic_Name": "[D] Body_Improvement_Challenge_Waves",
+      "ImageId": "rbxassetid://96015906482747",
+      "Is_Display": true
+    },
+    "Crimson_Canyon_Reached": {
+      "LayoutOrder": 1100,
+      "Name": "Crimson_Canyon_Reached",
+      "Id": 35,
+      "Statistic_Name": "[D] Crimson_Canyon_Reached",
+      "ImageId": "rbxassetid://135897492903996",
+      "Is_Display": true
+    },
+    "Zeni": {
+      "LayoutOrder": 27,
+      "Name": "Zeni",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Resource_Name": "Zeni",
+      "ImageId": "rbxassetid://106350904800374",
+      "Id": 6
+    },
+    "Maze_Level_2_Total": {
+      "LayoutOrder": 1014,
+      "Name": "Maze_Level_2_Total",
+      "Id": 30,
+      "Statistic_Name": "[D] Maze_Level_2_Total",
+      "ImageId": "rbxassetid://106174017280999",
+      "Is_Display": true
+    },
+    "Leaf_Raid_Waves": {
+      "LayoutOrder": 1007,
+      "Name": "Leaf_Raid_Waves",
+      "Id": 24,
+      "Statistic_Name": "[D] Leaf_Raid_Waves",
+      "ImageId": "rbxassetid://91485028095110",
+      "Is_Display": true
+    },
+    "Breathing_Raid_Waves": {
+      "LayoutOrder": 1202,
+      "Name": "Breathing_Raid_Waves",
+      "Id": 38,
+      "Statistic_Name": "[D] Breathing_Raid_Waves",
+      "ImageId": "rbxassetid://104788284543297",
+      "Is_Display": true
+    },
+    "Total_Ki": {
+      "LayoutOrder": 30,
+      "Name": "Total_Ki",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Statistic_Name": "Resources_Ki",
+      "ImageId": "rbxassetid://109367300080973",
+      "Id": 11
+    },
+    "Time_Played": {
+      "LayoutOrder": 4,
+      "Name": "Time_Played",
+      "Id": 16,
+      "Statistic_Name": "Time_Played",
+      "ImageId": "rbxassetid://135562241385481",
+      "Is_Display": true
+    },
+    "Dungeon_Medium_Total": {
+      "LayoutOrder": 1002,
+      "Name": "Dungeon_Medium_Total",
+      "Id": 20,
+      "Statistic_Name": "[D] Dungeon_Medium_Total",
+      "ImageId": "rbxassetid://120390243508453",
+      "Is_Display": true
+    },
+    "Maze_Level_1_Total": {
+      "LayoutOrder": 1013,
+      "Name": "Maze_Level_1_Total",
+      "Id": 29,
+      "Statistic_Name": "[D] Maze_Level_1_Total",
+      "ImageId": "rbxassetid://101466249995335",
+      "Is_Display": true
+    },
+    "Dungeon_Torment_Reached": {
+      "LayoutOrder": 1012,
+      "Name": "Dungeon_Torment_Reached",
+      "Id": 28,
+      "Statistic_Name": "[D] Dungeon_Torment_Reached",
+      "ImageId": "rbxassetid://90648235506243",
+      "Is_Display": true
+    },
+    "Dungeon_Insane_Total": {
+      "LayoutOrder": 1004,
+      "Name": "Dungeon_Insane_Total",
+      "Id": 22,
+      "Statistic_Name": "[D] Dungeon_Insane_Total",
+      "ImageId": "rbxassetid://115112375327161",
+      "Is_Display": true
+    },
+    "Energy": {
+      "LayoutOrder": 9,
+      "Name": "Energy",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Resource_Name": "Energy",
+      "ImageId": "rbxassetid://120297012101705",
+      "Id": 2
+    },
+    "Ki": {
+      "LayoutOrder": 29,
+      "Name": "Ki",
+      "Is_Display": true,
+      "Is_Big_Number": true,
+      "Resource_Name": "Ki",
+      "ImageId": "rbxassetid://109367300080973",
+      "Id": 7
+    },
+    "Maze_Level_5_Total": {
+      "LayoutOrder": 1017,
+      "Name": "Maze_Level_5_Total",
+      "Id": 33,
+      "Statistic_Name": "[D] Maze_Level_5_Total",
+      "ImageId": "rbxassetid://111642614576030",
+      "Is_Display": true
+    }
+  },
+  "Colors": {
+    "CC": {
+      "Name": "CC",
+      "Id": 3
+    },
+    "Tournament_Raid_Waves": {
+      "Id": 11,
+      "Emoji": "ðŸ¥‡",
+      "Name": "Tournament_Raid_Waves",
+      "Color": null
+    },
+    "Crimson_Canyon_Reached": {
+      "Id": 13,
+      "Emoji": "ðŸœï¸",
+      "Name": "Crimson_Canyon_Reached",
+      "Color": null
+    },
+    "Tester": {
+      "Name": "Tester",
+      "Id": 2
+    },
+    "Leaf_Raid_Waves": {
+      "Id": 10,
+      "Emoji": "ðŸƒ",
+      "Name": "Leaf_Raid_Waves",
+      "Color": null
+    },
+    "Enemies_Defeated": {
+      "Id": 6,
+      "Emoji": "ðŸ‘¹",
+      "Name": "Enemies_Defeated",
+      "Color": null
+    },
+    "Total_Coins": {
+      "Id": 4,
+      "Emoji": "ðŸ’°",
+      "Name": "Total_Coins",
+      "Color": null
+    },
+    "Stars_Total": {
+      "Id": 7,
+      "Emoji": "â­",
+      "Name": "Stars_Total",
+      "Color": null
+    },
+    "Body_Improvement_Challenge_Waves": {
+      "Id": 12,
+      "Emoji": "ðŸ’ª",
+      "Name": "Body_Improvement_Challenge_Waves",
+      "Color": null
+    },
+    "Ice_Raid_Waves": {
+      "Id": 16,
+      "Emoji": "â„ï¸",
+      "Name": "Ice_Raid_Waves",
+      "Color": null
+    },
+    "Santa_Raid_Waves": {
+      "Id": 17,
+      "Emoji": "ðŸŽ…ðŸ»",
+      "Name": "Santa_Raid_Waves",
+      "Color": null
+    },
+    "Calamity_Raid_Waves": {
+      "Id": 18,
+      "Emoji": "â›ˆï¸",
+      "Name": "Calamity_Raid_Waves",
+      "Color": null
+    },
+    "Mugen_Dungeon_Reached": {
+      "Id": 14,
+      "Emoji": "ðŸš‚",
+      "Name": "Mugen_Dungeon_Reached",
+      "Color": null
+    },
+    "Time_Played": {
+      "Id": 9,
+      "Emoji": "â±",
+      "Name": "Time_Played",
+      "Color": null
+    },
+    "Robux_Spent": {
+      "Id": 8,
+      "Emoji": "ðŸ¤‘",
+      "Name": "Robux_Spent",
+      "Color": null
+    },
+    "Admin": {
+      "Name": "Admin",
+      "Id": 1
+    },
+    "Total_Energy": {
+      "Id": 5,
+      "Emoji": "âš¡",
+      "Name": "Total_Energy",
+      "Color": null
+    },
+    "Breathing_Raid_Waves": {
+      "Id": 15,
+      "Emoji": "ðŸ’¨",
+      "Name": "Breathing_Raid_Waves",
+      "Color": null
+    }
+  },
+  "IsDebug": false,
+  "Tiers": {
+    "Pets": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "Shiny",
+        "Category": "Pets"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "Golden",
+        "Category": "Pets"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "Rainbow",
+        "Category": "Pets"
+      }
+    ],
+    "Shadows": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Shadows"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Shadows"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Shadows"
+      }
+    ],
+    "Stands": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Stands"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Stands"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Stands"
+      }
+    ],
+    "Titans": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.5,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Titans"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Titans"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Titans"
+      }
+    ],
+    "Weapons": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Weapons"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Weapons"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Damage",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          },
+          {
+            "Main_Stat": "Coins",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Coins_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Weapons"
+      }
+    ],
+    "Zombies": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.1,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Zombies"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.2,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 9,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Zombies"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Fighter_Damage",
+            "Category": "Tier",
+            "Value": 0.3,
+            "Multiply": true,
+            "Name": "Fighter_Damage_Multiply"
+          },
+          {
+            "Main_Stat": "Energy",
+            "Category": "Tier",
+            "Value": 19,
+            "Multiply": true,
+            "Name": "Energy_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Zombies"
+      }
+    ],
+    "Auras": [
+      {
+        "Id": 1,
+        "Stats": [
+          {
+            "Main_Stat": "Ki",
+            "Category": "Tier",
+            "Value": 1,
+            "Multiply": true,
+            "Name": "Ki_Multiply"
+          }
+        ],
+        "Name": "1_Star",
+        "Category": "Auras"
+      },
+      {
+        "Id": 2,
+        "Stats": [
+          {
+            "Main_Stat": "Ki",
+            "Category": "Tier",
+            "Value": 2,
+            "Multiply": true,
+            "Name": "Ki_Multiply"
+          }
+        ],
+        "Name": "2_Stars",
+        "Category": "Auras"
+      },
+      {
+        "Id": 3,
+        "Stats": [
+          {
+            "Main_Stat": "Ki",
+            "Category": "Tier",
+            "Value": 4,
+            "Multiply": true,
+            "Name": "Ki_Multiply"
+          }
+        ],
+        "Name": "3_Stars",
+        "Category": "Auras"
+      }
+    ]
+  },
+  "World_Maps": [
+    {
+      "Display_MapId": 1,
+      "Feature_Tips": [
+        "Rank Up",
+        "Dragon Race",
+        "Saiyan Evolution",
+        "Avatar Leveling",
+        "Dungeon",
+        "Exclusive_Exchanger",
+        "Food Shop",
+        "Daily Quest 1"
+      ],
+      "Str_Id": "1",
+      "Id": 1,
+      "ImageId": "rbxassetid://126435845804003",
+      "Feature_ImageIds": [
+        "rbxassetid://89121312061972",
+        "rbxassetid://80543035071847",
+        "rbxassetid://109763458341872",
+        "rbxassetid://128964914019003",
+        "rbxassetid://138293173884000",
+        "rbxassetid://135532354668820",
+        "rbxassetid://131156667095172",
+        "rbxassetid://15814865123"
+      ],
+      "Page_Number": 1,
+      "Name": "Earth_City",
+      "MapId": 1,
+      "Is_Training": "Energy",
+      "Is_Teleport_UI": true,
+      "Is_Default_Teleport": true
+    },
+    {
+      "Display_MapId": 2,
+      "MapId": 2,
+      "Str_Id": "2",
+      "BadgeId": 3715386572705093,
+      "ImageId": "rbxassetid://113796549375670",
+      "Feature_ImageIds": [
+        "rbxassetid://103797445341764",
+        "rbxassetid://131567976287121",
+        "rbxassetid://73036819543324",
+        "rbxassetid://119568485671976",
+        "rbxassetid://73036819543324"
+      ],
+      "Page_Number": 1,
+      "Name": "Windmill_Island",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Pirate Crew",
+        "Demon Fruits",
+        "Swords",
+        "Haki Upgrade",
+        "Sword Exchanger"
+      ],
+      "Id": 2,
+      "Price": {
+        "Id": "World_Key_-_2",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 3,
+      "MapId": 3,
+      "Str_Id": "3",
+      "BadgeId": 2800942666738758,
+      "ImageId": "rbxassetid://78184280479675",
+      "Feature_ImageIds": [
+        "rbxassetid://74708155020004",
+        "rbxassetid://71279193449431",
+        "rbxassetid://71761615452239"
+      ],
+      "Page_Number": 1,
+      "Name": "Soul_Society",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": ["Reiatsu Color", "Zanpakuto", "Spiritual Pressure"],
+      "Id": 3,
+      "Price": {
+        "Id": "World_Key_-_3",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 4,
+      "MapId": 4,
+      "Str_Id": "4",
+      "BadgeId": 1867650734174780,
+      "ImageId": "rbxassetid://94229952743358",
+      "Feature_ImageIds": [
+        "rbxassetid://130464802953428",
+        "rbxassetid://95123047027878",
+        "rbxassetid://76913177677003"
+      ],
+      "Page_Number": 1,
+      "Name": "Cursed_School",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": ["Curses", "Cursed Progression", "Weapon Evolve"],
+      "Id": 4,
+      "Price": {
+        "Id": "World_Key_-_4",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 5,
+      "MapId": 5,
+      "Str_Id": "5",
+      "BadgeId": 2211257225355157,
+      "ImageId": "rbxassetid://85510246208520",
+      "Feature_ImageIds": [
+        "rbxassetid://111800421850187",
+        "rbxassetid://116030148389031",
+        "rbxassetid://101242883563591",
+        "rbxassetid://134517178095587",
+        "rbxassetid://112999642500068",
+        "rbxassetid://99510595996281"
+      ],
+      "Page_Number": 1,
+      "Name": "Slayer_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Breathings",
+        "Weapon Evolve 2",
+        "Demon Arts",
+        "Weapon Evolve 3",
+        "Slayer_Energy_Progression",
+        "Exp_Obelisk"
+      ],
+      "Id": 5,
+      "Price": {
+        "Id": "World_Key_-_5",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 6,
+      "MapId": 6,
+      "Str_Id": "6",
+      "BadgeId": 3638091449814716,
+      "ImageId": "rbxassetid://101069670267311",
+      "Feature_ImageIds": [
+        "rbxassetid://72419446650770",
+        "rbxassetid://70910382020065",
+        "rbxassetid://80271084342540",
+        "rbxassetid://94414119489458",
+        "rbxassetid://110613194054978",
+        "rbxassetid://116029220202705",
+        "rbxassetid://74146787369389"
+      ],
+      "Page_Number": 1,
+      "Name": "Solo_Island",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Solo Hunter Rank",
+        "ReAwakening Progression",
+        "Monarch Progression",
+        "Food_Exchanger",
+        "Shadow Leveling",
+        "Shadow Upgrades",
+        "Shadow Enhancer"
+      ],
+      "Id": 6,
+      "Price": {
+        "Id": "World_Key_-_6",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 7,
+      "MapId": 7,
+      "Str_Id": "7",
+      "BadgeId": 3701377163607832,
+      "ImageId": "rbxassetid://107363679788230",
+      "Feature_ImageIds": [
+        "rbxassetid://103501763167478",
+        "rbxassetid://122732639067510",
+        "rbxassetid://129764606489391",
+        "rbxassetid://78972652115003"
+      ],
+      "Page_Number": 1,
+      "Name": "Clover_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Grimoire",
+        "Water Spirit Progression",
+        "Fire Spirit Progression",
+        "Wind Spirit Progression"
+      ],
+      "Id": 7,
+      "Price": {
+        "Id": "World_Key_-_7",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 8,
+      "MapId": 8,
+      "Str_Id": "8",
+      "BadgeId": 25103606258345,
+      "ImageId": "rbxassetid://96492016336823",
+      "Feature_ImageIds": [
+        "rbxassetid://89668961903340",
+        "rbxassetid://98415560656782",
+        "rbxassetid://136375469732470"
+      ],
+      "Page_Number": 1,
+      "Name": "Leaf_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": ["Chakra Progression", "Power Eyes", "Attack Range 2"],
+      "Id": 8,
+      "Price": {
+        "Id": "World_Key_-_8",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 9,
+      "MapId": 9,
+      "Str_Id": "9",
+      "BadgeId": 3693503004813970,
+      "ImageId": "rbxassetid://90977507039134",
+      "Feature_ImageIds": [
+        "rbxassetid://94544842370105",
+        "rbxassetid://94676194908269",
+        "rbxassetid://118078819488495"
+      ],
+      "Page_Number": 1,
+      "Name": "Spirit_Residence",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": ["Psychic Mayhem", "Spiritual Upgrade", "Lucky Spirit"],
+      "Id": 9,
+      "Price": {
+        "Id": "World_Key_-_9",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 10,
+      "MapId": 10,
+      "Str_Id": "10",
+      "BadgeId": 1008909634453133,
+      "ImageId": "rbxassetid://86412789704217",
+      "Feature_ImageIds": [
+        "rbxassetid://73680690544439",
+        "rbxassetid://138364269346563",
+        "rbxassetid://128291677696702",
+        "rbxassetid://86807100249822",
+        "rbxassetid://123192540877679"
+      ],
+      "Page_Number": 1,
+      "Name": "Magic_Hunter_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Energy Card Shop",
+        "Damage Card Shop",
+        "Ten Progression",
+        "Contract of Greed",
+        "Energy Obelisk"
+      ],
+      "Id": 10,
+      "Price": {
+        "Id": "World_Key_-_10",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 11,
+      "MapId": 11,
+      "Str_Id": "11",
+      "BadgeId": 1710680443623235,
+      "ImageId": "rbxassetid://125344061971325",
+      "Feature_ImageIds": [
+        "rbxassetid://78180237497824",
+        "rbxassetid://95930329863911",
+        "rbxassetid://138623188032835",
+        "rbxassetid://110477862159288",
+        "rbxassetid://136725132490272",
+        "rbxassetid://121498515252517"
+      ],
+      "Page_Number": 1,
+      "Name": "Titan_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Families",
+        "Titans",
+        "Titan Injection",
+        "Titan Evolve",
+        "Titan Evolve 2",
+        "Titan Evolve 3"
+      ],
+      "Id": 11,
+      "Price": {
+        "Id": "World_Key_-_11",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 12,
+      "MapId": 12,
+      "Str_Id": "12",
+      "BadgeId": 1105345716484828,
+      "ImageId": "rbxassetid://115330643151452",
+      "Feature_ImageIds": [
+        "rbxassetid://117257507417148",
+        "rbxassetid://96825791643842",
+        "rbxassetid://120297012101705",
+        "rbxassetid://96650314757762"
+      ],
+      "Page_Number": 1,
+      "Name": "Village_of_Sins",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Sins",
+        "Commandments",
+        "Energy_Progression",
+        "Sin Upgrades"
+      ],
+      "Id": 12,
+      "Price": {
+        "Id": "World_Key_-_12",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 13,
+      "MapId": 13,
+      "Str_Id": "13",
+      "BadgeId": 3833015006489201,
+      "ImageId": "rbxassetid://139123271399330",
+      "Feature_ImageIds": [
+        "rbxassetid://130004669676426",
+        "rbxassetid://100513684359057",
+        "rbxassetid://90945946371648",
+        "rbxassetid://102363968016609"
+      ],
+      "Page_Number": 1,
+      "Name": "Kaiju_Base",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Fortitude Level",
+        "Kaiju Powers",
+        "Kaiju Energy",
+        "Power of Exchange"
+      ],
+      "Id": 13,
+      "Price": {
+        "Id": "World_Key_-_13",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 14,
+      "MapId": 14,
+      "Str_Id": "14",
+      "BadgeId": 964597760725985,
+      "ImageId": "rbxassetid://93161832379492",
+      "Feature_ImageIds": [
+        "rbxassetid://76253382630191",
+        "rbxassetid://99431844767275",
+        "rbxassetid://138692227688668",
+        "rbxassetid://81954379045954",
+        "rbxassetid://122391307370145",
+        "rbxassetid://113976048549240"
+      ],
+      "Page_Number": 1,
+      "Name": "Tempest_Capital",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Ultimate Skills",
+        "Species",
+        "Demon Lord Energy",
+        "Demon Lord Damage",
+        "Demon Lord Luck",
+        "Demon Lord Coins"
+      ],
+      "Id": 14,
+      "Price": {
+        "Id": "World_Key_-_14",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 15,
+      "MapId": 15,
+      "Str_Id": "15",
+      "BadgeId": 2074056613794743,
+      "ImageId": "rbxassetid://133267483218460",
+      "Feature_ImageIds": [
+        "rbxassetid://127737736998154",
+        "rbxassetid://120833491387680",
+        "rbxassetid://70381487938703",
+        "rbxassetid://125459265151823",
+        "rbxassetid://129119054246367"
+      ],
+      "Page_Number": 1,
+      "Name": "Virtual_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Power Energy Runes",
+        "Weapon Runes",
+        "Swordsman Energy",
+        "Swordsman Damage",
+        "Damage Obelisk"
+      ],
+      "Id": 15,
+      "Price": {
+        "Id": "World_Key_-_15",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 16,
+      "MapId": 16,
+      "Str_Id": "16",
+      "BadgeId": 1039708096737112,
+      "ImageId": "rbxassetid://130971042305414",
+      "Feature_ImageIds": [
+        "rbxassetid://87007917599015",
+        "rbxassetid://135041475645848",
+        "rbxassetid://88264916841585",
+        "rbxassetid://108416505891965",
+        "rbxassetid://119168029882463",
+        "rbxassetid://99804137021379",
+        "rbxassetid://98736146565113"
+      ],
+      "Page_Number": 1,
+      "Name": "Cairo",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Stands",
+        "Ripple Energy",
+        "Onomatopoeia",
+        "Stand Evolve",
+        "Stand Evolve 2",
+        "Stand Evolve 3",
+        "Requiem Injection"
+      ],
+      "Id": 16,
+      "Price": {
+        "Id": "World_Key_-_16",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 17,
+      "MapId": 17,
+      "Str_Id": "17",
+      "BadgeId": 1588251348285311,
+      "ImageId": "rbxassetid://115971380249796",
+      "Feature_ImageIds": [
+        "rbxassetid://83373491209093",
+        "rbxassetid://96844634232385",
+        "rbxassetid://127280201815856",
+        "rbxassetid://88946165502402"
+      ],
+      "Page_Number": 1,
+      "Name": "Ghoul_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Investigators",
+        "Kagune",
+        "Damage Cells",
+        "Kagune Leveling"
+      ],
+      "Id": 17,
+      "Price": {
+        "Id": "World_Key_-_17",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 18,
+      "MapId": 18,
+      "Str_Id": "18",
+      "BadgeId": 2880293314467408,
+      "ImageId": "rbxassetid://86177645382298",
+      "Feature_ImageIds": [
+        "rbxassetid://84031550212582",
+        "rbxassetid://71328302349281",
+        "rbxassetid://97652590466405",
+        "rbxassetid://131673149165702",
+        "rbxassetid://127322804273535"
+      ],
+      "Page_Number": 1,
+      "Name": "Chainsaw_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Debiru Hunter",
+        "Akuma Powers",
+        "Akuma Damage",
+        "Akuma Energy",
+        "Pokita Leveling"
+      ],
+      "Id": 18,
+      "Price": {
+        "Id": "World_Key_-_18",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 19,
+      "MapId": 19,
+      "Str_Id": "19",
+      "BadgeId": 4268993951167911,
+      "ImageId": "rbxassetid://82160196417643",
+      "Feature_ImageIds": [
+        "rbxassetid://81573129394061",
+        "rbxassetid://110657879896815",
+        "rbxassetid://111689713873766",
+        "rbxassetid://70992187344423",
+        "rbxassetid://89532635375984",
+        "rbxassetid://127636867866573",
+        "rbxassetid://103220730895888",
+        "rbxassetid://113007715394070",
+        "rbxassetid://101967605736887"
+      ],
+      "Page_Number": 1,
+      "Name": "Tokyo_Empire",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Special Fire Force",
+        "Mushi Bite",
+        "1st Gen Leveling",
+        "2nd Gen Leveling",
+        "3rd Gen Leveling",
+        "Hybrid Leveling",
+        "Adolla Leveling",
+        "Pyrokinetics_Evolve",
+        "Adolla_Blessing"
+      ],
+      "Id": 19,
+      "Price": {
+        "Id": "World_Key_-_19",
+        "Amount": -6
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 20,
+      "MapId": 20,
+      "Str_Id": "20",
+      "BadgeId": 1988229594533874,
+      "ImageId": "rbxassetid://73191692015810",
+      "Feature_ImageIds": [
+        "rbxassetid://80246393945400",
+        "rbxassetid://138371427578479",
+        "rbxassetid://134529788006486",
+        "rbxassetid://87043983504942",
+        "rbxassetid://139649836948736",
+        "rbxassetid://100177923412568",
+        "rbxassetid://122882624991658",
+        "rbxassetid://136918623750129",
+        "rbxassetid://88413850372710",
+        "rbxassetid://88413850372710"
+      ],
+      "Page_Number": 2,
+      "Name": "Green_Planet",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Grand Elder Power",
+        "Frost Demon Evolution",
+        "Dragon Race Leveling",
+        "Saiyan Evolution Leveling",
+        "Eternal Dragon Leveling",
+        "Dragon Energy",
+        "Dragon Damage",
+        "Luck Obelisk",
+        "Power of Friendship",
+        "Power_Friendship_Leveling"
+      ],
+      "Id": 20,
+      "Price": {
+        "Id": "World_Key_-_20",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 21,
+      "MapId": 21,
+      "Str_Id": "21",
+      "BadgeId": 1265098587236728,
+      "ImageId": "rbxassetid://124207782645931",
+      "Feature_ImageIds": [
+        "rbxassetid://118676098695519",
+        "rbxassetid://79170368482234",
+        "rbxassetid://123006313863895",
+        "rbxassetid://110638057127022",
+        "rbxassetid://85420815328033",
+        "rbxassetid://123673372761017",
+        "rbxassetid://121518677493852",
+        "rbxassetid://89220769516845",
+        "rbxassetid://118676098695519"
+      ],
+      "Page_Number": 2,
+      "Name": "Hollow_World",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Scythes",
+        "Bankai",
+        "Espada",
+        "Scythe Evolve",
+        "Scythe Evolve 2",
+        "Scythe Evolve 3",
+        "Reiatsu Leveling",
+        "Zanpakuto Leveling",
+        "Scythe Exchanger"
+      ],
+      "Id": 21,
+      "Price": {
+        "Id": "World_Key_-_21",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 22,
+      "MapId": 22,
+      "Str_Id": "22",
+      "BadgeId": 1474269952794674,
+      "ImageId": "rbxassetid://128092607731463",
+      "Feature_ImageIds": [
+        "rbxassetid://137450272424806",
+        "rbxassetid://94043734174319",
+        "rbxassetid://75805551596684",
+        "rbxassetid://124220945725693",
+        "rbxassetid://90481394492579",
+        "rbxassetid://115123771817325",
+        "rbxassetid://81635169170714",
+        "rbxassetid://119859135635698"
+      ],
+      "Page_Number": 2,
+      "Name": "Shadow_Academy",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Shadow Garden",
+        "Shadow Arts",
+        "Eminence Energy",
+        "Eminence Damage",
+        "Eminence Luck",
+        "Eminence Coins",
+        "Shadow Garden Leveling",
+        "Shadow Arts Leveling"
+      ],
+      "Id": 22,
+      "Price": {
+        "Id": "World_Key_-_22",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 23,
+      "MapId": 23,
+      "Str_Id": "23",
+      "BadgeId": 421882024793043,
+      "ImageId": "rbxassetid://77598628073410",
+      "Feature_ImageIds": [
+        "rbxassetid://100363591949455",
+        "rbxassetid://134360202646605",
+        "rbxassetid://132166005204450",
+        "rbxassetid://95630640444659",
+        "rbxassetid://74853063338153"
+      ],
+      "Page_Number": 2,
+      "Name": "Z_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Energy Threat Level",
+        "Punch Power",
+        "Energy Threat Leveling",
+        "Punch Power Leveling",
+        "Exchange of Power"
+      ],
+      "Id": 23,
+      "Price": {
+        "Id": "World_Key_-_23",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 24,
+      "MapId": 24,
+      "Str_Id": "24",
+      "BadgeId": 3072368920707023,
+      "ImageId": "rbxassetid://112233349532897",
+      "Feature_ImageIds": [
+        "rbxassetid://117861391276577",
+        "rbxassetid://114964261083797",
+        "rbxassetid://130702839684284",
+        "rbxassetid://109014802047756",
+        "rbxassetid://113617595029613",
+        "rbxassetid://126703909851910"
+      ],
+      "Page_Number": 2,
+      "Name": "Great_Tomb",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Adventurer Rank",
+        "Magic Tier",
+        "Mana Growth",
+        "Ultimate Cast",
+        "Adventure Rank Leveling",
+        "Magic Tier Leveling"
+      ],
+      "Id": 24,
+      "Price": {
+        "Id": "World_Key_-_24",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 25,
+      "MapId": 25,
+      "Str_Id": "25",
+      "BadgeId": 215409419503376,
+      "ImageId": "rbxassetid://137426719941885",
+      "Feature_ImageIds": [
+        "rbxassetid://105039153350265",
+        "rbxassetid://71707043630607",
+        "rbxassetid://134299131635340",
+        "rbxassetid://114319826590898",
+        "rbxassetid://94489084778703",
+        "rbxassetid://90026312112060",
+        "rbxassetid://107301156942678",
+        "rbxassetid://95134599767399",
+        "rbxassetid://81990812150735"
+      ],
+      "Page_Number": 2,
+      "Name": "Thriller_Park",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Thriller Zombie",
+        "Nightmare Evolution",
+        "Zombie Crafts",
+        "Demon Fruit Leveling",
+        "Special Zombie",
+        "Special Zombie Crafting",
+        "Special Zombie Fusion",
+        "Zombie Booster",
+        "Coins_Obelisk"
+      ],
+      "Id": 25,
+      "Price": {
+        "Id": "World_Key_-_25",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 26,
+      "MapId": 26,
+      "Str_Id": "26",
+      "BadgeId": 3064856347958437,
+      "ImageId": "rbxassetid://87596567013420",
+      "Feature_ImageIds": [
+        "rbxassetid://131585467839668",
+        "rbxassetid://114252715735922",
+        "rbxassetid://128947898914861",
+        "rbxassetid://96934189689275",
+        "rbxassetid://99491831552652",
+        "rbxassetid://126032219295276",
+        "rbxassetid://80030030340984",
+        "rbxassetid://92527908450256"
+      ],
+      "Page_Number": 2,
+      "Name": "Amusement_Park",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Assassin Grade",
+        "Assassin Skills",
+        "Assassin Energy",
+        "Assassin Damage",
+        "Assassin Critical Energy",
+        "Assassin Critical Damage",
+        "Assassin_Crafting",
+        "Scythe_Leveling"
+      ],
+      "Id": 26,
+      "Price": {
+        "Id": "World_Key_-_26",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 27,
+      "MapId": 27,
+      "Str_Id": "27",
+      "BadgeId": 882289909366687,
+      "ImageId": "rbxassetid://121440419441363",
+      "Feature_ImageIds": [
+        "rbxassetid://86811873449372",
+        "rbxassetid://75244536100096",
+        "rbxassetid://133162184487496",
+        "rbxassetid://82705109805757",
+        "rbxassetid://135000253838143",
+        "rbxassetid://99554140684869",
+        "rbxassetid://120736316518662",
+        "rbxassetid://110883875851060"
+      ],
+      "Page_Number": 2,
+      "Name": "Re:Manor",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Spirit Pact",
+        "Witch Factor",
+        "Re:Spirit Pact",
+        "Re:Witch Factor",
+        "Artificial_Spirit_Blessings",
+        "Gospel_Curses",
+        "Re:Craft",
+        "Witch Authority"
+      ],
+      "Id": 27,
+      "Price": {
+        "Id": "World_Key_-_27",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 28,
+      "MapId": 28,
+      "Str_Id": "28",
+      "BadgeId": 457367724089150,
+      "ImageId": "rbxassetid://74693956626514",
+      "Feature_ImageIds": [
+        "rbxassetid://137297521967668",
+        "rbxassetid://91075032022008",
+        "rbxassetid://124312313750356",
+        "rbxassetid://132518806548801"
+      ],
+      "Page_Number": 2,
+      "Name": "Asfordo_Academy",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Geass Potential",
+        "Geass Leveling",
+        "Geass Evolve",
+        "Knightmare Frames"
+      ],
+      "Id": 28,
+      "Price": {
+        "Id": "World_Key_-_28",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 29,
+      "MapId": 29,
+      "Str_Id": "29",
+      "BadgeId": 4273564078636261,
+      "ImageId": "rbxassetid://125994291819127",
+      "Feature_ImageIds": [
+        "rbxassetid://73763937535788",
+        "rbxassetid://110746832398466",
+        "rbxassetid://71048421057916",
+        "rbxassetid://91912850939002",
+        "rbxassetid://129759940606434"
+      ],
+      "Page_Number": 2,
+      "Name": "Science_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "IQ",
+        "Scientific Weapons",
+        "Scientific_Tools_Crafting",
+        "Science_Materials_Upgrade",
+        "Science_Upgrades"
+      ],
+      "Id": 29,
+      "Price": {
+        "Id": "World_Key_-_29",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 30,
+      "MapId": 30,
+      "Str_Id": "30",
+      "BadgeId": 348389887656658,
+      "ImageId": "rbxassetid://92741593111449",
+      "Feature_ImageIds": [
+        "rbxassetid://105818576235855",
+        "rbxassetid://128229231973865",
+        "rbxassetid://129915940447732",
+        "rbxassetid://84823250103657",
+        "rbxassetid://105818576235855",
+        "rbxassetid://128229231973865"
+      ],
+      "Page_Number": 2,
+      "Name": "Sand_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Shinobi_Clan",
+        "Kekkei Genkai",
+        "Power Eyes 2",
+        "Chakra Infusion",
+        "Shinobi_Clan_Leveling",
+        "Kekkei_Genkai_Leveling"
+      ],
+      "Id": 30,
+      "Price": {
+        "Id": "World_Key_-_30",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 31,
+      "MapId": 31,
+      "Str_Id": "31",
+      "BadgeId": 4124025639484305,
+      "ImageId": "rbxassetid://94629224286995",
+      "Feature_ImageIds": [
+        "rbxassetid://125161864308348",
+        "rbxassetid://70712249421126",
+        "rbxassetid://130176554741170",
+        "rbxassetid://125161864308348",
+        "rbxassetid://70712249421126"
+      ],
+      "Page_Number": 2,
+      "Name": "Night_Raid_Base",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Energy Teigu",
+        "Damage Teigu",
+        "Teigu_Evolve",
+        "Energy_Teigu_Leveling",
+        "Damage_Teigu_Leveling"
+      ],
+      "Id": 31,
+      "Price": {
+        "Id": "World_Key_-_31",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 32,
+      "MapId": 32,
+      "Str_Id": "32",
+      "BadgeId": 1382592146163720,
+      "ImageId": "rbxassetid://128245839917357",
+      "Feature_ImageIds": [
+        "rbxassetid://126676902736934",
+        "rbxassetid://106537210667422",
+        "rbxassetid://84174335741071",
+        "rbxassetid://96080666025933",
+        "rbxassetid://111642614576030"
+      ],
+      "Page_Number": 2,
+      "Name": "Salty_School",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Psycho Flow",
+        "Psycho Destruction",
+        "Mob_Anger",
+        "Evil_Spirit_Leveling",
+        "Maze_5_Exchanger"
+      ],
+      "Id": 32,
+      "Price": {
+        "Id": "World_Key_-_32",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 33,
+      "MapId": 33,
+      "Str_Id": "33",
+      "BadgeId": 4101881378027572,
+      "ImageId": "rbxassetid://85116911601886",
+      "Feature_ImageIds": [
+        "rbxassetid://108582840760648",
+        "rbxassetid://102889337263453",
+        "rbxassetid://88019045165646",
+        "rbxassetid://77706745788351"
+      ],
+      "Page_Number": 2,
+      "Name": "Mugen_District",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Slayer Marks",
+        "Demon Bloodline",
+        "Make Bento Box",
+        "Demon_Arts_Leveling"
+      ],
+      "Id": 33,
+      "Price": {
+        "Id": "World_Key_-_33",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 34,
+      "MapId": 34,
+      "Str_Id": "34",
+      "BadgeId": 3841079875177687,
+      "ImageId": "rbxassetid://106822162019052",
+      "Feature_ImageIds": [
+        "rbxassetid://78254984353497",
+        "rbxassetid://106229945497495",
+        "rbxassetid://136158771496035",
+        "rbxassetid://110755425618389",
+        "rbxassetid://88012636224833"
+      ],
+      "Page_Number": 2,
+      "Name": "Easton_Academy",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Magic_Type",
+        "The_Muscule",
+        "House_of_Eagle",
+        "House_of_Killer_Whale",
+        "House_of_Wolf"
+      ],
+      "Id": 34,
+      "Price": {
+        "Id": "World_Key_-_34",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 35,
+      "MapId": 35,
+      "Str_Id": "35",
+      "BadgeId": 527940119691280,
+      "ImageId": "rbxassetid://76665905783375",
+      "Feature_ImageIds": [
+        "rbxassetid://137393339662969",
+        "rbxassetid://134878504933362",
+        "rbxassetid://81194760494761",
+        "rbxassetid://134878504933362"
+      ],
+      "Page_Number": 2,
+      "Name": "Kuo_Academy",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "DxD_Species",
+        "Sacred_Gear",
+        "Dragon_Emperor_Evolve",
+        "Dragon_Booster"
+      ],
+      "Id": 35,
+      "Price": {
+        "Id": "World_Key_-_35",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 36,
+      "MapId": 36,
+      "Str_Id": "36",
+      "BadgeId": 3853873480605531,
+      "ImageId": "rbxassetid://139003395942453",
+      "Feature_ImageIds": [
+        "rbxassetid://71158486879327",
+        "rbxassetid://72575308099431",
+        "rbxassetid://126535975093254",
+        "rbxassetid://127871763245634"
+      ],
+      "Page_Number": 2,
+      "Name": "Magnoli_Town",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Mage_Class",
+        "Dragon_Evolution",
+        "Magic_Items_Crafting",
+        "Magic_Items_Evolve"
+      ],
+      "Id": 36,
+      "Price": {
+        "Id": "World_Key_-_36",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 37,
+      "MapId": 37,
+      "Str_Id": "37",
+      "BadgeId": 2049949181199118,
+      "ImageId": "rbxassetid://70823370277268",
+      "Feature_ImageIds": [
+        "rbxassetid://71129360069984",
+        "rbxassetid://72501351801672",
+        "rbxassetid://98368762329194",
+        "rbxassetid://118752759072153",
+        "rbxassetid://122086444134122",
+        "rbxassetid://86138913426292",
+        "rbxassetid://119004293474703",
+        "rbxassetid://88937293628601"
+      ],
+      "Page_Number": 2,
+      "Name": "Lute_Village",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Magic_Shield",
+        "Vassal_Weapons",
+        "Legendary_Bow_Leveling",
+        "Legendary Spear_Leveling",
+        "Legendary_Sword_Leveling",
+        "Legendary_Shield_Leveling",
+        "Legendary_Sword_Blessing",
+        "Legendary_Shield_Blessing"
+      ],
+      "Id": 37,
+      "Price": {
+        "Id": "World_Key_-_37",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 38,
+      "MapId": 38,
+      "Str_Id": "38",
+      "BadgeId": 1909855203104768,
+      "ImageId": "rbxassetid://127604750644404",
+      "Feature_ImageIds": [
+        "rbxassetid://123027817062194",
+        "rbxassetid://108984039382921",
+        "rbxassetid://83236335508339",
+        "rbxassetid://133528859915335"
+      ],
+      "Page_Number": 2,
+      "Name": "Future_Earth_City",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Android_Evolution",
+        "Saiyan_State_Leveling",
+        "Saiyan_State_Blessing",
+        "Android_Evolution_Leveling"
+      ],
+      "Id": 38,
+      "Price": {
+        "Id": "World_Key_-_38",
+        "Amount": -7
+      },
+      "Is_Training": "Energy"
+    },
+    {
+      "Display_MapId": 1,
+      "MapId": 39,
+      "Str_Id": "39",
+      "BadgeId": 4362226301043863,
+      "ImageId": "rbxassetid://124183522173678",
+      "Feature_ImageIds": [
+        "rbxassetid://97953461132661",
+        "rbxassetid://88518721867752",
+        "rbxassetid://103345036524452",
+        "rbxassetid://15814865123",
+        "rbxassetid://81558377781090",
+        "rbxassetid://107821003006048",
+        "rbxassetid://138117981498259"
+      ],
+      "Page_Number": 3,
+      "Name": "Dragon_World",
+      "Is_Teleport_UI": true,
+      "Feature_Tips": [
+        "Rank_Up_II",
+        "Leveling_Avatars_II",
+        "Prestige_Levels_II",
+        "Quest Progression",
+        "Bio Android Transformations",
+        "Power_Absorption",
+        "Bio_Android_Leveling"
+      ],
+      "Id": 39,
+      "Price": {
+        "Id": "Time_Machine",
+        "Amount": -1
+      },
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 2,
+      "Page_Number": 3,
+      "MapId": 40,
+      "Str_Id": "40",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_2",
+        "Amount": -7
+      },
+      "Name": "island41",
+      "Id": 40,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 3,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "41",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_3",
+        "Amount": -7
+      },
+      "Name": "island42",
+      "Id": 41,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 4,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "42",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_4",
+        "Amount": -7
+      },
+      "Name": "island43",
+      "Id": 42,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 5,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "43",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_5",
+        "Amount": -7
+      },
+      "Name": "island44",
+      "Id": 43,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 6,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "44",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_6",
+        "Amount": -7
+      },
+      "Name": "island45",
+      "Id": 44,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 7,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "45",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_7",
+        "Amount": -7
+      },
+      "Name": "island46",
+      "Id": 45,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 8,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "46",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_8",
+        "Amount": -7
+      },
+      "Name": "island47",
+      "Id": 46,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 9,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "47",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_9",
+        "Amount": -7
+      },
+      "Name": "island48",
+      "Id": 47,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 10,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "48",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_10",
+        "Amount": -7
+      },
+      "Name": "island49",
+      "Id": 48,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 11,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "49",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_11",
+        "Amount": -7
+      },
+      "Name": "island50",
+      "Id": 49,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 12,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "50",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_12",
+        "Amount": -7
+      },
+      "Name": "island51",
+      "Id": 50,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 13,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "51",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_13",
+        "Amount": -7
+      },
+      "Name": "island52",
+      "Id": 51,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 14,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "52",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_14",
+        "Amount": -7
+      },
+      "Name": "island53",
+      "Id": 52,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 15,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "53",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_15",
+        "Amount": -7
+      },
+      "Name": "island54",
+      "Id": 53,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 16,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "54",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_16",
+        "Amount": -7
+      },
+      "Name": "island55",
+      "Id": 54,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 17,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "55",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_17",
+        "Amount": -7
+      },
+      "Name": "island56",
+      "Id": 55,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 18,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "56",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_18",
+        "Amount": -7
+      },
+      "Name": "island57",
+      "Id": 56,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 19,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "57",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_19",
+        "Amount": -7
+      },
+      "Name": "island58",
+      "Id": 57,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 20,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "58",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_20",
+        "Amount": -7
+      },
+      "Name": "island59",
+      "Id": 58,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 21,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "59",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_21",
+        "Amount": -7
+      },
+      "Name": "island60",
+      "Id": 59,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 22,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "60",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_22",
+        "Amount": -7
+      },
+      "Name": "island61",
+      "Id": 60,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 23,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "61",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_23",
+        "Amount": -7
+      },
+      "Name": "island62",
+      "Id": 61,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 24,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "62",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_24",
+        "Amount": -7
+      },
+      "Name": "island63",
+      "Id": 62,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 25,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "63",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_25",
+        "Amount": -7
+      },
+      "Name": "island64",
+      "Id": 63,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 26,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "64",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_26",
+        "Amount": -7
+      },
+      "Name": "island65",
+      "Id": 64,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 27,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "65",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_27",
+        "Amount": -7
+      },
+      "Name": "island66",
+      "Id": 65,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 28,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "66",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_28",
+        "Amount": -7
+      },
+      "Name": "island67",
+      "Id": 66,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "67",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_29",
+        "Amount": -7
+      },
+      "Name": "island68",
+      "Id": 67,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "68",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_30",
+        "Amount": -7
+      },
+      "Name": "island69",
+      "Id": 68,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "69",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_31",
+        "Amount": -7
+      },
+      "Name": "island70",
+      "Id": 69,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "70",
+      "Price": {
+        "Id": "World_\"II\"_Key_-_32",
+        "Amount": -7
+      },
+      "Name": "island71",
+      "Id": 70,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "71",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island72",
+      "Id": 71,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "72",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island73",
+      "Id": 72,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "73",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island74",
+      "Id": 73,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "74",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island75",
+      "Id": 74,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "75",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island76",
+      "Id": 75,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 3,
+      "MapId": 0,
+      "Str_Id": "76",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -7
+      },
+      "Name": "island77",
+      "Id": 76,
+      "Is_Training": "Ki"
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "77",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island78",
+      "Id": 77
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "78",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island79",
+      "Id": 78
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "79",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island80",
+      "Id": 79
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "80",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island81",
+      "Id": 80
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "81",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island82",
+      "Id": 81
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "82",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island83",
+      "Id": 82
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "83",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island84",
+      "Id": 83
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "84",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island85",
+      "Id": 84
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "85",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island86",
+      "Id": 85
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "86",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island87",
+      "Id": 86
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "87",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island88",
+      "Id": 87
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "88",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island89",
+      "Id": 88
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "89",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island90",
+      "Id": 89
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "90",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island91",
+      "Id": 90
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "91",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island92",
+      "Id": 91
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "92",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island93",
+      "Id": 92
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "93",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island94",
+      "Id": 93
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "94",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island95",
+      "Id": 94
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "95",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island96",
+      "Id": 95
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "96",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island97",
+      "Id": 96
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "97",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island98",
+      "Id": 97
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "98",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island99",
+      "Id": 98
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "99",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island100",
+      "Id": 99
+    },
+    {
+      "Display_MapId": 0,
+      "Page_Number": 1,
+      "MapId": 0,
+      "Str_Id": "100",
+      "Price": {
+        "Id": "Coins",
+        "Amount": -1e300
+      },
+      "Name": "island101",
+      "Id": 100
+    }
+  ],
+  "Primary_Stats_II": {
+    "Primary_Luck_II": {
+      "Max_Level": 700,
+      "Stats": [
+        {
+          "Value": 0.0025,
+          "Name": "Star_Luck_II",
+          "Category": "[Level Stat] Primary_Luck_II"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Luck_II"
+    },
+    "Primary_Damage_II": {
+      "Max_Level": 5500,
+      "Stats": [
+        {
+          "Main_Stat": "Ki_Damage",
+          "Category": "[Level Stat] Primary_Damage_II",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Ki_Damage_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Damage_II"
+    },
+    "Primary_Energy_II": {
+      "Max_Level": 5500,
+      "Stats": [
+        {
+          "Main_Stat": "Ki",
+          "Category": "[Level Stat] Primary_Energy_II",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Ki_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Energy_II"
+    },
+    "Primary_Coins_II": {
+      "Max_Level": 2000,
+      "Stats": [
+        {
+          "Main_Stat": "Zeni",
+          "Category": "[Level Stat] Primary_Coins_II",
+          "Value": 0.01,
+          "Multiply": true,
+          "Name": "Zeni_Multiply"
+        }
+      ],
+      "Default": 0,
+      "Name": "Primary_Coins_II"
+    }
+  },
+  "Status_Config": {
+    "Stamina": {
+      "Max": "Max_Stamina",
+      "Name": "Stamina",
+      "Regeneration": "Stamina_Regeneration"
+    },
+    "Mana": {
+      "Max": "Max_Mana",
+      "Name": "Mana",
+      "Regeneration": "Mana_Regeneration"
+    },
+    "Health": {
+      "Max": "Max_Health",
+      "Name": "Health",
+      "Regeneration": "Health_Regeneration"
+    }
+  }
+}
