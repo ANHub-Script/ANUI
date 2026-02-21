@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.226  |  2026-02-20  |  Roblox UI Library for scripts
+    v1.0.227  |  2026-02-21  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.226",
+    "version": "1.0.227",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7670,7 +7670,7 @@ end
 
 al._ActiveRefreshTask=task.spawn(function()
 local au=0
-local av=3
+local av=2
 
 for aw,ax in next,as do
 if not al.UIElements.Menu or not al.UIElements.Menu.Parent then break end

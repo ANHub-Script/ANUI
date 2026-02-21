@@ -322,7 +322,7 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         -- 3. [UPDATE] LOOP RENDERING DENGAN LOGIKA SUPER STABIL
         Dropdown._ActiveRefreshTask = task.spawn(function()
             local CurrentLoad = 0
-            local LoadLimit = 3 -- Batas beban sangat rendah (3) agar frame rate terjaga
+            local LoadLimit = 2 -- Batas beban sangat rendah (3) agar frame rate terjaga
             
             for Index, Tab in next, Values do
                 if not Dropdown.UIElements.Menu or not Dropdown.UIElements.Menu.Parent then break end
