@@ -1,0 +1,5508 @@
+{
+    "Adventurer_Rank": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 40,
+        "ImageId": "rbxassetid://117861391276577",
+        "Is_Last_Stop": true,
+        "MapId": 24,
+        "Name": "Adventurer_Rank",
+        "Pity_Names": [
+            "Adventurer_Rank_1",
+            "Adventurer_Rank_2",
+            "Adventurer_Rank_3",
+            "Adventurer_Rank_4",
+            "Adventurer_Rank_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Adventurer_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Copper"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Iron"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Silver"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Gold"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Platinum"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mithril"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Orichalcum"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Adamantite"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Akuma_Powers": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 29,
+        "ImageId": "rbxassetid://71328302349281",
+        "Is_Last_Stop": true,
+        "MapId": 18,
+        "Name": "Akuma_Powers",
+        "Pity_Names": [
+            "Akuma_Powers_1",
+            "Akuma_Powers_2",
+            "Akuma_Powers_3",
+            "Akuma_Powers_4",
+            "Akuma_Powers_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Akuma_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Akuma:_Ghost"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Akuma:_Fox"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Akuma:_Future"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Akuma:_Curse"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Akuma:_Angel"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Akuma:_Crossbow"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Akuma:_Pokita"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Akuma:_Control"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Android_Evolution": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 79,
+        "ImageId": "rbxassetid://123027817062194",
+        "Is_Last_Stop": true,
+        "MapId": 38,
+        "Name": "Android_Evolution",
+        "Pity_Names": [
+            "Android_Evolution_1",
+            "Android_Evolution_2",
+            "Android_Evolution_3",
+            "Android_Evolution_4",
+            "Android_Evolution_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Android_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Base_Android"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Unsealed_Drive"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Overclock_State"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Perfect_Synchronization"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Adaptive_Evolution"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Core_Fracture_Mode"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Synthetic_God_Form"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "True_Artificial_Life"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Omega_Artificial_Life"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Assassin_Grade": {
+        "Chances": [
+            0.4058,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0002
+        ],
+        "Id": 45,
+        "ImageId": "rbxassetid://131585467839668",
+        "Is_Last_Stop": true,
+        "MapId": 26,
+        "Name": "Assassin_Grade",
+        "Pity_Names": [
+            "Assassin_Grade_1",
+            "Assassin_Grade_2",
+            "Assassin_Grade_3",
+            "Assassin_Grade_4",
+            "Assassin_Grade_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Assassin_Grade_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4058,
+                "Id": "Street_Rat"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Fixer"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Contract_Killer"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Specialist"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Executioner"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Shadow_Elite"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Order_Legend"
+            },
+            {
+                "Chance": 0.0002,
+                "Id": "Phantom_of_Death"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Assassin_Skills": {
+        "Chances": [
+            0.4058,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0002
+        ],
+        "Id": 46,
+        "ImageId": "rbxassetid://114252715735922",
+        "Is_Last_Stop": true,
+        "MapId": 26,
+        "Name": "Assassin_Skills",
+        "Pity_Names": [
+            "Assassin_Skills_1",
+            "Assassin_Skills_2",
+            "Assassin_Skills_3",
+            "Assassin_Skills_4",
+            "Assassin_Skills_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Assassin_Skill_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4058,
+                "Id": "Reflex_Boost"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Focus_Sight"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Precision_Strike"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Adrenal_Surge"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Shadow_Cloak"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Echo_Sense"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Zero_Time"
+            },
+            {
+                "Chance": 0.0002,
+                "Id": "Ascendant_Form"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Bio_Android_Transformations": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 80,
+        "ImageId": "rbxassetid://81558377781090",
+        "Is_Last_Stop": true,
+        "MapId": 39,
+        "Name": "Bio_Android_Transformations",
+        "Pity_Names": [
+            "Bio_Android_Transformations_1",
+            "Bio_Android_Transformations_2",
+            "Bio_Android_Transformations_3",
+            "Bio_Android_Transformations_4",
+            "Bio_Android_Transformations_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Bio_Android_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Larva_Form"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Imperfect_Form"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Semi-Perfect_Form"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Perfect_Form"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Power-Weighted_Form"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Super_Perfect_Form"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Ultra_Perfect_Form"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Ultra_Max_Perfect_Form"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Ultra_Pro_Max_Perfect_Form"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Christmas_Glove": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 70,
+        "ImageId": "rbxassetid://89138381714621",
+        "Is_Last_Stop": true,
+        "MapId": 1,
+        "Name": "Christmas_Glove",
+        "Pity_Names": [
+            "Christmas_Glove_1",
+            "Christmas_Glove_2",
+            "Christmas_Glove_3",
+            "Christmas_Glove_4",
+            "Christmas_Glove_5"
+        ],
+        "Price": {
+            "Amount": -1500,
+            "Id": "Candy_Cane"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Common_Christmas_Glove"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Uncommon_Christmas_Glove"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rare_Christmas_Glove"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Epic_Christmas_Glove"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Legendary_Christmas_Glove"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mythical_Christmas_Glove"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Phantom_Christmas_Glove"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Supreme_Christmas_Glove"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Exotic_Christmas_Glove"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Commandments": {
+        "Chances": [
+            0.3591,
+            0.253,
+            0.1471,
+            0.1,
+            0.075,
+            0.05,
+            0.01,
+            0.005,
+            0.0005,
+            0.0003
+        ],
+        "Id": 19,
+        "ImageId": "rbxassetid://96825791643842",
+        "Is_Last_Stop": true,
+        "MapId": 12,
+        "Name": "Commandments",
+        "Pity_Names": [
+            "Commandments_1",
+            "Commandments_2",
+            "Commandments_3",
+            "Commandments_4",
+            "Commandments_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Commandments_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.3591,
+                "Id": "Selflessness"
+            },
+            {
+                "Chance": 0.253,
+                "Id": "Pacifism"
+            },
+            {
+                "Chance": 0.1471,
+                "Id": "Patience"
+            },
+            {
+                "Chance": 0.1,
+                "Id": "Repose"
+            },
+            {
+                "Chance": 0.075,
+                "Id": "Purity"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Reticence"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Truth"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Faith"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Piety"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Love"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_1"
+    },
+    "Curses": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 8,
+        "ImageId": "rbxassetid://130464802953428",
+        "Is_Last_Stop": true,
+        "MapId": 4,
+        "Name": "Curses",
+        "Pity_Names": [
+            "Curses_1",
+            "Curses_2",
+            "Curses_3",
+            "Curses_4",
+            "Curses_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Cursed_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Blazing_Cataclysm"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Nullborn_Phantom"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Infernal_Crater"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Abyssal_Tide"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Verdant_Calamity"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Soulbender"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Wandered_Mind"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Damage_Card_Shop": {
+        "Chances": [
+            0.4058,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004,
+            0.0003
+        ],
+        "Id": 15,
+        "ImageId": "rbxassetid://138364269346563",
+        "Is_Last_Stop": true,
+        "MapId": 10,
+        "Name": "Damage_Card_Shop",
+        "Pity_Names": [
+            "Damage_Card_Shop_1",
+            "Damage_Card_Shop_2",
+            "Damage_Card_Shop_3",
+            "Damage_Card_Shop_4",
+            "Damage_Card_Shop_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Damage_TCG_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4058,
+                "Id": "Damage_Card_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Damage_Card_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Damage_Card_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Damage_Card_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Damage_Card_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Damage_Card_VI"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Damage_Card_VII"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Damage_Card_VIII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Damage_Teigu": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 65,
+        "ImageId": "rbxassetid://70712249421126",
+        "Is_Last_Stop": true,
+        "MapId": 31,
+        "Name": "Damage_Teigu",
+        "Pity_Names": [
+            "Damage_Teigu_1",
+            "Damage_Teigu_2",
+            "Damage_Teigu_3",
+            "Damage_Teigu_4",
+            "Damage_Teigu_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Damage_Teigu_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Belvaac"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Cross_Tail"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Lionelle"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Yatsufusa"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Grand_Chariot"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Pumpkin"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Incursio"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Murasame"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Debiru_Hunter": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 28,
+        "ImageId": "rbxassetid://84031550212582",
+        "Is_Last_Stop": true,
+        "MapId": 18,
+        "Name": "Debiru_Hunter",
+        "Pity_Names": [
+            "Debiru_Hunter_1",
+            "Debiru_Hunter_2",
+            "Debiru_Hunter_3",
+            "Debiru_Hunter_4",
+            "Debiru_Hunter_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Debiru_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Rookie_Hunter"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Field_Hunter"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Contract_Hunter"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Fiend_Hunter"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Hybrid_Hunter"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Veteran_Hunter"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Special_Division_Hunter"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Primal_Threat_Hunter"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Demon_Arts": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 9,
+        "ImageId": "rbxassetid://101242883563591",
+        "Is_Last_Stop": true,
+        "MapId": 5,
+        "Name": "Demon_Arts",
+        "Pity_Names": [
+            "Demon_Arts_1",
+            "Demon_Arts_2",
+            "Demon_Arts_3",
+            "Demon_Arts_4",
+            "Demon_Arts_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Demon_Arts_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Dream_Manipulation"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Blood_Scythes"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Vase_Teleportation"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Emotion_Splitting"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Destructive_Death"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Cryokinesis"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Blood_Control"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Demon_Bloodline": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 69,
+        "ImageId": "rbxassetid://102889337263453",
+        "Is_Last_Stop": true,
+        "MapId": 33,
+        "Name": "Demon_Bloodline",
+        "Pity_Names": [
+            "Demon_Bloodline_1",
+            "Demon_Bloodline_2",
+            "Demon_Bloodline_3",
+            "Demon_Bloodline_4",
+            "Demon_Bloodline_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Demon_Bloodline_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Dried_Bloodline"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Stirred_Bloodline"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Awoken_Bloodline"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Ferocious_Bloodline"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Elite_Bloodline"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Royal_Bloodline"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Primordial_Bloodline"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Origin_Bloodline"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Demon_Fruits": {
+        "Chances": [
+            0.256,
+            0.25,
+            0.147,
+            0.1,
+            0.075,
+            0.075,
+            0.05,
+            0.025,
+            0.01,
+            0.0075,
+            0.0025,
+            0.001,
+            0.00075,
+            0.00025
+        ],
+        "Id": 5,
+        "ImageId": "rbxassetid://131567976287121",
+        "Is_Last_Stop": true,
+        "MapId": 2,
+        "Name": "Demon_Fruits",
+        "Pity_Names": [
+            "Demon_Fruits_1",
+            "Demon_Fruits_2",
+            "Demon_Fruits_3",
+            "Demon_Fruits_4",
+            "Demon_Fruits_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Demon_Fruit_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.256,
+                "Id": "Bomb_Fruit"
+            },
+            {
+                "Chance": 0.25,
+                "Id": "Rubber_Fruit"
+            },
+            {
+                "Chance": 0.147,
+                "Id": "Sand_Fruit"
+            },
+            {
+                "Chance": 0.1,
+                "Id": "Flame_Fruit"
+            },
+            {
+                "Chance": 0.075,
+                "Id": "Smoke_Fruit"
+            },
+            {
+                "Chance": 0.075,
+                "Id": "Magma_Fruit"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Revive_Fruit"
+            },
+            {
+                "Chance": 0.025,
+                "Id": "String_Fruit"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Human_Fruit"
+            },
+            {
+                "Chance": 0.0075,
+                "Id": "Dark_Fruit"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Quake_Fruit"
+            },
+            {
+                "Chance": 0.001,
+                "Id": "Money_Fruit"
+            },
+            {
+                "Chance": 0.00075,
+                "Id": "Phoenix_Fruit"
+            },
+            {
+                "Chance": 0.00025,
+                "Id": "Dough_Fruit"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_1"
+    },
+    "Dragon_Evolution": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 76,
+        "ImageId": "rbxassetid://72575308099431",
+        "Is_Last_Stop": true,
+        "MapId": 36,
+        "Name": "Dragon_Evolution",
+        "Pity_Names": [
+            "Dragon_Evolution_1",
+            "Dragon_Evolution_2",
+            "Dragon_Evolution_3",
+            "Dragon_Evolution_4",
+            "Dragon_Evolution_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Dragon_Rank_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Pre-True_Dragons"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Lesser_Dragons"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Adult_Dragons"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Ancient_Dragons"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Dragon_Kings"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Dragon_Gods"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Cataclysm_Dragons"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Dragon_Abnormalities"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Dragon_Sovereign"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Dragon_Race": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 1,
+        "ImageId": "rbxassetid://80543035071847",
+        "Is_Last_Stop": true,
+        "MapId": 1,
+        "Name": "Dragon_Race",
+        "Pity_Names": [
+            "Dragon_Race_1",
+            "Dragon_Race_2",
+            "Dragon_Race_3",
+            "Dragon_Race_4",
+            "Dragon_Race_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Dragon_Race_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Human"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Andorid"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Namekian"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Frost_Demon"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Majin"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Half-Saiyan"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Saiyan"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "DxD_Species": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 73,
+        "ImageId": "rbxassetid://137393339662969",
+        "Is_Last_Stop": true,
+        "MapId": 35,
+        "Name": "DxD_Species",
+        "Pity_Names": [
+            "DxD_Species_1",
+            "DxD_Species_2",
+            "DxD_Species_3",
+            "DxD_Species_4",
+            "DxD_Species_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "DxD_Species_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Humans"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Stray_Devils"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Reincarnated_Devils"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Pure-Blood_Devils"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Fallen_Angels"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Angels"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Youkai"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Gods"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Dragons"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Energy_Card_Shop": {
+        "Chances": [
+            0.4061,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004
+        ],
+        "Id": 14,
+        "ImageId": "rbxassetid://73680690544439",
+        "Is_Last_Stop": true,
+        "MapId": 10,
+        "Name": "Energy_Card_Shop",
+        "Pity_Names": [
+            "Energy_Card_Shop_1",
+            "Energy_Card_Shop_2",
+            "Energy_Card_Shop_3",
+            "Energy_Card_Shop_4",
+            "Energy_Card_Shop_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Energy_TCG_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4061,
+                "Id": "Energy_Card_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Energy_Card_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Energy_Card_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Energy_Card_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Energy_Card_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Energy_Card_VI"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Energy_Card_VII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Energy_Teigu": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 64,
+        "ImageId": "rbxassetid://125161864308348",
+        "Is_Last_Stop": true,
+        "MapId": 31,
+        "Name": "Energy_Teigu",
+        "Pity_Names": [
+            "Energy_Teigu_1",
+            "Energy_Teigu_2",
+            "Energy_Teigu_3",
+            "Energy_Teigu_4",
+            "Energy_Teigu_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Energy_Teigu_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Water_Dragon"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Magical_Physician"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Gaia_Foundation"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Black_Marlin"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Susanoo"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Little_War_Horn"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Spectator"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Shambhala"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Energy_Threat_Level": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 38,
+        "ImageId": "rbxassetid://100363591949455",
+        "Is_Last_Stop": true,
+        "MapId": 23,
+        "Name": "Energy_Threat_Level",
+        "Pity_Names": [
+            "Energy_Threat_Level_1",
+            "Energy_Threat_Level_2",
+            "Energy_Threat_Level_3",
+            "Energy_Threat_Level_4",
+            "Energy_Threat_Level_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Threat_Level_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Predator"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Havoc"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Disaster"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Dominion"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Oblivion"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Planet_breaker"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Cosmic_Annihilator"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "The_Absolute"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Espada": {
+        "Chances": [
+            0.39925,
+            0.2,
+            0.17,
+            0.13,
+            0.07,
+            0.02,
+            0.0075,
+            0.0025,
+            0.0005,
+            0.00025
+        ],
+        "Id": 35,
+        "ImageId": "rbxassetid://123006313863895",
+        "Is_Last_Stop": true,
+        "MapId": 21,
+        "Name": "Espada",
+        "Pity_Names": [
+            "Espada_1",
+            "Espada_2",
+            "Espada_3",
+            "Espada_4",
+            "Espada_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Espada_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.39925,
+                "Id": "Espada_9"
+            },
+            {
+                "Chance": 0.2,
+                "Id": "Espada_8"
+            },
+            {
+                "Chance": 0.17,
+                "Id": "Espada_7"
+            },
+            {
+                "Chance": 0.13,
+                "Id": "Espada_6"
+            },
+            {
+                "Chance": 0.07,
+                "Id": "Espada_5"
+            },
+            {
+                "Chance": 0.02,
+                "Id": "Espada_4"
+            },
+            {
+                "Chance": 0.0075,
+                "Id": "Espada_3"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Espada_2"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Espada_1"
+            },
+            {
+                "Chance": 0.00025,
+                "Id": "Espada_0"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_1"
+    },
+    "Exchange_of_Power": {
+        "Chances": [
+            0.4059000000000001,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0001
+        ],
+        "Id": 62,
+        "ImageId": "rbxassetid://74853063338153",
+        "Is_Last_Stop": true,
+        "MapId": 23,
+        "Name": "Exchange_of_Power",
+        "Pity_Names": [
+            "Exchange_of_Power_1",
+            "Exchange_of_Power_2",
+            "Exchange_of_Power_3",
+            "Exchange_of_Power_4",
+            "Exchange_of_Power_5"
+        ],
+        "Price": {
+            "Amount": -25,
+            "Id": "Exchange_Coin_2"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4059000000000001,
+                "Id": "Exchange_of_Power_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Exchange_of_Power_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Exchange_of_Power_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Exchange_of_Power_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Exchange_of_Power_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Exchange_of_Power_VI"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Exchange_of_Power_VII"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Exchange_of_Power_VIII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Families": {
+        "Chances": [
+            0.4061,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004
+        ],
+        "Id": 16,
+        "ImageId": "rbxassetid://78180237497824",
+        "Is_Last_Stop": true,
+        "MapId": 11,
+        "Name": "Families",
+        "Pity_Names": [
+            "Families_1",
+            "Families_2",
+            "Families_3",
+            "Families_4",
+            "Families_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Families_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4061,
+                "Id": "Grice_Family"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Leonhart_Family"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Braun_Family"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Tybur_Family"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Ackerman_Family"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Yeager_Family"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Reiss_Family"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Frost_Demon_Evolution": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 32,
+        "ImageId": "rbxassetid://138371427578479",
+        "Is_Last_Stop": true,
+        "MapId": 20,
+        "Name": "Frost_Demon_Evolution",
+        "Pity_Names": [
+            "Frost_Demon_Evolution_1",
+            "Frost_Demon_Evolution_2",
+            "Frost_Demon_Evolution_3",
+            "Frost_Demon_Evolution_4",
+            "Frost_Demon_Evolution_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Frost_Demon_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Second_Form"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Third_Form"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Final_Form"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "50%_Power"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "100%_Full_Power"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mecha_Form"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Golden_Form"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Black_Form"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Geass_Potential": {
+        "Chances": [
+            0.98,
+            0.02
+        ],
+        "Id": 53,
+        "ImageId": "rbxassetid://137297521967668",
+        "Is_Last_Stop": true,
+        "MapId": 28,
+        "Name": "Geass_Potential",
+        "Pity_Names": [
+            "Geass_Potential_1",
+            "Geass_Potential_2",
+            "Geass_Potential_3",
+            "Geass_Potential_4",
+            "Geass_Potential_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Geass_Potential_Token"
+        },
+        "Rewards": [
+            {
+                "Amount": 1,
+                "Chance": 0.98,
+                "Id": "Coins"
+            },
+            {
+                "Chance": 0.02,
+                "Id": "Geass:_Perception"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Grand_Elder_Power": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 33,
+        "ImageId": "rbxassetid://80246393945400",
+        "Is_Last_Stop": true,
+        "MapId": 20,
+        "Name": "Grand_Elder_Power",
+        "Pity_Names": [
+            "Grand_Elder_Power_1",
+            "Grand_Elder_Power_2",
+            "Grand_Elder_Power_3",
+            "Grand_Elder_Power_4",
+            "Grand_Elder_Power_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Grand_Elder_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Sleeping_Power"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Stirring_Spirit"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Hidden_Potential"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Inner_Strength"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Power_Unleashed"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "True_Potential"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Limitless_Growth"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Potential_Unbound"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Grimoire": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 11,
+        "ImageId": "rbxassetid://103501763167478",
+        "Is_Last_Stop": true,
+        "MapId": 7,
+        "Name": "Grimoire",
+        "Pity_Names": [
+            "Grimoire_1",
+            "Grimoire_2",
+            "Grimoire_3",
+            "Grimoire_4",
+            "Grimoire_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Grimoire_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Water_Grimoire"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Fire_Grimoire"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Wind_Grimoire"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Dark_Grimoire"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Light_Grimoire"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Anti-Magic_Grimoire"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Time_Magic_Grimoire"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_1"
+    },
+    "Halloween_Gacha": {
+        "Chances": [
+            0.4449,
+            0.4449,
+            0.05,
+            0.05,
+            0.0045,
+            0.0045,
+            0.0005,
+            0.0005,
+            0.0001,
+            0.0001
+        ],
+        "Id": 47,
+        "ImageId": "rbxassetid://104865159396975",
+        "MapId": 1,
+        "Name": "Halloween_Gacha",
+        "Pity_Names": [
+            "Halloween_Gacha_1",
+            "Halloween_Gacha_2",
+            "Halloween_Gacha_3",
+            "Halloween_Gacha_4",
+            "Halloween_Gacha_5"
+        ],
+        "Price": {
+            "Amount": -100,
+            "Id": "Halloween_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4449,
+                "Id": "Ghost_Aura"
+            },
+            {
+                "Chance": 0.4449,
+                "Id": "[Av]_Pumpkin_Monarch"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Zombie_Aura"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "[Av]_Boo-sta"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Vampire_Aura"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "[Av]_Scarechigo"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Werewolf_Aura"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "[Av]_Ghostjo"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Reaper_Aura"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "[Av]_Jack-o-Ruto"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_1"
+    },
+    "IQ": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 55,
+        "ImageId": "rbxassetid://73763937535788",
+        "Is_Last_Stop": true,
+        "MapId": 29,
+        "Name": "IQ",
+        "Pity_Names": [
+            "IQ_1",
+            "IQ_2",
+            "IQ_3",
+            "IQ_4",
+            "IQ_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "IQ_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "One_Millimeter_IQ"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Normative_IQ"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Superior_IQ"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Exceptional_IQ"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Prodigious_IQ"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Scientist_IQ"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Genius_IQ"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Ten_Billion_IQ"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Investigators": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 26,
+        "ImageId": "rbxassetid://83373491209093",
+        "Is_Last_Stop": true,
+        "MapId": 17,
+        "Name": "Investigators",
+        "Pity_Names": [
+            "Investigators_1",
+            "Investigators_2",
+            "Investigators_3",
+            "Investigators_4",
+            "Investigators_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "CCG_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Bureau"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Assistants"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rank_3"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Rank_2"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Rank_1"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "First_Class"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Associate_Special_Class"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Special_Class"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Kagune": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 27,
+        "ImageId": "rbxassetid://96844634232385",
+        "Is_Last_Stop": true,
+        "MapId": 17,
+        "Name": "Kagune",
+        "Pity_Names": [
+            "Kagune_1",
+            "Kagune_2",
+            "Kagune_3",
+            "Kagune_4",
+            "Kagune_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Kagune_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Retto"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Hakuro"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Shinku"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Tetsuba"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Shidare"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Hakuja"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Mukade"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Koumyaku"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Kaiju_Powers": {
+        "Chances": [
+            0.4058,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004,
+            0.0003
+        ],
+        "Id": 20,
+        "ImageId": "rbxassetid://100513684359057",
+        "Is_Last_Stop": true,
+        "MapId": 13,
+        "Name": "Kaiju_Powers",
+        "Pity_Names": [
+            "Kaiju_Powers_1",
+            "Kaiju_Powers_2",
+            "Kaiju_Powers_3",
+            "Kaiju_Powers_4",
+            "Kaiju_Powers_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Kaiju_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4058,
+                "Id": "Phaneroplus"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Philinosoma"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Primigenius_Honju"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Preondactyl"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Mixogastero"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "No._10"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "No._9"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "No._8"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Kekkei_Genkai": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 60,
+        "ImageId": "rbxassetid://128229231973865",
+        "Is_Last_Stop": true,
+        "MapId": 30,
+        "Name": "Kekkei_Genkai",
+        "Pity_Names": [
+            "Kekkei_Genkai_1",
+            "Kekkei_Genkai_2",
+            "Kekkei_Genkai_3",
+            "Kekkei_Genkai_4",
+            "Kekkei_Genkai_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Genkai_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Scorch_Release"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Bone_Manipulation"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Ice_Release"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Magnet_Release"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Boil_Release"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Lava_Release"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Dust_Release"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Wood_Release"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Knightmare_Frames": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 54,
+        "ImageId": "rbxassetid://132518806548801",
+        "Is_Last_Stop": true,
+        "MapId": 28,
+        "Name": "Knightmare_Frames",
+        "Pity_Names": [
+            "Knightmare_Frames_1",
+            "Knightmare_Frames_2",
+            "Knightmare_Frames_3",
+            "Knightmare_Frames_4",
+            "Knightmare_Frames_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Knightmare_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Glasglow"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Sutherland"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Ganymede"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Gloucester"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Vercingetorix"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Shinkiro"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Lancelot"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Guren"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Mage_Class": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 75,
+        "ImageId": "rbxassetid://71158486879327",
+        "Is_Last_Stop": true,
+        "MapId": 36,
+        "Name": "Mage_Class",
+        "Pity_Names": [
+            "Mage_Class_1",
+            "Mage_Class_2",
+            "Mage_Class_3",
+            "Mage_Class_4",
+            "Mage_Class_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Mage_Rank_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Newbie_Mage"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Trained_Mage"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Specialized_Mage"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Elite_Guild_Mage"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Slayer-Class_Mage"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Forbidden_Magic_Mage"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "S-Class_Mage"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Wizard_Saint"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Magic_Councilmen"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Magic_Shield": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 77,
+        "ImageId": "rbxassetid://71129360069984",
+        "Is_Last_Stop": true,
+        "MapId": 37,
+        "Name": "Magic_Shield",
+        "Pity_Names": [
+            "Magic_Shield_1",
+            "Magic_Shield_2",
+            "Magic_Shield_3",
+            "Magic_Shield_4",
+            "Magic_Shield_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Magic_Shield_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Small_Shield"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Medium_Shield"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Chimera_Viper_Shield"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Air_Strike_Shield"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Energy_Shield"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Bio_Plant_Shield"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Soul_Eater_Shield"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Shield_Prison"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Rage_Shield"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Magic_Tier": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 41,
+        "ImageId": "rbxassetid://114964261083797",
+        "Is_Last_Stop": true,
+        "MapId": 24,
+        "Name": "Magic_Tier",
+        "Pity_Names": [
+            "Magic_Tier_1",
+            "Magic_Tier_2",
+            "Magic_Tier_3",
+            "Magic_Tier_4",
+            "Magic_Tier_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Magic_Tier_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Low-Tier_Magic"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Mid-Tier_Magic"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "High-Tier_Magic"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Top-Tier_Magic"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Peak-Tier_Magic"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Super-Tier_Magic"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Wild_Magic"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "World_Item_Magic"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Magic_Type": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 71,
+        "ImageId": "rbxassetid://78254984353497",
+        "Is_Last_Stop": true,
+        "MapId": 34,
+        "Name": "Magic_Type",
+        "Pity_Names": [
+            "Magic_Type_1",
+            "Magic_Type_2",
+            "Magic_Type_3",
+            "Magic_Type_4",
+            "Magic_Type_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Magic_Type_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Iron_Magic"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Shuriken_Magic"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rose_Magic"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Explosion_Magic"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Graviole_Magic"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Partisan_Magic"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Sands_Magic"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Lights_Magic"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Timez_Magic"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Mushi_Bite": {
+        "Chances": [
+            0.9,
+            0.1
+        ],
+        "Id": 30,
+        "ImageId": "rbxassetid://110657879896815",
+        "Is_Last_Stop": true,
+        "MapId": 19,
+        "Name": "Mushi_Bite",
+        "Pity_Names": [
+            "Mushi_Bite_1",
+            "Mushi_Bite_2",
+            "Mushi_Bite_3",
+            "Mushi_Bite_4",
+            "Mushi_Bite_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Mushi_Token"
+        },
+        "Rewards": [
+            {
+                "Amount": 100000000000000000000,
+                "Chance": 0.9,
+                "Id": "Coins"
+            },
+            {
+                "Chance": 0.1,
+                "Id": "1st_Generation"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Nightmare_Evolution": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 43,
+        "ImageId": "rbxassetid://71707043630607",
+        "Is_Last_Stop": true,
+        "MapId": 25,
+        "Name": "Nightmare_Evolution",
+        "Pity_Names": [
+            "Nightmare_Evolution_1",
+            "Nightmare_Evolution_2",
+            "Nightmare_Evolution_3",
+            "Nightmare_Evolution_4",
+            "Nightmare_Evolution_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Nightmare_Evo_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Common_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Uncommon_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rare_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Epic_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Legendary_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mythical_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Phantom_Nightmare_Evo"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Supreme_Nightmare_Evo"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Onomatopoeia": {
+        "Chances": [
+            0.40425,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0015,
+            0.00075
+        ],
+        "Id": 25,
+        "ImageId": "rbxassetid://88264916841585",
+        "Is_Last_Stop": true,
+        "MapId": 16,
+        "Name": "Onomatopoeia",
+        "Pity_Names": [
+            "Onomatopoeia_1",
+            "Onomatopoeia_2",
+            "Onomatopoeia_3",
+            "Onomatopoeia_4",
+            "Onomatopoeia_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Onomatopoeia_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.40425,
+                "Id": "Common_Onomatopoeia"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Uncommon_Onomatopoeia"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rare_Onomatopoeia"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Epic_Onomatopoeia"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Legendary_Onomatopoeia"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mythical_Onomatopoeia"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Phantom_Onomatopoeia"
+            },
+            {
+                "Chance": 0.00075,
+                "Id": "Supreme_Onomatopoeia"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Pirate_Crew": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 4,
+        "ImageId": "rbxassetid://103797445341764",
+        "Is_Last_Stop": true,
+        "MapId": 2,
+        "Name": "Pirate_Crew",
+        "Pity_Names": [
+            "Pirate_Crew_1",
+            "Pirate_Crew_2",
+            "Pirate_Crew_3",
+            "Pirate_Crew_4",
+            "Pirate_Crew_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Pirate_Crew_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Whitebeard_Pirates"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Cross_Guild"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Big_Mom_Pirates"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Beast_Pirates"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Blackbeard_Pirates"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Straw_Hat_Pirates"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Red-Haired_Pirates"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Power_Energy_Runes": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 23,
+        "ImageId": "rbxassetid://127737736998154",
+        "Is_Last_Stop": true,
+        "MapId": 15,
+        "Name": "Power_Energy_Runes",
+        "Pity_Names": [
+            "Power_Energy_Runes_1",
+            "Power_Energy_Runes_2",
+            "Power_Energy_Runes_3",
+            "Power_Energy_Runes_4",
+            "Power_Energy_Runes_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Energy_Rune_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Common_Energy_Rune"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Uncommon_Energy_Rune"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Rare_Energy_Rune"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Epic_Energy_Rune"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Legendary_Energy_Rune"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Mythical_Energy_Rune"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Phantom_Energy_Rune"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Supreme_Energy_Rune"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Power_Eyes": {
+        "Chances": [
+            0.359,
+            0.25,
+            0.147,
+            0.1,
+            0.075,
+            0.05,
+            0.01,
+            0.005,
+            0.0025,
+            0.001,
+            0.0004,
+            0.0001
+        ],
+        "Id": 12,
+        "ImageId": "rbxassetid://98415560656782",
+        "Is_Last_Stop": true,
+        "MapId": 8,
+        "Name": "Power_Eyes",
+        "Pity_Names": [
+            "Power_Eyes_1",
+            "Power_Eyes_2",
+            "Power_Eyes_3",
+            "Power_Eyes_4",
+            "Power_Eyes_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Eye_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.359,
+                "Id": "Single_Tomoe_Eye"
+            },
+            {
+                "Chance": 0.25,
+                "Id": "Double_Tomoe_Eye"
+            },
+            {
+                "Chance": 0.147,
+                "Id": "Triple_Tomoe_Eye"
+            },
+            {
+                "Chance": 0.1,
+                "Id": "Triad_Insight_Eye"
+            },
+            {
+                "Chance": 0.075,
+                "Id": "Cyclone_Eye"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Whirlpool's_Depth_Eye"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Triad_Nexus_Eye"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Eclipse_Eye"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Atomic_Insight_Eye"
+            },
+            {
+                "Chance": 0.001,
+                "Id": "Eternal_Eclipse_Eye"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Eternal_Atomic_Eye"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Eye_of_Six_Paths"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_1"
+    },
+    "Power_Eyes_2": {
+        "Chances": [
+            0.40565,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.00005
+        ],
+        "Id": 58,
+        "ImageId": "rbxassetid://129915940447732",
+        "Is_Last_Stop": true,
+        "MapId": 30,
+        "Name": "Power_Eyes_2",
+        "Pity_Names": [
+            "Power_Eyes_2_1",
+            "Power_Eyes_2_2",
+            "Power_Eyes_2_3",
+            "Power_Eyes_2_4",
+            "Power_Eyes_2_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Eye_Token_2"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.40565,
+                "Id": "Eye_of_Six_Paths:_Aether"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Eye_of_Six_Paths:_Inferno"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Eye_of_Six_Paths:_Radiance"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Eye_of_Six_Paths:_Awakening"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Eye_of_Six_Paths:_Ascent"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Eye_of_Six_Paths:_Wrath"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Eye_of_Six_Paths:_Transcendence"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Eye_of_Six_Paths:_Cataclysm"
+            },
+            {
+                "Chance": 0.00005,
+                "Id": "Eye_of_Six_Paths:_Divinity"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Power_of_Exchange": {
+        "Chances": [
+            0.4059000000000001,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0001
+        ],
+        "Id": 61,
+        "ImageId": "rbxassetid://102363968016609",
+        "Is_Last_Stop": true,
+        "MapId": 13,
+        "Name": "Power_of_Exchange",
+        "Pity_Names": [
+            "Power_of_Exchange_1",
+            "Power_of_Exchange_2",
+            "Power_of_Exchange_3",
+            "Power_of_Exchange_4",
+            "Power_of_Exchange_5"
+        ],
+        "Price": {
+            "Amount": -100,
+            "Id": "Exchange_Coin"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4059000000000001,
+                "Id": "Power_of_Exchange_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Power_of_Exchange_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Power_of_Exchange_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Power_of_Exchange_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Power_of_Exchange_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Power_of_Exchange_VI"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Power_of_Exchange_VII"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Power_of_Exchange_VIII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Power_of_Friendship": {
+        "Chances": [
+            0.4059000000000001,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0001
+        ],
+        "Id": 63,
+        "ImageId": "rbxassetid://88413850372710",
+        "Is_Last_Stop": true,
+        "MapId": 20,
+        "Name": "Power_of_Friendship",
+        "Pity_Names": [
+            "Power_of_Friendship_1",
+            "Power_of_Friendship_2",
+            "Power_of_Friendship_3",
+            "Power_of_Friendship_4",
+            "Power_of_Friendship_5"
+        ],
+        "Price": {
+            "Amount": -20,
+            "Id": "Exchange_Coin_2"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4059000000000001,
+                "Id": "Power_of_Friendship_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Power_of_Friendship_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Power_of_Friendship_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Power_of_Friendship_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Power_of_Friendship_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Power_of_Friendship_VI"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Power_of_Friendship_VII"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Power_of_Friendship_VIII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Power_of_Stars": {
+        "Chances": [
+            0.4059000000000001,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0001
+        ],
+        "Id": 57,
+        "ImageId": "rbxassetid://136164805619642",
+        "Is_Last_Stop": true,
+        "MapId": 1,
+        "Name": "Power_of_Stars",
+        "Pity_Names": [
+            "Power_of_Stars_1",
+            "Power_of_Stars_2",
+            "Power_of_Stars_3",
+            "Power_of_Stars_4",
+            "Power_of_Stars_5"
+        ],
+        "Price": {
+            "Amount": -50,
+            "Id": "Exchange_Coin"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4059000000000001,
+                "Id": "Power_of_Stars_I"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Power_of_Stars_II"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Power_of_Stars_III"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Power_of_Stars_IV"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Power_of_Stars_V"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Power_of_Stars_VI"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Power_of_Stars_VII"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Power_of_Stars_VIII"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Psychic_Mayhem": {
+        "Chances": [
+            0.4061,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004
+        ],
+        "Id": 13,
+        "ImageId": "rbxassetid://94544842370105",
+        "Is_Last_Stop": true,
+        "MapId": 9,
+        "Name": "Psychic_Mayhem",
+        "Pity_Names": [
+            "Psychic_Mayhem_1",
+            "Psychic_Mayhem_2",
+            "Psychic_Mayhem_3",
+            "Psychic_Mayhem_4",
+            "Psychic_Mayhem_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Granny_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4061,
+                "Id": "Illusion_Casting"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Mind_Swap"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Brain_Freeze_Field"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Kinetic_Absorption"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Precognition"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Psychic_Barrier"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Energy_Aura_Blast"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Psycho_Destruction": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 67,
+        "ImageId": "rbxassetid://106537210667422",
+        "Is_Last_Stop": true,
+        "MapId": 32,
+        "Name": "Psycho_Destruction",
+        "Pity_Names": [
+            "Psycho_Destruction_1",
+            "Psycho_Destruction_2",
+            "Psycho_Destruction_3",
+            "Psycho_Destruction_4",
+            "Psycho_Destruction_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Psycho_Destruction_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Telekinetic_Impact"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Pyrokinesis"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Electricity_Manipulation"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Psychic_Blasts"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Psychic_Crush"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Vector_Manipulation"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Gravity_Manipulation"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "???%_State"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Psycho_Flow": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 66,
+        "ImageId": "rbxassetid://126676902736934",
+        "Is_Last_Stop": true,
+        "MapId": 32,
+        "Name": "Psycho_Flow",
+        "Pity_Names": [
+            "Psycho_Flow_1",
+            "Psycho_Flow_2",
+            "Psycho_Flow_3",
+            "Psycho_Flow_4",
+            "Psycho_Flow_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Psycho_Flow_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "ESP_Sensing"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Psychic_Aura"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Psychic_Barriers"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Exorcism"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Spirit_Summoning"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Spirit_Possession"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Energy_Manipulation"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Energy_Absorption"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Punch_Power": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 39,
+        "ImageId": "rbxassetid://122579579369076",
+        "Is_Last_Stop": true,
+        "MapId": 23,
+        "Name": "Punch_Power",
+        "Pity_Names": [
+            "Punch_Power_1",
+            "Punch_Power_2",
+            "Punch_Power_3",
+            "Punch_Power_4",
+            "Punch_Power_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Punch_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Basic_Punch"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Heroic_Fist"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Consecutive_Punches"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Serious_Punch"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Celestial_Impact"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Oblivion_Drive"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Gamma_Burst_Punch"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "One_Punch"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Re:Spirit_Pact": {
+        "Chances": [
+            0.404,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0015,
+            0.0005
+        ],
+        "Id": 49,
+        "ImageId": "rbxassetid://133162184487496",
+        "Is_Last_Stop": true,
+        "MapId": 27,
+        "Name": "Re:Spirit_Pact",
+        "Pity_Names": [
+            "Re:Spirit_Pact_1",
+            "Re:Spirit_Pact_2",
+            "Re:Spirit_Pact_3",
+            "Re:Spirit_Pact_4",
+            "Re:Spirit_Pact_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Spirit_Pact_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.404,
+                "Id": "Re:Faint_Whisper"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Re:Guiding_Ember"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Re:Flowing_Grace"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Re:Sacred_Bond"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Re:Celestial_Pulse"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Re:Spiritâ€™s_Oath"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Re:Divine_Resonance"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Re:Eternal_Convergence"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Re:Witch_Factor": {
+        "Chances": [
+            0.404,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0015,
+            0.0005
+        ],
+        "Id": 51,
+        "ImageId": "rbxassetid://82705109805757",
+        "Is_Last_Stop": true,
+        "MapId": 27,
+        "Name": "Re:Witch_Factor",
+        "Pity_Names": [
+            "Re:Witch_Factor_1",
+            "Re:Witch_Factor_2",
+            "Re:Witch_Factor_3",
+            "Re:Witch_Factor_4",
+            "Re:Witch_Factor_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Witch_Factor_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.404,
+                "Id": "Re:Tainted_Spark"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Re:Blighted_Flame"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Re:Crimson_Howl"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Re:Abyssal_Surge"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Re:Sin_Eruption"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Re:Authority_Break"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Re:Witchâ€™s_Wrath"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Re:Eclipse_of_Fate"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Reiatsu_Color": {
+        "Chances": [
+            0.3885,
+            0.3,
+            0.149,
+            0.1,
+            0.05,
+            0.01,
+            0.0025
+        ],
+        "Id": 6,
+        "ImageId": "rbxassetid://74708155020004",
+        "Is_Last_Stop": true,
+        "MapId": 3,
+        "Name": "Reiatsu_Color",
+        "Pity_Names": [
+            "Reiatsu_Color_1",
+            "Reiatsu_Color_2",
+            "Reiatsu_Color_3",
+            "Reiatsu_Color_4",
+            "Reiatsu_Color_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Reiatsu_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.3885,
+                "Id": "Gray_Reiatsu"
+            },
+            {
+                "Chance": 0.3,
+                "Id": "Green_Reiatsu"
+            },
+            {
+                "Chance": 0.149,
+                "Id": "Blue_Reiatsu"
+            },
+            {
+                "Chance": 0.1,
+                "Id": "Pink_Reiatsu"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Yellow_Reiatsu"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Red_Reiatsu"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Black_Reiatsu"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Sacred_Gear": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 74,
+        "ImageId": "rbxassetid://134878504933362",
+        "Is_Last_Stop": true,
+        "MapId": 35,
+        "Name": "Sacred_Gear",
+        "Pity_Names": [
+            "Sacred_Gear_1",
+            "Sacred_Gear_2",
+            "Sacred_Gear_3",
+            "Sacred_Gear_4",
+            "Sacred_Gear_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Sacred_Gear_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Healing_Tear"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Blade_Blacksmith"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Sword_Birth"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Night_Reflection"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Canis_Lykaon"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Regulus_Nemea"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Annihilation_Maker"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "True_Longinus"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Boosted_Gear"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Saiyan_Evolution": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 2,
+        "ImageId": "rbxassetid://109763458341872",
+        "Is_Last_Stop": true,
+        "MapId": 1,
+        "Name": "Saiyan_Evolution",
+        "Pity_Names": [
+            "Saiyan_Evolution_1",
+            "Saiyan_Evolution_2",
+            "Saiyan_Evolution_3",
+            "Saiyan_Evolution_4",
+            "Saiyan_Evolution_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Saiyan_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Great_Ape"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Super_Saiyan_Grade_1"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Super_Saiyan_Grade_2"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Super_Saiyan_Grade_3"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Full_Power_Super_Saiyan"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Super_Saiyan_2"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Super_Saiyan_3"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Scientific_Weapons": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 56,
+        "ImageId": "rbxassetid://110746832398466",
+        "Is_Last_Stop": true,
+        "MapId": 29,
+        "Name": "Scientific_Weapons",
+        "Pity_Names": [
+            "Scientific_Weapons_1",
+            "Scientific_Weapons_2",
+            "Scientific_Weapons_3",
+            "Scientific_Weapons_4",
+            "Scientific_Weapons_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Scientific_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Wooden_Stick"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Crossbow"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Golden_Spear"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Silver_Spear"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Katana"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Dynamite"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Tank"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Cell_Phone"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Scythes": {
+        "Chances": [
+            0.4049,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.001,
+            0.0001
+        ],
+        "Id": 34,
+        "ImageId": "rbxassetid://118676098695519",
+        "MapId": 21,
+        "Name": "Scythes",
+        "Pity_Names": [
+            "Scythes_1",
+            "Scythes_2",
+            "Scythes_3",
+            "Scythes_4",
+            "Scythes_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Scythe_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4049,
+                "Id": "Venomleaf"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Cryoscythe"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Toxinfang"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Crimson_Thorn"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Bonehowl"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Ashfang"
+            },
+            {
+                "Chance": 0.001,
+                "Id": "Phantom_Requiem"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Stormreaver"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_2"
+    },
+    "Shadow_Arts": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 37,
+        "ImageId": "rbxassetid://94043734174319",
+        "Is_Last_Stop": true,
+        "MapId": 22,
+        "Name": "Shadow_Arts",
+        "Pity_Names": [
+            "Shadow_Arts_1",
+            "Shadow_Arts_2",
+            "Shadow_Arts_3",
+            "Shadow_Arts_4",
+            "Shadow_Arts_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Shadow_Arts_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Silent_Step"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Shadow_Bind"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Mirage_Strike"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Eclipse_Slash"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Abyssal_Blade"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Void_Erasure"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Eternal_Shadow_Waltz"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "I_Am_Atomic"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Shadow_Garden": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 36,
+        "ImageId": "rbxassetid://137450272424806",
+        "Is_Last_Stop": true,
+        "MapId": 22,
+        "Name": "Shadow_Garden",
+        "Pity_Names": [
+            "Shadow_Garden_1",
+            "Shadow_Garden_2",
+            "Shadow_Garden_3",
+            "Shadow_Garden_4",
+            "Shadow_Garden_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Shadow_Garden_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Operative"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Agent"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Enforcer"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Commander"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Division_Head"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Shadow_Council_Member"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "The_First_Shadow"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "The_Eminence"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Shinobi_Clan": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 59,
+        "ImageId": "rbxassetid://105818576235855",
+        "Is_Last_Stop": true,
+        "MapId": 30,
+        "Name": "Shinobi_Clan",
+        "Pity_Names": [
+            "Shinobi_Clan_1",
+            "Shinobi_Clan_2",
+            "Shinobi_Clan_3",
+            "Shinobi_Clan_4",
+            "Shinobi_Clan_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Shinobi_Clan_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Aburame_Clan"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Sarutobi_Clan"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Hozuki_Clan"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Kaguya_Clan"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Hyuga_Clan"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Uzumaki_Clan"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Senju_Clan"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Uchiha_Clan"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Sins": {
+        "Chances": [
+            0.4061,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0004
+        ],
+        "Id": 18,
+        "ImageId": "rbxassetid://117257507417148",
+        "Is_Last_Stop": true,
+        "MapId": 12,
+        "Name": "Sins",
+        "Pity_Names": [
+            "Sins_1",
+            "Sins_2",
+            "Sins_3",
+            "Sins_4",
+            "Sins_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Sins_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4061,
+                "Id": "Lust"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Envy"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Sloth"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Greed"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Gluttony"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Wrath"
+            },
+            {
+                "Chance": 0.0004,
+                "Id": "Pride"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Slayer_Marks": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 68,
+        "ImageId": "rbxassetid://108582840760648",
+        "Is_Last_Stop": true,
+        "MapId": 33,
+        "Name": "Slayer_Marks",
+        "Pity_Names": [
+            "Slayer_Marks_1",
+            "Slayer_Marks_2",
+            "Slayer_Marks_3",
+            "Slayer_Marks_4",
+            "Slayer_Marks_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Slayer_Mark_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Dull_Mark"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Flicker_Mark"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Ember_Mark"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Claw_Mark"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Shatter_Mark"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Pulse_Mark"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Surge_Mark"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Eternal_Mark"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Solo_Hunter_Rank": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 10,
+        "ImageId": "rbxassetid://72419446650770",
+        "Is_Last_Stop": true,
+        "MapId": 6,
+        "Name": "Solo_Hunter_Rank",
+        "Pity_Names": [
+            "Solo_Hunter_Rank_1",
+            "Solo_Hunter_Rank_2",
+            "Solo_Hunter_Rank_3",
+            "Solo_Hunter_Rank_4",
+            "Solo_Hunter_Rank_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Hunter_Rank_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "E-Rank"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "D-Rank"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "C-Rank"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "B-Rank"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "A-Rank"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "S-Rank"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "National_Level_Hunter"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Special_Fire_Force": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 31,
+        "ImageId": "rbxassetid://81573129394061",
+        "Is_Last_Stop": true,
+        "MapId": 19,
+        "Name": "Special_Fire_Force",
+        "Pity_Names": [
+            "Special_Fire_Force_1",
+            "Special_Fire_Force_2",
+            "Special_Fire_Force_3",
+            "Special_Fire_Force_4",
+            "Special_Fire_Force_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Fire_Company_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Company_1"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Company_2"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Company_3"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Company_4"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Company_5"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Company_6"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Company_7"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Company_8"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Special_Zombie": {
+        "Chances": [
+            0.4983,
+            0.35,
+            0.139,
+            0.01,
+            0.0025,
+            0.0002
+        ],
+        "Id": 44,
+        "ImageId": "rbxassetid://94489084778703",
+        "MapId": 25,
+        "Name": "Special_Zombie",
+        "Pity_Names": [
+            "Special_Zombie_1",
+            "Special_Zombie_2",
+            "Special_Zombie_3",
+            "Special_Zombie_4",
+            "Special_Zombie_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Special_Zombie_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4983,
+                "Id": "Uncommon_Zombie"
+            },
+            {
+                "Chance": 0.35,
+                "Id": "Rare_Zombie"
+            },
+            {
+                "Chance": 0.139,
+                "Id": "Epic_Zombie"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Legendary_Zombie"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Mythical_Zombie"
+            },
+            {
+                "Chance": 0.0002,
+                "Id": "Phantom_Zombie"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_1"
+    },
+    "Species": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 22,
+        "ImageId": "rbxassetid://99431844767275",
+        "Is_Last_Stop": true,
+        "MapId": 14,
+        "Name": "Species",
+        "Pity_Names": [
+            "Species_1",
+            "Species_2",
+            "Species_3",
+            "Species_4",
+            "Species_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Species_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Goblin"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Lizardman"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Slime"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Dryad"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Kijin"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Dragonoid"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Primordial_Daemon"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "True_Dragon"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Spirit_Pact": {
+        "Chances": [
+            0.404,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0015,
+            0.0005
+        ],
+        "Id": 48,
+        "ImageId": "rbxassetid://86811873449372",
+        "Is_Last_Stop": true,
+        "MapId": 27,
+        "Name": "Spirit_Pact",
+        "Pity_Names": [
+            "Spirit_Pact_1",
+            "Spirit_Pact_2",
+            "Spirit_Pact_3",
+            "Spirit_Pact_4",
+            "Spirit_Pact_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Spirit_Pact_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.404,
+                "Id": "Faint_Whisper"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Guiding_Ember"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Flowing_Grace"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Sacred_Bond"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Celestial_Pulse"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Spiritâ€™s_Oath"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Divine_Resonance"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Eternal_Convergence"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Stands": {
+        "Chances": [
+            0.40375,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0015,
+            0.00075
+        ],
+        "Id": 24,
+        "ImageId": "rbxassetid://87007917599015",
+        "MapId": 16,
+        "Name": "Stands",
+        "Pity_Names": [
+            "Stands_1",
+            "Stands_2",
+            "Stands_3",
+            "Stands_4",
+            "Stands_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Stand_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.40375,
+                "Id": "Door"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Hand"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Zipper_Man"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Deadly_Queen"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Pale_Snake"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Shining_Diamond"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Platnium"
+            },
+            {
+                "Chance": 0.00075,
+                "Id": "World"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_1"
+    },
+    "Swords": {
+        "Chances": [
+            0.40525,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.00075
+        ],
+        "Id": 3,
+        "ImageId": "rbxassetid://73036819543324",
+        "MapId": 2,
+        "Name": "Swords",
+        "Pity_Names": [
+            "Swords_1",
+            "Swords_2",
+            "Swords_3",
+            "Swords_4",
+            "Swords_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Sword_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.40525,
+                "Id": "Bloodthorn"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Eclipse_Warden"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Obsidian_Reaver"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Aquarius_Edge"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Doomsoul"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Redmourne"
+            },
+            {
+                "Chance": 0.00075,
+                "Id": "Venomstrike"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_1"
+    },
+    "The_Muscule": {
+        "Chances": [
+            0.4056,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 72,
+        "ImageId": "rbxassetid://106229945497495",
+        "Is_Last_Stop": true,
+        "MapId": 34,
+        "Name": "The_Muscule",
+        "Pity_Names": [
+            "The_Muscule_1",
+            "The_Muscule_2",
+            "The_Muscule_3",
+            "The_Muscule_4",
+            "The_Muscule_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "The_Muscule_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4056,
+                "Id": "Finger_Poke"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Wrist_Strength"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Grip_Crush"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Abdominal_Crunch"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Hamstring_Magic"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Spine_Magic:_Cobra"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Triceps_Magic:_Ballista"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Biceps_Magic:_Guillotine"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Unlimited_Physical_Mode"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Thriller_Zombie": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 42,
+        "ImageId": "rbxassetid://105039153350265",
+        "Is_Last_Stop": true,
+        "MapId": 25,
+        "Name": "Thriller_Zombie",
+        "Pity_Names": [
+            "Thriller_Zombie_1",
+            "Thriller_Zombie_2",
+            "Thriller_Zombie_3",
+            "Thriller_Zombie_4",
+            "Thriller_Zombie_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Thriller_Zombie_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Surprise_Zombie"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Zombie_Soldier"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Wild_Zombie"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Mid-Tier_Zombie_General"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Elite_Zombie_General"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "High-Class_Zombie"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Special_Zombie"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Zombie_Controller"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Titans": {
+        "Chances": [
+            0.40525,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.00075
+        ],
+        "Id": 17,
+        "ImageId": "rbxassetid://95930329863911",
+        "MapId": 11,
+        "Name": "Titans",
+        "Pity_Names": [
+            "Titans_1",
+            "Titans_2",
+            "Titans_3",
+            "Titans_4",
+            "Titans_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Titan_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.40525,
+                "Id": "Jaw_Titan"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Female_Titan"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Beast_Titan"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Armored_Titan"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Warhammer_Titan"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Attack_Titan"
+            },
+            {
+                "Chance": 0.00075,
+                "Id": "Colossal_Titan"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Weapons_1"
+    },
+    "Ultimate_Skills": {
+        "Chances": [
+            0.4057,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.0045,
+            0.0005,
+            0.0003
+        ],
+        "Id": 21,
+        "ImageId": "rbxassetid://76253382630191",
+        "Is_Last_Stop": true,
+        "MapId": 14,
+        "Name": "Ultimate_Skills",
+        "Pity_Names": [
+            "Ultimate_Skills_1",
+            "Ultimate_Skills_2",
+            "Ultimate_Skills_3",
+            "Ultimate_Skills_4",
+            "Ultimate_Skills_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Ultimate_Skill_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4057,
+                "Id": "Amaterasu"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "True_Hero"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Uriel"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Satanael"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Lucifer"
+            },
+            {
+                "Chance": 0.0045,
+                "Id": "Yog-Sothoth"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Beelzebub"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Raphael"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Vassal_Weapons": {
+        "Chances": [
+            0.4556,
+            0.35,
+            0.1335,
+            0.05,
+            0.01,
+            0.0005,
+            0.0003,
+            0.0001
+        ],
+        "Id": 78,
+        "ImageId": "rbxassetid://72501351801672",
+        "Is_Last_Stop": true,
+        "MapId": 37,
+        "Name": "Vassal_Weapons",
+        "Pity_Names": [
+            "Vassal_Weapons_1",
+            "Vassal_Weapons_2",
+            "Vassal_Weapons_3",
+            "Vassal_Weapons_4",
+            "Vassal_Weapons_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Vassal_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4556,
+                "Id": "Vassal_Weapon"
+            },
+            {
+                "Chance": 0.35,
+                "Id": "Vassal_Whip"
+            },
+            {
+                "Chance": 0.1335,
+                "Id": "Vassal_Projectile"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Vassal_Axe"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Vassal_Hammer"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Vassal_Claws"
+            },
+            {
+                "Chance": 0.0003,
+                "Id": "Vassal_Fan"
+            },
+            {
+                "Chance": 0.0001,
+                "Id": "Vassal_Scythe"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Witch_Authority": {
+        "Chances": [
+            0.4025,
+            0.31,
+            0.199,
+            0.05,
+            0.025,
+            0.01,
+            0.0025,
+            0.001
+        ],
+        "Id": 52,
+        "ImageId": "rbxassetid://110883875851060",
+        "Is_Last_Stop": true,
+        "MapId": 27,
+        "Name": "Witch_Authority",
+        "Pity_Names": [
+            "Witch_Authority_1",
+            "Witch_Authority_2",
+            "Witch_Authority_3",
+            "Witch_Authority_4",
+            "Witch_Authority_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Witch_Authority_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4025,
+                "Id": "Re:Envy"
+            },
+            {
+                "Chance": 0.31,
+                "Id": "Re:Sloth"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Re:Wrath"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Re:Lust"
+            },
+            {
+                "Chance": 0.025,
+                "Id": "Re:Gluttony"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Re:Melancholy"
+            },
+            {
+                "Chance": 0.0025,
+                "Id": "Re:Greed"
+            },
+            {
+                "Chance": 0.001,
+                "Id": "Re:Vainglory"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_3"
+    },
+    "Witch_Factor": {
+        "Chances": [
+            0.404,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0015,
+            0.0005
+        ],
+        "Id": 50,
+        "ImageId": "rbxassetid://75244536100096",
+        "Is_Last_Stop": true,
+        "MapId": 27,
+        "Name": "Witch_Factor",
+        "Pity_Names": [
+            "Witch_Factor_1",
+            "Witch_Factor_2",
+            "Witch_Factor_3",
+            "Witch_Factor_4",
+            "Witch_Factor_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Witch_Factor_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.404,
+                "Id": "Tainted_Spark"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Blighted_Flame"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Crimson_Howl"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Abyssal_Surge"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Sin_Eruption"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Authority_Break"
+            },
+            {
+                "Chance": 0.0015,
+                "Id": "Witchâ€™s_Wrath"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Eclipse_of_Fate"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    },
+    "Zanpakuto": {
+        "Chances": [
+            0.4055,
+            0.33,
+            0.199,
+            0.05,
+            0.01,
+            0.005,
+            0.0005
+        ],
+        "Id": 7,
+        "ImageId": "rbxassetid://71279193449431",
+        "Is_Last_Stop": true,
+        "MapId": 3,
+        "Name": "Zanpakuto",
+        "Pity_Names": [
+            "Zanpakuto_1",
+            "Zanpakuto_2",
+            "Zanpakuto_3",
+            "Zanpakuto_4",
+            "Zanpakuto_5"
+        ],
+        "Price": {
+            "Amount": -10,
+            "Id": "Zanpakuto_Token"
+        },
+        "Rewards": [
+            {
+                "Chance": 0.4055,
+                "Id": "Suzumebachi"
+            },
+            {
+                "Chance": 0.33,
+                "Id": "Zabimaru"
+            },
+            {
+                "Chance": 0.199,
+                "Id": "Ashisogi_Jizo"
+            },
+            {
+                "Chance": 0.05,
+                "Id": "Senbonzakura"
+            },
+            {
+                "Chance": 0.01,
+                "Id": "Nozarashi"
+            },
+            {
+                "Chance": 0.005,
+                "Id": "Hyorinmaru"
+            },
+            {
+                "Chance": 0.0005,
+                "Id": "Zangetsu"
+            }
+        ],
+        "Roll_Config": {
+            "Centered": true,
+            "Direction": "Right",
+            "Is_Items": true,
+            "Name": "Default"
+        },
+        "UI_Name": "Powers_2"
+    }
+}

@@ -19,9 +19,40 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         Type = "Menu"
     end
     
-    -- [UPDATE] Fungsi Helper Render Images dengan "Micro-Yielding"
+    local RenderState = setmetatable({}, { __mode = "k" })
+
+    local function BuildImagesSignature(ImagesData)
+        if not ImagesData or #ImagesData == 0 then return "" end
+        local parts = table.create(#ImagesData)
+        for i, imageData in ipairs(ImagesData) do
+            if typeof(imageData) == "table" then
+                local imageId = imageData.Image or imageData.Icon or imageData.Id or ""
+                local size = imageData.Size or ""
+                local gradient = imageData.Gradient or ""
+                parts[i] = tostring(imageId) .. "|" .. tostring(imageData.Title or "") .. "|" .. tostring(imageData.Quantity or "") .. "|" .. tostring(imageData.Rate or "") .. "|" .. tostring(size) .. "|" .. tostring(gradient)
+            else
+                parts[i] = tostring(imageData)
+            end
+        end
+        return table.concat(parts, "||")
+    end
+
     local function RenderImages(Container, ImagesData)
-        -- Bersihkan container lama
+        local state = RenderState[Container]
+        if not state then
+            state = { token = 0, lastSignature = "" }
+            RenderState[Container] = state
+        end
+
+        local signature = BuildImagesSignature(ImagesData)
+        if signature == state.lastSignature then
+            return
+        end
+
+        state.lastSignature = signature
+        state.token = state.token + 1
+        local token = state.token
+
         for _, child in ipairs(Container:GetChildren()) do
             if not child:IsA("UIListLayout") and not child:IsA("UIPadding") then
                 child:Destroy()
@@ -30,7 +61,21 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 
         if not ImagesData or #ImagesData == 0 then return end
 
-        for i, imageData in ipairs(ImagesData) do
+        local total = #ImagesData
+        local batch = 2
+        if total >= 20 then
+            batch = 1
+        elseif total >= 10 then
+            batch = 2
+        else
+            batch = 3
+        end
+
+        task.spawn(function()
+            for i, imageData in ipairs(ImagesData) do
+                if RenderState[Container] ~= state or state.token ~= token then
+                    return
+                end
             local isCard = false
             if typeof(imageData) == "table" and (imageData.Quantity or imageData.Gradient or imageData.Card) then
                 isCard = true
@@ -151,14 +196,12 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
                 imgFrame.Parent = Container
             end
-            
-            -- [[ ULTIMATE SMOOTH FIX ]] --
-            -- Setiap selesai membuat 2 kartu reward, istirahat 1 frame.
-            -- Ini memecah beban render berat menjadi potongan-potongan sangat kecil.
-            if i % 2 == 0 then
-                task.wait()
+
+                if i % batch == 0 then
+                    task.wait()
+                end
             end
-        end
+        end)
     end
 
     -- Setup UI List Layouts

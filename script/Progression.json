@@ -1,0 +1,1723 @@
+{
+    "Damage_Cells": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 110,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Kakuhou_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://127280201815856",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0.01,
+                "Price_Maximum_Lv": 110,
+                "Price_Increase": 0.21,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Damage_Cells Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 12,
+        "Name": "Damage_Cells",
+        "ImageId": "rbxassetid://127280201815856",
+        "MapId": 17
+    },
+    "Eminence_Coins": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Coins": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Eminence_Coin",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://115123771817325",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Coins",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Coins",
+                    "Category": "[Progression] Eminence_Coins Coins",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Coins_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 22,
+        "Name": "Eminence_Coins",
+        "ImageId": "rbxassetid://115123771817325",
+        "MapId": 22
+    },
+    "Christmas_Damage_Upgrade_4": {
+        "UI_Name": "Christmas_Damage_Progression",
+        "List": {
+            "Christmas_Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Snowman",
+                    "Amount": -1000
+                }],
+                "ImageId": "rbxassetid://89138381714621",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Christmas_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.2,
+                "Stats": [{
+                    "Main_Stat": "Christmas_Damage",
+                    "Category": "[Progression] Christmas_Damage_Upgrade_4 Christmas_Damage",
+                    "Value": 0.15,
+                    "Multiply": true,
+                    "Name": "Christmas_Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 45,
+        "Name": "Christmas_Damage_Upgrade_4",
+        "ImageId": "rbxassetid://89138381714621",
+        "MapId": 1
+    },
+    "Assassin_Critical_Damage": {
+        "UI_Name": "Progression_Chance_2",
+        "List": {
+            "Critical_Damage": {
+                "Max_Levels": 10,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Lethal_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://126032219295276",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Critical_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 10,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Value": 0.01,
+                    "Name": "Critical_Damage",
+                    "Category": "[Progression] Assassin_Critical_Damage Critical_Damage"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 35,
+        "Name": "Assassin_Critical_Damage",
+        "ImageId": "rbxassetid://126032219295276",
+        "MapId": 26
+    },
+    "Dragon_Booster": {
+        "UI_Name": "Progression_Chance_2",
+        "List": {
+            "Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Sacred_Gear_Token",
+                    "Amount": -250
+                }],
+                "ImageId": "rbxassetid://134878504933362",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Dragon_Booster Damage",
+                    "Value": 0.08,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 40,
+        "Name": "Dragon_Booster",
+        "ImageId": "rbxassetid://134878504933362",
+        "MapId": 35
+    },
+    "Energy_Obelisk": {
+        "UI_Name": "Progression_Super_Obelisk",
+        "List": {
+            "Energy": {
+                "Max_Levels": 125,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Obelisk_Coin",
+                    "Amount": -50
+                }],
+                "ImageId": "rbxassetid://123192540877679",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 125,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Energy_Obelisk Energy",
+                    "Value": 0.1,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 24,
+        "Name": "Energy_Obelisk",
+        "ImageId": "rbxassetid://123192540877679",
+        "MapId": 10
+    },
+    "Slayer_Energy_Progression": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 80,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Exchange_Coin",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://112999642500068",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Energy",
+                "Price_Increase": 0.11,
+                "Price_Maximum_Lv": 70,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Slayer_Energy_Progression Energy",
+                    "Value": 0.05,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }, {
+                    "Main_Stat": "Exp",
+                    "Category": "[Progression] Slayer_Energy_Progression Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Exp_Multiply"
+                }, {
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Slayer_Energy_Progression Energy",
+                    "Value": 0.125,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 1,
+        "Name": "Slayer_Energy_Progression",
+        "ImageId": "rbxassetid://112999642500068",
+        "MapId": 5
+    },
+    "Hide_n_Punch_Progression": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 10,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Punching_Machine_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://96182433444514",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Damage",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 10,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Hide_n_Punch_Progression Damage",
+                    "Value": 1,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 29,
+        "Name": "Hide_n_Punch_Progression",
+        "ImageId": "rbxassetid://96182433444514",
+        "MapId": 23
+    },
+    "Demon_Lord_Luck": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Luck": {
+                "Rarity": "Unknown",
+                "Max_Levels": 50,
+                "Lowest_Chance": 0.1,
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Star_Luck",
+                        "Category": "[Progression] Demon_Lord_Luck Luck",
+                        "Value": 0.01,
+                        "Multiply": true,
+                        "Name": "Star_Luck_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "Price": [{
+                    "Id": "Demon_Luck_Token",
+                    "Amount": -10
+                }],
+                "Price_Compound": true,
+                "ImageId": "rbxassetid://122391307370145",
+                "Cache_Chance": {
+                    "Data": 0.95,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Luck",
+                "Price_Increase": 0.075,
+                "Price_Maximum_Lv": 50,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck",
+                    "Category": "[Progression] Demon_Lord_Luck Luck",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Star_Luck_Multiply"
+                }],
+                "Index": 1,
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Demon_Luck_Token",
+                        "Amount": -10
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 6,
+        "Name": "Demon_Lord_Luck",
+        "ImageId": "rbxassetid://122391307370145",
+        "MapId": 14
+    },
+    "Demon_Lord_Coins": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Coins": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Demon_Coins_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://113976048549240",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Coins",
+                "Price_Increase": 0.03,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Coins",
+                    "Category": "[Progression] Demon_Lord_Coins Coins",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Coins_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 7,
+        "Name": "Demon_Lord_Coins",
+        "ImageId": "rbxassetid://113976048549240",
+        "MapId": 14
+    },
+    "Contract_of_Greed": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Coins": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Greedy_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://86807100249822",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Coins",
+                "Decrease_Chance": 0.01,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.18,
+                "Stats": [{
+                    "Main_Stat": "Coins",
+                    "Category": "[Progression] Contract_of_Greed Coins",
+                    "Value": 0.01,
+                    "Percent": true,
+                    "Name": "Coins_Percent"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 15,
+        "Name": "Contract_of_Greed",
+        "ImageId": "rbxassetid://86807100249822",
+        "MapId": 10
+    },
+    "Mana_Growth": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Mana_Growth_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://130702839684284",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.7,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Mana_Growth Energy",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 30,
+        "Name": "Mana_Growth",
+        "ImageId": "rbxassetid://130702839684284",
+        "MapId": 24
+    },
+    "Christmas_Damage_Upgrade_2": {
+        "UI_Name": "Christmas_Damage_Progression",
+        "List": {
+            "Christmas_Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Winter_Glove",
+                    "Amount": -1000
+                }],
+                "ImageId": "rbxassetid://89138381714621",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Christmas_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.2,
+                "Stats": [{
+                    "Main_Stat": "Christmas_Damage",
+                    "Category": "[Progression] Christmas_Damage_Upgrade_2 Christmas_Damage",
+                    "Value": 1,
+                    "Multiply": true,
+                    "Name": "Christmas_Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 43,
+        "Name": "Christmas_Damage_Upgrade_2",
+        "ImageId": "rbxassetid://89138381714621",
+        "MapId": 1
+    },
+    "Dragon_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 50,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Dragon_Blessing_Token",
+                    "Amount": -200
+                }],
+                "ImageId": "rbxassetid://100177923412568",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 50,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Dragon_Energy Energy",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 18,
+        "Name": "Dragon_Energy",
+        "ImageId": "rbxassetid://100177923412568",
+        "MapId": 20
+    },
+    "Akuma_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 160,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Akuma_Energy_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://131673149165702",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0.01,
+                "Price_Maximum_Lv": 160,
+                "Price_Increase": 0.11,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Akuma_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 16,
+        "Name": "Akuma_Energy",
+        "ImageId": "rbxassetid://131673149165702",
+        "MapId": 18
+    },
+    "Demon_Lord_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Rarity": "Unknown",
+                "Max_Levels": 210,
+                "Lowest_Chance": 0.1,
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Energy",
+                        "Category": "[Progression] Demon_Lord_Energy Energy",
+                        "Value": 0.71,
+                        "Multiply": true,
+                        "Name": "Energy_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "Price": [{
+                    "Id": "Demon_Energy_Token",
+                    "Amount": -10
+                }],
+                "Price_Compound": true,
+                "ImageId": "rbxassetid://138692227688668",
+                "Cache_Chance": {
+                    "Data": 0.1,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Energy",
+                "Price_Increase": 0.01,
+                "Price_Maximum_Lv": 210,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Demon_Lord_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1,
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Demon_Energy_Token",
+                        "Amount": -20
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 4,
+        "Name": "Demon_Lord_Energy",
+        "ImageId": "rbxassetid://138692227688668",
+        "MapId": 14
+    },
+    "Running_Track_Progression": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Rarity": "Unknown",
+                "Max_Levels": 10,
+                "Lowest_Chance": 1,
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Energy",
+                        "Category": "[Progression] Running_Track_Progression Energy",
+                        "Value": 0,
+                        "Multiply": true,
+                        "Name": "Energy_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "Price": [{
+                    "Id": "Running_Track_Coin",
+                    "Amount": -1000
+                }],
+                "Price_Compound": true,
+                "ImageId": "rbxassetid://78097640256578",
+                "Cache_Chance": {
+                    "Data": 1,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Energy",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 10,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Running_Track_Progression Energy",
+                    "Value": 0.5,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1,
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Running_Track_Coin",
+                        "Amount": -1000
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 28,
+        "Name": "Running_Track_Progression",
+        "ImageId": "rbxassetid://78097640256578",
+        "MapId": 1
+    },
+    "Eminence_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Eminence_Coin",
+                    "Amount": -20
+                }],
+                "ImageId": "rbxassetid://75805551596684",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Energy",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Eminence_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 19,
+        "Name": "Eminence_Energy",
+        "ImageId": "rbxassetid://75805551596684",
+        "MapId": 22
+    },
+    "Eminence_Luck": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Luck": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Eminence_Coin",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://90481394492579",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Luck",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck",
+                    "Category": "[Progression] Eminence_Luck Luck",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Star_Luck_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 21,
+        "Name": "Eminence_Luck",
+        "ImageId": "rbxassetid://90481394492579",
+        "MapId": 22
+    },
+    "House_of_Killer_Whale": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Whale_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://110755425618389",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.5,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] House_of_Killer_Whale Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 38,
+        "Name": "House_of_Killer_Whale",
+        "ImageId": "rbxassetid://110755425618389",
+        "MapId": 34
+    },
+    "Assassin_Critical_Energy": {
+        "UI_Name": "Progression_Chance_2",
+        "List": {
+            "Critical_Energy": {
+                "Max_Levels": 10,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Assassin_Flow_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://99491831552652",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Critical_Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 10,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Value": 0.01,
+                    "Name": "Critical_Energy",
+                    "Category": "[Progression] Assassin_Critical_Energy Critical_Energy"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 34,
+        "Name": "Assassin_Critical_Energy",
+        "ImageId": "rbxassetid://99491831552652",
+        "MapId": 26
+    },
+    "Quest_Progression": {
+        "UI_Name": "Progression_Default_05",
+        "List": {
+            "Ki_Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Ki_Damage_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://14348639012",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Ki_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Ki_Damage",
+                    "Category": "[Progression] Quest_Progression Ki_Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Ki_Damage_Multiply"
+                }],
+                "Index": 2
+            },
+            "Star_Luck_II": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Star_Luck_II_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://71537117509507",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Star_Luck_II",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck_II",
+                    "Category": "[Progression] Quest_Progression Star_Luck_II",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Star_Luck_II_Multiply"
+                }],
+                "Index": 4
+            },
+            "Ki": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Ki_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://109367300080973",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Ki",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Ki",
+                    "Category": "[Progression] Quest_Progression Ki",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Ki_Multiply"
+                }],
+                "Index": 1
+            },
+            "Zeni": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Zeni_Coin",
+                    "Amount": -1
+                }],
+                "ImageId": "rbxassetid://106350904800374",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Zeni",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Zeni",
+                    "Category": "[Progression] Quest_Progression Zeni",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Zeni_Multiply"
+                }],
+                "Index": 3
+            }
+        },
+        "Id": 46,
+        "Name": "Quest_Progression",
+        "ImageId": "rbxassetid://15814865123",
+        "MapId": 39
+    },
+    "Exp_Obelisk": {
+        "UI_Name": "Progression_Super_Obelisk",
+        "List": {
+            "Exp": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Obelisk_Coin",
+                    "Amount": -50
+                }],
+                "ImageId": "rbxassetid://99510595996281",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Exp",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Exp",
+                    "Category": "[Progression] Exp_Obelisk Exp",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Exp_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 23,
+        "Name": "Exp_Obelisk",
+        "ImageId": "rbxassetid://99510595996281",
+        "MapId": 5
+    },
+    "Energy_Progression": {
+        "UI_Name": "Progression_Chance_No_Shop",
+        "List": {
+            "Strenght": {
+                "Max_Levels": 50,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Energy",
+                    "Amount": -1e50
+                }],
+                "ImageId": "rbxassetid://120297012101705",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Strenght",
+                "Price_Increase": 0.1,
+                "Price_Maximum_Lv": 50,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Energy_Progression Strenght",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 2,
+        "Name": "Energy_Progression",
+        "ImageId": "rbxassetid://120297012101705",
+        "MapId": 12
+    },
+    "Power_Absorption": {
+        "UI_Name": "Progression_Chance_3",
+        "List": {
+            "Ki_Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Absorption_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://107821003006048",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Ki_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.3848,
+                "Stats": [{
+                    "Main_Stat": "Ki_Damage",
+                    "Category": "[Progression] Power_Absorption Ki_Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Ki_Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 47,
+        "Name": "Power_Absorption",
+        "ImageId": "rbxassetid://107821003006048",
+        "MapId": 39
+    },
+    "Christmas_Damage_Upgrade": {
+        "UI_Name": "Christmas_Damage_Progression",
+        "List": {
+            "Christmas_Damage": {
+                "Max_Levels": 1000,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Winter_Glove",
+                    "Amount": -20
+                }],
+                "ImageId": "rbxassetid://89138381714621",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Christmas_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 1000,
+                "Price_Increase": 0.1,
+                "Stats": [{
+                    "Value": 1,
+                    "Name": "Christmas_Damage",
+                    "Category": "[Progression] Christmas_Damage_Upgrade Christmas_Damage"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 42,
+        "Name": "Christmas_Damage_Upgrade",
+        "ImageId": "rbxassetid://89138381714621",
+        "MapId": 1
+    },
+    "House_of_Wolf": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Wolf_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://88012636224833",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.4,
+                "Stats": [{
+                    "Main_Stat": "Coins",
+                    "Category": "[Progression] House_of_Wolf Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Coins_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 39,
+        "Name": "House_of_Wolf",
+        "ImageId": "rbxassetid://88012636224833",
+        "MapId": 34
+    },
+    "Christmas_Materials_Upgrade": {
+        "UI_Name": "Progression_Chance_3",
+        "List": {
+            "Christmas_Materials": {
+                "Max_Levels": 367,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Candy_Cane",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://115811306851551",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Christmas_Materials",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 367,
+                "Price_Increase": 0.2,
+                "Stats": [{
+                    "Main_Stat": "Christmas_Materials",
+                    "Category": "[Progression] Christmas_Materials_Upgrade Christmas_Materials",
+                    "Value": 0.1,
+                    "Multiply": true,
+                    "Name": "Christmas_Materials_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 41,
+        "Name": "Christmas_Materials_Upgrade",
+        "ImageId": "rbxassetid://115811306851551",
+        "MapId": 1
+    },
+    "Coins_Obelisk": {
+        "UI_Name": "Progression_Super_Obelisk",
+        "List": {
+            "Coins": {
+                "Max_Levels": 15,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Obelisk_Coin",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://81990812150735",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Coins",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 15,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Coins",
+                    "Category": "[Progression] Coins_Obelisk Coins",
+                    "Value": 0.05,
+                    "Multiply": true,
+                    "Name": "Coins_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 27,
+        "Name": "Coins_Obelisk",
+        "ImageId": "rbxassetid://81990812150735",
+        "MapId": 25
+    },
+    "Swordsman_Damage": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Rarity": "Unknown",
+                "Max_Levels": 110,
+                "Lowest_Chance": 0.15,
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Damage",
+                        "Category": "[Progression] Swordsman_Damage Damage",
+                        "Value": 0,
+                        "Multiply": true,
+                        "Name": "Damage_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "Price": [{
+                    "Id": "Swordsman_Damage_Token",
+                    "Amount": -10
+                }],
+                "Price_Compound": true,
+                "ImageId": "rbxassetid://125459265151823",
+                "Cache_Chance": {
+                    "Data": 1,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Damage",
+                "Price_Increase": 0.03,
+                "Price_Maximum_Lv": 110,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Swordsman_Damage Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Swordsman_Damage_Token",
+                        "Amount": -10
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 8,
+        "Name": "Swordsman_Damage",
+        "ImageId": "rbxassetid://125459265151823",
+        "MapId": 15
+    },
+    "Swordsman_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Rarity": "Unknown",
+                "Max_Levels": 210,
+                "Lowest_Chance": 0.125,
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Energy",
+                        "Category": "[Progression] Swordsman_Energy Energy",
+                        "Value": 0,
+                        "Multiply": true,
+                        "Name": "Energy_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "Price": [{
+                    "Id": "Swordsman_Energy_Token",
+                    "Amount": -10
+                }],
+                "Price_Compound": true,
+                "ImageId": "rbxassetid://70381487938703",
+                "Cache_Chance": {
+                    "Data": 1,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Energy",
+                "Price_Increase": 0.01,
+                "Price_Maximum_Lv": 210,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Swordsman_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1,
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Swordsman_Energy_Token",
+                        "Amount": -10
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 9,
+        "Name": "Swordsman_Energy",
+        "ImageId": "rbxassetid://70381487938703",
+        "MapId": 15
+    },
+    "House_of_Eagle": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Coins_and_Luck": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Eagle_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://136158771496035",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Coins_and_Luck",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.3,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck",
+                    "Category": "[Progression] House_of_Eagle Coins_and_Luck",
+                    "Value": 0.002,
+                    "Multiply": true,
+                    "Name": "Star_Luck_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 37,
+        "Name": "House_of_Eagle",
+        "ImageId": "rbxassetid://136158771496035",
+        "MapId": 34
+    },
+    "Christmas_Damage_Upgrade_3": {
+        "UI_Name": "Christmas_Damage_Progression",
+        "List": {
+            "Christmas_Damage": {
+                "Max_Levels": 250,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Gingerbread",
+                    "Amount": -1000
+                }],
+                "ImageId": "rbxassetid://89138381714621",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Christmas_Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.2,
+                "Stats": [{
+                    "Main_Stat": "Christmas_Damage",
+                    "Category": "[Progression] Christmas_Damage_Upgrade_3 Christmas_Damage",
+                    "Value": 1,
+                    "Multiply": true,
+                    "Name": "Christmas_Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 44,
+        "Name": "Christmas_Damage_Upgrade_3",
+        "ImageId": "rbxassetid://89138381714621",
+        "MapId": 1
+    },
+    "Fortitude_Level": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Strenght": {
+                "Max_Levels": 210,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Fortitude_Level_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://130004669676426",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Strenght",
+                "Price_Increase": 0.01,
+                "Price_Maximum_Lv": 210,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Fortitude_Level Strenght",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 3,
+        "Name": "Fortitude_Level",
+        "ImageId": "rbxassetid://130004669676426",
+        "MapId": 13
+    },
+    "Damage_Obelisk": {
+        "UI_Name": "Progression_Super_Obelisk",
+        "List": {
+            "Damage": {
+                "Max_Levels": 125,
+                "Lowest_Chance": 1,
+                "Index": 1,
+                "Price": [{
+                    "Id": "Obelisk_Coin",
+                    "Amount": -50
+                }],
+                "Cache_Stats": {
+                    "Data": [{
+                        "Main_Stat": "Damage",
+                        "Category": "[Progression] Damage_Obelisk Damage",
+                        "Value": 0.5,
+                        "Multiply": true,
+                        "Name": "Damage_Multiply"
+                    }],
+                    "Level": -1
+                },
+                "ImageId": "rbxassetid://129119054246367",
+                "Cache_Chance": {
+                    "Data": 1,
+                    "Level": -1
+                },
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 125,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Damage_Obelisk Damage",
+                    "Value": 0.1,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Cache_Price": {
+                    "Data": [{
+                        "Id": "Obelisk_Coin",
+                        "Amount": -50
+                    }],
+                    "Level": -1
+                }
+            }
+        },
+        "Id": 25,
+        "Name": "Damage_Obelisk",
+        "ImageId": "rbxassetid://129119054246367",
+        "MapId": 15
+    },
+    "Ultimate_Cast": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Ultimate_Cast_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://109014802047756",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0.7,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Ultimate_Cast Damage",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 31,
+        "Name": "Ultimate_Cast",
+        "ImageId": "rbxassetid://109014802047756",
+        "MapId": 24
+    },
+    "Ripple_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 110,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Ripple_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://135041475645848",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0.01,
+                "Price_Maximum_Lv": 110,
+                "Price_Increase": 0.1,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Ripple_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 10,
+        "Name": "Ripple_Energy",
+        "ImageId": "rbxassetid://135041475645848",
+        "MapId": 16
+    },
+    "Demon_Lord_Damage": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 210,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Demon_Damage_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://81954379045954",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0.05,
+                "Name": "Damage",
+                "Price_Increase": 0.01,
+                "Price_Maximum_Lv": 210,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Demon_Lord_Damage Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 5,
+        "Name": "Demon_Lord_Damage",
+        "ImageId": "rbxassetid://81954379045954",
+        "MapId": 14
+    },
+    "Science_Materials_Upgrade": {
+        "UI_Name": "Progression_Chance_3",
+        "List": {
+            "Science_Materials": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Coins",
+                    "Amount": -1e42
+                }],
+                "ImageId": "rbxassetid://91912850939002",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Science_Materials",
+                "Price_Increase": 0.2,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Science_Materials",
+                    "Category": "[Progression] Science_Materials_Upgrade Science_Materials",
+                    "Value": 0.15,
+                    "Multiply": true,
+                    "Name": "Science_Materials_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 36,
+        "Name": "Science_Materials_Upgrade",
+        "ImageId": "rbxassetid://91912850939002",
+        "MapId": 29
+    },
+    "Assassin_Damage": {
+        "UI_Name": "Progression_Chance_2",
+        "List": {
+            "Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Assassin_Damage_Token",
+                    "Amount": -250
+                }],
+                "ImageId": "rbxassetid://96934189689275",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Assassin_Damage Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 33,
+        "Name": "Assassin_Damage",
+        "ImageId": "rbxassetid://96934189689275",
+        "MapId": 26
+    },
+    "Kaiju_Energy": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Energy": {
+                "Max_Levels": 110,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Kaiju_Energy_Token",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://90945946371648",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 110,
+                "Price_Increase": 0.1,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Kaiju_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 11,
+        "Name": "Kaiju_Energy",
+        "ImageId": "rbxassetid://90945946371648",
+        "MapId": 13
+    },
+    "Luck_Obelisk": {
+        "UI_Name": "Progression_Super_Obelisk",
+        "List": {
+            "Luck": {
+                "Max_Levels": 15,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Obelisk_Coin",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://136918623750129",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Luck",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 15,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck",
+                    "Category": "[Progression] Luck_Obelisk Luck",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Star_Luck_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 26,
+        "Name": "Luck_Obelisk",
+        "ImageId": "rbxassetid://136918623750129",
+        "MapId": 20
+    },
+    "Lucky_Spirit": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Luck": {
+                "Max_Levels": 50,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Lucky_Spirit_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://118078819488495",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Luck",
+                "Decrease_Chance": 0.1,
+                "Price_Maximum_Lv": 50,
+                "Price_Increase": 0.21,
+                "Stats": [{
+                    "Main_Stat": "Star_Luck",
+                    "Category": "[Progression] Lucky_Spirit Luck",
+                    "Value": 0.01,
+                    "Percent": true,
+                    "Name": "Star_Luck_Percent"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 14,
+        "Name": "Lucky_Spirit",
+        "ImageId": "rbxassetid://118078819488495",
+        "MapId": 9
+    },
+    "Akuma_Damage": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 110,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Akuma_Damage_Token",
+                    "Amount": -10
+                }],
+                "ImageId": "rbxassetid://97652590466405",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0.01,
+                "Price_Maximum_Lv": 110,
+                "Price_Increase": 0.21,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Akuma_Damage Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 13,
+        "Name": "Akuma_Damage",
+        "ImageId": "rbxassetid://97652590466405",
+        "MapId": 18
+    },
+    "Dragon_Damage": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 500,
+                "Lowest_Chance": 0.1,
+                "Price": [{
+                    "Id": "Dragon_Blessing_Token",
+                    "Amount": -100
+                }],
+                "ImageId": "rbxassetid://122882624991658",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Damage",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 500,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Dragon_Damage Damage",
+                    "Value": 0.02,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 17,
+        "Name": "Dragon_Damage",
+        "ImageId": "rbxassetid://122882624991658",
+        "MapId": 20
+    },
+    "Eminence_Damage": {
+        "UI_Name": "Progression_Chance",
+        "List": {
+            "Damage": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Eminence_Coin",
+                    "Amount": -20
+                }],
+                "ImageId": "rbxassetid://124220945725693",
+                "Rarity": "Unknown",
+                "Success_Chance": 1,
+                "Decrease_Chance": 0,
+                "Name": "Damage",
+                "Price_Increase": 0,
+                "Price_Maximum_Lv": 100,
+                "Stats": [{
+                    "Main_Stat": "Damage",
+                    "Category": "[Progression] Eminence_Damage Damage",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Damage_Multiply"
+                }],
+                "Index": 1,
+                "Price_Compound": true
+            }
+        },
+        "Id": 20,
+        "Name": "Eminence_Damage",
+        "ImageId": "rbxassetid://124220945725693",
+        "MapId": 22
+    },
+    "Assassin_Energy": {
+        "UI_Name": "Progression_Chance_2",
+        "List": {
+            "Energy": {
+                "Max_Levels": 100,
+                "Lowest_Chance": 1,
+                "Price": [{
+                    "Id": "Assassin_Energy_Token",
+                    "Amount": -250
+                }],
+                "ImageId": "rbxassetid://128947898914861",
+                "Success_Chance": 1,
+                "Rarity": "Unknown",
+                "Name": "Energy",
+                "Decrease_Chance": 0,
+                "Price_Maximum_Lv": 100,
+                "Price_Increase": 0,
+                "Stats": [{
+                    "Main_Stat": "Energy",
+                    "Category": "[Progression] Assassin_Energy Energy",
+                    "Value": 0.01,
+                    "Multiply": true,
+                    "Name": "Energy_Multiply"
+                }],
+                "Index": 1
+            }
+        },
+        "Id": 32,
+        "Name": "Assassin_Energy",
+        "ImageId": "rbxassetid://128947898914861",
+        "MapId": 26
+    }
+}
