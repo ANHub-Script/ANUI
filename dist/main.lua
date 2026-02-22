@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.238  |  2026-02-22  |  Roblox UI Library for scripts
+    v1.0.239  |  2026-02-22  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.238",
+    "version": "1.0.239",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -7409,51 +7409,49 @@ end
 
 if not as or#as==0 then return end
 
-local aw=#as
-local ax=2
-if aw>=20 then
-ax=1
-elseif aw>=10 then
-ax=2
-else
-ax=3
-end
-
 task.spawn(function()
-for ay,az in ipairs(as)do
+local aw=#as
+local ax=0.004
+if aw>=20 then
+ax=0.002
+elseif aw>=10 then
+ax=0.003
+end
+local ay=os.clock()
+for az,aA in ipairs(as)do
 if aq[ar]~=at or at.token~=av then
 return
 end
-local aA=false
-if typeof(az)=="table"and(az.Quantity or az.Gradient or az.Card)then
-aA=true
+local aB=false
+if typeof(aA)=="table"and(aA.Quantity or aA.Gradient or aA.Card)then
+aB=true
 end
 
-if aA then
-local aB=az.Size or al.ImageSize or UDim2.new(0,60,0,60)
-local d=az.Title or"Item"
-local e=az.Quantity or""
-local f=az.Rate or""
-local g=az.Image or""
-local h=az.Gradient
+if aB then
+local d=aA.Size or al.ImageSize or UDim2.new(0,60,0,60)
+local e=aA.Title or"Item"
+local f=aA.Quantity or""
+local g=aA.Rate or""
+local h=aA.Image or""
+local j=aA.Gradient
 
-local j
-if typeof(h)=="ColorSequence"then
-j=h
-elseif typeof(h)=="Color3"then
-j=ColorSequence.new(h)
+local l
+if typeof(j)=="ColorSequence"then
+l=j
+elseif typeof(j)=="Color3"then
+l=ColorSequence.new(j)
 else
-j=ColorSequence.new(Color3.fromRGB(80,80,80))
+l=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
-local l=j.Keypoints[1].Value
-local m=2
+local m=l.Keypoints[1].Value
+local p=2
 
 
 ag.NewRoundFrame(8,"Squircle",{
-Size=aB,
+Size=d,
 Parent=ar,
-ImageColor3=l,
+ImageColor3=m,
 ClipsDescendants=true,
 },{
 ah("ImageLabel",{
@@ -7468,16 +7466,16 @@ ZIndex=2,
 }),
 
 (ag.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-m*2,1,-m*2),
+Size=UDim2.new(1,-p*2,1,-p*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.new(1,1,1),
 ClipsDescendants=true,
 ZIndex=3,
 },{
-ah("UIGradient",{Color=j,Rotation=45}),
+ah("UIGradient",{Color=l,Rotation=45}),
 ah("ImageLabel",{
-Image=g,
+Image=h,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.45,0),
@@ -7485,8 +7483,8 @@ BackgroundTransparency=1,
 ScaleType="Fit",
 ZIndex=4,
 }),
-e and ah("TextLabel",{
-Text=e,
+f and ah("TextLabel",{
+Text=f,
 Size=UDim2.new(0.5,0,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
@@ -7498,8 +7496,8 @@ TextStrokeTransparency=0,
 TextStrokeColor3=Color3.new(0,0,0),
 ZIndex=5,
 })or nil,
-f and ah("TextLabel",{
-Text=f,
+g and ah("TextLabel",{
+Text=g,
 Size=UDim2.new(0.5,-4,0,12),
 Position=UDim2.new(1,-4,0,2),
 AnchorPoint=Vector2.new(1,0),
@@ -7522,7 +7520,7 @@ BorderSizePixel=0,
 ZIndex=6,
 },{
 ah("TextLabel",{
-Text=d,
+Text=e,
 Size=UDim2.new(1,-2,1,0),
 Position=UDim2.new(0.5,0,0,0),
 AnchorPoint=Vector2.new(0.5,0),
@@ -7539,14 +7537,14 @@ ZIndex=7,
 }))
 })
 else
-local aB=(typeof(az)=="table"and(az.Image or az.Icon or az.Id))or az
-local d=ag.Image(aB,tostring(aB),6,ak.Window.Folder,"Dropdown",false)
-d.Size=al.ImageSize or UDim2.new(0,30,0,30)
-d.Parent=ar
+local d=(typeof(aA)=="table"and(aA.Image or aA.Icon or aA.Id))or aA
+local e=ag.Image(d,tostring(d),6,ak.Window.Folder,"Dropdown",false)
+e.Size=al.ImageSize or UDim2.new(0,30,0,30)
+e.Parent=ar
 end
-
-if ay%ax==0 then
+if os.clock()-ay>=ax then
 task.wait()
+ay=os.clock()
 end
 end
 end)

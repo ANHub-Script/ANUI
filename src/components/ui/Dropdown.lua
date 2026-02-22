@@ -61,17 +61,15 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
 
         if not ImagesData or #ImagesData == 0 then return end
 
-        local total = #ImagesData
-        local batch = 2
-        if total >= 20 then
-            batch = 1
-        elseif total >= 10 then
-            batch = 2
-        else
-            batch = 3
-        end
-
         task.spawn(function()
+            local total = #ImagesData
+            local budget = 0.004
+            if total >= 20 then
+                budget = 0.002
+            elseif total >= 10 then
+                budget = 0.003
+            end
+            local sliceStart = os.clock()
             for i, imageData in ipairs(ImagesData) do
                 if RenderState[Container] ~= state or state.token ~= token then
                     return
@@ -196,9 +194,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 imgFrame.Size = Dropdown.ImageSize or UDim2.new(0, 30, 0, 30)
                 imgFrame.Parent = Container
             end
-
-                if i % batch == 0 then
+                if os.clock() - sliceStart >= budget then
                     task.wait()
+                    sliceStart = os.clock()
                 end
             end
         end)
