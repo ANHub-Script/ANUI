@@ -87,6 +87,9 @@ ConfigManager = {
             Load = function(element, data)
                 if element and element.Set then
                     element:Set(data.value, false, nil, true)
+                    if element.Disabled ~= true then
+                        element:Set(data.value, true, true, true)
+                    end
                 end
             end
         },
