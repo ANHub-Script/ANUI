@@ -277,8 +277,8 @@ function Element:New(Config)
     ToggleFrame.AnchorPoint = Vector2.new(1,Config.Window.NewElements and 0 or 0.5)
     ToggleFrame.Position = UDim2.new(1,0,Config.Window.NewElements and 0 or 0.5,0)
     
-    function Toggle:Set(v, isCallback, isAnim)
-        if CanCallback and (not Toggle.Disabled or IsInitializing) then
+    function Toggle:Set(v, isCallback, isAnim, force)
+        if CanCallback and ((force == true) or (not Toggle.Disabled) or IsInitializing) then
             ToggleFunc:Set(v, isCallback, isAnim or false)
             Toggled = v
             Toggle.Value = v

@@ -86,7 +86,7 @@ ConfigManager = {
             end,
             Load = function(element, data)
                 if element and element.Set then
-                    element:Set(data.value)
+                    element:Set(data.value, false, nil, true)
                 end
             end
         },

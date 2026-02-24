@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.240  |  2026-02-24  |  Roblox UI Library for scripts
+    v1.0.241  |  2026-02-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.240",
+    "version": "1.0.241",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4259,7 +4259,7 @@ value=ae.Value,
 end,
 Load=function(ae,af)
 if ae and ae.Set then
-ae:Set(af.value)
+ae:Set(af.value,false,nil,true)
 end
 end
 },
@@ -4531,6 +4531,7 @@ return ad.Configs[af]
 end
 
 return ad end function a.x()
+
 local aa={}
 
 local ab=a.load'b'
@@ -6797,8 +6798,8 @@ end
 an.AnchorPoint=Vector2.new(1,ah.Window.NewElements and 0 or 0.5)
 an.Position=UDim2.new(1,0,ah.Window.NewElements and 0 or 0.5,0)
 
-function ai.Set(ap,aq,ar,as)
-if ak and(not ai.Disabled or al)then
+function ai.Set(ap,aq,ar,as,at)
+if ak and((at==true)or(not ai.Disabled)or al)then
 ao:Set(aq,ar,as or false)
 am=aq
 ai.Value=aq
