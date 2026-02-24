@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.239  |  2026-02-22  |  Roblox UI Library for scripts
+    v1.0.240  |  2026-02-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.239",
+    "version": "1.0.240",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -6533,6 +6533,7 @@ __type="Toggle",
 Title=ah.Title or"Toggle",
 Desc=ah.Desc or nil,
 Locked=ah.Locked or false,
+Disabled=ah.Disabled or false,
 Value=ah.Value,
 Icon=ah.Icon or nil,
 IconSize=ah.IconSize or 23,
@@ -6570,65 +6571,66 @@ ParentType=ah.ParentType,
 }
 
 local ak=true
+local al=true
 
 if ai.Value==nil then
 ai.Value=false
 end
 
 
-function ai.SetMainImage(al,am,an)
-local ao=ai.ToggleFrame.UIElements.Container:FindFirstChild"TitleFrame"
-if not ao then return end
+function ai.SetMainImage(am,an,ao)
+local ap=ai.ToggleFrame.UIElements.Container:FindFirstChild"TitleFrame"
+if not ap then return end
 
-local ap=ao:FindFirstChild"CustomMainIcon"
-if ap then ap:Destroy()end
+local aq=ap:FindFirstChild"CustomMainIcon"
+if aq then aq:Destroy()end
 
-for aq,ar in ipairs(ao:GetChildren())do
-if ar:IsA"Frame"and ar.Name~="TitleFrame"and ar.Name~="UIListLayout"and ar.Name~="CustomMainIcon"then
-ar:Destroy()
+for ar,as in ipairs(ap:GetChildren())do
+if as:IsA"Frame"and as.Name~="TitleFrame"and as.Name~="UIListLayout"and as.Name~="CustomMainIcon"then
+as:Destroy()
 end
 end
 
-if not am then
-local aq=ao:FindFirstChild"TitleFrame"
-if aq then aq.Size=UDim2.new(1,0,1,0)end
+if not an then
+local ar=ap:FindFirstChild"TitleFrame"
+if ar then ar.Size=UDim2.new(1,0,1,0)end
 return
 end
 
-local aq=an or ai.ImageSize or 30
-if typeof(aq)=="number"then
-aq=UDim2.new(0,aq,0,aq)
+local ar=ao or ai.ImageSize or 30
+if typeof(ar)=="number"then
+ar=UDim2.new(0,ar,0,ar)
 end
 
-local ar
+local as
 
 
-if typeof(am)=="table"then
-local as=am
-local at=as.Image or""
-local au=as.Gradient
-local av=as.Quantity
-local aw=as.Rate
-local ax=as.Title
+if typeof(an)=="table"then
+local at=an
+local au=at.Image or""
+local av=at.Gradient
+local aw=at.Quantity
+local ax=at.Rate
+local ay=at.Title
 
-local ay
-if typeof(au)=="ColorSequence"then
-ay=au
-elseif typeof(au)=="Color3"then
-ay=ColorSequence.new(au)
+local az
+if typeof(av)=="ColorSequence"then
+az=av
+elseif typeof(av)=="Color3"then
+az=ColorSequence.new(av)
 else
-ay=ColorSequence.new(Color3.fromRGB(80,80,80))
+az=ColorSequence.new(Color3.fromRGB(80,80,80))
 end
 
-local az=ay.Keypoints[1].Value
-local aA=2
+local aA=az.Keypoints[1].Value
+local aB=2
 
 
-ar=aa.NewRoundFrame(8,"Squircle",{
+as=aa.NewRoundFrame(8,"Squircle",{
 Name="CustomMainIcon",
-Size=aq,
-Parent=ao,
-ImageColor3=az,
+Size=ar,
+Parent=ap,
+ImageColor3=aA,
 ClipsDescendants=true,
 LayoutOrder=-1,
 AnchorPoint=Vector2.new(0,0.5),
@@ -6647,7 +6649,7 @@ ZIndex=2,
 }),
 
 aa.NewRoundFrame(8,"Squircle",{
-Size=UDim2.new(1,-aA*2,1,-aA*2),
+Size=UDim2.new(1,-aB*2,1,-aB*2),
 Position=UDim2.new(0.5,0,0.5,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 ImageColor3=Color3.new(1,1,1),
@@ -6656,12 +6658,12 @@ ZIndex=3,
 },{
 
 ab("UIGradient",{
-Color=ay,
+Color=az,
 Rotation=45,
 }),
 
 ab("ImageLabel",{
-Image=at,
+Image=au,
 Size=UDim2.new(0.65,0,0.65,0),
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.45,0),
@@ -6671,8 +6673,8 @@ ZIndex=4,
 }),
 
 
-av and ab("TextLabel",{
-Text=av,
+aw and ab("TextLabel",{
+Text=aw,
 Size=UDim2.new(0.5,0,0,12),
 Position=UDim2.new(0,4,0,2),
 BackgroundTransparency=1,
@@ -6687,8 +6689,8 @@ ZIndex=5,
 })or nil,
 
 
-aw and ab("TextLabel",{
-Text=aw,
+ax and ab("TextLabel",{
+Text=ax,
 Size=UDim2.new(0.5,-4,0,12),
 Position=UDim2.new(1,-4,0,2),
 AnchorPoint=Vector2.new(1,0),
@@ -6704,7 +6706,7 @@ ZIndex=5,
 })or nil,
 
 
-ax and ab("Frame",{
+ay and ab("Frame",{
 Size=UDim2.new(1,0,0,18),
 Position=UDim2.new(0,0,1,0),
 AnchorPoint=Vector2.new(0,1),
@@ -6714,7 +6716,7 @@ BorderSizePixel=0,
 ZIndex=6,
 },{
 ab("TextLabel",{
-Text=ax,
+Text=ay,
 Size=UDim2.new(1,-2,1,0),
 Position=UDim2.new(0.5,0,0,0),
 AnchorPoint=Vector2.new(0.5,0),
@@ -6732,26 +6734,26 @@ ZIndex=7,
 
 
 else
-ar=aa.Image(
-am,
+as=aa.Image(
+an,
 ai.Title,
 ah.Window.NewElements and 12 or 6,
 ah.Window.Folder,
 "ToggleIcon",
 false
 )
-ar.Name="CustomMainIcon"
-ar.Parent=ao
-ar.Size=aq
-ar.LayoutOrder=-1
-ar.AnchorPoint=Vector2.new(0,0.5)
-ar.Position=UDim2.new(0,0,0.5,0)
-ar.BackgroundTransparency=1
+as.Name="CustomMainIcon"
+as.Parent=ap
+as.Size=ar
+as.LayoutOrder=-1
+as.AnchorPoint=Vector2.new(0,0.5)
+as.Position=UDim2.new(0,0,0.5,0)
+as.BackgroundTransparency=1
 end
 
-local as=ao:FindFirstChild"TitleFrame"
-if as then
-as.Size=UDim2.new(1,-aq.X.Offset,1,0)
+local at=ap:FindFirstChild"TitleFrame"
+if at then
+at.Size=UDim2.new(1,-ar.X.Offset,1,0)
 end
 end
 
@@ -6760,54 +6762,67 @@ ai:SetMainImage(ai.Image,ai.ImageSize)
 end
 
 
-function ai.Lock(al,am)
+function ai.Lock(am,an)
 ai.Locked=true
 ak=false
-return ai.ToggleFrame:Lock(am)
+return ai.ToggleFrame:Lock(an)
 end
-function ai.Unlock(al)
+function ai.Unlock(am)
 ai.Locked=false
 ak=true
 return ai.ToggleFrame:Unlock()
+end
+function ai.Disable(am)
+ai.Disabled=true
+end
+function ai.Enable(am)
+ai.Disabled=false
 end
 
 if ai.Locked then
 ai:Lock()
 end
 
-local al=ai.Value
+local am=ai.Value
 
-local am,an
+local an,ao
 if ai.Type=="Toggle"then
-am,an=ad(al,ai.Icon,ai.IconSize,ai.ToggleFrame.UIElements.Main,ai.Callback,ah.Window.NewElements,ah)
+an,ao=ad(am,ai.Icon,ai.IconSize,ai.ToggleFrame.UIElements.Main,ai.Callback,ah.Window.NewElements,ah)
 elseif ai.Type=="Checkbox"then
-am,an=ae(al,ai.Icon,ai.IconSize,ai.ToggleFrame.UIElements.Main,ai.Callback,ah)
+an,ao=ae(am,ai.Icon,ai.IconSize,ai.ToggleFrame.UIElements.Main,ai.Callback,ah)
 else
 error("Unknown Toggle Type: "..tostring(ai.Type))
 end
 
-am.AnchorPoint=Vector2.new(1,ah.Window.NewElements and 0 or 0.5)
-am.Position=UDim2.new(1,0,ah.Window.NewElements and 0 or 0.5,0)
+an.AnchorPoint=Vector2.new(1,ah.Window.NewElements and 0 or 0.5)
+an.Position=UDim2.new(1,0,ah.Window.NewElements and 0 or 0.5,0)
 
-function ai.Set(ao,ap,aq,ar)
-if ak then
-an:Set(ap,aq,ar or false)
-al=ap
-ai.Value=ap
+function ai.Set(ap,aq,ar,as)
+if ak and(not ai.Disabled or al)then
+ao:Set(aq,ar,as or false)
+am=aq
+ai.Value=aq
 end
 end
 
-ai:Set(al,false,ah.Window.NewElements)
+ai:Set(am,false,ah.Window.NewElements)
+al=false
 
 
-if ah.Window.NewElements and an.Animate then
-aa.AddSignal(ai.ToggleFrame.UIElements.Main.InputBegan,function(ao)
-if ao.UserInputType==Enum.UserInputType.MouseButton1 or ao.UserInputType==Enum.UserInputType.Touch then
-an:Animate(ao,ai)
+if ah.Window.NewElements and ao.Animate then
+aa.AddSignal(ai.ToggleFrame.UIElements.Main.InputBegan,function(ap)
+if ap.UserInputType==Enum.UserInputType.MouseButton1 or ap.UserInputType==Enum.UserInputType.Touch then
+if ai.Disabled then
+return
+end
+ao:Animate(ap,ai)
 end
 end)
 else
 aa.AddSignal(ai.ToggleFrame.UIElements.Main.MouseButton1Click,function()
+if ai.Disabled then
+return
+end
 ai:Set(not ai.Value,nil,ah.Window.NewElements)
 end)
 end
@@ -6816,6 +6831,7 @@ return ai.__type,ai
 end
 
 return af end function a.F()
+
 local aa=a.load'b'
 local ab=aa.New
 local ac=aa.Tween

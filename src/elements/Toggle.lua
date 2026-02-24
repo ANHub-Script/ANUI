@@ -13,6 +13,7 @@ function Element:New(Config)
         Title = Config.Title or "Toggle",
         Desc = Config.Desc or nil,
         Locked = Config.Locked or false,
+        Disabled = Config.Disabled or false,
         Value = Config.Value,
         Icon = Config.Icon or nil,
         IconSize = Config.IconSize or 23,
@@ -50,6 +51,7 @@ function Element:New(Config)
     })
     
     local CanCallback = true
+    local IsInitializing = true
     
     if Toggle.Value == nil then
         Toggle.Value = false
@@ -250,6 +252,12 @@ function Element:New(Config)
         CanCallback = true
         return Toggle.ToggleFrame:Unlock()
     end
+    function Toggle:Disable()
+        Toggle.Disabled = true
+    end
+    function Toggle:Enable()
+        Toggle.Disabled = false
+    end
     
     if Toggle.Locked then
         Toggle:Lock()
@@ -270,7 +278,7 @@ function Element:New(Config)
     ToggleFrame.Position = UDim2.new(1,0,Config.Window.NewElements and 0 or 0.5,0)
     
     function Toggle:Set(v, isCallback, isAnim)
-        if CanCallback then
+        if CanCallback and (not Toggle.Disabled or IsInitializing) then
             ToggleFunc:Set(v, isCallback, isAnim or false)
             Toggled = v
             Toggle.Value = v
@@ -278,16 +286,23 @@ function Element:New(Config)
     end
 
     Toggle:Set(Toggled, false, Config.Window.NewElements)
+    IsInitializing = false
 
 
     if Config.Window.NewElements and ToggleFunc.Animate then
         Creator.AddSignal(Toggle.ToggleFrame.UIElements.Main.InputBegan, function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                if Toggle.Disabled then
+                    return
+                end
                 ToggleFunc:Animate(input, Toggle)
             end
         end)
     else
         Creator.AddSignal(Toggle.ToggleFrame.UIElements.Main.MouseButton1Click, function()
+            if Toggle.Disabled then
+                return
+            end
             Toggle:Set(not Toggle.Value, nil, Config.Window.NewElements)
         end)
     end
