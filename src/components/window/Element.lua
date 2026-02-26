@@ -192,6 +192,20 @@ return function(Config)
     end
     
     local Title = CreateText(Element.Title, "Title")
+    local TitleRich = New("Frame", {
+        Name = "TitleRich",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(Element.Justify == "Between" and 1 or 0,0,0,0),
+        AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
+        Visible = false,
+    }, {
+        New("UIListLayout", {
+            FillDirection = Enum.FillDirection.Horizontal,
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Padding = UDim.new(0, 4),
+            VerticalAlignment = Enum.VerticalAlignment.Center
+        })
+    })
     
     -- Container Deskripsi
     local DescContainer = New("Frame", {
@@ -352,6 +366,84 @@ return function(Config)
         end
     end
     
+    local function UpdateTitle(text)
+        Title.Text = text or ""
+        
+        if not text or text == "" then
+            Title.Visible = true
+            TitleRich.Visible = false
+            return
+        end
+        
+        local hasToken = string.find(text, "rbxassetid://%d+") ~= nil
+        if not hasToken then
+            Title.Visible = true
+            TitleRich.Visible = false
+            return
+        end
+        
+        Title.Visible = false
+        TitleRich.Visible = true
+        
+        for _, c in ipairs(TitleRich:GetChildren()) do
+            if c:IsA("GuiObject") then
+                c:Destroy()
+            end
+        end
+        
+        local items = {}
+        local lastPos = 1
+        while true do
+            local s, e = string.find(text, "rbxassetid://%d+", lastPos)
+            local textPart = string.sub(text, lastPos, s and (s - 1) or -1)
+            
+            if textPart ~= "" then
+                table.insert(items, {Type = "Text", Content = textPart})
+            end
+            if not s then break end
+            local assetId = string.sub(text, s, e)
+            table.insert(items, {Type = "Image", Content = assetId})
+            lastPos = e + 1
+        end
+        
+        for idx, item in ipairs(items) do
+            if item.Type == "Text" then
+                local lbl = CreateText(item.Content, "Title")
+                lbl.LayoutOrder = idx
+                if #items == 1 then
+                    lbl.Size = UDim2.new(1, 0, 0, 0)
+                    lbl.AutomaticSize = Enum.AutomaticSize.Y
+                    lbl.TextWrapped = true
+                else
+                    lbl.Size = UDim2.new(0, 0, 0, 0)
+                    lbl.AutomaticSize = Enum.AutomaticSize.XY
+                    lbl.TextWrapped = false
+                end
+                lbl.Parent = TitleRich
+            else
+                local img = New("ImageLabel", {
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(0, 18, 0, 18),
+                    ScaleType = Enum.ScaleType.Fit,
+                    ThemeTag = { ImageColor3 = "ElementTitle" },
+                    ImageTransparency = 0,
+                    Image = item.Content,
+                    LayoutOrder = idx,
+                })
+                
+                if Element.Color then
+                    if typeof(Element.Color) == "string" then
+                        img.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                    elseif typeof(Element.Color) == "Color3" then
+                        img.ImageColor3 = GetTextColorForHSB(Element.Color)
+                    end
+                end
+                
+                img.Parent = TitleRich
+            end
+        end
+    end
+    
     Element.UIElements.Container = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         AutomaticSize = "Y",
@@ -408,6 +500,7 @@ return function(Config)
                     HorizontalAlignment = "Left",
                 }),
                 Title,
+                TitleRich,
                 DescContainer -- Menggunakan Container Pintar
             }),
         })
@@ -597,7 +690,7 @@ return function(Config)
     
     function Element:SetTitle(text)
         Element.Title = text
-        Title.Text = text
+        UpdateTitle(text)
     end
     
     function Element:SetDesc(text)
@@ -616,6 +709,7 @@ return function(Config)
     
     -- Inisialisasi awal
     UpdateDesc(Element.Desc)
+    UpdateTitle(Element.Title)
 
     function Element:Colorize(obj, prop)
         if Element.Color then
@@ -628,12 +722,14 @@ return function(Config)
     end
     
     if Config.ElementTable then
-        Creator.AddSignal(Title:GetPropertyChangedSignal("Text"), function()
-            if Element.Title ~= Title.Text then
-                Element:SetTitle(Title.Text)
-                Config.ElementTable.Title = Title.Text
-            end
-        end)
+        if Title and Title.GetPropertyChangedSignal then
+            Creator.AddSignal(Title:GetPropertyChangedSignal("Text"), function()
+                if Element.Title ~= Title.Text then
+                    Element:SetTitle(Title.Text)
+                    Config.ElementTable.Title = Title.Text
+                end
+            end)
+        end
     end
     
     function Element:SetThumbnail(newThumbnail, newSize)
