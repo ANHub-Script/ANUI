@@ -88,6 +88,7 @@ return function(Config)
         ElementConfig = {},
         
         PendingFlags = {},
+        PendingConfigData = {},
         
         IsToggleDragging = false,
     }

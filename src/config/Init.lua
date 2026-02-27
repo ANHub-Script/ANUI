@@ -222,6 +222,9 @@ function ConfigManager:CreateConfig(configFilename, autoload)
                 task.spawn(function()
                     ConfigManager.Parser[data.__type].Load(ConfigModule.Elements[name], data)
                 end)
+            else
+                Window.PendingConfigData = Window.PendingConfigData or {}
+                Window.PendingConfigData[name] = data
             end
         end
         

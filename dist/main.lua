@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.244  |  2026-02-26  |  Roblox UI Library for scripts
+    v1.0.245  |  2026-02-27  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.244",
+    "version": "1.0.245",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4395,6 +4395,9 @@ if ah.Elements[al]and ad.Parser[am.__type]then
 task.spawn(function()
 ad.Parser[am.__type].Load(ah.Elements[al],am)
 end)
+else
+ac.PendingConfigData=ac.PendingConfigData or{}
+ac.PendingConfigData[al]=am
 end
 end
 
@@ -12524,6 +12527,7 @@ AllElements={},
 ElementConfig={},
 
 PendingFlags={},
+PendingConfigData={},
 
 IsToggleDragging=false,
 }
