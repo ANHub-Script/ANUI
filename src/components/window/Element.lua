@@ -5,70 +5,59 @@ local Tween = Creator.Tween
 
 local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
-
-local UserInputService = cloneref(game:GetService("UserInputService"))
-
-
 local function Color3ToHSB(color)
-	local r, g, b = color.R, color.G, color.B
-	local max = math.max(r, g, b)
-	local min = math.min(r, g, b)
-	local delta = max - min
+    local r, g, b = color.R, color.G, color.B
+    local max = math.max(r, g, b)
+    local min = math.min(r, g, b)
+    local delta = max - min
 
-	local h = 0
-	if delta ~= 0 then
-		if max == r then
-			h = (g - b) / delta % 6
-		elseif max == g then
-			h = (b - r) / delta + 2
-		else
-			h = (r - g) / delta + 4
-		end
-		h = h * 60
-	else
-		h = 0
-	end
+    local h = 0
+    if delta ~= 0 then
+        if max == r then
+            h = (g - b) / delta % 6
+        elseif max == g then
+            h = (b - r) / delta + 2
+        else
+            h = (r - g) / delta + 4
+        end
+        h = h * 60
+    else
+        h = 0
+    end
 
-	local s = (max == 0) and 0 or (delta / max)
-	local v = max
+    local s = (max == 0) and 0 or (delta / max)
+    local v = max
 
-	return {
-		h = math.floor(h + 0.5),
-		s = s,
-		b = v
-	}
+    return {
+        h = math.floor(h + 0.5),
+        s = s,
+        b = v
+    }
 end
 
 local function GetPerceivedBrightness(color)
-	local r = color.R
-	local g = color.G
-	local b = color.B
-	return 0.299 * r + 0.587 * g + 0.114 * b
+    local r = color.R
+    local g = color.G
+    local b = color.B
+    return 0.299 * r + 0.587 * g + 0.114 * b
 end
 
 local function GetTextColorForHSB(color)
     local hsb = Color3ToHSB(color)
-	local h, s, b = hsb.h, hsb.s, hsb.b
-	if GetPerceivedBrightness(color) > 0.5 then
-		return Color3.fromHSV(h / 360, 0, 0.05)
-	else
-		return Color3.fromHSV(h / 360, 0, 0.98)
-	end
+    local h, s, b = hsb.h, hsb.s, hsb.b
+    if GetPerceivedBrightness(color) > 0.5 then
+        return Color3.fromHSV(h / 360, 0, 0.05)
+    else
+        return Color3.fromHSV(h / 360, 0, 0.98)
+    end
 end
-
 
 local function getElementPosition(elements, targetIndex)
     if type(targetIndex) ~= "number" or targetIndex ~= math.floor(targetIndex) then
         return nil, 1
     end
 
-    -- local maxIndex = 0
-    -- for k,_ in next, elements do
-    --     if type(k) == "number" and k > maxIndex then maxIndex = k end
-    -- end
-    
     local maxIndex = #elements
-    --print(maxIndex)
     
     if maxIndex == 0 or targetIndex < 1 or targetIndex > maxIndex then
         return nil, 2
@@ -77,7 +66,7 @@ local function getElementPosition(elements, targetIndex)
     local function isDelimiter(el)
         if el == nil then return true end
         local t = el.__type
-        return t == "Divider" or t == "Space" or t == "Section" or t == "Code"
+        return t == "Divider" or t == "Space" or t == "Section" or t == "Code" or t == "Paragraph"
     end
 
     if isDelimiter(elements[targetIndex]) then
@@ -108,7 +97,6 @@ local function getElementPosition(elements, targetIndex)
         end
     end
 
-
     if targetIndex >= groupStart and targetIndex <= maxIndex then
         local pos = targetIndex - groupStart + 1
         return calculate(pos, groupCount)
@@ -116,7 +104,6 @@ local function getElementPosition(elements, targetIndex)
 
     return nil, 4
 end
-
 
 return function(Config)
     local Element = {
@@ -131,10 +118,11 @@ return function(Config)
         Color = Config.Color,
         Scalable = Config.Scalable,
         Parent = Config.Parent,
-        Justify = Config.Justify or "Between", -- Center or Between
+        Justify = Config.Justify or "Between", 
         UIPadding = Config.Window.ElementConfig.UIPadding,
         UICorner = Config.Window.ElementConfig.UICorner,
         UIElements = {},
+        DescColumnWidth = Config.DescColumnWidth,
         
         Index = Config.Index
     }
@@ -142,8 +130,6 @@ return function(Config)
     local ImageSize = Element.ImageSize
     local ThumbnailSize = Element.ThumbnailSize
     local CanHover = true
-    local Hovering = false
-    
     local IconOffset = 0
     
     local ThumbnailFrame
@@ -182,6 +168,7 @@ return function(Config)
         IconOffset = ImageSize
     end
     
+    -- Helper Create Text
     local function CreateText(Title, Type)
         local TextColor = typeof(Element.Color) == "string" 
             and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
@@ -206,9 +193,332 @@ return function(Config)
     end
     
     local Title = CreateText(Element.Title, "Title")
-    local Desc = CreateText(Element.Desc, "Desc")
-    if not Element.Desc or Element.Desc == "" then
-        Desc.Visible = false
+    local TitleRich = New("Frame", {
+        Name = "TitleRich",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(Element.Justify == "Between" and 1 or 0,0,0,0),
+        AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
+        Visible = false,
+    }, {
+        New("UIListLayout", {
+            FillDirection = Enum.FillDirection.Horizontal,
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Padding = UDim.new(0, 4),
+            VerticalAlignment = Enum.VerticalAlignment.Center
+        })
+    })
+    
+    -- Container Deskripsi
+    local DescContainer = New("Frame", {
+        Name = "DescContainer",
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, 0, 0, 0),
+        AutomaticSize = Enum.AutomaticSize.Y,
+    }, {
+        New("UIListLayout", {
+            SortOrder = Enum.SortOrder.LayoutOrder,
+            Padding = UDim.new(0, 2),
+        })
+    })
+
+    -- [FUNGSI OPTIMASI LAG] UpdateDesc dengan Reuse Instance
+    local function UpdateDesc(text)
+
+        if not text or text == "" then
+            DescContainer.Visible = false
+            return
+        end
+        DescContainer.Visible = true
+
+        local function parseInline(str)
+            local lineItems = {}
+            local lastPos = 1
+            while true do
+                local s, e = string.find(str, "rbxassetid://%d+", lastPos)
+                local textPart = string.sub(str, lastPos, s and (s - 1) or -1)
+                
+                if textPart ~= "" then
+                    table.insert(lineItems, {Type = "Text", Content = textPart})
+                end
+                
+                if not s then break end
+                
+                local assetId = string.sub(str, s, e)
+                table.insert(lineItems, {Type = "Image", Content = assetId})
+                lastPos = e + 1
+            end
+            return lineItems
+        end
+
+        local function getColumnWidth()
+            if typeof(Element.DescColumnWidth) == "number" and Element.DescColumnWidth > 0 then
+                return math.floor(Element.DescColumnWidth)
+            end
+            
+            local w = DescContainer.AbsoluteSize.X
+            if not w or w <= 0 then
+                return 320
+            end
+            return math.clamp(math.floor(w * 0.62), 220, 520)
+        end
+
+        local function getOrCreateListLayout(parent)
+            local layout = parent:FindFirstChild("UIListLayout")
+            if not layout then
+                layout = New("UIListLayout", {
+                    Parent = parent,
+                    FillDirection = Enum.FillDirection.Horizontal,
+                    SortOrder = Enum.SortOrder.LayoutOrder,
+                    Padding = UDim.new(0, 4),
+                    VerticalAlignment = Enum.VerticalAlignment.Center
+                })
+            else
+                layout.FillDirection = Enum.FillDirection.Horizontal
+                layout.SortOrder = Enum.SortOrder.LayoutOrder
+                layout.Padding = UDim.new(0, 4)
+                layout.VerticalAlignment = Enum.VerticalAlignment.Center
+            end
+            return layout
+        end
+
+        local function updateItemsInContainer(container, items)
+            local currentItems = {}
+            for _, c in ipairs(container:GetChildren()) do 
+                if c:IsA("GuiObject") then table.insert(currentItems, c) end 
+            end
+
+            for j, itemData in ipairs(items) do
+                local itemFrame = currentItems[j]
+                
+                if itemFrame then
+                    local isText = itemFrame:IsA("TextLabel")
+                    local isImage = itemFrame:IsA("ImageLabel")
+                    if (itemData.Type == "Text" and not isText) or (itemData.Type == "Image" and not isImage) then
+                        itemFrame:Destroy()
+                        itemFrame = nil
+                    end
+                end
+
+                if not itemFrame then
+                    if itemData.Type == "Text" then
+                        itemFrame = CreateText(itemData.Content, "Desc")
+                        itemFrame.Parent = container
+                    else
+                        itemFrame = New("ImageLabel", {
+                            Parent = container,
+                            BackgroundTransparency = 1,
+                            Size = UDim2.new(0, 16, 0, 16),
+                            ScaleType = Enum.ScaleType.Fit,
+                            ThemeTag = { ImageColor3 = "ElementDesc" },
+                            ImageTransparency = 0.3
+                        })
+                    end
+                end
+                
+                itemFrame.LayoutOrder = j
+                itemFrame.Visible = true
+                
+                if itemData.Type == "Text" then
+                    if itemFrame.Text ~= itemData.Content then
+                        itemFrame.Text = itemData.Content
+                    end
+                    if #items == 1 then
+                        itemFrame.Size = UDim2.new(1, 0, 0, 0)
+                        itemFrame.AutomaticSize = Enum.AutomaticSize.Y
+                        itemFrame.TextWrapped = true
+                    else
+                        itemFrame.Size = UDim2.new(0, 0, 0, 0)
+                        itemFrame.AutomaticSize = Enum.AutomaticSize.XY
+                        itemFrame.TextWrapped = false 
+                    end
+                else
+                    if itemFrame.Image ~= itemData.Content then
+                        itemFrame.Image = itemData.Content
+                    end
+                    if Element.Color then
+                        if typeof(Element.Color) == "string" then
+                            itemFrame.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                        elseif typeof(Element.Color) == "Color3" then
+                            itemFrame.ImageColor3 = GetTextColorForHSB(Element.Color)
+                        end
+                    end
+                end
+            end
+            
+            for k = #items + 1, #currentItems do
+                currentItems[k]:Destroy()
+            end
+        end
+
+        local lines = string.split(text, "\n")
+        local parsedData = {}
+        for _, line in ipairs(lines) do
+            local cols = string.split(line, "\t")
+            if #cols >= 2 then
+                table.insert(parsedData, {Cols = {parseInline(cols[1] or ""), parseInline(cols[2] or "")}})
+            else
+                table.insert(parsedData, {Cols = {parseInline(line)}})
+            end
+        end
+
+        local currentLines = {}
+        for _, c in ipairs(DescContainer:GetChildren()) do
+            if c:IsA("Frame") then table.insert(currentLines, c) end
+        end
+
+        for i, lineData in ipairs(parsedData) do
+            local lineFrame = currentLines[i]
+            
+            if not lineFrame then
+                lineFrame = New("Frame", {
+                    Parent = DescContainer,
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(1, 0, 0, 0),
+                    AutomaticSize = Enum.AutomaticSize.Y,
+                })
+            end
+            lineFrame.LayoutOrder = i
+            lineFrame.Visible = true
+
+            local cols = lineData.Cols
+            if #cols >= 2 then
+                local colWidth = getColumnWidth()
+                local lineLayout = getOrCreateListLayout(lineFrame)
+                lineLayout.Padding = UDim.new(0, 0)
+
+                local leftCol = lineFrame:FindFirstChild("Col1")
+                if not leftCol then
+                    leftCol = New("Frame", {
+                        Name = "Col1",
+                        Parent = lineFrame,
+                        BackgroundTransparency = 1,
+                        Size = UDim2.new(0, colWidth, 0, 0),
+                        AutomaticSize = Enum.AutomaticSize.Y,
+                    })
+                    getOrCreateListLayout(leftCol)
+                else
+                    leftCol.Size = UDim2.new(0, colWidth, 0, 0)
+                    leftCol.AutomaticSize = Enum.AutomaticSize.Y
+                    getOrCreateListLayout(leftCol)
+                end
+
+                local rightCol = lineFrame:FindFirstChild("Col2")
+                if not rightCol then
+                    rightCol = New("Frame", {
+                        Name = "Col2",
+                        Parent = lineFrame,
+                        BackgroundTransparency = 1,
+                        Size = UDim2.new(1, -colWidth, 0, 0),
+                        AutomaticSize = Enum.AutomaticSize.Y,
+                    })
+                    getOrCreateListLayout(rightCol)
+                else
+                    rightCol.Size = UDim2.new(1, -colWidth, 0, 0)
+                    rightCol.AutomaticSize = Enum.AutomaticSize.Y
+                    getOrCreateListLayout(rightCol)
+                end
+
+                for _, c in ipairs(lineFrame:GetChildren()) do
+                    if c:IsA("GuiObject") and c ~= leftCol and c ~= rightCol then
+                        c:Destroy()
+                    end
+                end
+
+                updateItemsInContainer(leftCol, cols[1])
+                updateItemsInContainer(rightCol, cols[2])
+            else
+                for _, c in ipairs(lineFrame:GetChildren()) do
+                    if c:IsA("Frame") and (c.Name == "Col1" or c.Name == "Col2") then
+                        c:Destroy()
+                    end
+                end
+                
+                getOrCreateListLayout(lineFrame)
+                updateItemsInContainer(lineFrame, cols[1])
+            end
+        end
+
+        for k = #parsedData + 1, #currentLines do
+            currentLines[k]:Destroy()
+        end
+    end
+    
+    local function UpdateTitle(text)
+        Title.Text = text or ""
+        
+        if not text or text == "" then
+            Title.Visible = true
+            TitleRich.Visible = false
+            return
+        end
+        
+        local hasToken = string.find(text, "rbxassetid://%d+") ~= nil
+        if not hasToken then
+            Title.Visible = true
+            TitleRich.Visible = false
+            return
+        end
+        
+        Title.Visible = false
+        TitleRich.Visible = true
+        
+        for _, c in ipairs(TitleRich:GetChildren()) do
+            if c:IsA("GuiObject") then
+                c:Destroy()
+            end
+        end
+        
+        local items = {}
+        local lastPos = 1
+        while true do
+            local s, e = string.find(text, "rbxassetid://%d+", lastPos)
+            local textPart = string.sub(text, lastPos, s and (s - 1) or -1)
+            
+            if textPart ~= "" then
+                table.insert(items, {Type = "Text", Content = textPart})
+            end
+            if not s then break end
+            local assetId = string.sub(text, s, e)
+            table.insert(items, {Type = "Image", Content = assetId})
+            lastPos = e + 1
+        end
+        
+        for idx, item in ipairs(items) do
+            if item.Type == "Text" then
+                local lbl = CreateText(item.Content, "Title")
+                lbl.LayoutOrder = idx
+                if #items == 1 then
+                    lbl.Size = UDim2.new(1, 0, 0, 0)
+                    lbl.AutomaticSize = Enum.AutomaticSize.Y
+                    lbl.TextWrapped = true
+                else
+                    lbl.Size = UDim2.new(0, 0, 0, 0)
+                    lbl.AutomaticSize = Enum.AutomaticSize.XY
+                    lbl.TextWrapped = false
+                end
+                lbl.Parent = TitleRich
+            else
+                local img = New("ImageLabel", {
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(0, 18, 0, 18),
+                    ScaleType = Enum.ScaleType.Fit,
+                    ThemeTag = { ImageColor3 = "ElementTitle" },
+                    ImageTransparency = 0,
+                    Image = item.Content,
+                    LayoutOrder = idx,
+                })
+                
+                if Element.Color then
+                    if typeof(Element.Color) == "string" then
+                        img.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                    elseif typeof(Element.Color) == "Color3" then
+                        img.ImageColor3 = GetTextColorForHSB(Element.Color)
+                    end
+                end
+                
+                img.Parent = TitleRich
+            end
+        end
     end
     
     Element.UIElements.Container = New("Frame", {
@@ -237,7 +547,9 @@ return function(Config)
             New("UIListLayout", {
                 Padding = UDim.new(0,Element.UIPadding),
                 FillDirection = "Horizontal",
-                VerticalAlignment = Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center",
+                VerticalAlignment = (Config.ElementTable and Config.ElementTable.__type == "Dropdown") and "Center" 
+                    or ((ImageFrame and Config.ElementTable and Config.ElementTable.__type == "Toggle") and "Center" 
+                    or (Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center")),
                 HorizontalAlignment = Element.Justify ~= "Between" and Element.Justify or "Center",
             }),
             ImageFrame,
@@ -265,23 +577,14 @@ return function(Config)
                     HorizontalAlignment = "Left",
                 }),
                 Title,
-                Desc
+                TitleRich,
+                DescContainer -- Menggunakan Container Pintar
             }),
         })
     })
     
-    
-    -- print(Config.Tab.Elements)
-    -- print(Config.Index)
-    -- print("Squircle")
-    
     local LockedIcon = Creator.Image(
-        "lock", 
-        "lock", 
-        0, 
-        Config.Window.Folder,
-        "Lock",
-        false
+        "lock", "lock", 0, Config.Window.Folder, "Lock", false
     )
     LockedIcon.Size = UDim2.new(0,20,0,20)
     LockedIcon.ImageLabel.ImageColor3 = Color3.new(1,1,1)
@@ -324,11 +627,9 @@ return function(Config)
     
     local HighlightOutline, HighlightOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.25
+        ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -341,11 +642,9 @@ return function(Config)
     
     local Highlight, HighlightTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.88
+        ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -356,14 +655,11 @@ return function(Config)
         }),
     }, nil, true)
     
-    
     local HoverOutline, HoverOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.25
+        ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIListLayout", {
@@ -391,11 +687,9 @@ return function(Config)
     
     local Hover, HoverTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, -- 0.88
+        ImageTransparency = 1, 
         Active = false,
-        ThemeTag = {
-            ImageColor3 = "Text",
-        },
+        ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
     }, {
         New("UIGradient", {
@@ -425,9 +719,6 @@ return function(Config)
         Size = UDim2.new(1,0,0,0),
         AutomaticSize = "Y",
         ImageTransparency = Element.Color and .05 or .93,
-        --Text = "",
-        --TextTransparency = 1,
-        --AutoButtonColor = false,
         Parent = Config.Parent,
         ThemeTag = {
             ImageColor3 = not Element.Color and "ElementBackground" or nil
@@ -476,20 +767,27 @@ return function(Config)
     
     function Element:SetTitle(text)
         Element.Title = text
-        Title.Text = text
+        UpdateTitle(text)
     end
     
     function Element:SetDesc(text)
+        -- [OPTIMASI 1] Equality Check: Jika teks sama persis, JANGAN update apapun.
+        if Element.Desc == text then
+            return 
+        end
+        
         Element.Desc = text
-        Desc.Text = text or ""
-        if not text then
-            Desc.Visible = false
-        elseif not Desc.Visible then
-            Desc.Visible = true
+        UpdateDesc(text) -- Panggil parser yang sudah dioptimasi
+        
+        if Config.ElementTable then
+             Config.ElementTable.Desc = text
         end
     end
     
-    
+    -- Inisialisasi awal
+    UpdateDesc(Element.Desc)
+    UpdateTitle(Element.Title)
+
     function Element:Colorize(obj, prop)
         if Element.Color then
             obj[prop] = typeof(Element.Color) == "string" 
@@ -501,23 +799,15 @@ return function(Config)
     end
     
     if Config.ElementTable then
-        Creator.AddSignal(Title:GetPropertyChangedSignal("Text"), function()
-            if Element.Title ~= Title.Text then
-                Element:SetTitle(Title.Text)
-                Config.ElementTable.Title = Title.Text
-            end
-        end)
-        Creator.AddSignal(Desc:GetPropertyChangedSignal("Text"), function()
-            if Element.Desc ~= Desc.Text then
-                Element:SetDesc(Desc.Text)
-                Config.ElementTable.Desc = Desc.Text
-            end
-        end)
+        if Title and Title.GetPropertyChangedSignal then
+            Creator.AddSignal(Title:GetPropertyChangedSignal("Text"), function()
+                if Element.Title ~= Title.Text then
+                    Element:SetTitle(Title.Text)
+                    Config.ElementTable.Title = Title.Text
+                end
+            end)
+        end
     end
-    
-    -- function Element:Show()
-        
-    -- end
     
     function Element:SetThumbnail(newThumbnail, newSize)
         Element.Thumbnail = newThumbnail
@@ -574,45 +864,45 @@ return function(Config)
             Element.ImageSize = newSize
             ImageSize = newSize
         end
-        
+
+        local oldFrame = ImageFrame
         if newImage then
-            ImageFrame = Creator.Image(
-                newImage, 
-                Element.Title, 
-                Element.UICorner-3, 
+            local newFrame = Creator.Image(
+                newImage,
+                Element.Title,
+                Element.UICorner-3,
                 Config.Window.Folder,
                 "Image",
                 not Element.Color and true or false
             )
-            
-            if typeof(Element.Color) == "string" then 
-                ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-            elseif typeof(Element.Color) == "Color3" then
-                ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
+            if typeof(Element.Color) == "string" and newFrame.ImageLabel then
+                newFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+            elseif typeof(Element.Color) == "Color3" and newFrame.ImageLabel then
+                newFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
             end
-            
-            ImageFrame.Visible = true
-
-            ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
+            newFrame.Visible = true
+            newFrame.Size = UDim2.new(0, ImageSize, 0, ImageSize)
             IconOffset = ImageSize
-            
+            if oldFrame and oldFrame.Parent then oldFrame:Destroy() end
+            newFrame.Parent = Element.UIElements.Container.TitleFrame
+            ImageFrame = newFrame
         else
             if ImageFrame then
-                ImageFrame.Visible = true
+                ImageFrame.Visible = false
             end
             IconOffset = 0
         end
-        
-        Element.UIElements.Container.TitleFrame.TitleFrame.Size = UDim2.new(1,-IconOffset,1,0)
+
+        Element.UIElements.Container.TitleFrame.TitleFrame.Size = UDim2.new(1, -IconOffset, 1, 0)
     end
     
     function Element:Destroy()
         Main:Destroy()
     end
     
-    
-    function Element:Lock()
+    function Element:Lock(text) -- Tambahkan 'text' di dalam kurung
         CanHover = false
+        LockedTitle.Text = text or "Locked" -- Tambahkan baris ini untuk ganti teksnya
         Locked.Active = true
         Locked.Visible = true
     end
@@ -671,7 +961,6 @@ return function(Config)
             Offset = Vector2.new(1, 0)
         }):Play()
         
-        
         task.spawn(function()
             task.wait(.75)
             HighlightOutline.ImageTransparency = 1
@@ -681,10 +970,16 @@ return function(Config)
         end)
     end
     
-
     function Element.UpdateShape(Tab)
         if Config.Window.NewElements then
-            local newShape = getElementPosition(Tab.Elements, Element.Index)
+            local newShape
+            local pType = Config.ParentType or (Config.ParentConfig and Config.ParentConfig.ParentType)
+            if pType == "Group" or pType == "Paragraph" then
+                newShape = "Squircle"
+            else
+                newShape = getElementPosition(Tab.Elements, Element.Index)
+            end
+            
             if newShape and Main then
                 MainTable:SetType(newShape)
                 LockedTable:SetType(newShape)
@@ -695,10 +990,6 @@ return function(Config)
             end
         end
     end
-    
-    --task.wait(.015)
-    
-    --Element:Show()
     
     return Element
 end
