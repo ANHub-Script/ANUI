@@ -106,10 +106,10 @@ function autoCommit(version) {
 
 // PERBAIKAN PATH:
 // Folder script ada di dalam repoRoot (WindUI/script), BUKAN di __dirname (WindUI/build/script)
-const folderScriptDiRepo = path.join(repoRoot, 'NewScript');
+const folderScriptDiRepo = path.join(repoRoot, 'script');
 
 // Folder tujuan pemindahan (Di luar folder WindUI / Parent)
-const folderScriptDiLuar = path.join(repoRoot, '..', 'NewScript');
+const folderScriptDiLuar = path.join(repoRoot, '..', 'script');
 
 function moveScriptToParent() {
   if (fs.existsSync(folderScriptDiRepo)) {
