@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.248  |  2026-08-13  |  Roblox UI Library for scripts
+    v1.0.249  |  2026-08-13  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.248",
+    "version": "1.0.249",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5914,8 +5914,9 @@ at.ImageLabel.ImageTransparency=u
 end
 end
 end
-function af.Lock(l,m)
+function af.Lock(l,m,p)
 ai=false
+ap=p or ap
 au.Text=m or"Locked"
 aw.Active=true
 aw.Visible=true

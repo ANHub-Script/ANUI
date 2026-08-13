@@ -905,7 +905,7 @@ return function(Config)
     function Element:Destroy()
         Main:Destroy()
     end
-    
+
     function Element:SetLockedIcon(asset, size, color, transparency)
         if LockedIcon and LockedIcon.ImageLabel then
             if asset then
@@ -922,8 +922,9 @@ return function(Config)
             end
         end
     end
-    function Element:Lock(text) -- Tambahkan 'text' di dalam kurung
+    function Element:Lock(text,Image) -- Tambahkan 'text' di dalam kurung
         CanHover = false
+        LockIconAsset = Image or LockIconAsset
         LockedTitle.Text = text or "Locked" -- Tambahkan baris ini untuk ganti teksnya
         Locked.Active = true
         Locked.Visible = true
