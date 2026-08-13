@@ -122,6 +122,7 @@ return function(Config)
         UIPadding = Config.Window.ElementConfig.UIPadding,
         UICorner = Config.Window.ElementConfig.UICorner,
         UIElements = {},
+        DescColumnWidth = Config.DescColumnWidth,
         
         Index = Config.Index
     }
@@ -229,15 +230,12 @@ return function(Config)
         end
         DescContainer.Visible = true
 
-        -- 1. Parsing Struktur Data
-        local lines = string.split(text, "\n")
-        local parsedData = {} 
-        for _, line in ipairs(lines) do
+        local function parseInline(str)
             local lineItems = {}
             local lastPos = 1
             while true do
-                local s, e = string.find(line, "rbxassetid://%d+", lastPos)
-                local textPart = string.sub(line, lastPos, s and (s - 1) or -1)
+                local s, e = string.find(str, "rbxassetid://%d+", lastPos)
+                local textPart = string.sub(str, lastPos, s and (s - 1) or -1)
                 
                 if textPart ~= "" then
                     table.insert(lineItems, {Type = "Text", Content = textPart})
@@ -245,51 +243,53 @@ return function(Config)
                 
                 if not s then break end
                 
-                local assetId = string.sub(line, s, e)
+                local assetId = string.sub(str, s, e)
                 table.insert(lineItems, {Type = "Image", Content = assetId})
                 lastPos = e + 1
             end
-            table.insert(parsedData, lineItems)
+            return lineItems
         end
 
-        -- 2. Daur Ulang Baris (Line Reuse)
-        local currentLines = {}
-        for _, c in ipairs(DescContainer:GetChildren()) do
-            if c:IsA("Frame") then table.insert(currentLines, c) end
-        end
-
-        for i, items in ipairs(parsedData) do
-            local lineFrame = currentLines[i]
-            
-            -- Jika baris belum ada, buat baru
-            if not lineFrame then
-                lineFrame = New("Frame", {
-                    Parent = DescContainer,
-                    BackgroundTransparency = 1,
-                    Size = UDim2.new(1, 0, 0, 0),
-                    AutomaticSize = Enum.AutomaticSize.Y,
-                }, {
-                     New("UIListLayout", {
-                        FillDirection = Enum.FillDirection.Horizontal,
-                        SortOrder = Enum.SortOrder.LayoutOrder,
-                        Padding = UDim.new(0, 4),
-                        VerticalAlignment = Enum.VerticalAlignment.Center
-                    })
-                })
+        local function getColumnWidth()
+            if typeof(Element.DescColumnWidth) == "number" and Element.DescColumnWidth > 0 then
+                return math.floor(Element.DescColumnWidth)
             end
-            lineFrame.LayoutOrder = i
-            lineFrame.Visible = true
+            
+            local w = DescContainer.AbsoluteSize.X
+            if not w or w <= 0 then
+                return 320
+            end
+            return math.clamp(math.floor(w * 0.62), 220, 520)
+        end
 
-            -- 3. Daur Ulang Isi Baris (Item Reuse)
+        local function getOrCreateListLayout(parent)
+            local layout = parent:FindFirstChild("UIListLayout")
+            if not layout then
+                layout = New("UIListLayout", {
+                    Parent = parent,
+                    FillDirection = Enum.FillDirection.Horizontal,
+                    SortOrder = Enum.SortOrder.LayoutOrder,
+                    Padding = UDim.new(0, 4),
+                    VerticalAlignment = Enum.VerticalAlignment.Center
+                })
+            else
+                layout.FillDirection = Enum.FillDirection.Horizontal
+                layout.SortOrder = Enum.SortOrder.LayoutOrder
+                layout.Padding = UDim.new(0, 4)
+                layout.VerticalAlignment = Enum.VerticalAlignment.Center
+            end
+            return layout
+        end
+
+        local function updateItemsInContainer(container, items)
             local currentItems = {}
-            for _, c in ipairs(lineFrame:GetChildren()) do 
+            for _, c in ipairs(container:GetChildren()) do 
                 if c:IsA("GuiObject") then table.insert(currentItems, c) end 
             end
 
             for j, itemData in ipairs(items) do
                 local itemFrame = currentItems[j]
                 
-                -- Cek kesesuaian Tipe (TextLabel vs ImageLabel)
                 if itemFrame then
                     local isText = itemFrame:IsA("TextLabel")
                     local isImage = itemFrame:IsA("ImageLabel")
@@ -299,15 +299,13 @@ return function(Config)
                     end
                 end
 
-                -- Jika tidak ada atau tipe salah, buat baru
                 if not itemFrame then
                     if itemData.Type == "Text" then
                         itemFrame = CreateText(itemData.Content, "Desc")
-                        itemFrame.Parent = lineFrame
-                        -- Size & AutomaticSize akan diatur di bawah (Update Properti)
+                        itemFrame.Parent = container
                     else
                         itemFrame = New("ImageLabel", {
-                            Parent = lineFrame,
+                            Parent = container,
                             BackgroundTransparency = 1,
                             Size = UDim2.new(0, 16, 0, 16),
                             ScaleType = Enum.ScaleType.Fit,
@@ -317,24 +315,18 @@ return function(Config)
                     end
                 end
                 
-                -- Update Properti (Tanpa Re-create)
                 itemFrame.LayoutOrder = j
                 itemFrame.Visible = true
                 
                 if itemData.Type == "Text" then
                     if itemFrame.Text ~= itemData.Content then
-                         itemFrame.Text = itemData.Content
+                        itemFrame.Text = itemData.Content
                     end
-                    
-                    -- [FIX WRAPPING LOGIC]
-                    -- Jika baris ini HANYA berisi 1 item text, kita izinkan full wrapping (Size 100% width, Auto Y)
                     if #items == 1 then
                         itemFrame.Size = UDim2.new(1, 0, 0, 0)
                         itemFrame.AutomaticSize = Enum.AutomaticSize.Y
                         itemFrame.TextWrapped = true
                     else
-                        -- Jika baris campuran (ada icon ditengah text), kita pakai logic lama (Auto XY)
-                        -- Agar text tidak menabrak icon
                         itemFrame.Size = UDim2.new(0, 0, 0, 0)
                         itemFrame.AutomaticSize = Enum.AutomaticSize.XY
                         itemFrame.TextWrapped = false 
@@ -343,7 +335,6 @@ return function(Config)
                     if itemFrame.Image ~= itemData.Content then
                         itemFrame.Image = itemData.Content
                     end
-                    -- Update warna jika custom color aktif
                     if Element.Color then
                         if typeof(Element.Color) == "string" then
                             itemFrame.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
@@ -354,13 +345,99 @@ return function(Config)
                 end
             end
             
-            -- Hapus item sisa di baris ini yang tidak terpakai
             for k = #items + 1, #currentItems do
                 currentItems[k]:Destroy()
             end
         end
 
-        -- Hapus baris sisa yang tidak terpakai
+        local lines = string.split(text, "\n")
+        local parsedData = {}
+        for _, line in ipairs(lines) do
+            local cols = string.split(line, "\t")
+            if #cols >= 2 then
+                table.insert(parsedData, {Cols = {parseInline(cols[1] or ""), parseInline(cols[2] or "")}})
+            else
+                table.insert(parsedData, {Cols = {parseInline(line)}})
+            end
+        end
+
+        local currentLines = {}
+        for _, c in ipairs(DescContainer:GetChildren()) do
+            if c:IsA("Frame") then table.insert(currentLines, c) end
+        end
+
+        for i, lineData in ipairs(parsedData) do
+            local lineFrame = currentLines[i]
+            
+            if not lineFrame then
+                lineFrame = New("Frame", {
+                    Parent = DescContainer,
+                    BackgroundTransparency = 1,
+                    Size = UDim2.new(1, 0, 0, 0),
+                    AutomaticSize = Enum.AutomaticSize.Y,
+                })
+            end
+            lineFrame.LayoutOrder = i
+            lineFrame.Visible = true
+
+            local cols = lineData.Cols
+            if #cols >= 2 then
+                local colWidth = getColumnWidth()
+                local lineLayout = getOrCreateListLayout(lineFrame)
+                lineLayout.Padding = UDim.new(0, 0)
+
+                local leftCol = lineFrame:FindFirstChild("Col1")
+                if not leftCol then
+                    leftCol = New("Frame", {
+                        Name = "Col1",
+                        Parent = lineFrame,
+                        BackgroundTransparency = 1,
+                        Size = UDim2.new(0, colWidth, 0, 0),
+                        AutomaticSize = Enum.AutomaticSize.Y,
+                    })
+                    getOrCreateListLayout(leftCol)
+                else
+                    leftCol.Size = UDim2.new(0, colWidth, 0, 0)
+                    leftCol.AutomaticSize = Enum.AutomaticSize.Y
+                    getOrCreateListLayout(leftCol)
+                end
+
+                local rightCol = lineFrame:FindFirstChild("Col2")
+                if not rightCol then
+                    rightCol = New("Frame", {
+                        Name = "Col2",
+                        Parent = lineFrame,
+                        BackgroundTransparency = 1,
+                        Size = UDim2.new(1, -colWidth, 0, 0),
+                        AutomaticSize = Enum.AutomaticSize.Y,
+                    })
+                    getOrCreateListLayout(rightCol)
+                else
+                    rightCol.Size = UDim2.new(1, -colWidth, 0, 0)
+                    rightCol.AutomaticSize = Enum.AutomaticSize.Y
+                    getOrCreateListLayout(rightCol)
+                end
+
+                for _, c in ipairs(lineFrame:GetChildren()) do
+                    if c:IsA("GuiObject") and c ~= leftCol and c ~= rightCol then
+                        c:Destroy()
+                    end
+                end
+
+                updateItemsInContainer(leftCol, cols[1])
+                updateItemsInContainer(rightCol, cols[2])
+            else
+                for _, c in ipairs(lineFrame:GetChildren()) do
+                    if c:IsA("Frame") and (c.Name == "Col1" or c.Name == "Col2") then
+                        c:Destroy()
+                    end
+                end
+                
+                getOrCreateListLayout(lineFrame)
+                updateItemsInContainer(lineFrame, cols[1])
+            end
+        end
+
         for k = #parsedData + 1, #currentLines do
             currentLines[k]:Destroy()
         end
@@ -506,12 +583,18 @@ return function(Config)
         })
     })
     
+    -- Ambil custom config, fallback ke "lock"
+    local LockIconAsset = Config.LockedIcon or Config.LockIcon or "lock"
+    local LockedIconSize = Config.LockedIconSize or 20
+    local LockedIconColor = Config.LockedIconColor or Color3.new(1,1,1)
+    local LockedIconTransparency = Config.LockedIconTransparency or .4
+
     local LockedIcon = Creator.Image(
-        "lock", "lock", 0, Config.Window.Folder, "Lock", false
+        LockIconAsset, "lock", 0, Config.Window.Folder, "Lock", false
     )
-    LockedIcon.Size = UDim2.new(0,20,0,20)
-    LockedIcon.ImageLabel.ImageColor3 = Color3.new(1,1,1)
-    LockedIcon.ImageLabel.ImageTransparency = .4
+    LockedIcon.Size = UDim2.new(0, LockedIconSize, 0, LockedIconSize)
+    LockedIcon.ImageLabel.ImageColor3 = LockedIconColor
+    LockedIcon.ImageLabel.ImageTransparency = LockedIconTransparency
     
     local LockedTitle = New("TextLabel", {
         Text = "Locked",
@@ -823,6 +906,22 @@ return function(Config)
         Main:Destroy()
     end
     
+    function Element:SetLockedIcon(asset, size, color, transparency)
+        if LockedIcon and LockedIcon.ImageLabel then
+            if asset then
+                LockedIcon.ImageLabel.Image = asset
+            end
+            if size then
+                LockedIcon.Size = UDim2.new(0, size, 0, size)
+            end
+            if color then
+                LockedIcon.ImageLabel.ImageColor3 = color
+            end
+            if transparency then
+                LockedIcon.ImageLabel.ImageTransparency = transparency
+            end
+        end
+    end
     function Element:Lock(text) -- Tambahkan 'text' di dalam kurung
         CanHover = false
         LockedTitle.Text = text or "Locked" -- Tambahkan baris ini untuk ganti teksnya
