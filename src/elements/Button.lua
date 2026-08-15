@@ -23,6 +23,8 @@ function Element:New(Config)
     Button.ButtonFrame = require("../components/window/Element")({
         Title = Button.Title,
         Desc = Button.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Parent = Config.Parent,
         -- Image = Config.Image,
         -- ImageSize = Config.ImageSize,  

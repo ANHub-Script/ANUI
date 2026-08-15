@@ -31,6 +31,8 @@ function Element:New(Config)
     Keybind.KeybindFrame = require("../components/window/Element")({
         Title = Keybind.Title,
         Desc = Keybind.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Parent = Config.Parent,
         TextOffset = 85,
         Hover = Keybind.CanChange,

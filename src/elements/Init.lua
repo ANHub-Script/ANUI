@@ -78,6 +78,12 @@ return {
                     function content:SetDesc(desc)
                         frame:SetDesc(desc)
                     end
+                    function content:SetTitleGradient(gradient)
+                        frame:SetTitleGradient(gradient)
+                    end
+                    function content:SetDescGradient(gradient)
+                        frame:SetDescGradient(gradient)
+                    end
                     function content:SetImage(img, size)
                         frame:SetImage(img, size)
                     end

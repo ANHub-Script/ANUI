@@ -33,6 +33,8 @@ function Element:New(Config)
     Input.InputFrame = require("../components/window/Element")({
         Title = Input.Title,
         Desc = Input.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Parent = Config.Parent,
         TextOffset = Input.Width,
         Hover = false,

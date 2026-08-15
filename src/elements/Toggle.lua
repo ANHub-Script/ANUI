@@ -35,6 +35,8 @@ function Element:New(Config)
     Toggle.ToggleFrame = require("../components/window/Element")({
         Title = Toggle.Title,
         Desc = Toggle.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Image = initialImage,
         ImageSize = Toggle.ImageSize,  
         Thumbnail = Toggle.Thumbnail,

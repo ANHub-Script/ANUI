@@ -52,6 +52,149 @@ local function GetTextColorForHSB(color)
     end
 end
 
+-- Mengubah daftar Color3 menjadi ColorSequence (rata untuk setiap titik)
+local function ColorsToSequence(colors)
+    if #colors == 1 then
+        return ColorSequence.new(colors[1])
+    end
+
+    local keypoints = {}
+    for i, color in ipairs(colors) do
+        local time = (i - 1) / (#colors - 1)
+        table.insert(keypoints, ColorSequenceKeypoint.new(time, color))
+    end
+    return ColorSequence.new(keypoints)
+end
+
+-- Menerima ColorSequence, Color3, atau table (list Color3 dan/atau { Color = ..., Rotation = ..., dst })
+-- dan mengembalikan properti siap-pakai untuk Instance "UIGradient"
+local function ResolveGradientProps(Gradient)
+    if not Gradient then return nil end
+
+    local ColorSeq
+    local Props = {}
+
+    if typeof(Gradient) == "ColorSequence" then
+        ColorSeq = Gradient
+    elseif typeof(Gradient) == "Color3" then
+        ColorSeq = ColorSequence.new(Gradient)
+    elseif typeof(Gradient) == "table" then
+        local Colors = {}
+        for _, v in ipairs(Gradient) do
+            if typeof(v) == "Color3" then
+                table.insert(Colors, v)
+            end
+        end
+
+        if Gradient.Color then
+            if typeof(Gradient.Color) == "ColorSequence" then
+                ColorSeq = Gradient.Color
+            elseif typeof(Gradient.Color) == "Color3" then
+                ColorSeq = ColorSequence.new(Gradient.Color)
+            elseif typeof(Gradient.Color) == "table" and #Gradient.Color > 0 then
+                Colors = Gradient.Color
+            end
+        end
+
+        if not ColorSeq and #Colors > 0 then
+            ColorSeq = ColorsToSequence(Colors)
+        end
+
+        for k, v in pairs(Gradient) do
+            if k ~= "Color" and typeof(k) == "string" then
+                Props[k] = v
+            end
+        end
+    end
+
+    if not ColorSeq then return nil end
+
+    Props.Color = ColorSeq
+    return Props
+end
+
+local GRADIENT_TAG_OPEN = "<gradient>"
+local GRADIENT_TAG_CLOSE = "</gradient>"
+
+-- Memecah teks menjadi beberapa segmen: teks biasa, gambar (rbxassetid://),
+-- dan teks yang ditandai <gradient>...</gradient> (agar hanya sebagian teks yang gradient)
+local function ParseTextSegments(str)
+    local Segments = {}
+    local pos = 1
+    local GradientActive = false
+    local length = #str
+
+    while pos <= length do
+        local imgS, imgE = string.find(str, "rbxassetid://%d+", pos)
+        local openS, openE = string.find(str, GRADIENT_TAG_OPEN, pos, true)
+        local closeS, closeE = string.find(str, GRADIENT_TAG_CLOSE, pos, true)
+
+        local nextS, nextE, kind
+        for _, candidate in ipairs({
+            {s = imgS, e = imgE, k = "Image"},
+            {s = openS, e = openE, k = "Open"},
+            {s = closeS, e = closeE, k = "Close"},
+        }) do
+            if candidate.s and (not nextS or candidate.s < nextS) then
+                nextS, nextE, kind = candidate.s, candidate.e, candidate.k
+            end
+        end
+
+        if not nextS then
+            local rest = string.sub(str, pos)
+            if rest ~= "" then
+                table.insert(Segments, {Type = "Text", Content = rest, Gradient = GradientActive})
+            end
+            break
+        end
+
+        local textPart = string.sub(str, pos, nextS - 1)
+        if textPart ~= "" then
+            table.insert(Segments, {Type = "Text", Content = textPart, Gradient = GradientActive})
+        end
+
+        if kind == "Image" then
+            table.insert(Segments, {Type = "Image", Content = string.sub(str, nextS, nextE)})
+        elseif kind == "Open" then
+            GradientActive = true
+        elseif kind == "Close" then
+            GradientActive = false
+        end
+
+        pos = nextE + 1
+    end
+
+    return Segments
+end
+
+-- Cek apakah teks butuh dipecah jadi beberapa TextLabel (ada gambar inline dan/atau tag gradient parsial)
+local function HasRichTokens(str)
+    if not str or str == "" then return false end
+    return string.find(str, "rbxassetid://%d+") ~= nil
+        or string.find(str, GRADIENT_TAG_OPEN, 1, true) ~= nil
+end
+
+-- Menambah/memperbarui/menghapus UIGradient "TextGradient" pada sebuah TextLabel
+local function ApplyGradientToLabel(Label, GradientProps)
+    if not Label then return end
+
+    local Existing = Label:FindFirstChild("TextGradient")
+
+    if GradientProps then
+        if not Existing then
+            Existing = Instance.new("UIGradient")
+            Existing.Name = "TextGradient"
+            Existing.Parent = Label
+        end
+        for k, v in pairs(GradientProps) do
+            Existing[k] = v
+        end
+        Label.TextColor3 = Color3.new(1, 1, 1)
+    elseif Existing then
+        Existing:Destroy()
+    end
+end
+
 local function getElementPosition(elements, targetIndex)
     if type(targetIndex) ~= "number" or targetIndex ~= math.floor(targetIndex) then
         return nil, 1
@@ -116,6 +259,8 @@ return function(Config)
         IconThemed = Config.IconThemed or false,
         ImageSize = Config.ImageSize or 30,
         Color = Config.Color,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Scalable = Config.Scalable,
         Parent = Config.Parent,
         Justify = Config.Justify or "Between", 
@@ -169,27 +314,35 @@ return function(Config)
     end
     
     -- Helper Create Text
-    local function CreateText(Title, Type)
+    -- UseGradient: nil/true = ikuti gradient elemen (default, untuk teks tanpa tag <gradient>)
+    --              false = paksa warna normal (dipakai untuk segmen teks di luar tag <gradient>)
+    local function CreateText(Title, Type, UseGradient)
         local TextColor = typeof(Element.Color) == "string" 
             and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
             or typeof(Element.Color) == "Color3" 
             and GetTextColorForHSB(Element.Color)
         
-        return New("TextLabel", {
+        local GradientProps = (UseGradient ~= false) and ResolveGradientProps(Type == "Desc" and Element.DescGradient or Element.TitleGradient) or nil
+        
+        local Label = New("TextLabel", {
             BackgroundTransparency = 1,
             Text = Title or "",
             TextSize = Type == "Desc" and 15 or 17,
             TextXAlignment = "Left",
             ThemeTag = {
-                TextColor3 = not Element.Color and ("Element" .. Type) or nil,
+                TextColor3 = (not Element.Color and not GradientProps) and ("Element" .. Type) or nil,
             },
-            TextColor3 = Element.Color and TextColor or nil,
+            TextColor3 = GradientProps and Color3.new(1, 1, 1) or (Element.Color and TextColor or nil),
             TextTransparency = Type == "Desc" and .3 or 0,
             TextWrapped = true,
             Size = UDim2.new(Element.Justify == "Between" and 1 or 0,0,0,0),
             AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
             FontFace = Font.new(Creator.Font, Type == "Desc" and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
         })
+        
+        ApplyGradientToLabel(Label, GradientProps)
+        
+        return Label
     end
     
     local Title = CreateText(Element.Title, "Title")
@@ -231,23 +384,7 @@ return function(Config)
         DescContainer.Visible = true
 
         local function parseInline(str)
-            local lineItems = {}
-            local lastPos = 1
-            while true do
-                local s, e = string.find(str, "rbxassetid://%d+", lastPos)
-                local textPart = string.sub(str, lastPos, s and (s - 1) or -1)
-                
-                if textPart ~= "" then
-                    table.insert(lineItems, {Type = "Text", Content = textPart})
-                end
-                
-                if not s then break end
-                
-                local assetId = string.sub(str, s, e)
-                table.insert(lineItems, {Type = "Image", Content = assetId})
-                lastPos = e + 1
-            end
-            return lineItems
+            return ParseTextSegments(str)
         end
 
         local function getColumnWidth()
@@ -293,7 +430,8 @@ return function(Config)
                 if itemFrame then
                     local isText = itemFrame:IsA("TextLabel")
                     local isImage = itemFrame:IsA("ImageLabel")
-                    if (itemData.Type == "Text" and not isText) or (itemData.Type == "Image" and not isImage) then
+                    local gradientChanged = isText and (itemFrame:GetAttribute("GradientFlag") ~= (itemData.Gradient == true))
+                    if (itemData.Type == "Text" and not isText) or (itemData.Type == "Image" and not isImage) or gradientChanged then
                         itemFrame:Destroy()
                         itemFrame = nil
                     end
@@ -301,7 +439,8 @@ return function(Config)
 
                 if not itemFrame then
                     if itemData.Type == "Text" then
-                        itemFrame = CreateText(itemData.Content, "Desc")
+                        itemFrame = CreateText(itemData.Content, "Desc", itemData.Gradient)
+                        itemFrame:SetAttribute("GradientFlag", itemData.Gradient == true)
                         itemFrame.Parent = container
                     else
                         itemFrame = New("ImageLabel", {
@@ -322,6 +461,7 @@ return function(Config)
                     if itemFrame.Text ~= itemData.Content then
                         itemFrame.Text = itemData.Content
                     end
+                    ApplyGradientToLabel(itemFrame, itemData.Gradient ~= false and ResolveGradientProps(Element.DescGradient) or nil)
                     if #items == 1 then
                         itemFrame.Size = UDim2.new(1, 0, 0, 0)
                         itemFrame.AutomaticSize = Enum.AutomaticSize.Y
@@ -445,6 +585,7 @@ return function(Config)
     
     local function UpdateTitle(text)
         Title.Text = text or ""
+        ApplyGradientToLabel(Title, ResolveGradientProps(Element.TitleGradient))
         
         if not text or text == "" then
             Title.Visible = true
@@ -452,8 +593,7 @@ return function(Config)
             return
         end
         
-        local hasToken = string.find(text, "rbxassetid://%d+") ~= nil
-        if not hasToken then
+        if not HasRichTokens(text) then
             Title.Visible = true
             TitleRich.Visible = false
             return
@@ -468,24 +608,11 @@ return function(Config)
             end
         end
         
-        local items = {}
-        local lastPos = 1
-        while true do
-            local s, e = string.find(text, "rbxassetid://%d+", lastPos)
-            local textPart = string.sub(text, lastPos, s and (s - 1) or -1)
-            
-            if textPart ~= "" then
-                table.insert(items, {Type = "Text", Content = textPart})
-            end
-            if not s then break end
-            local assetId = string.sub(text, s, e)
-            table.insert(items, {Type = "Image", Content = assetId})
-            lastPos = e + 1
-        end
+        local items = ParseTextSegments(text)
         
         for idx, item in ipairs(items) do
             if item.Type == "Text" then
-                local lbl = CreateText(item.Content, "Title")
+                local lbl = CreateText(item.Content, "Title", item.Gradient)
                 lbl.LayoutOrder = idx
                 if #items == 1 then
                     lbl.Size = UDim2.new(1, 0, 0, 0)
@@ -774,6 +901,16 @@ return function(Config)
     function Element:SetTitle(text)
         Element.Title = text
         UpdateTitle(text)
+    end
+    
+    function Element:SetTitleGradient(gradient)
+        Element.TitleGradient = gradient
+        UpdateTitle(Element.Title)
+    end
+    
+    function Element:SetDescGradient(gradient)
+        Element.DescGradient = gradient
+        UpdateDesc(Element.Desc)
     end
     
     function Element:SetDesc(text)

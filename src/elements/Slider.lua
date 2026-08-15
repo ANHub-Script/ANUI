@@ -59,6 +59,8 @@ function Element:New(Config)
     Slider.SliderFrame = require("../components/window/Element")({
         Title = Slider.Title,
         Desc = Slider.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Parent = Config.Parent,
         TextOffset = Slider.Width,
         Hover = false,

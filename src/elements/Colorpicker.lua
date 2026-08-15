@@ -650,6 +650,8 @@ function Element:New(Config)
     Colorpicker.ColorpickerFrame = require("../components/window/Element")({
         Title = Colorpicker.Title,
         Desc = Colorpicker.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Parent = Config.Parent,
         TextOffset = 40,
         Hover = false,

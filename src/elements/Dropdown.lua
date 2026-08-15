@@ -55,6 +55,8 @@ function Element:New(Config)
     Dropdown.DropdownFrame = require("../components/window/Element")({
         Title = Dropdown.Title,
         Desc = Dropdown.Desc,
+        TitleGradient = Config.TitleGradient,
+        DescGradient = Config.DescGradient,
         Image = Config.Image,
         ImageSize = Config.ImageSize,
         IconThemed = Config.IconThemed,
