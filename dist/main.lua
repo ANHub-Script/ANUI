@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.250  |  2026-08-15  |  Roblox UI Library for scripts
+    v1.0.251  |  2026-08-15  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.250",
+    "version": "1.0.251",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5110,6 +5110,45 @@ local af="</gradient>"
 
 
 
+local function ParseGradientAttr(ag)
+if not ag or ag==""then return nil end
+
+local ah,ai=ag
+local aj=string.find(ag,"|",1,true)
+if aj then
+ah=string.sub(ag,1,aj-1)
+ai=string.sub(ag,aj+1)
+end
+
+local ak={}
+for al in string.gmatch(ah,"[^,]+")do
+al=al:match"^%s*(.-)%s*$"
+if al~=""then
+local am,an=pcall(Color3.fromHex,al)
+if am and an then
+table.insert(ak,an)
+end
+end
+end
+
+if#ak==0 then return nil end
+
+local al={Color=ColorsToSequence(ak)}
+if ai then
+local am=tonumber(ai)
+if am then
+al.Rotation=am
+end
+end
+
+return al
+end
+
+
+
+
+
+
 local function ParseTextSegments(ag)
 local ah={}
 local ai=1
@@ -5119,41 +5158,45 @@ local ak=#ag
 while ai<=ak do
 local al,am=string.find(ag,"rbxassetid://%d+",ai)
 local an,ao=string.find(ag,ae,ai,true)
-local ap,aq=string.find(ag,af,ai,true)
+local ap,aq,ar=string.find(ag,"<gradient=([^>]*)>",ai)
+local as,at=string.find(ag,af,ai,true)
 
-local ar,as,at
-for au,av in ipairs{
+local au,av,aw,ax
+for ay,az in ipairs{
 {s=al,e=am,k="Image"},
-{s=an,e=ao,k="Open"},
-{s=ap,e=aq,k="Close"},
+{s=an,e=ao,k="OpenPlain"},
+{s=ap,e=aq,k="OpenAttr",attr=ar},
+{s=as,e=at,k="Close"},
 }do
-if av.s and(not ar or av.s<ar)then
-ar,as,at=av.s,av.e,av.k
+if az.s and(not au or az.s<au)then
+au,av,aw,ax=az.s,az.e,az.k,az.attr
 end
 end
 
-if not ar then
-local au=string.sub(ag,ai)
-if au~=""then
-table.insert(ah,{Type="Text",Content=au,Gradient=aj})
+if not au then
+local ay=string.sub(ag,ai)
+if ay~=""then
+table.insert(ah,{Type="Text",Content=ay,Gradient=aj})
 end
 break
 end
 
-local au=string.sub(ag,ai,ar-1)
-if au~=""then
-table.insert(ah,{Type="Text",Content=au,Gradient=aj})
+local ay=string.sub(ag,ai,au-1)
+if ay~=""then
+table.insert(ah,{Type="Text",Content=ay,Gradient=aj})
 end
 
-if at=="Image"then
-table.insert(ah,{Type="Image",Content=string.sub(ag,ar,as)})
-elseif at=="Open"then
+if aw=="Image"then
+table.insert(ah,{Type="Image",Content=string.sub(ag,au,av)})
+elseif aw=="OpenPlain"then
 aj=true
-elseif at=="Close"then
+elseif aw=="OpenAttr"then
+aj=ParseGradientAttr(ax)or true
+elseif aw=="Close"then
 aj=false
 end
 
-ai=as+1
+ai=av+1
 end
 
 return ah
@@ -5164,6 +5207,36 @@ local function HasRichTokens(ag)
 if not ag or ag==""then return false end
 return string.find(ag,"rbxassetid://%d+")~=nil
 or string.find(ag,ae,1,true)~=nil
+or string.find(ag,"<gradient=",1,true)~=nil
+end
+
+
+local function ResolveItemGradientProps(ag,ah)
+if typeof(ag)=="table"then
+return ResolveGradientProps(ag)
+elseif ag~=false then
+return ResolveGradientProps(ah)
+end
+return nil
+end
+
+
+local function GradientSignature(ag)
+if ag==false or ag==nil then
+return""
+elseif ag==true then
+return"@default"
+elseif typeof(ag)=="table"and ag.Color then
+local ah={}
+for ai,aj in ipairs(ag.Color.Keypoints)do
+table.insert(ah,string.format("%.3f:%s",aj.Time,aj.Value:ToHex()))
+end
+if ag.Rotation then
+table.insert(ah,"R"..tostring(ag.Rotation))
+end
+return table.concat(ah,"|")
+end
+return""
 end
 
 
@@ -5314,7 +5387,7 @@ and GetTextColorForHSB(Color3.fromHex(aa.Colors[ah.Color]))
 or typeof(ah.Color)=="Color3"
 and GetTextColorForHSB(ah.Color)
 
-local as=(aq~=false)and ResolveGradientProps(ap=="Desc"and ah.DescGradient or ah.TitleGradient)or nil
+local as=ResolveItemGradientProps(aq,ap=="Desc"and ah.DescGradient or ah.TitleGradient)
 
 local at=ab("TextLabel",{
 BackgroundTransparency=1,
@@ -5422,7 +5495,7 @@ local ax=au[av]
 if ax then
 local ay=ax:IsA"TextLabel"
 local az=ax:IsA"ImageLabel"
-local aA=ay and(ax:GetAttribute"GradientFlag"~=(aw.Gradient==true))
+local aA=ay and(ax:GetAttribute"GradientSig"~=GradientSignature(aw.Gradient))
 if(aw.Type=="Text"and not ay)or(aw.Type=="Image"and not az)or aA then
 ax:Destroy()
 ax=nil
@@ -5432,7 +5505,7 @@ end
 if not ax then
 if aw.Type=="Text"then
 ax=CreateText(aw.Content,"Desc",aw.Gradient)
-ax:SetAttribute("GradientFlag",aw.Gradient==true)
+ax:SetAttribute("GradientSig",GradientSignature(aw.Gradient))
 ax.Parent=as
 else
 ax=ab("ImageLabel",{
@@ -5453,7 +5526,7 @@ if aw.Type=="Text"then
 if ax.Text~=aw.Content then
 ax.Text=aw.Content
 end
-ApplyGradientToLabel(ax,aw.Gradient~=false and ResolveGradientProps(ah.DescGradient)or nil)
+ApplyGradientToLabel(ax,ResolveItemGradientProps(aw.Gradient,ah.DescGradient))
 if#at==1 then
 ax.Size=UDim2.new(1,0,0,0)
 ax.AutomaticSize=Enum.AutomaticSize.Y
