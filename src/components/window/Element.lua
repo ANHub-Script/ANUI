@@ -274,7 +274,7 @@ local function getElementPosition(elements, targetIndex)
     end
 
     local maxIndex = #elements
-    
+
     if maxIndex == 0 or targetIndex < 1 or targetIndex > maxIndex then
         return nil, 2
     end
@@ -336,27 +336,27 @@ return function(Config)
         DescGradient = Config.DescGradient,
         Scalable = Config.Scalable,
         Parent = Config.Parent,
-        Justify = Config.Justify or "Between", 
+        Justify = Config.Justify or "Between",
         UIPadding = Config.Window.ElementConfig.UIPadding,
         UICorner = Config.Window.ElementConfig.UICorner,
         UIElements = {},
         DescColumnWidth = Config.DescColumnWidth,
-        
+
         Index = Config.Index
     }
-    
+
     local ImageSize = Element.ImageSize
     local ThumbnailSize = Element.ThumbnailSize
     local CanHover = true
     local IconOffset = 0
-    
+
     local ThumbnailFrame
     local ImageFrame
     if Element.Thumbnail then
         ThumbnailFrame = Creator.Image(
-            Element.Thumbnail, 
-            Element.Title, 
-            Config.Window.NewElements and Element.UICorner-11 or (Element.UICorner-4), 
+            Element.Thumbnail,
+            Element.Title,
+            Config.Window.NewElements and Element.UICorner-11 or (Element.UICorner-4),
             Config.Window.Folder,
             "Thumbnail",
             false,
@@ -366,37 +366,37 @@ return function(Config)
     end
     if Element.Image then
         ImageFrame = Creator.Image(
-            Element.Image, 
-            Element.Title, 
-            Config.Window.NewElements and Element.UICorner-11 or (Element.UICorner-4), 
+            Element.Image,
+            Element.Title,
+            Config.Window.NewElements and Element.UICorner-11 or (Element.UICorner-4),
             Config.Window.Folder,
             "Image",
             Element.IconThemed,
             not Element.Color and true or false,
             "ElementIcon"
         )
-        if typeof(Element.Color) == "string" then 
+        if typeof(Element.Color) == "string" then
             ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
         elseif typeof(Element.Color) == "Color3" then
             ImageFrame.ImageLabel.ImageColor3 = GetTextColorForHSB(Element.Color)
         end
-        
+
         ImageFrame.Size = UDim2.new(0,ImageSize,0,ImageSize)
-        
+
         IconOffset = ImageSize
     end
-    
+
     -- Helper Create Text
     -- UseGradient: nil/true = ikuti gradient elemen (default, untuk teks tanpa tag <gradient>)
     --              false = paksa warna normal (dipakai untuk segmen teks di luar tag <gradient>)
     local function CreateText(Title, Type, UseGradient)
-        local TextColor = typeof(Element.Color) == "string" 
+        local TextColor = typeof(Element.Color) == "string"
             and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-            or typeof(Element.Color) == "Color3" 
+            or typeof(Element.Color) == "Color3"
             and GetTextColorForHSB(Element.Color)
-        
+
         local GradientProps = ResolveItemGradientProps(UseGradient, Type == "Desc" and Element.DescGradient or Element.TitleGradient)
-        
+
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
             Text = Title or "",
@@ -412,12 +412,12 @@ return function(Config)
             AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
             FontFace = Font.new(Creator.Font, Type == "Desc" and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
         })
-        
+
         ApplyGradientToLabel(Label, GradientProps)
-        
+
         return Label
     end
-    
+
     local Title = CreateText(Element.Title, "Title")
     local TitleRich = New("Frame", {
         Name = "TitleRich",
@@ -433,7 +433,7 @@ return function(Config)
             VerticalAlignment = Enum.VerticalAlignment.Center
         })
     })
-    
+
     -- Container Deskripsi
     local DescContainer = New("Frame", {
         Name = "DescContainer",
@@ -464,7 +464,7 @@ return function(Config)
             if typeof(Element.DescColumnWidth) == "number" and Element.DescColumnWidth > 0 then
                 return math.floor(Element.DescColumnWidth)
             end
-            
+
             local w = DescContainer.AbsoluteSize.X
             if not w or w <= 0 then
                 return 320
@@ -493,13 +493,13 @@ return function(Config)
 
         local function updateItemsInContainer(container, items)
             local currentItems = {}
-            for _, c in ipairs(container:GetChildren()) do 
-                if c:IsA("GuiObject") then table.insert(currentItems, c) end 
+            for _, c in ipairs(container:GetChildren()) do
+                if c:IsA("GuiObject") then table.insert(currentItems, c) end
             end
 
             for j, itemData in ipairs(items) do
                 local itemFrame = currentItems[j]
-                
+
                 if itemFrame then
                     local isText = itemFrame:IsA("TextLabel")
                     local isImage = itemFrame:IsA("ImageLabel")
@@ -526,10 +526,10 @@ return function(Config)
                         })
                     end
                 end
-                
+
                 itemFrame.LayoutOrder = j
                 itemFrame.Visible = true
-                
+
                 if itemData.Type == "Text" then
                     if itemFrame.Text ~= itemData.Content then
                         itemFrame.Text = itemData.Content
@@ -542,7 +542,7 @@ return function(Config)
                     else
                         itemFrame.Size = UDim2.new(0, 0, 0, 0)
                         itemFrame.AutomaticSize = Enum.AutomaticSize.XY
-                        itemFrame.TextWrapped = false 
+                        itemFrame.TextWrapped = false
                     end
                 else
                     if itemFrame.Image ~= itemData.Content then
@@ -557,7 +557,7 @@ return function(Config)
                     end
                 end
             end
-            
+
             for k = #items + 1, #currentItems do
                 currentItems[k]:Destroy()
             end
@@ -581,7 +581,7 @@ return function(Config)
 
         for i, lineData in ipairs(parsedData) do
             local lineFrame = currentLines[i]
-            
+
             if not lineFrame then
                 lineFrame = New("Frame", {
                     Parent = DescContainer,
@@ -645,7 +645,7 @@ return function(Config)
                         c:Destroy()
                     end
                 end
-                
+
                 getOrCreateListLayout(lineFrame)
                 updateItemsInContainer(lineFrame, cols[1])
             end
@@ -655,34 +655,34 @@ return function(Config)
             currentLines[k]:Destroy()
         end
     end
-    
+
     local function UpdateTitle(text)
         Title.Text = text or ""
         ApplyGradientToLabel(Title, ResolveGradientProps(Element.TitleGradient))
-        
+
         if not text or text == "" then
             Title.Visible = true
             TitleRich.Visible = false
             return
         end
-        
+
         if not HasRichTokens(text) then
             Title.Visible = true
             TitleRich.Visible = false
             return
         end
-        
+
         Title.Visible = false
         TitleRich.Visible = true
-        
+
         for _, c in ipairs(TitleRich:GetChildren()) do
             if c:IsA("GuiObject") then
                 c:Destroy()
             end
         end
-        
+
         local items = ParseTextSegments(text)
-        
+
         for idx, item in ipairs(items) do
             if item.Type == "Text" then
                 local lbl = CreateText(item.Content, "Title", item.Gradient)
@@ -707,7 +707,7 @@ return function(Config)
                     Image = item.Content,
                     LayoutOrder = idx,
                 })
-                
+
                 if Element.Color then
                     if typeof(Element.Color) == "string" then
                         img.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
@@ -715,12 +715,12 @@ return function(Config)
                         img.ImageColor3 = GetTextColorForHSB(Element.Color)
                     end
                 end
-                
+
                 img.Parent = TitleRich
             end
         end
     end
-    
+
     Element.UIElements.Container = New("Frame", {
         Size = UDim2.new(1,0,1,0),
         AutomaticSize = "Y",
@@ -747,11 +747,9 @@ return function(Config)
             New("UIListLayout", {
                 Padding = UDim.new(0,Element.UIPadding),
                 FillDirection = "Horizontal",
-                -- Title & Description harus selalu tetap di posisi atas (Top) dan tidak boleh
-                -- ikut bergeser/ter-center mengikuti tinggi Icon atau Image, apa pun jenis
-                -- elemennya (Toggle, Dropdown, Paragraph, dll). Icon/Image yang lebih tinggi
-                -- dari Title+Desc cukup "menjulur" ke bawah dari titik atas yang sama.
-                VerticalAlignment = Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center",
+                VerticalAlignment = (Config.ElementTable and Config.ElementTable.__type == "Dropdown") and "Center"
+                    or ((ImageFrame and Config.ElementTable and Config.ElementTable.__type == "Toggle") and "Center"
+                    or (Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center")),
                 HorizontalAlignment = Element.Justify ~= "Between" and Element.Justify or "Center",
             }),
             ImageFrame,
@@ -784,7 +782,7 @@ return function(Config)
             }),
         })
     })
-    
+
     -- Ambil custom config, fallback ke "lock"
     local LockIconAsset = Config.LockedIcon or Config.LockIcon or "lock"
     local LockedIconSize = Config.LockedIconSize or 20
@@ -797,7 +795,7 @@ return function(Config)
     LockedIcon.Size = UDim2.new(0, LockedIconSize, 0, LockedIconSize)
     LockedIcon.ImageLabel.ImageColor3 = LockedIconColor
     LockedIcon.ImageLabel.ImageTransparency = LockedIconTransparency
-    
+
     local LockedTitle = New("TextLabel", {
         Text = "Locked",
         TextSize = 18,
@@ -807,7 +805,7 @@ return function(Config)
         TextColor3 = Color3.new(1,1,1),
         TextTransparency = .05,
     })
-    
+
     local ElementFullFrame = New("Frame", {
         Size = UDim2.new(1,Element.UIPadding*2,1,Element.UIPadding*2),
         BackgroundTransparency = 1,
@@ -815,7 +813,7 @@ return function(Config)
         Position = UDim2.new(0.5,0,0.5,0),
         ZIndex = 9999999,
     })
-    
+
     local Locked, LockedTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
         ImageTransparency = .25,
@@ -832,10 +830,10 @@ return function(Config)
         }),
         LockedIcon, LockedTitle
     }, nil, true)
-    
+
     local HighlightOutline, HighlightOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, 
+        ImageTransparency = 1,
         Active = false,
         ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
@@ -847,10 +845,10 @@ return function(Config)
             Padding = UDim.new(0,8)
         }),
     }, nil, true)
-    
+
     local Highlight, HighlightTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, 
+        ImageTransparency = 1,
         Active = false,
         ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
@@ -862,10 +860,10 @@ return function(Config)
             Padding = UDim.new(0,8)
         }),
     }, nil, true)
-    
+
     local HoverOutline, HoverOutlineTable = NewRoundFrame(Element.UICorner, "Squircle-Outline", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, 
+        ImageTransparency = 1,
         Active = false,
         ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
@@ -884,18 +882,18 @@ return function(Config)
                 ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
             }),
             Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),     
+                NumberSequenceKeypoint.new(0, 1),
                 NumberSequenceKeypoint.new(0.25, 0.9),
-                NumberSequenceKeypoint.new(0.5, 0.3), 
-                NumberSequenceKeypoint.new(0.75, 0.9), 
-                NumberSequenceKeypoint.new(1, 1)      
+                NumberSequenceKeypoint.new(0.5, 0.3),
+                NumberSequenceKeypoint.new(0.75, 0.9),
+                NumberSequenceKeypoint.new(1, 1)
             }),
         }),
     }, nil, true)
-    
+
     local Hover, HoverTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,1,0),
-        ImageTransparency = 1, 
+        ImageTransparency = 1,
         Active = false,
         ThemeTag = { ImageColor3 = "Text" },
         Parent = ElementFullFrame,
@@ -908,11 +906,11 @@ return function(Config)
                 ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
             }),
             Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),     
+                NumberSequenceKeypoint.new(0, 1),
                 NumberSequenceKeypoint.new(0.25, 0.9),
-                NumberSequenceKeypoint.new(0.5, 0.3), 
-                NumberSequenceKeypoint.new(0.75, 0.9), 
-                NumberSequenceKeypoint.new(1, 1)      
+                NumberSequenceKeypoint.new(0.5, 0.3),
+                NumberSequenceKeypoint.new(0.75, 0.9),
+                NumberSequenceKeypoint.new(1, 1)
             }),
         }),
         New("UIListLayout", {
@@ -922,7 +920,7 @@ return function(Config)
             Padding = UDim.new(0,8)
         }),
     }, nil, true)
-    
+
     local Main, MainTable = NewRoundFrame(Element.UICorner, "Squircle", {
         Size = UDim2.new(1,0,0,0),
         AutomaticSize = "Y",
@@ -931,11 +929,11 @@ return function(Config)
         ThemeTag = {
             ImageColor3 = not Element.Color and "ElementBackground" or nil
         },
-        ImageColor3 = Element.Color and 
-            ( 
-                typeof(Element.Color) == "string" 
-                    and Color3.fromHex(Creator.Colors[Element.Color]) 
-                    or typeof(Element.Color) == "Color3" 
+        ImageColor3 = Element.Color and
+            (
+                typeof(Element.Color) == "string"
+                    and Color3.fromHex(Creator.Colors[Element.Color])
+                    or typeof(Element.Color) == "Color3"
                     and Element.Color
             ) or nil
     }, {
@@ -948,10 +946,10 @@ return function(Config)
             PaddingBottom = UDim.new(0,Element.UIPadding),
         }),
     }, true, true)
-    
+
     Element.UIElements.Main = Main
     Element.UIElements.Locked = Locked
-    
+
     if Element.Hover then
         Creator.AddSignal(Main.MouseEnter, function()
             if CanHover then
@@ -972,50 +970,50 @@ return function(Config)
             end
         end)
     end
-    
+
     function Element:SetTitle(text)
         Element.Title = text
         UpdateTitle(text)
     end
-    
+
     function Element:SetTitleGradient(gradient)
         Element.TitleGradient = gradient
         UpdateTitle(Element.Title)
     end
-    
+
     function Element:SetDescGradient(gradient)
         Element.DescGradient = gradient
         UpdateDesc(Element.Desc)
     end
-    
+
     function Element:SetDesc(text)
         -- [OPTIMASI 1] Equality Check: Jika teks sama persis, JANGAN update apapun.
         if Element.Desc == text then
-            return 
+            return
         end
-        
+
         Element.Desc = text
         UpdateDesc(text) -- Panggil parser yang sudah dioptimasi
-        
+
         if Config.ElementTable then
              Config.ElementTable.Desc = text
         end
     end
-    
+
     -- Inisialisasi awal
     UpdateDesc(Element.Desc)
     UpdateTitle(Element.Title)
 
     function Element:Colorize(obj, prop)
         if Element.Color then
-            obj[prop] = typeof(Element.Color) == "string" 
+            obj[prop] = typeof(Element.Color) == "string"
                 and GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-                or typeof(Element.Color) == "Color3" 
+                or typeof(Element.Color) == "Color3"
                 and GetTextColorForHSB(Element.Color)
-                or nil 
+                or nil
         end
     end
-    
+
     if Config.ElementTable then
         if Title and Title.GetPropertyChangedSignal then
             Creator.AddSignal(Title:GetPropertyChangedSignal("Text"), function()
@@ -1026,21 +1024,21 @@ return function(Config)
             end)
         end
     end
-    
+
     function Element:SetThumbnail(newThumbnail, newSize)
         Element.Thumbnail = newThumbnail
         if newSize then
             Element.ThumbnailSize = newSize
             ThumbnailSize = newSize
         end
-        
+
         if ThumbnailFrame then
             if newThumbnail then
                 ThumbnailFrame:Destroy()
                 ThumbnailFrame = Creator.Image(
-                    newThumbnail, 
-                    Element.Title, 
-                    Element.UICorner-3, 
+                    newThumbnail,
+                    Element.Title,
+                    Element.UICorner-3,
                     Config.Window.Folder,
                     "Thumbnail",
                     false,
@@ -1058,9 +1056,9 @@ return function(Config)
         else
             if newThumbnail then
                 ThumbnailFrame = Creator.Image(
-                    newThumbnail, 
-                    Element.Title, 
-                    Element.UICorner-3, 
+                    newThumbnail,
+                    Element.Title,
+                    Element.UICorner-3,
                     Config.Window.Folder,
                     "Thumbnail",
                     false,
@@ -1075,7 +1073,7 @@ return function(Config)
             end
         end
     end
-    
+
     function Element:SetImage(newImage, newSize)
         Element.Image = newImage
         if newSize then
@@ -1113,7 +1111,7 @@ return function(Config)
 
         Element.UIElements.Container.TitleFrame.TitleFrame.Size = UDim2.new(1, -IconOffset, 1, 0)
     end
-    
+
     function Element:Destroy()
         Main:Destroy()
     end
@@ -1141,13 +1139,13 @@ return function(Config)
         Locked.Active = true
         Locked.Visible = true
     end
-    
+
     function Element:Unlock()
         CanHover = true
         Locked.Active = false
         Locked.Visible = false
     end
-    
+
     function Element:Highlight()
         local OutlineGradient = New("UIGradient", {
             Color = ColorSequence.new({
@@ -1156,17 +1154,17 @@ return function(Config)
                 ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
             }),
             Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),     
+                NumberSequenceKeypoint.new(0, 1),
                 NumberSequenceKeypoint.new(0.1, 0.9),
-                NumberSequenceKeypoint.new(0.5, 0.3), 
-                NumberSequenceKeypoint.new(0.9, 0.9), 
-                NumberSequenceKeypoint.new(1, 1)      
+                NumberSequenceKeypoint.new(0.5, 0.3),
+                NumberSequenceKeypoint.new(0.9, 0.9),
+                NumberSequenceKeypoint.new(1, 1)
             }),
             Rotation = 0,
             Offset = Vector2.new(-1, 0),
             Parent = HighlightOutline
         })
-        
+
         local HighlightGradient = New("UIGradient", {
             Color = ColorSequence.new({
                 ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
@@ -1174,28 +1172,28 @@ return function(Config)
                 ColorSequenceKeypoint.new(1, Color3.new(1, 1, 1))
             }),
             Transparency = NumberSequence.new({
-                NumberSequenceKeypoint.new(0, 1),     
+                NumberSequenceKeypoint.new(0, 1),
                 NumberSequenceKeypoint.new(0.15, 0.8),
-                NumberSequenceKeypoint.new(0.5, 0.1), 
-                NumberSequenceKeypoint.new(0.85, 0.8), 
-                NumberSequenceKeypoint.new(1, 1)      
+                NumberSequenceKeypoint.new(0.5, 0.1),
+                NumberSequenceKeypoint.new(0.85, 0.8),
+                NumberSequenceKeypoint.new(1, 1)
             }),
             Rotation = 0,
             Offset = Vector2.new(-1, 0),
             Parent = Highlight
         })
-        
+
         HighlightOutline.ImageTransparency = 0.65
         Highlight.ImageTransparency = 0.88
-        
+
         Tween(OutlineGradient, 0.75, {
             Offset = Vector2.new(1, 0)
         }):Play()
-        
+
         Tween(HighlightGradient, 0.75, {
             Offset = Vector2.new(1, 0)
         }):Play()
-        
+
         task.spawn(function()
             task.wait(.75)
             HighlightOutline.ImageTransparency = 1
@@ -1204,7 +1202,7 @@ return function(Config)
             HighlightGradient:Destroy()
         end)
     end
-    
+
     function Element.UpdateShape(Tab)
         if Config.Window.NewElements then
             local newShape
@@ -1214,7 +1212,7 @@ return function(Config)
             else
                 newShape = getElementPosition(Tab.Elements, Element.Index)
             end
-            
+
             if newShape and Main then
                 MainTable:SetType(newShape)
                 LockedTable:SetType(newShape)
@@ -1225,6 +1223,6 @@ return function(Config)
             end
         end
     end
-    
+
     return Element
 end
