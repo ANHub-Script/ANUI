@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.255  |  2026-08-20  |  Roblox UI Library for scripts
+    v1.0.256  |  2026-08-20  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1843,7 +1843,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.255",
+    "version": "1.0.256",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5743,13 +5743,7 @@ FillDirection="Horizontal",
 
 
 
-
-
-VerticalAlignment=(an or(ag.ElementTable and(
-ag.ElementTable.__type=="Dropdown"
-or ag.ElementTable.__type=="Toggle"
-)))and"Center"
-or(ag.Window.NewElements and(ah.Justify=="Between"and"Top"or"Center")or"Center"),
+VerticalAlignment=ag.Window.NewElements and(ah.Justify=="Between"and"Top"or"Center")or"Center",
 HorizontalAlignment=ah.Justify~="Between"and ah.Justify or"Center",
 }),
 an,

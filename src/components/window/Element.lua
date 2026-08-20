@@ -747,17 +747,11 @@ return function(Config)
             New("UIListLayout", {
                 Padding = UDim.new(0,Element.UIPadding),
                 FillDirection = "Horizontal",
-                -- Selalu tengahkan Icon/Image secara vertikal terhadap Title+Desc.
-                -- Sebelumnya hanya Dropdown & Toggle (dengan Image di-set saat pembuatan) yang
-                -- di-Center, sehingga Icon yang ditambahkan lewat :SetMainImage() (Toggle/Dropdown)
-                -- atau Image yang di-set langsung di elemen lain (contoh: Paragraph) tetap
-                -- mengikuti alignment "Top", membuat Title terlihat menempel di atas dan tidak
-                -- sejajar dengan Icon/Image-nya.
-                VerticalAlignment = (ImageFrame or (Config.ElementTable and (
-                        Config.ElementTable.__type == "Dropdown" 
-                        or Config.ElementTable.__type == "Toggle"
-                    ))) and "Center" 
-                    or (Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center"),
+                -- Title & Description harus selalu tetap di posisi atas (Top) dan tidak boleh
+                -- ikut bergeser/ter-center mengikuti tinggi Icon atau Image, apa pun jenis
+                -- elemennya (Toggle, Dropdown, Paragraph, dll). Icon/Image yang lebih tinggi
+                -- dari Title+Desc cukup "menjulur" ke bawah dari titik atas yang sama.
+                VerticalAlignment = Config.Window.NewElements and ( Element.Justify == "Between" and "Top" or "Center" ) or "Center",
                 HorizontalAlignment = Element.Justify ~= "Between" and Element.Justify or "Center",
             }),
             ImageFrame,
