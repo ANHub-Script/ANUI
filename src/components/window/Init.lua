@@ -11,6 +11,8 @@ local Creator = require("../../modules/Creator")
 local New = Creator.New
 local Tween = Creator.Tween
 
+local Scheduler = require("../../modules/Scheduler")
+
 --local UIComponents = require("../Components/UI.lua")
 local CreateLabel = require("../ui/Label").New
 local CreateButton = require("../ui/Button").New
@@ -1134,7 +1136,67 @@ return function(Config)
     function Window:OnDestroy(func)
         Window.OnDestroyCallback = func
     end
-    
+
+    -- [[ LOOP / SCHEDULER ]] --
+    -- Satu runner untuk semua loop, dan hidupnya terikat ke window ini:
+    -- window dihancurkan -> semua loop berhenti sendiri, tanpa perlu diurus script.
+    --
+    --   Window:Loop("AutoFarm", 0.5, fn)                      -- jalan terus
+    --   Window:Loop("AutoFarm", 0.5, fn, { requireWindowReady = true })
+    --   Window:StatusLoop("Status_Farm", 0.5, fn)             -- hanya saat window siap
+    --   Window:StopLoop("AutoFarm")
+    Window.Scheduler = Scheduler.new({
+        ShouldStop = function()
+            return Window.Destroyed
+        end,
+        IsReady = function()
+            return (not Window.Destroyed) and (not Window.Closed)
+        end,
+    })
+
+    -- Window siap dipakai untuk update UI (belum dihancurkan & tidak tertutup).
+    function Window:IsReady()
+        return (not Window.Destroyed) and (not Window.Closed)
+    end
+
+    function Window:Loop(Key, Interval, Callback, Options)
+        return Window.Scheduler:Loop(Key, Interval, Callback, Options)
+    end
+
+    function Window:StatusLoop(Key, Interval, Callback)
+        return Window.Scheduler:StatusLoop(Key, Interval, Callback)
+    end
+
+    -- Loop mentah dengan predicate sendiri (tanpa gate window-ready).
+    function Window:ManagedLoop(Key, Interval, Predicate, Callback)
+        return Window.Scheduler:Start(Key, Interval, Predicate, Callback)
+    end
+
+    function Window:StopLoop(Key)
+        return Window.Scheduler:Stop(Key)
+    end
+
+    function Window:StopAllLoops()
+        return Window.Scheduler:StopAll()
+    end
+
+    function Window:IsLoopRunning(Key)
+        return Window.Scheduler:IsRunning(Key)
+    end
+
+    function Window:GetActiveLoopCount()
+        return Window.Scheduler:GetActiveCount()
+    end
+
+    -- Titipkan koneksi supaya ikut diputus saat window dihancurkan.
+    function Window:AddConnection(Connection)
+        return Window.Scheduler:AddConnection(Connection)
+    end
+
+    function Window:DisconnectAll()
+        return Window.Scheduler:DisconnectAll()
+    end
+
     if Config.ANUI.UseAcrylic then
 		Window.AcrylicPaint.AddParent(Window.UIElements.Main)
 	end
@@ -1293,6 +1355,13 @@ return function(Config)
                     Window.AcrylicPaint.Model:Destroy()
                 end
                 Window.Destroyed = true
+
+                -- Matikan semua loop + koneksi milik window ini sebelum GUI dibuang,
+                -- supaya tidak ada callback yang menulis ke instance yang sudah mati.
+                if Window.Scheduler then
+                    Window.Scheduler:Destroy()
+                end
+
                 task.wait(0.4)
                 Config.ANUI.ScreenGui:Destroy()
                 Config.ANUI.NotificationGui:Destroy()

@@ -4,6 +4,7 @@ local ANUI = {
     Creator = require("./modules/Creator"),
     LocalizationModule = require("./modules/Localization"),
     NotificationModule = require("./components/Notification"),
+    SchedulerModule = require("./modules/Scheduler"),
     Themes = nil,
     Transparent = false,
     
@@ -256,6 +257,13 @@ end
 function ANUI:Popup(PopupConfig)
     PopupConfig.ANUI = ANUI
     return require("./components/popup/Init").new(PopupConfig)
+end
+
+-- Penjadwal loop mandiri (tidak terikat window). Untuk kebutuhan biasa pakai
+-- Window:Loop() / Window:StatusLoop() saja -- itu sudah otomatis berhenti
+-- ketika window dihancurkan.
+function ANUI:Scheduler(SchedulerConfig)
+    return ANUI.SchedulerModule.new(SchedulerConfig)
 end
 
 
