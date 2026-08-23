@@ -52,74 +52,156 @@ local function GetTextColorForHSB(color)
     end
 end
 
--- Mengubah daftar Color3 menjadi ColorSequence (rata untuk setiap titik)
+-- Warna bisa ditulis sebagai Color3 atau hex ("#FF3CAC"/"FF3CAC"), bentuk yang
+-- sama dengan tag <gradient=...>, jadi keduanya boleh dicampur dalam satu list.
+local function ToColor3(value)
+    if typeof(value) == "Color3" then
+        return value
+    elseif type(value) == "string" then
+        local ok, color = pcall(Color3.fromHex, value)
+        if ok and color then
+            return color
+        end
+    end
+    return nil
+end
+
+-- ColorSequence dibatasi 20 keypoint oleh Roblox; lebih dari itu error.
+local MAX_GRADIENT_KEYPOINTS = 20
+
+-- Mengubah daftar warna menjadi ColorSequence (rata untuk setiap titik).
+-- Balik nil kalau tidak ada warna yang sah, supaya pemanggil bisa menganggap
+-- gradient-nya tidak diset alih-alih ikut error.
 local function ColorsToSequence(colors)
-    if #colors == 1 then
-        return ColorSequence.new(colors[1])
+    if type(colors) ~= "table" then return nil end
+
+    local list = {}
+    for _, value in ipairs(colors) do
+        local color = ToColor3(value)
+        if color then
+            table.insert(list, color)
+        end
+    end
+
+    if #list == 0 then
+        return nil
+    elseif #list == 1 then
+        return ColorSequence.new(list[1])
+    end
+
+    -- kelebihan warna diambil merata, bukan dipotong di ujung
+    if #list > MAX_GRADIENT_KEYPOINTS then
+        local trimmed = {}
+        for i = 1, MAX_GRADIENT_KEYPOINTS do
+            local index = 1 + math.floor(((i - 1) * (#list - 1)) / (MAX_GRADIENT_KEYPOINTS - 1) + 0.5)
+            table.insert(trimmed, list[index])
+        end
+        list = trimmed
     end
 
     local keypoints = {}
-    for i, color in ipairs(colors) do
-        local time = (i - 1) / (#colors - 1)
-        table.insert(keypoints, ColorSequenceKeypoint.new(time, color))
+    for i, color in ipairs(list) do
+        table.insert(keypoints, ColorSequenceKeypoint.new((i - 1) / (#list - 1), color))
     end
     return ColorSequence.new(keypoints)
 end
 
--- Menerima ColorSequence, Color3, atau table (list Color3 dan/atau { Color = ..., Rotation = ..., dst })
--- dan mengembalikan properti siap-pakai untuk Instance "UIGradient"
+-- Properti UIGradient yang boleh diset dari config. Kunci lain diabaikan:
+-- sebelumnya semua kunci string disalin apa adanya, jadi satu kunci salah
+-- tulis (atau tipe keliru) langsung error dan elemennya gagal dibangun.
+local GRADIENT_PROP_TYPES = {
+    Color = "ColorSequence",
+    Transparency = "NumberSequence",
+    Rotation = "number",
+    Offset = "Vector2",
+    Enabled = "boolean",
+}
+
+local function CoerceGradientProp(Expected, Value)
+    if typeof(Value) == Expected then
+        return Value
+    elseif Expected == "number" then
+        return tonumber(Value)
+    elseif Expected == "NumberSequence" and type(Value) == "number" then
+        return NumberSequence.new(Value)
+    elseif Expected == "Vector2" and type(Value) == "number" then
+        return Vector2.new(Value, 0)
+    end
+    return nil
+end
+
+-- Diisi di bawah; dideklarasi di sini supaya ResolveGradientProps bisa
+-- menerima bentuk string "FF3CAC,2B86C5|90" (sama seperti atribut tag)
+local ParseGradientAttr
+
+-- Menerima ColorSequence, Color3, string hex, atau table (list warna dan/atau
+-- { Color = ..., Rotation = ..., dst }) dan mengembalikan properti siap-pakai
+-- untuk Instance "UIGradient". Balik nil kalau tidak ada warna yang sah.
 local function ResolveGradientProps(Gradient)
     if not Gradient then return nil end
 
-    local ColorSeq
-    local Props = {}
-
     if typeof(Gradient) == "ColorSequence" then
-        ColorSeq = Gradient
+        return { Color = Gradient }
     elseif typeof(Gradient) == "Color3" then
-        ColorSeq = ColorSequence.new(Gradient)
-    elseif typeof(Gradient) == "table" then
-        local Colors = {}
-        for _, v in ipairs(Gradient) do
-            if typeof(v) == "Color3" then
-                table.insert(Colors, v)
-            end
-        end
+        return { Color = ColorSequence.new(Gradient) }
+    elseif type(Gradient) == "string" then
+        return ParseGradientAttr(Gradient)
+    elseif typeof(Gradient) ~= "table" then
+        return nil
+    end
 
-        if Gradient.Color then
-            if typeof(Gradient.Color) == "ColorSequence" then
-                ColorSeq = Gradient.Color
-            elseif typeof(Gradient.Color) == "Color3" then
-                ColorSeq = ColorSequence.new(Gradient.Color)
-            elseif typeof(Gradient.Color) == "table" and #Gradient.Color > 0 then
-                Colors = Gradient.Color
-            end
-        end
+    -- Sumber warna: Color / Colors, atau langsung bagian array-nya
+    local Source = Gradient.Color
+    if Source == nil then Source = Gradient.Colors end
+    if Source == nil and #Gradient > 0 then Source = Gradient end
 
-        if not ColorSeq and #Colors > 0 then
-            ColorSeq = ColorsToSequence(Colors)
-        end
-
-        for k, v in pairs(Gradient) do
-            if k ~= "Color" and typeof(k) == "string" then
-                Props[k] = v
-            end
+    local ColorSeq
+    if typeof(Source) == "ColorSequence" then
+        ColorSeq = Source
+    elseif Source ~= nil then
+        local Single = ToColor3(Source)
+        if Single then
+            ColorSeq = ColorSequence.new(Single)
+        else
+            ColorSeq = ColorsToSequence(Source)
         end
     end
 
     if not ColorSeq then return nil end
 
-    Props.Color = ColorSeq
+    local Props = { Color = ColorSeq }
+    for Key, Value in pairs(Gradient) do
+        local Expected = Key ~= "Color" and GRADIENT_PROP_TYPES[Key]
+        if Expected then
+            local Coerced = CoerceGradientProp(Expected, Value)
+            if Coerced ~= nil then
+                Props[Key] = Coerced
+            end
+        end
+    end
+
     return Props
 end
 
 local GRADIENT_TAG_PLAIN = "<gradient>"
 local GRADIENT_TAG_CLOSE = "</gradient>"
 
+-- Teks memakai tag <gradient> atau tidak. Dipakai untuk dua hal:
+--   1. teks bertag WAJIB lewat jalur banyak-TextLabel, kalau tidak tag-nya
+--      ikut tampil mentah di layar;
+--   2. menentukan default segmen: tanpa tag = seluruh teks ikut gradient
+--      elemen, ada tag = hanya bagian di dalam tag yang gradient.
+local function HasGradientTag(str)
+    if type(str) ~= "string" or str == "" then return false end
+    return string.find(str, GRADIENT_TAG_PLAIN, 1, true) ~= nil
+        or string.find(str, "<gradient=", 1, true) ~= nil
+        or string.find(str, GRADIENT_TAG_CLOSE, 1, true) ~= nil
+end
+
 -- Parse atribut tag, contoh: "FF3CAC,784BA0,2B86C5" atau "FF3CAC,2B86C5|90" (|rotasi opsional)
 -- Mengembalikan gradient props {Color = ColorSequence, Rotation = number?} atau nil kalau tidak valid
-local function ParseGradientAttr(attr)
-    if not attr or attr == "" then return nil end
+ParseGradientAttr = function(attr)
+    if type(attr) ~= "string" or attr == "" then return nil end
 
     local colorPart, rotationPart = attr, nil
     local barPos = string.find(attr, "|", 1, true)
@@ -132,16 +214,14 @@ local function ParseGradientAttr(attr)
     for hex in string.gmatch(colorPart, "[^,]+") do
         hex = hex:match("^%s*(.-)%s*$")
         if hex ~= "" then
-            local ok, color = pcall(Color3.fromHex, hex)
-            if ok and color then
-                table.insert(colors, color)
-            end
+            table.insert(colors, hex)
         end
     end
 
-    if #colors == 0 then return nil end
+    local ColorSeq = ColorsToSequence(colors)
+    if not ColorSeq then return nil end
 
-    local props = { Color = ColorsToSequence(colors) }
+    local props = { Color = ColorSeq }
     if rotationPart then
         local rotationNum = tonumber(rotationPart)
         if rotationNum then
@@ -162,11 +242,25 @@ end
 --   "{icon} Auto {icon} Farm"   -> "{icon}" ambil dari Config.Icon/Config.Image
 --   "{swords} A {rocket} B"     -> sebut nama sendiri, boleh URL/rbxassetid
 --   "{icon:star size=28}"       -> atribut per token
-local function ParseTextSegments(str, Context)
+-- TagAware: teks memakai tag <gradient> atau tidak (default: dihitung sendiri).
+-- Dikirim eksplisit oleh Desc supaya semua baris & kolomnya sepakat.
+local function ParseTextSegments(str, Context, TagAware)
     local Segments = {}
     local pos = 1
-    local CurrentGradient = false -- false = normal, true = pakai gradient elemen, table = gradient custom
     local length = #str
+
+    if TagAware == nil then
+        TagAware = HasGradientTag(str)
+    end
+
+    -- false = warna normal, true = pakai gradient elemen, table = gradient custom.
+    -- Tanpa tag sama sekali, seluruh teks ikut gradient elemen (TitleGradient/
+    -- DescGradient) seperti judul biasa; begitu ada tag, teks di luar tag
+    -- dipaksa warna normal.
+    local CurrentGradient = true
+    if TagAware then
+        CurrentGradient = false
+    end
 
     -- Token ikon dipecah lebih dulu oleh Creator supaya aturannya sama di
     -- semua elemen; hasil teksnya lalu diproses lagi untuk tag gradient.
@@ -239,8 +333,7 @@ end
 local function HasRichTokens(str, AllowInline)
     if not str or str == "" then return false end
     return string.find(str, "rbxassetid://%d+") ~= nil
-        or string.find(str, GRADIENT_TAG_PLAIN, 1, true) ~= nil
-        or string.find(str, "<gradient=", 1, true) ~= nil
+        or HasGradientTag(str)
         or (AllowInline ~= false and Creator.HasInlineIcons(str))
 end
 
@@ -256,9 +349,11 @@ end
 
 -- Signature ringkas untuk membandingkan apakah gradient sebuah segmen berubah (dipakai untuk reuse instance)
 local function GradientSignature(GradientValue)
-    if GradientValue == false or GradientValue == nil then
+    if GradientValue == false then
         return ""
-    elseif GradientValue == true then
+    elseif GradientValue == nil or GradientValue == true then
+        -- ikut gradient elemen; harus beda dari "" supaya segmen "warna normal"
+        -- tidak tertukar dengan segmen "ikut gradient elemen"
         return "@default"
     elseif typeof(GradientValue) == "table" and GradientValue.Color then
         local parts = {}
@@ -273,6 +368,23 @@ local function GradientSignature(GradientValue)
     return ""
 end
 
+-- Cara memulihkan warna teks sebuah label saat gradient-nya dilepas. Tanpa ini
+-- label tetap putih (TextColor3 dipaksa putih supaya gradient tampil murni).
+-- Weak key: ikut terbuang sendiri saat label-nya di-Destroy.
+local TextRestore = setmetatable({}, { __mode = "k" })
+
+local function RestoreTextColor(Label)
+    local Info = TextRestore[Label]
+    if not Info then return end
+
+    if Info.ThemeTag then
+        -- daftar ulang ke sistem theme (AddThemeObject langsung menerapkan warnanya)
+        Creator.AddThemeObject(Label, { TextColor3 = Info.ThemeTag })
+    elseif Info.Color then
+        Label.TextColor3 = Info.Color
+    end
+end
+
 -- Menambah/memperbarui/menghapus UIGradient "TextGradient" pada sebuah TextLabel
 local function ApplyGradientToLabel(Label, GradientProps)
     if not Label then return end
@@ -285,12 +397,23 @@ local function ApplyGradientToLabel(Label, GradientProps)
             Existing.Name = "TextGradient"
             Existing.Parent = Label
         end
-        for k, v in pairs(GradientProps) do
-            Existing[k] = v
-        end
+
+        -- Properti yang tidak dikirim dikembalikan ke bawaan, supaya sisa
+        -- gradient sebelumnya (mis. Rotation/Offset) tidak nyangkut saat diganti
+        Existing.Color = GradientProps.Color
+        Existing.Rotation = GradientProps.Rotation or 0
+        Existing.Offset = GradientProps.Offset or Vector2.new(0, 0)
+        Existing.Transparency = GradientProps.Transparency or NumberSequence.new(0)
+        Existing.Enabled = GradientProps.Enabled ~= false
+
+        -- Sistem theme menulis ulang TextColor3 setiap ganti theme. Kalau label
+        -- ini masih terdaftar, warna theme akan mengalikan warna gradient
+        -- sehingga gradient-nya tampak kusam/hilang.
+        Creator.Objects[Label] = nil
         Label.TextColor3 = Color3.new(1, 1, 1)
     elseif Existing then
         Existing:Destroy()
+        RestoreTextColor(Label)
     end
 end
 
@@ -400,9 +523,9 @@ return function(Config)
     -- Ikon inline bisa dimatikan per elemen: InlineIcon = false
     local InlineEnabled = Config.InlineIcon ~= false
 
-    local function ParseInline(str, Type)
+    local function ParseInline(str, Type, TagAware)
         -- Context nil = token dibiarkan mentah, hanya gradient/rbxassetid diproses
-        return ParseTextSegments(str, InlineEnabled and InlineContext(Type) or nil)
+        return ParseTextSegments(str, InlineEnabled and InlineContext(Type) or nil, TagAware)
     end
 
     local function HasRich(str)
@@ -456,13 +579,15 @@ return function(Config)
 
         local GradientProps = ResolveItemGradientProps(UseGradient, Type == "Desc" and Element.DescGradient or Element.TitleGradient)
 
+        local ThemeTagName = (not Element.Color) and ("Element" .. Type) or nil
+
         local Label = New("TextLabel", {
             BackgroundTransparency = 1,
             Text = Title or "",
             TextSize = Type == "Desc" and 15 or 17,
             TextXAlignment = "Left",
             ThemeTag = {
-                TextColor3 = (not Element.Color and not GradientProps) and ("Element" .. Type) or nil,
+                TextColor3 = (not GradientProps) and ThemeTagName or nil,
             },
             TextColor3 = GradientProps and Color3.new(1, 1, 1) or (Element.Color and TextColor or nil),
             TextTransparency = Type == "Desc" and .3 or 0,
@@ -471,6 +596,12 @@ return function(Config)
             AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
             FontFace = Font.new(Creator.Font, Type == "Desc" and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
         })
+
+        -- Dicatat supaya warna aslinya bisa dipulihkan kalau gradient dilepas
+        TextRestore[Label] = {
+            ThemeTag = ThemeTagName,
+            Color = Element.Color and TextColor or nil,
+        }
 
         ApplyGradientToLabel(Label, GradientProps)
 
@@ -522,8 +653,13 @@ return function(Config)
         end
         DescContainer.Visible = true
 
+        -- Dihitung sekali dari teks utuh: kalau ada tag <gradient> di mana pun,
+        -- semua baris & kolom memakai aturan yang sama (teks di luar tag = warna
+        -- normal). Tanpa tag, seluruh desc ikut DescGradient.
+        local descHasTag = HasGradientTag(text)
+
         local function parseInline(str)
-            return ParseInline(str, "Desc")
+            return ParseInline(str, "Desc", descHasTag)
         end
 
         local function getColumnWidth()
@@ -795,11 +931,18 @@ return function(Config)
         -- Token yang tidak jadi ikon (mis. "Rate {5} stars") tetap teks biasa:
         -- kalau tidak ada segmen non-teks sama sekali, pakai jalur TextLabel
         -- tunggal supaya spasi & wrapping aslinya tidak berubah.
-        local hasRichItem = false
-        for _, item in ipairs(items) do
-            if item.Type ~= "Text" then
-                hasRichItem = true
-                break
+        --
+        -- Teks bertag <gradient> DIKECUALIKAN: tag-nya harus dibuang dari teks
+        -- yang tampil, dan itu hanya terjadi di jalur TitleRich. Tanpa
+        -- pengecualian ini judul balik ke TextLabel tunggal yang isinya masih
+        -- "<gradient>Judul</gradient>" mentah dan gradient-nya tidak jalan.
+        local hasRichItem = HasGradientTag(text)
+        if not hasRichItem then
+            for _, item in ipairs(items) do
+                if item.Type ~= "Text" then
+                    hasRichItem = true
+                    break
+                end
             end
         end
         if not hasRichItem then

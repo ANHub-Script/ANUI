@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.261  |  2026-08-23  |  Roblox UI Library for scripts
+    v1.0.262  |  2026-08-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -2541,7 +2541,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.261",
+    "version": "1.0.262",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5743,432 +5743,563 @@ end
 end
 
 
-local function ColorsToSequence(af)
-if#af==1 then
-return ColorSequence.new(af[1])
-end
 
-local ag={}
-for ah,ai in ipairs(af)do
-local aj=(ah-1)/(#af-1)
-table.insert(ag,ColorSequenceKeypoint.new(aj,ai))
-end
-return ColorSequence.new(ag)
-end
-
-
-
-local function ResolveGradientProps(af)
-if not af then return nil end
-
-local ag
-local ah={}
-
-if typeof(af)=="ColorSequence"then
-ag=af
-elseif typeof(af)=="Color3"then
-ag=ColorSequence.new(af)
-elseif typeof(af)=="table"then
-local ai={}
-for aj,ak in ipairs(af)do
-if typeof(ak)=="Color3"then
-table.insert(ai,ak)
-end
-end
-
-if af.Color then
-if typeof(af.Color)=="ColorSequence"then
-ag=af.Color
-elseif typeof(af.Color)=="Color3"then
-ag=ColorSequence.new(af.Color)
-elseif typeof(af.Color)=="table"and#af.Color>0 then
-ai=af.Color
-end
-end
-
-if not ag and#ai>0 then
-ag=ColorsToSequence(ai)
-end
-
-for aj,ak in pairs(af)do
-if aj~="Color"and typeof(aj)=="string"then
-ah[aj]=ak
-end
-end
-end
-
-if not ag then return nil end
-
-ah.Color=ag
+local function ToColor3(af)
+if typeof(af)=="Color3"then
+return af
+elseif type(af)=="string"then
+local ag,ah=pcall(Color3.fromHex,af)
+if ag and ah then
 return ah
 end
-
-local af="<gradient>"
-local ag="</gradient>"
-
-
-
-local function ParseGradientAttr(ah)
-if not ah or ah==""then return nil end
-
-local ai,aj=ah
-local ak=string.find(ah,"|",1,true)
-if ak then
-ai=string.sub(ah,1,ak-1)
-aj=string.sub(ah,ak+1)
-end
-
-local al={}
-for am in string.gmatch(ai,"[^,]+")do
-am=am:match"^%s*(.-)%s*$"
-if am~=""then
-local an,ao=pcall(Color3.fromHex,am)
-if an and ao then
-table.insert(al,ao)
-end
-end
-end
-
-if#al==0 then return nil end
-
-local am={Color=ColorsToSequence(al)}
-if aj then
-local an=tonumber(aj)
-if an then
-am.Rotation=an
-end
-end
-
-return am
-end
-
-
-
-
-
-
-
-
-
-
-
-local function ParseTextSegments(ah,ai)
-local aj={}
-local ak=1
-local al=false
-local am=#ah
-
-
-
-
-local function PushTextWithIcons(an)
-if an==""then return end
-
-if not ai or not aa.HasInlineIcons(an)then
-table.insert(aj,{Type="Text",Content=an,Gradient=al})
-return
-end
-
-for ao,ap in ipairs(aa.ParseInlineText(an,ai))do
-if ap.Type=="Icon"then
-table.insert(aj,{
-Type="Icon",
-Content=ap.Content,
-Options=ap.Options,
-})
-elseif ap.Content~=""then
-table.insert(aj,{Type="Text",Content=ap.Content,Gradient=al})
-end
-end
-end
-
-while ak<=am do
-local an,ao=string.find(ah,"rbxassetid://%d+",ak)
-local ap,aq=string.find(ah,af,ak,true)
-local ar,as,at=string.find(ah,"<gradient=([^>]*)>",ak)
-local au,av=string.find(ah,ag,ak,true)
-
-local aw,ax,ay,az
-for aA,aB in ipairs{
-{s=an,e=ao,k="Image"},
-{s=ap,e=aq,k="OpenPlain"},
-{s=ar,e=as,k="OpenAttr",attr=at},
-{s=au,e=av,k="Close"},
-}do
-if aB.s and(not aw or aB.s<aw)then
-aw,ax,ay,az=aB.s,aB.e,aB.k,aB.attr
-end
-end
-
-if not aw then
-PushTextWithIcons(string.sub(ah,ak))
-break
-end
-
-PushTextWithIcons(string.sub(ah,ak,aw-1))
-
-if ay=="Image"then
-table.insert(aj,{Type="Image",Content=string.sub(ah,aw,ax)})
-elseif ay=="OpenPlain"then
-al=true
-elseif ay=="OpenAttr"then
-al=ParseGradientAttr(az)or true
-elseif ay=="Close"then
-al=false
-end
-
-ak=ax+1
-end
-
-return aj
-end
-
-
-
-
-local function HasRichTokens(ah,ai)
-if not ah or ah==""then return false end
-return string.find(ah,"rbxassetid://%d+")~=nil
-or string.find(ah,af,1,true)~=nil
-or string.find(ah,"<gradient=",1,true)~=nil
-or(ai~=false and aa.HasInlineIcons(ah))
-end
-
-
-local function ResolveItemGradientProps(ah,ai)
-if typeof(ah)=="table"then
-return ResolveGradientProps(ah)
-elseif ah~=false then
-return ResolveGradientProps(ai)
 end
 return nil
 end
 
 
-local function GradientSignature(ah)
-if ah==false or ah==nil then
-return""
-elseif ah==true then
-return"@default"
-elseif typeof(ah)=="table"and ah.Color then
+local af=20
+
+
+
+
+local function ColorsToSequence(ag)
+if type(ag)~="table"then return nil end
+
+local ah={}
+for ai,aj in ipairs(ag)do
+local ak=ToColor3(aj)
+if ak then
+table.insert(ah,ak)
+end
+end
+
+if#ah==0 then
+return nil
+elseif#ah==1 then
+return ColorSequence.new(ah[1])
+end
+
+
+if#ah>af then
 local ai={}
-for aj,ak in ipairs(ah.Color.Keypoints)do
-table.insert(ai,string.format("%.3f:%s",ak.Time,ak.Value:ToHex()))
+for aj=1,af do
+local ak=1+math.floor(((aj-1)*(#ah-1))/(af-1)+0.5)
+table.insert(ai,ah[ak])
 end
-if ah.Rotation then
-table.insert(ai,"R"..tostring(ah.Rotation))
+ah=ai
 end
-return table.concat(ai,"|")
+
+local ai={}
+for aj,ak in ipairs(ah)do
+table.insert(ai,ColorSequenceKeypoint.new((aj-1)/(#ah-1),ak))
+end
+return ColorSequence.new(ai)
+end
+
+
+
+
+local ag={
+Color="ColorSequence",
+Transparency="NumberSequence",
+Rotation="number",
+Offset="Vector2",
+Enabled="boolean",
+}
+
+local function CoerceGradientProp(ah,ai)
+if typeof(ai)==ah then
+return ai
+elseif ah=="number"then
+return tonumber(ai)
+elseif ah=="NumberSequence"and type(ai)=="number"then
+return NumberSequence.new(ai)
+elseif ah=="Vector2"and type(ai)=="number"then
+return Vector2.new(ai,0)
+end
+return nil
+end
+
+
+
+local ah
+
+
+
+
+local function ResolveGradientProps(ai)
+if not ai then return nil end
+
+if typeof(ai)=="ColorSequence"then
+return{Color=ai}
+elseif typeof(ai)=="Color3"then
+return{Color=ColorSequence.new(ai)}
+elseif type(ai)=="string"then
+return ah(ai)
+elseif typeof(ai)~="table"then
+return nil
+end
+
+
+local aj=ai.Color
+if aj==nil then aj=ai.Colors end
+if aj==nil and#ai>0 then aj=ai end
+
+local ak
+if typeof(aj)=="ColorSequence"then
+ak=aj
+elseif aj~=nil then
+local al=ToColor3(aj)
+if al then
+ak=ColorSequence.new(al)
+else
+ak=ColorsToSequence(aj)
+end
+end
+
+if not ak then return nil end
+
+local al={Color=ak}
+for am,an in pairs(ai)do
+local ao=am~="Color"and ag[am]
+if ao then
+local ap=CoerceGradientProp(ao,an)
+if ap~=nil then
+al[am]=ap
+end
+end
+end
+
+return al
+end
+
+local ai="<gradient>"
+local aj="</gradient>"
+
+
+
+
+
+
+local function HasGradientTag(ak)
+if type(ak)~="string"or ak==""then return false end
+return string.find(ak,ai,1,true)~=nil
+or string.find(ak,"<gradient=",1,true)~=nil
+or string.find(ak,aj,1,true)~=nil
+end
+
+
+
+ah=function(ak)
+if type(ak)~="string"or ak==""then return nil end
+
+local al,am=ak
+local an=string.find(ak,"|",1,true)
+if an then
+al=string.sub(ak,1,an-1)
+am=string.sub(ak,an+1)
+end
+
+local ao={}
+for ap in string.gmatch(al,"[^,]+")do
+ap=ap:match"^%s*(.-)%s*$"
+if ap~=""then
+table.insert(ao,ap)
+end
+end
+
+local ap=ColorsToSequence(ao)
+if not ap then return nil end
+
+local aq={Color=ap}
+if am then
+local ar=tonumber(am)
+if ar then
+aq.Rotation=ar
+end
+end
+
+return aq
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+local function ParseTextSegments(ak,al,am)
+local an={}
+local ao=1
+local ap=#ak
+
+if am==nil then
+am=HasGradientTag(ak)
+end
+
+
+
+
+
+local aq=true
+if am then
+aq=false
+end
+
+
+
+
+local function PushTextWithIcons(ar)
+if ar==""then return end
+
+if not al or not aa.HasInlineIcons(ar)then
+table.insert(an,{Type="Text",Content=ar,Gradient=aq})
+return
+end
+
+for as,at in ipairs(aa.ParseInlineText(ar,al))do
+if at.Type=="Icon"then
+table.insert(an,{
+Type="Icon",
+Content=at.Content,
+Options=at.Options,
+})
+elseif at.Content~=""then
+table.insert(an,{Type="Text",Content=at.Content,Gradient=aq})
+end
+end
+end
+
+while ao<=ap do
+local ar,as=string.find(ak,"rbxassetid://%d+",ao)
+local at,au=string.find(ak,ai,ao,true)
+local av,aw,ax=string.find(ak,"<gradient=([^>]*)>",ao)
+local ay,az=string.find(ak,aj,ao,true)
+
+local aA,aB,b,d
+for e,f in ipairs{
+{s=ar,e=as,k="Image"},
+{s=at,e=au,k="OpenPlain"},
+{s=av,e=aw,k="OpenAttr",attr=ax},
+{s=ay,e=az,k="Close"},
+}do
+if f.s and(not aA or f.s<aA)then
+aA,aB,b,d=f.s,f.e,f.k,f.attr
+end
+end
+
+if not aA then
+PushTextWithIcons(string.sub(ak,ao))
+break
+end
+
+PushTextWithIcons(string.sub(ak,ao,aA-1))
+
+if b=="Image"then
+table.insert(an,{Type="Image",Content=string.sub(ak,aA,aB)})
+elseif b=="OpenPlain"then
+aq=true
+elseif b=="OpenAttr"then
+aq=ah(d)or true
+elseif b=="Close"then
+aq=false
+end
+
+ao=aB+1
+end
+
+return an
+end
+
+
+
+
+local function HasRichTokens(ak,al)
+if not ak or ak==""then return false end
+return string.find(ak,"rbxassetid://%d+")~=nil
+or HasGradientTag(ak)
+or(al~=false and aa.HasInlineIcons(ak))
+end
+
+
+local function ResolveItemGradientProps(ak,al)
+if typeof(ak)=="table"then
+return ResolveGradientProps(ak)
+elseif ak~=false then
+return ResolveGradientProps(al)
+end
+return nil
+end
+
+
+local function GradientSignature(ak)
+if ak==false then
+return""
+elseif ak==nil or ak==true then
+
+
+return"@default"
+elseif typeof(ak)=="table"and ak.Color then
+local al={}
+for am,an in ipairs(ak.Color.Keypoints)do
+table.insert(al,string.format("%.3f:%s",an.Time,an.Value:ToHex()))
+end
+if ak.Rotation then
+table.insert(al,"R"..tostring(ak.Rotation))
+end
+return table.concat(al,"|")
 end
 return""
 end
 
 
-local function ApplyGradientToLabel(ah,ai)
-if not ah then return end
 
-local aj=ah:FindFirstChild"TextGradient"
 
-if ai then
-if not aj then
-aj=Instance.new"UIGradient"
-aj.Name="TextGradient"
-aj.Parent=ah
-end
-for ak,al in pairs(ai)do
-aj[ak]=al
-end
-ah.TextColor3=Color3.new(1,1,1)
-elseif aj then
-aj:Destroy()
+local ak=setmetatable({},{__mode="k"})
+
+local function RestoreTextColor(al)
+local am=ak[al]
+if not am then return end
+
+if am.ThemeTag then
+
+aa.AddThemeObject(al,{TextColor3=am.ThemeTag})
+elseif am.Color then
+al.TextColor3=am.Color
 end
 end
 
-local function getElementPosition(ah,ai)
-if type(ai)~="number"or ai~=math.floor(ai)then
+
+local function ApplyGradientToLabel(al,am)
+if not al then return end
+
+local an=al:FindFirstChild"TextGradient"
+
+if am then
+if not an then
+an=Instance.new"UIGradient"
+an.Name="TextGradient"
+an.Parent=al
+end
+
+
+
+an.Color=am.Color
+an.Rotation=am.Rotation or 0
+an.Offset=am.Offset or Vector2.new(0,0)
+an.Transparency=am.Transparency or NumberSequence.new(0)
+an.Enabled=am.Enabled~=false
+
+
+
+
+aa.Objects[al]=nil
+al.TextColor3=Color3.new(1,1,1)
+elseif an then
+an:Destroy()
+RestoreTextColor(al)
+end
+end
+
+local function getElementPosition(al,am)
+if type(am)~="number"or am~=math.floor(am)then
 return nil,1
 end
 
-local aj=#ah
+local an=#al
 
-if aj==0 or ai<1 or ai>aj then
+if an==0 or am<1 or am>an then
 return nil,2
 end
 
-local function isDelimiter(ak)
-if ak==nil then return true end
-local al=ak.__type
-return al=="Divider"or al=="Space"or al=="Section"or al=="Code"or al=="Paragraph"
+local function isDelimiter(ao)
+if ao==nil then return true end
+local ap=ao.__type
+return ap=="Divider"or ap=="Space"or ap=="Section"or ap=="Code"or ap=="Paragraph"
 end
 
-if isDelimiter(ah[ai])then
+if isDelimiter(al[am])then
 return nil,3
 end
 
-local function calculate(ak,al)
-if al==1 then return"Squircle"end
-if ak==1 then return"Squircle-TL-TR"end
-if ak==al then return"Squircle-BL-BR"end
+local function calculate(ao,ap)
+if ap==1 then return"Squircle"end
+if ao==1 then return"Squircle-TL-TR"end
+if ao==ap then return"Squircle-BL-BR"end
 return"Square"
 end
 
-local ak=1
-local al=0
+local ao=1
+local ap=0
 
-for am=1,aj do
-local an=ah[am]
-if isDelimiter(an)then
-if ai>=ak and ai<=am-1 then
-local ao=ai-ak+1
-return calculate(ao,al)
+for aq=1,an do
+local ar=al[aq]
+if isDelimiter(ar)then
+if am>=ao and am<=aq-1 then
+local as=am-ao+1
+return calculate(as,ap)
 end
-ak=am+1
-al=0
+ao=aq+1
+ap=0
 else
-al=al+1
+ap=ap+1
 end
 end
 
-if ai>=ak and ai<=aj then
-local am=ai-ak+1
-return calculate(am,al)
+if am>=ao and am<=an then
+local aq=am-ao+1
+return calculate(aq,ap)
 end
 
 return nil,4
 end
 
-return function(ah)
-local ai={
-Title=ah.Title,
-Desc=ah.Desc or nil,
-Hover=ah.Hover,
-Thumbnail=ah.Thumbnail,
-ThumbnailSize=ah.ThumbnailSize or 80,
-Image=ah.Image,
-IconThemed=ah.IconThemed or false,
-ImageSize=ah.ImageSize or 30,
-Color=ah.Color,
-TitleGradient=ah.TitleGradient,
-DescGradient=ah.DescGradient,
-Scalable=ah.Scalable,
-Parent=ah.Parent,
-Justify=ah.Justify or"Between",
-UIPadding=ah.Window.ElementConfig.UIPadding,
-UICorner=ah.Window.ElementConfig.UICorner,
+return function(al)
+local am={
+Title=al.Title,
+Desc=al.Desc or nil,
+Hover=al.Hover,
+Thumbnail=al.Thumbnail,
+ThumbnailSize=al.ThumbnailSize or 80,
+Image=al.Image,
+IconThemed=al.IconThemed or false,
+ImageSize=al.ImageSize or 30,
+Color=al.Color,
+TitleGradient=al.TitleGradient,
+DescGradient=al.DescGradient,
+Scalable=al.Scalable,
+Parent=al.Parent,
+Justify=al.Justify or"Between",
+UIPadding=al.Window.ElementConfig.UIPadding,
+UICorner=al.Window.ElementConfig.UICorner,
 UIElements={},
-DescColumnWidth=ah.DescColumnWidth,
+DescColumnWidth=al.DescColumnWidth,
 
-Index=ah.Index
+Index=al.Index
 }
 
-local aj=ai.ImageSize
-local ak=ai.ThumbnailSize
-local al=true
-local am=0
+local an=am.ImageSize
+local ao=am.ThumbnailSize
+local ap=true
+local aq=0
 
 
 
-local an=ah.Icon or ah.Image
-if typeof(an)~="string"and type(an)~="table"then
-an=nil
+local ar=al.Icon or al.Image
+if typeof(ar)~="string"and type(ar)~="table"then
+ar=nil
 end
 
-local function InlineContext(ao,ap)
+local function InlineContext(as,at)
 return{
-Icon=an,
-IconSize=ah.InlineIconSize or(ao=="Desc"and 16 or 18),
-IconThemed=ah.InlineIconThemed,
-Folder=ah.Window and ah.Window.Folder,
+Icon=ar,
+IconSize=al.InlineIconSize or(as=="Desc"and 16 or 18),
+IconThemed=al.InlineIconThemed,
+Folder=al.Window and al.Window.Folder,
 ImageKind="Icon",
-ThemeTagName=ao=="Desc"and"ElementDesc"or"ElementTitle",
-CachePrefix="Inline"..(ao or"Title"),
-Index=ap,
-IconTransparency=ao=="Desc"and 0.3 or 0,
+ThemeTagName=as=="Desc"and"ElementDesc"or"ElementTitle",
+CachePrefix="Inline"..(as or"Title"),
+Index=at,
+IconTransparency=as=="Desc"and 0.3 or 0,
 }
 end
 
 
-local ao=ah.InlineIcon~=false
+local as=al.InlineIcon~=false
 
-local function ParseInline(ap,aq)
+local function ParseInline(at,au,av)
 
-return ParseTextSegments(ap,ao and InlineContext(aq)or nil)
+return ParseTextSegments(at,as and InlineContext(au)or nil,av)
 end
 
-local function HasRich(ap)
-return HasRichTokens(ap,ao)
+local function HasRich(at)
+return HasRichTokens(at,as)
 end
 
-local ap
-local aq
-if ai.Thumbnail then
-ap=aa.Image(
-ai.Thumbnail,
-ai.Title,
-ah.Window.NewElements and ai.UICorner-11 or(ai.UICorner-4),
-ah.Window.Folder,
+local at
+local au
+if am.Thumbnail then
+at=aa.Image(
+am.Thumbnail,
+am.Title,
+al.Window.NewElements and am.UICorner-11 or(am.UICorner-4),
+al.Window.Folder,
 "Thumbnail",
 false,
-ai.IconThemed
+am.IconThemed
 )
-ap.Size=UDim2.new(1,0,0,ak)
+at.Size=UDim2.new(1,0,0,ao)
 end
-if ai.Image then
-aq=aa.Image(
-ai.Image,
-ai.Title,
-ah.Window.NewElements and ai.UICorner-11 or(ai.UICorner-4),
-ah.Window.Folder,
+if am.Image then
+au=aa.Image(
+am.Image,
+am.Title,
+al.Window.NewElements and am.UICorner-11 or(am.UICorner-4),
+al.Window.Folder,
 "Image",
-ai.IconThemed,
-not ai.Color and true or false,
+am.IconThemed,
+not am.Color and true or false,
 "ElementIcon"
 )
-if typeof(ai.Color)=="string"then
-aq.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"then
-aq.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
+if typeof(am.Color)=="string"then
+au.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"then
+au.ImageLabel.ImageColor3=GetTextColorForHSB(am.Color)
 end
 
-aq.Size=UDim2.new(0,aj,0,aj)
+au.Size=UDim2.new(0,an,0,an)
 
-am=aj
+aq=an
 end
 
 
 
 
-local function CreateText(ar,as,at)
-local au=typeof(ai.Color)=="string"
-and GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-or typeof(ai.Color)=="Color3"
-and GetTextColorForHSB(ai.Color)
+local function CreateText(av,aw,ax)
+local ay=typeof(am.Color)=="string"
+and GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+or typeof(am.Color)=="Color3"
+and GetTextColorForHSB(am.Color)
 
-local av=ResolveItemGradientProps(at,as=="Desc"and ai.DescGradient or ai.TitleGradient)
+local az=ResolveItemGradientProps(ax,aw=="Desc"and am.DescGradient or am.TitleGradient)
 
-local aw=ab("TextLabel",{
+local aA=(not am.Color)and("Element"..aw)or nil
+
+local aB=ab("TextLabel",{
 BackgroundTransparency=1,
-Text=ar or"",
-TextSize=as=="Desc"and 15 or 17,
+Text=av or"",
+TextSize=aw=="Desc"and 15 or 17,
 TextXAlignment="Left",
 ThemeTag={
-TextColor3=(not ai.Color and not av)and("Element"..as)or nil,
+TextColor3=(not az)and aA or nil,
 },
-TextColor3=av and Color3.new(1,1,1)or(ai.Color and au or nil),
-TextTransparency=as=="Desc"and.3 or 0,
+TextColor3=az and Color3.new(1,1,1)or(am.Color and ay or nil),
+TextTransparency=aw=="Desc"and.3 or 0,
 TextWrapped=true,
-Size=UDim2.new(ai.Justify=="Between"and 1 or 0,0,0,0),
-AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
-FontFace=Font.new(aa.Font,as=="Desc"and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
+Size=UDim2.new(am.Justify=="Between"and 1 or 0,0,0,0),
+AutomaticSize=am.Justify=="Between"and"Y"or"XY",
+FontFace=Font.new(aa.Font,aw=="Desc"and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
 })
 
-ApplyGradientToLabel(aw,av)
 
-return aw
+ak[aB]={
+ThemeTag=aA,
+Color=am.Color and ay or nil,
+}
+
+ApplyGradientToLabel(aB,az)
+
+return aB
 end
 
-local ar=CreateText(ai.Title,"Title")
-local as=ab("UIListLayout",{
+local av=CreateText(am.Title,"Title")
+local aw=ab("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
 SortOrder=Enum.SortOrder.LayoutOrder,
 Padding=UDim.new(0,4),
@@ -6176,22 +6307,22 @@ VerticalAlignment=Enum.VerticalAlignment.Center
 })
 
 
-if ai.Justify=="Between"then
-aa.TrySetWraps(as,true)
+if am.Justify=="Between"then
+aa.TrySetWraps(aw,true)
 end
 
-local at=ab("Frame",{
+local ax=ab("Frame",{
 Name="TitleRich",
 BackgroundTransparency=1,
-Size=UDim2.new(ai.Justify=="Between"and 1 or 0,0,0,0),
-AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
+Size=UDim2.new(am.Justify=="Between"and 1 or 0,0,0,0),
+AutomaticSize=am.Justify=="Between"and"Y"or"XY",
 Visible=false,
 },{
-as
+aw
 })
 
 
-local au=ab("Frame",{
+local ay=ab("Frame",{
 Name="DescContainer",
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,0,0),
@@ -6204,104 +6335,109 @@ Padding=UDim.new(0,2),
 })
 
 
-local function UpdateDesc(av)
+local function UpdateDesc(az)
 
-if not av or av==""then
-au.Visible=false
+if not az or az==""then
+ay.Visible=false
 return
 end
-au.Visible=true
+ay.Visible=true
 
-local function parseInline(aw)
-return ParseInline(aw,"Desc")
+
+
+
+local aA=HasGradientTag(az)
+
+local function parseInline(aB)
+return ParseInline(aB,"Desc",aA)
 end
 
 local function getColumnWidth()
-if typeof(ai.DescColumnWidth)=="number"and ai.DescColumnWidth>0 then
-return math.floor(ai.DescColumnWidth)
+if typeof(am.DescColumnWidth)=="number"and am.DescColumnWidth>0 then
+return math.floor(am.DescColumnWidth)
 end
 
-local aw=au.AbsoluteSize.X
-if not aw or aw<=0 then
+local aB=ay.AbsoluteSize.X
+if not aB or aB<=0 then
 return 320
 end
-return math.clamp(math.floor(aw*0.62),220,520)
+return math.clamp(math.floor(aB*0.62),220,520)
 end
 
-local function getOrCreateListLayout(aw)
-local ax=aw:FindFirstChild"UIListLayout"
-if not ax then
-ax=ab("UIListLayout",{
-Parent=aw,
+local function getOrCreateListLayout(aB)
+local b=aB:FindFirstChild"UIListLayout"
+if not b then
+b=ab("UIListLayout",{
+Parent=aB,
 FillDirection=Enum.FillDirection.Horizontal,
 SortOrder=Enum.SortOrder.LayoutOrder,
 Padding=UDim.new(0,4),
 VerticalAlignment=Enum.VerticalAlignment.Center
 })
 else
-ax.FillDirection=Enum.FillDirection.Horizontal
-ax.SortOrder=Enum.SortOrder.LayoutOrder
-ax.Padding=UDim.new(0,4)
-ax.VerticalAlignment=Enum.VerticalAlignment.Center
+b.FillDirection=Enum.FillDirection.Horizontal
+b.SortOrder=Enum.SortOrder.LayoutOrder
+b.Padding=UDim.new(0,4)
+b.VerticalAlignment=Enum.VerticalAlignment.Center
 end
-return ax
+return b
 end
 
 
 
 
 
-local function ItemSignature(aw)
-if aw.Type=="Text"then
-return"T|"..GradientSignature(aw.Gradient)
-elseif aw.Type=="Image"then
+local function ItemSignature(aB)
+if aB.Type=="Text"then
+return"T|"..GradientSignature(aB.Gradient)
+elseif aB.Type=="Image"then
 return"I"
 end
 
-local ax=aw.Options or{}
+local b=aB.Options or{}
 return table.concat({
-"C",tostring(aw.Content),
-tostring(ax.Size),tostring(ax.Width),tostring(ax.Height),
-tostring(ax.Transparency),tostring(ax.Themed),
-tostring(ax.ScaleType),tostring(ax.KeepAspect),
-ax.Color and ax.Color:ToHex()or"",
+"C",tostring(aB.Content),
+tostring(b.Size),tostring(b.Width),tostring(b.Height),
+tostring(b.Transparency),tostring(b.Themed),
+tostring(b.ScaleType),tostring(b.KeepAspect),
+b.Color and b.Color:ToHex()or"",
 },"|")
 end
 
-local function updateItemsInContainer(aw,ax)
-local ay={}
-for az,aA in ipairs(aw:GetChildren())do
-if aA:IsA"GuiObject"then table.insert(ay,aA)end
+local function updateItemsInContainer(aB,b)
+local d={}
+for e,f in ipairs(aB:GetChildren())do
+if f:IsA"GuiObject"then table.insert(d,f)end
 end
 
 
 
 
-local az=0
+local e=0
 
-for aA,aB in ipairs(ax)do
-local b=ItemSignature(aB)
-local d=ay[az+1]
+for f,g in ipairs(b)do
+local h=ItemSignature(g)
+local j=d[e+1]
 
-if d and d:GetAttribute"ItemSig"~=b then
-d:Destroy()
-table.remove(ay,az+1)
-d=nil
+if j and j:GetAttribute"ItemSig"~=h then
+j:Destroy()
+table.remove(d,e+1)
+j=nil
 end
 
-if not d then
-if aB.Type=="Text"then
-d=CreateText(aB.Content,"Desc",aB.Gradient)
-d:SetAttribute("GradientSig",GradientSignature(aB.Gradient))
-d.Parent=aw
-elseif aB.Type=="Icon"then
-d=aa.InlineIconFrame(aB,InlineContext("Desc",aA))
-if d then
-d.Parent=aw
+if not j then
+if g.Type=="Text"then
+j=CreateText(g.Content,"Desc",g.Gradient)
+j:SetAttribute("GradientSig",GradientSignature(g.Gradient))
+j.Parent=aB
+elseif g.Type=="Icon"then
+j=aa.InlineIconFrame(g,InlineContext("Desc",f))
+if j then
+j.Parent=aB
 end
 else
-d=ab("ImageLabel",{
-Parent=aw,
+j=ab("ImageLabel",{
+Parent=aB,
 BackgroundTransparency=1,
 Size=UDim2.new(0,16,0,16),
 ScaleType=Enum.ScaleType.Fit,
@@ -6310,306 +6446,313 @@ ImageTransparency=0.3
 })
 end
 
-if d then
-d:SetAttribute("ItemSig",b)
-table.insert(ay,az+1,d)
+if j then
+j:SetAttribute("ItemSig",h)
+table.insert(d,e+1,j)
 end
 end
 
 
-if d then
-az=az+1
-d.LayoutOrder=aA
-d.Visible=true
+if j then
+e=e+1
+j.LayoutOrder=f
+j.Visible=true
 
-if aB.Type=="Text"then
-if d.Text~=aB.Content then
-d.Text=aB.Content
+if g.Type=="Text"then
+if j.Text~=g.Content then
+j.Text=g.Content
 end
-ApplyGradientToLabel(d,ResolveItemGradientProps(aB.Gradient,ai.DescGradient))
-if#ax==1 then
-d.Size=UDim2.new(1,0,0,0)
-d.AutomaticSize=Enum.AutomaticSize.Y
-d.TextWrapped=true
+ApplyGradientToLabel(j,ResolveItemGradientProps(g.Gradient,am.DescGradient))
+if#b==1 then
+j.Size=UDim2.new(1,0,0,0)
+j.AutomaticSize=Enum.AutomaticSize.Y
+j.TextWrapped=true
 else
-d.Size=UDim2.new(0,0,0,0)
-d.AutomaticSize=Enum.AutomaticSize.XY
-d.TextWrapped=false
+j.Size=UDim2.new(0,0,0,0)
+j.AutomaticSize=Enum.AutomaticSize.XY
+j.TextWrapped=false
 end
-elseif aB.Type=="Icon"then
-if ai.Color then
-local e=d:FindFirstChildOfClass"ImageLabel"
-local f=aB.Options or{}
+elseif g.Type=="Icon"then
+if am.Color then
+local l=j:FindFirstChildOfClass"ImageLabel"
+local m=g.Options or{}
 
-if e and not f.Color then
-if typeof(ai.Color)=="string"then
-e.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"then
-e.ImageColor3=GetTextColorForHSB(ai.Color)
+if l and not m.Color then
+if typeof(am.Color)=="string"then
+l.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"then
+l.ImageColor3=GetTextColorForHSB(am.Color)
 end
 end
 end
 else
-if d.Image~=aB.Content then
-d.Image=aB.Content
+if j.Image~=g.Content then
+j.Image=g.Content
 end
-if ai.Color then
-if typeof(ai.Color)=="string"then
-d.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"then
-d.ImageColor3=GetTextColorForHSB(ai.Color)
-end
-end
+if am.Color then
+if typeof(am.Color)=="string"then
+j.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"then
+j.ImageColor3=GetTextColorForHSB(am.Color)
 end
 end
 end
-
-
-
-for aA=az+1,#ay do
-ay[aA]:Destroy()
 end
 end
 
-local aw=string.split(av,"\n")
-local ax={}
-for ay,az in ipairs(aw)do
-local aA=string.split(az,"\t")
-if#aA>=2 then
-table.insert(ax,{Cols={parseInline(aA[1]or""),parseInline(aA[2]or"")}})
+
+
+for f=e+1,#d do
+d[f]:Destroy()
+end
+end
+
+local aB=string.split(az,"\n")
+local b={}
+for d,e in ipairs(aB)do
+local f=string.split(e,"\t")
+if#f>=2 then
+table.insert(b,{Cols={parseInline(f[1]or""),parseInline(f[2]or"")}})
 else
-table.insert(ax,{Cols={parseInline(az)}})
+table.insert(b,{Cols={parseInline(e)}})
 end
 end
 
-local ay={}
-for az,aA in ipairs(au:GetChildren())do
-if aA:IsA"Frame"then table.insert(ay,aA)end
+local d={}
+for e,f in ipairs(ay:GetChildren())do
+if f:IsA"Frame"then table.insert(d,f)end
 end
 
-for az,aA in ipairs(ax)do
-local aB=ay[az]
+for e,f in ipairs(b)do
+local g=d[e]
 
-if not aB then
-aB=ab("Frame",{
-Parent=au,
+if not g then
+g=ab("Frame",{
+Parent=ay,
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
 end
-aB.LayoutOrder=az
-aB.Visible=true
+g.LayoutOrder=e
+g.Visible=true
 
-local b=aA.Cols
-if#b>=2 then
-local d=getColumnWidth()
-local e=getOrCreateListLayout(aB)
-e.Padding=UDim.new(0,0)
+local h=f.Cols
+if#h>=2 then
+local j=getColumnWidth()
+local l=getOrCreateListLayout(g)
+l.Padding=UDim.new(0,0)
 
-local f=aB:FindFirstChild"Col1"
-if not f then
-f=ab("Frame",{
+local m=g:FindFirstChild"Col1"
+if not m then
+m=ab("Frame",{
 Name="Col1",
-Parent=aB,
+Parent=g,
 BackgroundTransparency=1,
-Size=UDim2.new(0,d,0,0),
+Size=UDim2.new(0,j,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
-getOrCreateListLayout(f)
+getOrCreateListLayout(m)
 else
-f.Size=UDim2.new(0,d,0,0)
-f.AutomaticSize=Enum.AutomaticSize.Y
-getOrCreateListLayout(f)
+m.Size=UDim2.new(0,j,0,0)
+m.AutomaticSize=Enum.AutomaticSize.Y
+getOrCreateListLayout(m)
 end
 
-local g=aB:FindFirstChild"Col2"
-if not g then
-g=ab("Frame",{
+local p=g:FindFirstChild"Col2"
+if not p then
+p=ab("Frame",{
 Name="Col2",
-Parent=aB,
+Parent=g,
 BackgroundTransparency=1,
-Size=UDim2.new(1,-d,0,0),
+Size=UDim2.new(1,-j,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
-getOrCreateListLayout(g)
+getOrCreateListLayout(p)
 else
-g.Size=UDim2.new(1,-d,0,0)
-g.AutomaticSize=Enum.AutomaticSize.Y
-getOrCreateListLayout(g)
+p.Size=UDim2.new(1,-j,0,0)
+p.AutomaticSize=Enum.AutomaticSize.Y
+getOrCreateListLayout(p)
 end
 
-for h,j in ipairs(aB:GetChildren())do
-if j:IsA"GuiObject"and j~=f and j~=g then
-j:Destroy()
+for r,u in ipairs(g:GetChildren())do
+if u:IsA"GuiObject"and u~=m and u~=p then
+u:Destroy()
 end
 end
 
-updateItemsInContainer(f,b[1])
-updateItemsInContainer(g,b[2])
+updateItemsInContainer(m,h[1])
+updateItemsInContainer(p,h[2])
 else
-for d,e in ipairs(aB:GetChildren())do
-if e:IsA"Frame"and(e.Name=="Col1"or e.Name=="Col2")then
-e:Destroy()
+for j,l in ipairs(g:GetChildren())do
+if l:IsA"Frame"and(l.Name=="Col1"or l.Name=="Col2")then
+l:Destroy()
 end
 end
 
-getOrCreateListLayout(aB)
-updateItemsInContainer(aB,b[1])
+getOrCreateListLayout(g)
+updateItemsInContainer(g,h[1])
 end
 end
 
-for az=#ax+1,#ay do
-ay[az]:Destroy()
+for e=#b+1,#d do
+d[e]:Destroy()
 end
 end
 
-local function UpdateTitle(av)
-ar.Text=av or""
-ApplyGradientToLabel(ar,ResolveGradientProps(ai.TitleGradient))
+local function UpdateTitle(az)
+av.Text=az or""
+ApplyGradientToLabel(av,ResolveGradientProps(am.TitleGradient))
 
-if not av or av==""then
-ar.Visible=true
-at.Visible=false
+if not az or az==""then
+av.Visible=true
+ax.Visible=false
 return
 end
 
-if not HasRich(av)then
-ar.Visible=true
-at.Visible=false
+if not HasRich(az)then
+av.Visible=true
+ax.Visible=false
 return
 end
 
-local aw=ParseInline(av,"Title")
+local aA=ParseInline(az,"Title")
 
 
 
 
-local ax=false
-for ay,az in ipairs(aw)do
-if az.Type~="Text"then
-ax=true
+
+
+
+
+
+local aB=HasGradientTag(az)
+if not aB then
+for b,d in ipairs(aA)do
+if d.Type~="Text"then
+aB=true
 break
 end
 end
-if not ax then
-ar.Visible=true
-at.Visible=false
+end
+if not aB then
+av.Visible=true
+ax.Visible=false
 return
 end
 
-ar.Visible=false
-at.Visible=true
+av.Visible=false
+ax.Visible=true
 
-for ay,az in ipairs(at:GetChildren())do
-if az:IsA"GuiObject"then
-az:Destroy()
+for b,d in ipairs(ax:GetChildren())do
+if d:IsA"GuiObject"then
+d:Destroy()
 end
 end
 
-for ay,az in ipairs(aw)do
-if az.Type=="Text"then
-local aA=CreateText(az.Content,"Title",az.Gradient)
-aA.LayoutOrder=ay
-if#aw==1 then
-aA.Size=UDim2.new(1,0,0,0)
-aA.AutomaticSize=Enum.AutomaticSize.Y
-aA.TextWrapped=true
+for b,d in ipairs(aA)do
+if d.Type=="Text"then
+local e=CreateText(d.Content,"Title",d.Gradient)
+e.LayoutOrder=b
+if#aA==1 then
+e.Size=UDim2.new(1,0,0,0)
+e.AutomaticSize=Enum.AutomaticSize.Y
+e.TextWrapped=true
 else
-aA.Size=UDim2.new(0,0,0,0)
-aA.AutomaticSize=Enum.AutomaticSize.XY
-aA.TextWrapped=false
+e.Size=UDim2.new(0,0,0,0)
+e.AutomaticSize=Enum.AutomaticSize.XY
+e.TextWrapped=false
 end
-aA.Parent=at
-elseif az.Type=="Icon"then
+e.Parent=ax
+elseif d.Type=="Icon"then
 
-local aA=aa.InlineIconFrame(az,InlineContext("Title",ay))
-if aA then
-aA.LayoutOrder=ay
+local e=aa.InlineIconFrame(d,InlineContext("Title",b))
+if e then
+e.LayoutOrder=b
 
-local aB=aA:FindFirstChildOfClass"ImageLabel"
-if aB and ai.Color and not(az.Options and az.Options.Color)then
-if typeof(ai.Color)=="string"then
-aB.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"then
-aB.ImageColor3=GetTextColorForHSB(ai.Color)
+local f=e:FindFirstChildOfClass"ImageLabel"
+if f and am.Color and not(d.Options and d.Options.Color)then
+if typeof(am.Color)=="string"then
+f.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"then
+f.ImageColor3=GetTextColorForHSB(am.Color)
 end
 end
 
-aA.Parent=at
+e.Parent=ax
 end
 else
-local aA=ab("ImageLabel",{
+local e=ab("ImageLabel",{
 BackgroundTransparency=1,
 Size=UDim2.new(0,18,0,18),
 ScaleType=Enum.ScaleType.Fit,
 ThemeTag={ImageColor3="ElementTitle"},
 ImageTransparency=0,
-Image=az.Content,
-LayoutOrder=ay,
+Image=d.Content,
+LayoutOrder=b,
 })
 
-if ai.Color then
-if typeof(ai.Color)=="string"then
-aA.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"then
-aA.ImageColor3=GetTextColorForHSB(ai.Color)
+if am.Color then
+if typeof(am.Color)=="string"then
+e.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"then
+e.ImageColor3=GetTextColorForHSB(am.Color)
 end
 end
 
-aA.Parent=at
+e.Parent=ax
 end
 end
 end
 
-ai.UIElements.Container=ab("Frame",{
+am.UIElements.Container=ab("Frame",{
 Size=UDim2.new(1,0,1,0),
 AutomaticSize="Y",
 BackgroundTransparency=1,
 },{
 ab("UIListLayout",{
-Padding=UDim.new(0,ai.UIPadding),
+Padding=UDim.new(0,am.UIPadding),
 FillDirection="Vertical",
 VerticalAlignment="Center",
-HorizontalAlignment=ai.Justify=="Between"and"Left"or"Center",
+HorizontalAlignment=am.Justify=="Between"and"Left"or"Center",
 }),
-ap,
+at,
 ab("Frame",{
 Size=UDim2.new(
-ai.Justify=="Between"and 1 or 0,
-ai.Justify=="Between"and-ah.TextOffset or 0,
+am.Justify=="Between"and 1 or 0,
+am.Justify=="Between"and-al.TextOffset or 0,
 0,
 0
 ),
-AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
+AutomaticSize=am.Justify=="Between"and"Y"or"XY",
 BackgroundTransparency=1,
 Name="TitleFrame",
 },{
 ab("UIListLayout",{
-Padding=UDim.new(0,ai.UIPadding),
+Padding=UDim.new(0,am.UIPadding),
 FillDirection="Horizontal",
-VerticalAlignment=(ah.ElementTable and ah.ElementTable.__type=="Dropdown")and"Center"
-or((aq and ah.ElementTable and ah.ElementTable.__type=="Toggle")and"Center"
-or(ah.Window.NewElements and(ai.Justify=="Between"and"Top"or"Center")or"Center")),
-HorizontalAlignment=ai.Justify~="Between"and ai.Justify or"Center",
+VerticalAlignment=(al.ElementTable and al.ElementTable.__type=="Dropdown")and"Center"
+or((au and al.ElementTable and al.ElementTable.__type=="Toggle")and"Center"
+or(al.Window.NewElements and(am.Justify=="Between"and"Top"or"Center")or"Center")),
+HorizontalAlignment=am.Justify~="Between"and am.Justify or"Center",
 }),
-aq,
+au,
 ab("Frame",{
 BackgroundTransparency=1,
-AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
+AutomaticSize=am.Justify=="Between"and"Y"or"XY",
 Size=UDim2.new(
-ai.Justify=="Between"and 1 or 0,
-ai.Justify=="Between"and(aq and-am-ai.UIPadding or-am)or 0,
+am.Justify=="Between"and 1 or 0,
+am.Justify=="Between"and(au and-aq-am.UIPadding or-aq)or 0,
 1,
 0
 ),
 Name="TitleFrame",
 },{
 ab("UIPadding",{
-PaddingTop=UDim.new(0,ah.Window.NewElements and ai.UIPadding/2 or 0),
-PaddingLeft=UDim.new(0,ah.Window.NewElements and ai.UIPadding/2 or 0),
-PaddingRight=UDim.new(0,ah.Window.NewElements and ai.UIPadding/2 or 0),
-PaddingBottom=UDim.new(0,ah.Window.NewElements and ai.UIPadding/2 or 0),
+PaddingTop=UDim.new(0,al.Window.NewElements and am.UIPadding/2 or 0),
+PaddingLeft=UDim.new(0,al.Window.NewElements and am.UIPadding/2 or 0),
+PaddingRight=UDim.new(0,al.Window.NewElements and am.UIPadding/2 or 0),
+PaddingBottom=UDim.new(0,al.Window.NewElements and am.UIPadding/2 or 0),
 }),
 ab("UIListLayout",{
 Padding=UDim.new(0,6),
@@ -6617,27 +6760,27 @@ FillDirection="Vertical",
 VerticalAlignment="Center",
 HorizontalAlignment="Left",
 }),
-ar,
-at,
-au
+av,
+ax,
+ay
 }),
 })
 })
 
 
-local av=ah.LockedIcon or ah.LockIcon or"lock"
-local aw=ah.LockedIconSize or 20
-local ax=ah.LockedIconColor or Color3.new(1,1,1)
-local ay=ah.LockedIconTransparency or.4
+local az=al.LockedIcon or al.LockIcon or"lock"
+local aA=al.LockedIconSize or 20
+local aB=al.LockedIconColor or Color3.new(1,1,1)
+local b=al.LockedIconTransparency or.4
 
-local az=aa.Image(
-av,"lock",0,ah.Window.Folder,"Lock",false
+local d=aa.Image(
+az,"lock",0,al.Window.Folder,"Lock",false
 )
-az.Size=UDim2.new(0,aw,0,aw)
-az.ImageLabel.ImageColor3=ax
-az.ImageLabel.ImageTransparency=ay
+d.Size=UDim2.new(0,aA,0,aA)
+d.ImageLabel.ImageColor3=aB
+d.ImageLabel.ImageTransparency=b
 
-local aA=ab("TextLabel",{
+local e=ab("TextLabel",{
 Text="Locked",
 TextSize=18,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
@@ -6647,21 +6790,21 @@ TextColor3=Color3.new(1,1,1),
 TextTransparency=.05,
 })
 
-local aB=ab("Frame",{
-Size=UDim2.new(1,ai.UIPadding*2,1,ai.UIPadding*2),
+local f=ab("Frame",{
+Size=UDim2.new(1,am.UIPadding*2,1,am.UIPadding*2),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
 Position=UDim2.new(0.5,0,0.5,0),
 ZIndex=9999999,
 })
 
-local b,d=ad(ai.UICorner,"Squircle",{
+local g,h=ad(am.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=.25,
 ImageColor3=Color3.new(0,0,0),
 Visible=false,
 Active=false,
-Parent=aB,
+Parent=f,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6669,30 +6812,15 @@ VerticalAlignment="Center",
 HorizontalAlignment="Center",
 Padding=UDim.new(0,8)
 }),
-az,aA
+d,e
 },nil,true)
 
-local e,f=ad(ai.UICorner,"Squircle-Outline",{
+local j,l=ad(am.UICorner,"Squircle-Outline",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=aB,
-},{
-ab("UIListLayout",{
-FillDirection="Horizontal",
-VerticalAlignment="Center",
-HorizontalAlignment="Center",
-Padding=UDim.new(0,8)
-}),
-},nil,true)
-
-local g,h=ad(ai.UICorner,"Squircle",{
-Size=UDim2.new(1,0,1,0),
-ImageTransparency=1,
-Active=false,
-ThemeTag={ImageColor3="Text"},
-Parent=aB,
+Parent=f,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6702,12 +6830,27 @@ Padding=UDim.new(0,8)
 }),
 },nil,true)
 
-local j,l=ad(ai.UICorner,"Squircle-Outline",{
+local m,p=ad(am.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=aB,
+Parent=f,
+},{
+ab("UIListLayout",{
+FillDirection="Horizontal",
+VerticalAlignment="Center",
+HorizontalAlignment="Center",
+Padding=UDim.new(0,8)
+}),
+},nil,true)
+
+local r,u=ad(am.UICorner,"Squircle-Outline",{
+Size=UDim2.new(1,0,1,0),
+ImageTransparency=1,
+Active=false,
+ThemeTag={ImageColor3="Text"},
+Parent=f,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6732,12 +6875,12 @@ NumberSequenceKeypoint.new(1,1)
 }),
 },nil,true)
 
-local m,p=ad(ai.UICorner,"Squircle",{
+local v,x=ad(am.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=aB,
+Parent=f,
 },{
 ab("UIGradient",{
 Name="HoverGradient",
@@ -6762,233 +6905,233 @@ Padding=UDim.new(0,8)
 }),
 },nil,true)
 
-local r,u=ad(ai.UICorner,"Squircle",{
+local z,A=ad(am.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
-ImageTransparency=ai.Color and.05 or.93,
-Parent=ah.Parent,
+ImageTransparency=am.Color and.05 or.93,
+Parent=al.Parent,
 ThemeTag={
-ImageColor3=not ai.Color and"ElementBackground"or nil
+ImageColor3=not am.Color and"ElementBackground"or nil
 },
-ImageColor3=ai.Color and
+ImageColor3=am.Color and
 (
-typeof(ai.Color)=="string"
-and Color3.fromHex(aa.Colors[ai.Color])
-or typeof(ai.Color)=="Color3"
-and ai.Color
+typeof(am.Color)=="string"
+and Color3.fromHex(aa.Colors[am.Color])
+or typeof(am.Color)=="Color3"
+and am.Color
 )or nil
 },{
-ai.UIElements.Container,
-aB,
+am.UIElements.Container,
+f,
 ab("UIPadding",{
-PaddingTop=UDim.new(0,ai.UIPadding),
-PaddingLeft=UDim.new(0,ai.UIPadding),
-PaddingRight=UDim.new(0,ai.UIPadding),
-PaddingBottom=UDim.new(0,ai.UIPadding),
+PaddingTop=UDim.new(0,am.UIPadding),
+PaddingLeft=UDim.new(0,am.UIPadding),
+PaddingRight=UDim.new(0,am.UIPadding),
+PaddingBottom=UDim.new(0,am.UIPadding),
 }),
 },true,true)
 
-ai.UIElements.Main=r
-ai.UIElements.Locked=b
+am.UIElements.Main=z
+am.UIElements.Locked=g
 
-if ai.Hover then
-aa.AddSignal(r.MouseEnter,function()
-if al then
-ae(r,.12,{ImageTransparency=ai.Color and.15 or.9}):Play()
-ae(m,.12,{ImageTransparency=.9}):Play()
-ae(j,.12,{ImageTransparency=.8}):Play()
-aa.AddSignal(r.MouseMoved,function(v,x)
-m.HoverGradient.Offset=Vector2.new(((v-r.AbsolutePosition.X)/r.AbsoluteSize.X)-0.5,0)
-j.HoverGradient.Offset=Vector2.new(((v-r.AbsolutePosition.X)/r.AbsoluteSize.X)-0.5,0)
+if am.Hover then
+aa.AddSignal(z.MouseEnter,function()
+if ap then
+ae(z,.12,{ImageTransparency=am.Color and.15 or.9}):Play()
+ae(v,.12,{ImageTransparency=.9}):Play()
+ae(r,.12,{ImageTransparency=.8}):Play()
+aa.AddSignal(z.MouseMoved,function(B,C)
+v.HoverGradient.Offset=Vector2.new(((B-z.AbsolutePosition.X)/z.AbsoluteSize.X)-0.5,0)
+r.HoverGradient.Offset=Vector2.new(((B-z.AbsolutePosition.X)/z.AbsoluteSize.X)-0.5,0)
 end)
 end
 end)
-aa.AddSignal(r.InputEnded,function()
-if al then
-ae(r,.12,{ImageTransparency=ai.Color and.05 or.93}):Play()
-ae(m,.12,{ImageTransparency=1}):Play()
-ae(j,.12,{ImageTransparency=1}):Play()
+aa.AddSignal(z.InputEnded,function()
+if ap then
+ae(z,.12,{ImageTransparency=am.Color and.05 or.93}):Play()
+ae(v,.12,{ImageTransparency=1}):Play()
+ae(r,.12,{ImageTransparency=1}):Play()
 end
 end)
 end
 
-function ai.SetTitle(v,x)
-ai.Title=x
-UpdateTitle(x)
+function am.SetTitle(B,C)
+am.Title=C
+UpdateTitle(C)
 end
 
-function ai.SetTitleGradient(v,x)
-ai.TitleGradient=x
-UpdateTitle(ai.Title)
+function am.SetTitleGradient(B,C)
+am.TitleGradient=C
+UpdateTitle(am.Title)
 end
 
-function ai.SetDescGradient(v,x)
-ai.DescGradient=x
-UpdateDesc(ai.Desc)
+function am.SetDescGradient(B,C)
+am.DescGradient=C
+UpdateDesc(am.Desc)
 end
 
-function ai.SetDesc(v,x)
+function am.SetDesc(B,C)
 
-if ai.Desc==x then
+if am.Desc==C then
 return
 end
 
-ai.Desc=x
-UpdateDesc(x)
+am.Desc=C
+UpdateDesc(C)
 
-if ah.ElementTable then
-ah.ElementTable.Desc=x
+if al.ElementTable then
+al.ElementTable.Desc=C
 end
 end
 
 
-UpdateDesc(ai.Desc)
-UpdateTitle(ai.Title)
+UpdateDesc(am.Desc)
+UpdateTitle(am.Title)
 
-function ai.Colorize(v,x,z)
-if ai.Color then
-x[z]=typeof(ai.Color)=="string"
-and GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-or typeof(ai.Color)=="Color3"
-and GetTextColorForHSB(ai.Color)
+function am.Colorize(B,C,F)
+if am.Color then
+C[F]=typeof(am.Color)=="string"
+and GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+or typeof(am.Color)=="Color3"
+and GetTextColorForHSB(am.Color)
 or nil
 end
 end
 
-if ah.ElementTable then
-if ar and ar.GetPropertyChangedSignal then
-aa.AddSignal(ar:GetPropertyChangedSignal"Text",function()
-if ai.Title~=ar.Text then
-ai:SetTitle(ar.Text)
-ah.ElementTable.Title=ar.Text
+if al.ElementTable then
+if av and av.GetPropertyChangedSignal then
+aa.AddSignal(av:GetPropertyChangedSignal"Text",function()
+if am.Title~=av.Text then
+am:SetTitle(av.Text)
+al.ElementTable.Title=av.Text
 end
 end)
 end
 end
 
-function ai.SetThumbnail(v,x,z)
-ai.Thumbnail=x
-if z then
-ai.ThumbnailSize=z
-ak=z
+function am.SetThumbnail(B,C,F)
+am.Thumbnail=C
+if F then
+am.ThumbnailSize=F
+ao=F
 end
 
-if ap then
-if x then
-ap:Destroy()
-ap=aa.Image(
-x,
-ai.Title,
-ai.UICorner-3,
-ah.Window.Folder,
+if at then
+if C then
+at:Destroy()
+at=aa.Image(
+C,
+am.Title,
+am.UICorner-3,
+al.Window.Folder,
 "Thumbnail",
 false,
-ai.IconThemed
+am.IconThemed
 )
-ap.Size=UDim2.new(1,0,0,ak)
-ap.Parent=ai.UIElements.Container
-local A=ai.UIElements.Container:FindFirstChild"UIListLayout"
-if A then
-ap.LayoutOrder=-1
+at.Size=UDim2.new(1,0,0,ao)
+at.Parent=am.UIElements.Container
+local G=am.UIElements.Container:FindFirstChild"UIListLayout"
+if G then
+at.LayoutOrder=-1
 end
 else
-ap.Visible=false
+at.Visible=false
 end
 else
-if x then
-ap=aa.Image(
-x,
-ai.Title,
-ai.UICorner-3,
-ah.Window.Folder,
+if C then
+at=aa.Image(
+C,
+am.Title,
+am.UICorner-3,
+al.Window.Folder,
 "Thumbnail",
 false,
-ai.IconThemed
+am.IconThemed
 )
-ap.Size=UDim2.new(1,0,0,ak)
-ap.Parent=ai.UIElements.Container
-local A=ai.UIElements.Container:FindFirstChild"UIListLayout"
-if A then
-ap.LayoutOrder=-1
+at.Size=UDim2.new(1,0,0,ao)
+at.Parent=am.UIElements.Container
+local G=am.UIElements.Container:FindFirstChild"UIListLayout"
+if G then
+at.LayoutOrder=-1
 end
 end
 end
 end
 
-function ai.SetImage(v,x,z)
-ai.Image=x
-if z then
-ai.ImageSize=z
-aj=z
+function am.SetImage(B,C,F)
+am.Image=C
+if F then
+am.ImageSize=F
+an=F
 end
 
-local A=aq
-if x then
-local B=aa.Image(
-x,
-ai.Title,
-ai.UICorner-3,
-ah.Window.Folder,
+local G=au
+if C then
+local H=aa.Image(
+C,
+am.Title,
+am.UICorner-3,
+al.Window.Folder,
 "Image",
-not ai.Color and true or false
+not am.Color and true or false
 )
-if typeof(ai.Color)=="string"and B.ImageLabel then
-B.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"and B.ImageLabel then
-B.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
+if typeof(am.Color)=="string"and H.ImageLabel then
+H.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[am.Color]))
+elseif typeof(am.Color)=="Color3"and H.ImageLabel then
+H.ImageLabel.ImageColor3=GetTextColorForHSB(am.Color)
 end
-B.Visible=true
-B.Size=UDim2.new(0,aj,0,aj)
-am=aj
-if A and A.Parent then A:Destroy()end
-B.Parent=ai.UIElements.Container.TitleFrame
-aq=B
+H.Visible=true
+H.Size=UDim2.new(0,an,0,an)
+aq=an
+if G and G.Parent then G:Destroy()end
+H.Parent=am.UIElements.Container.TitleFrame
+au=H
 else
-if aq then
-aq.Visible=false
+if au then
+au.Visible=false
 end
-am=0
-end
-
-ai.UIElements.Container.TitleFrame.TitleFrame.Size=UDim2.new(1,-am,1,0)
+aq=0
 end
 
-function ai.Destroy(v)
-r:Destroy()
+am.UIElements.Container.TitleFrame.TitleFrame.Size=UDim2.new(1,-aq,1,0)
 end
 
-function ai.SetLockedIcon(v,x,z,A,B)
-if az and az.ImageLabel then
-if x then
-az.ImageLabel.Image=x
-end
-if z then
-az.Size=UDim2.new(0,z,0,z)
-end
-if A then
-az.ImageLabel.ImageColor3=A
-end
-if B then
-az.ImageLabel.ImageTransparency=B
-end
-end
-end
-function ai.Lock(v,x,z)
-al=false
-av=z or av
-aA.Text=x or"Locked"
-b.Active=true
-b.Visible=true
+function am.Destroy(B)
+z:Destroy()
 end
 
-function ai.Unlock(v)
-al=true
-b.Active=false
-b.Visible=false
+function am.SetLockedIcon(B,C,F,G,H)
+if d and d.ImageLabel then
+if C then
+d.ImageLabel.Image=C
+end
+if F then
+d.Size=UDim2.new(0,F,0,F)
+end
+if G then
+d.ImageLabel.ImageColor3=G
+end
+if H then
+d.ImageLabel.ImageTransparency=H
+end
+end
+end
+function am.Lock(B,C,F)
+ap=false
+az=F or az
+e.Text=C or"Locked"
+g.Active=true
+g.Visible=true
 end
 
-function ai.Highlight(v)
-local x=ab("UIGradient",{
+function am.Unlock(B)
+ap=true
+g.Active=false
+g.Visible=false
+end
+
+function am.Highlight(B)
+local C=ab("UIGradient",{
 Color=ColorSequence.new{
 ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),
 ColorSequenceKeypoint.new(0.5,Color3.new(1,1,1)),
@@ -7003,10 +7146,10 @@ NumberSequenceKeypoint.new(1,1)
 },
 Rotation=0,
 Offset=Vector2.new(-1,0),
-Parent=e
+Parent=j
 })
 
-local z=ab("UIGradient",{
+local F=ab("UIGradient",{
 Color=ColorSequence.new{
 ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),
 ColorSequenceKeypoint.new(0.5,Color3.new(1,1,1)),
@@ -7021,51 +7164,51 @@ NumberSequenceKeypoint.new(1,1)
 },
 Rotation=0,
 Offset=Vector2.new(-1,0),
-Parent=g
+Parent=m
 })
 
-e.ImageTransparency=0.65
-g.ImageTransparency=0.88
+j.ImageTransparency=0.65
+m.ImageTransparency=0.88
 
-ae(x,0.75,{
+ae(C,0.75,{
 Offset=Vector2.new(1,0)
 }):Play()
 
-ae(z,0.75,{
+ae(F,0.75,{
 Offset=Vector2.new(1,0)
 }):Play()
 
 task.spawn(function()
 task.wait(.75)
-e.ImageTransparency=1
-g.ImageTransparency=1
-x:Destroy()
-z:Destroy()
+j.ImageTransparency=1
+m.ImageTransparency=1
+C:Destroy()
+F:Destroy()
 end)
 end
 
-function ai.UpdateShape(v)
-if ah.Window.NewElements then
-local x
-local z=ah.ParentType or(ah.ParentConfig and ah.ParentConfig.ParentType)
-if z=="Group"or z=="Paragraph"then
-x="Squircle"
+function am.UpdateShape(B)
+if al.Window.NewElements then
+local C
+local F=al.ParentType or(al.ParentConfig and al.ParentConfig.ParentType)
+if F=="Group"or F=="Paragraph"then
+C="Squircle"
 else
-x=getElementPosition(v.Elements,ai.Index)
+C=getElementPosition(B.Elements,am.Index)
 end
 
-if x and r then
-u:SetType(x)
-d:SetType(x)
-h:SetType(x)
-f:SetType(x.."-Outline")
-p:SetType(x)
-l:SetType(x.."-Outline")
+if C and z then
+A:SetType(C)
+h:SetType(C)
+p:SetType(C)
+l:SetType(C.."-Outline")
+x:SetType(C)
+u:SetType(C.."-Outline")
 end
 end
 end
 
-return ai
+return am
 end end function a.A()
 
 local aa=a.load'b'
