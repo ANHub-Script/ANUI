@@ -1015,6 +1015,413 @@ function Creator.ApplyImageAspect(Label, Size)
     return Constraint
 end
 
+-- =========================================================
+-- [ IKON INLINE DI DALAM TEKS ]
+-- Ikon bisa disisipkan di posisi mana saja di dalam string, bukan cuma di
+-- kiri judul. Roblox RichText tidak punya tag <img>, jadi teksnya dipecah
+-- jadi beberapa segmen (potongan teks + frame ikon) yang lalu disusun
+-- memakai UIListLayout horizontal oleh pemanggilnya.
+--
+--   Title = "{icon} Auto {icon} Farm {icon}"   -- semua ambil dari Config.Icon
+--   Icon  = "swords"
+--
+--   Title = "{swords} Auto {rocket} Farm"      -- sebut nama sendiri
+--   Title = "{https://x.com/a.png} Custom"     -- URL
+--   Title = "{icon:star size=28} Rare {bolt}"  -- prefix eksplisit + atribut
+--
+-- Isi token dipisah spasi: kata pertama sumber ikon, sisanya atribut
+-- "key=value". URL tidak memuat spasi mentah, jadi query string (?w=1&h=2)
+-- tetap utuh.
+--
+-- Token yang sumbernya tidak bisa diresolusi jadi ikon (mis. "Rate {5} stars")
+-- DIBIARKAN sebagai teks apa adanya, supaya teks lama yang memuat kurung
+-- kurawal tidak rusak. "{{" dan "}}" jadi kurawal literal.
+-- =========================================================
+
+-- Nama atribut yang boleh ditulis di dalam token
+local InlineAttrAliases = {
+    size = "Size", s = "Size",
+    w = "Width", width = "Width",
+    h = "Height", height = "Height",
+    alpha = "Transparency", transparency = "Transparency", opacity = "Transparency",
+    themed = "Themed", tint = "Themed",
+    scale = "ScaleType", scaletype = "ScaleType",
+    aspect = "KeepAspect", keepaspect = "KeepAspect", native = "KeepAspect",
+    color = "Color", colour = "Color",
+}
+
+local InlineBoolWords = {
+    ["true"] = true, ["1"] = true, ["yes"] = true, ["on"] = true,
+    ["false"] = false, ["0"] = false, ["no"] = false, ["off"] = false,
+}
+
+local InlineScaleWords = {
+    fit = "Fit", crop = "Crop", stretch = "Stretch",
+}
+
+-- Creator.Icon dipanggil dengan teks bebas dari dalam token "{...}", jadi
+-- dibungkus pcall supaya isi kurawal yang aneh tidak sampai bikin error.
+function Creator.TryIcon(Value)
+    if type(Value) ~= "string" or Value == "" then return nil end
+    local Ok, Result = pcall(Creator.Icon, Value)
+    if Ok then return Result end
+    return nil
+end
+
+-- Ikon lucide dicek lewat Creator.Icon; sumber lain dikenali dari bentuknya
+local function IsImageSource(Value)
+    if type(Value) == "table" then
+        return (Value.url or Value.gif or Value.mp4 or Value.webm or Value.file) ~= nil
+    end
+    if type(Value) ~= "string" or Value == "" then
+        return false
+    end
+    if Creator.TryIcon(Value) then
+        return true
+    end
+    return string.find(Value, "^rbxassetid://") ~= nil
+        or string.find(Value, "^rbxthumb://") ~= nil
+        or string.find(Value, "^rbxasset://") ~= nil
+        or string.find(Value, "^https?://") ~= nil
+end
+Creator.IsImageSource = IsImageSource
+
+-- Nilai atribut mentah -> nilai siap pakai
+local function ParseInlineAttrValue(Key, Raw)
+    if Key == "Size" or Key == "Width" or Key == "Height" then
+        return tonumber(Raw)
+    elseif Key == "Transparency" then
+        local Number = tonumber(Raw)
+        if not Number then return nil end
+        -- "alpha=50" dianggap persen supaya enak dipakai
+        if Number > 1 then Number = Number / 100 end
+        return math.clamp(Number, 0, 1)
+    elseif Key == "Themed" or Key == "KeepAspect" then
+        local Bool = InlineBoolWords[string.lower(Raw)]
+        if Bool == nil then return true end
+        return Bool
+    elseif Key == "ScaleType" then
+        return InlineScaleWords[string.lower(Raw)]
+    elseif Key == "Color" then
+        local Ok, Color = pcall(Color3.fromHex, (string.gsub(Raw, "^#", "")))
+        if Ok then return Color end
+        return nil
+    end
+    return Raw
+end
+
+-- Isi token "{...}" -> sumber ikon + atributnya.
+-- Balik nil kalau isinya tidak berbentuk token ikon yang sah.
+local function ParseInlineToken(Body, Context)
+    Body = string.match(Body, "^%s*(.-)%s*$") or ""
+
+    local Head = string.match(Body, "^(%S+)") or ""
+    local Rest = string.sub(Body, #Head + 1)
+
+    local Source
+    local Explicit = false
+
+    local Named = string.match(Head, "^[Ii][Cc][Oo][Nn]:(.+)$")
+    if Body == "" or string.lower(Head) == "icon" then
+        -- "{}", "{icon}", atau "{icon size=28}": placeholder milik elemen
+        Source = Context and Context.Icon
+        Explicit = true
+    elseif Named then
+        -- "{icon:star}": sumber disebut eksplisit
+        Source = Named
+        Explicit = true
+    else
+        Source = Head
+    end
+
+    -- Placeholder yang elemennya tidak punya Icon: token dibuang, bukan
+    -- ditampilkan literal, supaya tidak terlihat seperti judul rusak.
+    if Explicit and (Source == nil or Source == "") then
+        return { Drop = true }
+    end
+
+    if not IsImageSource(Source) then
+        return nil
+    end
+
+    local Options = {}
+    for Key, Value in string.gmatch(Rest, "([%w_]+)%s*=%s*([^%s]+)") do
+        local Name = InlineAttrAliases[string.lower(Key)]
+        if Name then
+            local Parsed = ParseInlineAttrValue(Name, Value)
+            if Parsed ~= nil then
+                Options[Name] = Parsed
+            end
+        end
+    end
+
+    return { Source = Source, Options = Options }
+end
+
+-- Cek murah: layak dipecah jadi segmen atau tidak
+function Creator.HasInlineIcons(Text)
+    if type(Text) ~= "string" or Text == "" then return false end
+    return string.find(Text, "{", 1, true) ~= nil
+end
+
+-- Teks -> daftar segmen { Type = "Text"|"Icon", Content = ..., Options = ... }
+-- Context.Icon dipakai sebagai sumber untuk placeholder "{icon}".
+function Creator.ParseInlineText(Text, Context)
+    local Segments = {}
+    if type(Text) ~= "string" or Text == "" then
+        return Segments
+    end
+
+    local Buffer = {}
+    local function Flush()
+        if #Buffer == 0 then return end
+        local Joined = table.concat(Buffer)
+        Buffer = {}
+        if Joined ~= "" then
+            table.insert(Segments, { Type = "Text", Content = Joined })
+        end
+    end
+
+    -- Placeholder "{icon}" tanpa sumber dibuang. Spasi di kiri & kanannya
+    -- diringkas jadi satu supaya tidak meninggalkan jarak dobel:
+    --   "A {icon} B" -> "A B"   |   "A{icon}B" -> "AB"
+    local DropPending = false
+    local DropSpaced = false
+
+    local function DropToken()
+        -- buang spasi yang menempel di kiri token
+        while #Buffer > 0 and string.match(Buffer[#Buffer], "%s") do
+            table.remove(Buffer)
+            DropSpaced = true
+        end
+        DropPending = true
+    end
+
+    local function PushChar(Char)
+        if DropPending then
+            if string.match(Char, "%s") then
+                -- spasi di kanan token, ikut diringkas
+                DropSpaced = true
+                return
+            end
+            DropPending = false
+            if DropSpaced and #Buffer > 0 then
+                table.insert(Buffer, " ")
+            end
+            DropSpaced = false
+        end
+        table.insert(Buffer, Char)
+    end
+
+    local Position = 1
+    local Length = #Text
+
+    while Position <= Length do
+        local Char = string.sub(Text, Position, Position)
+
+        if Char == "{" and string.sub(Text, Position + 1, Position + 1) == "{" then
+            PushChar("{")
+            Position = Position + 2
+        elseif Char == "}" and string.sub(Text, Position + 1, Position + 1) == "}" then
+            PushChar("}")
+            Position = Position + 2
+        elseif Char == "{" then
+            local CloseAt = string.find(Text, "}", Position + 1, true)
+            local Token = CloseAt and ParseInlineToken(string.sub(Text, Position + 1, CloseAt - 1), Context)
+
+            if not Token then
+                -- bukan token ikon: biarkan apa adanya
+                PushChar(Char)
+                Position = Position + 1
+            else
+                if Token.Drop then
+                    DropToken()
+                else
+                    DropPending, DropSpaced = false, false
+                    Flush()
+                    table.insert(Segments, {
+                        Type = "Icon",
+                        Content = Token.Source,
+                        Options = Token.Options,
+                    })
+                end
+                Position = CloseAt + 1
+            end
+        else
+            PushChar(Char)
+            Position = Position + 1
+        end
+    end
+
+    Flush()
+
+    -- Ikon berlaku seperti objek inline yang jaraknya sudah diatur Padding
+    -- layout, jadi spasi yang menempel ke ikon dibuang supaya tidak dobel.
+    -- Teks tanpa ikon sama sekali dibiarkan utuh.
+    local HasIcon = false
+    for _, Segment in ipairs(Segments) do
+        if Segment.Type == "Icon" then
+            HasIcon = true
+            break
+        end
+    end
+
+    if HasIcon then
+        local Kept = {}
+        for Index, Segment in ipairs(Segments) do
+            if Segment.Type ~= "Text" then
+                table.insert(Kept, Segment)
+            else
+                local Content = Segment.Content
+                local Previous = Segments[Index - 1]
+                local Next = Segments[Index + 1]
+                if not Previous or Previous.Type == "Icon" then
+                    Content = string.gsub(Content, "^%s+", "")
+                end
+                if not Next or Next.Type == "Icon" then
+                    Content = string.gsub(Content, "%s+$", "")
+                end
+                if Content ~= "" then
+                    Segment.Content = Content
+                    table.insert(Kept, Segment)
+                end
+            end
+        end
+        Segments = Kept
+    end
+
+    return Segments
+end
+
+-- Teks tanpa ikon, dipakai untuk fallback TextLabel biasa & kunci pencarian.
+-- Spasi sudah dirapikan oleh ParseInlineText, jadi cukup digabung.
+function Creator.StripInlineIcons(Text, Context)
+    if not Creator.HasInlineIcons(Text) then
+        return type(Text) == "string" and Text or ""
+    end
+
+    local Parts = {}
+    for _, Segment in ipairs(Creator.ParseInlineText(Text, Context)) do
+        if Segment.Type == "Text" then
+            table.insert(Parts, Segment.Content)
+        end
+    end
+
+    local Result = table.concat(Parts, " ")
+    return (string.match(Result, "^%s*(.-)%s*$")) or Result
+end
+
+-- Ukuran ikon terbesar dalam sebuah teks; dipakai supaya tinggi baris/header
+-- ikut menyesuaikan kalau ada token dengan "size=" lebih besar
+function Creator.MaxInlineIconSize(Text, Context, Default)
+    Default = Default or 0
+    if not Creator.HasInlineIcons(Text) then
+        return Default
+    end
+
+    local Largest = Default
+    for _, Segment in ipairs(Creator.ParseInlineText(Text, Context)) do
+        if Segment.Type == "Icon" then
+            local Options = Segment.Options or {}
+            local Height = Options.Height or Options.Size
+                or (Context and Context.IconSize) or Default
+            if Height and Height > Largest then
+                Largest = Height
+            end
+        end
+    end
+    return Largest
+end
+
+-- Nama cache untuk Creator.Image. WAJIB bebas "/": SanitizeFilename hanya
+-- mengambil potongan setelah "/" terakhir, jadi dua URL berbeda dengan nama
+-- file sama akan menimpa berkas satu sama lain.
+local function InlineIconCacheName(Source, Index, Prefix)
+    local Base = Source
+    if type(Source) == "table" then
+        Base = Source.url or Source.gif or Source.mp4 or Source.webm or Source.file or "icon"
+    end
+    Base = tostring(Base)
+    Base = string.match(Base, "([^/]+)$") or Base
+    Base = string.gsub(Base, "[^%w%-_]", "_")
+    if #Base > 24 then
+        Base = string.sub(Base, 1, 24)
+    end
+    return (Prefix or "Inline") .. "-" .. tostring(Index or 1) .. "-" .. Base
+end
+Creator.InlineIconCacheName = InlineIconCacheName
+
+-- Bangun frame ikon untuk satu segmen. Balik nil kalau sumbernya tidak sah,
+-- supaya tidak ada kotak kosong nyangkut di layout.
+function Creator.InlineIconFrame(Segment, Context)
+    if type(Segment) ~= "table" or Segment.Type ~= "Icon" then return nil end
+
+    local Source = Segment.Content
+    if not IsImageSource(Source) then return nil end
+
+    Context = Context or {}
+    local Options = Segment.Options or {}
+
+    local Height = Options.Height or Options.Size or Context.IconSize or 18
+    local Width = Options.Width or Options.Size or Height
+
+    local Themed = Options.Themed
+    if Themed == nil then Themed = Context.IconThemed end
+    -- auto: ikon lucide (monokrom) ikut warna teks, gambar asli dibiarkan
+    if Themed == nil then Themed = Creator.TryIcon(Source) ~= nil end
+    -- warna eksplisit menang atas theme
+    if Options.Color then Themed = false end
+
+    local KeepAspect = Options.KeepAspect
+    if KeepAspect == nil then KeepAspect = Context.IconKeepAspect end
+
+    local Frame = Creator.Image(
+        Source,
+        InlineIconCacheName(Source, Context.Index, Context.CachePrefix),
+        0,
+        Context.Folder,
+        Context.ImageKind or "Icon",
+        Themed and true or false,
+        Themed and true or false,
+        Context.ThemeTagName or "Text",
+        {
+            ScaleType = Options.ScaleType or Context.IconScaleType,
+            KeepAspect = KeepAspect,
+            Size = UDim2.fromOffset(Width, Height),
+        }
+    )
+    if not Frame then return nil end
+
+    Frame.Name = "InlineIcon"
+    Frame.Size = UDim2.fromOffset(Width, Height)
+    Frame.BackgroundTransparency = 1
+
+    local Label = Frame:FindFirstChildOfClass("ImageLabel")
+    if Label then
+        local Transparency = Options.Transparency
+        if Transparency == nil then Transparency = Context.IconTransparency end
+        if Transparency ~= nil then
+            Label.ImageTransparency = Transparency
+        end
+        if Options.Color then
+            -- lepas dari sistem theme supaya warnanya tidak ditimpa saat ganti theme
+            Creator.Objects[Label] = nil
+            Label.ImageColor3 = Options.Color
+        end
+    end
+
+    return Frame, Label
+end
+
+-- UIListLayout.Wraps baru ada di versi Roblox tertentu. Dipasang lewat pcall
+-- supaya teks panjang bisa turun baris tanpa bikin error di runtime lama.
+function Creator.TrySetWraps(Layout, Value)
+    if not Layout then return false end
+    return (pcall(function()
+        Layout.Wraps = Value ~= false
+    end))
+end
+
 function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, ThemeTagName, Options)
     Folder = Folder or "Temp"
     Name = Creator.SanitizeFilename(Name)

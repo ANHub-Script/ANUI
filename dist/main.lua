@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.260  |  2026-08-23  |  Roblox UI Library for scripts
+    v1.0.261  |  2026-08-23  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -1081,303 +1081,710 @@ x.Position=UDim2.fromScale(0.5,0.5)
 return A
 end
 
-function p.Image(x,z,A,B,C,F,G,H,J)
-B=B or"Temp"
-z=p.SanitizeFilename(z)
 
 
 
-local L={}
-if type(J)=="table"then
-for M,N in pairs(J)do L[M]=N end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+local x={
+size="Size",s="Size",
+w="Width",width="Width",
+h="Height",height="Height",
+alpha="Transparency",transparency="Transparency",opacity="Transparency",
+themed="Themed",tint="Themed",
+scale="ScaleType",scaletype="ScaleType",
+aspect="KeepAspect",keepaspect="KeepAspect",native="KeepAspect",
+color="Color",colour="Color",
+}
+
+local z={
+["true"]=true,["1"]=true,yes=true,on=true,
+["false"]=false,["0"]=false,no=false,off=false,
+}
+
+local A={
+fit="Fit",crop="Crop",stretch="Stretch",
+}
+
+
+
+function p.TryIcon(B)
+if type(B)~="string"or B==""then return nil end
+local C,F=pcall(p.Icon,B)
+if C then return F end
+return nil
 end
-if type(x)=="table"then
-for M,N in ipairs(v)do
-if L[N]==nil and x[N]~=nil then
-L[N]=x[N]
+
+
+local function IsImageSource(B)
+if type(B)=="table"then
+return(B.url or B.gif or B.mp4 or B.webm or B.file)~=nil
+end
+if type(B)~="string"or B==""then
+return false
+end
+if p.TryIcon(B)then
+return true
+end
+return string.find(B,"^rbxassetid://")~=nil
+or string.find(B,"^rbxthumb://")~=nil
+or string.find(B,"^rbxasset://")~=nil
+or string.find(B,"^https?://")~=nil
+end
+p.IsImageSource=IsImageSource
+
+
+local function ParseInlineAttrValue(B,C)
+if B=="Size"or B=="Width"or B=="Height"then
+return tonumber(C)
+elseif B=="Transparency"then
+local F=tonumber(C)
+if not F then return nil end
+
+if F>1 then F=F/100 end
+return math.clamp(F,0,1)
+elseif B=="Themed"or B=="KeepAspect"then
+local F=z[string.lower(C)]
+if F==nil then return true end
+return F
+elseif B=="ScaleType"then
+return A[string.lower(C)]
+elseif B=="Color"then
+local F,G=pcall(Color3.fromHex,(string.gsub(C,"^#","")))
+if F then return G end
+return nil
+end
+return C
+end
+
+
+
+local function ParseInlineToken(B,C)
+B=string.match(B,"^%s*(.-)%s*$")or""
+
+local F=string.match(B,"^(%S+)")or""
+local G=string.sub(B,#F+1)
+
+local H
+local J=false
+
+local L=string.match(F,"^[Ii][Cc][Oo][Nn]:(.+)$")
+if B==""or string.lower(F)=="icon"then
+
+H=C and C.Icon
+J=true
+elseif L then
+
+H=L
+J=true
+else
+H=F
+end
+
+
+
+if J and(H==nil or H=="")then
+return{Drop=true}
+end
+
+if not IsImageSource(H)then
+return nil
+end
+
+local M={}
+for N,O in string.gmatch(G,"([%w_]+)%s*=%s*([^%s]+)")do
+local P=x[string.lower(N)]
+if P then
+local Q=ParseInlineAttrValue(P,O)
+if Q~=nil then
+M[P]=Q
 end
 end
 end
 
-local M=p.ResolveImageScaleType(C,L)
-local N=(L.KeepAspect or L.Native or L.Original)and true or false
-local O=N or type(L.OnNativeSize)=="function"
+return{Source=H,Options=M}
+end
 
-local P=(L.ScaleType or L.Crop or L.Stretch or L.Fit)and M or"Fit"
 
-local Q=r("Frame",{
-Size=L.Size or UDim2.new(0,0,0,0),
+function p.HasInlineIcons(B)
+if type(B)~="string"or B==""then return false end
+return string.find(B,"{",1,true)~=nil
+end
+
+
+
+function p.ParseInlineText(B,C)
+local F={}
+if type(B)~="string"or B==""then
+return F
+end
+
+local G={}
+local function Flush()
+if#G==0 then return end
+local H=table.concat(G)
+G={}
+if H~=""then
+table.insert(F,{Type="Text",Content=H})
+end
+end
+
+
+
+
+local H=false
+local J=false
+
+local function DropToken()
+
+while#G>0 and string.match(G[#G],"%s")do
+table.remove(G)
+J=true
+end
+H=true
+end
+
+local function PushChar(L)
+if H then
+if string.match(L,"%s")then
+
+J=true
+return
+end
+H=false
+if J and#G>0 then
+table.insert(G," ")
+end
+J=false
+end
+table.insert(G,L)
+end
+
+local L=1
+local M=#B
+
+while L<=M do
+local N=string.sub(B,L,L)
+
+if N=="{"and string.sub(B,L+1,L+1)=="{"then
+PushChar"{"
+L=L+2
+elseif N=="}"and string.sub(B,L+1,L+1)=="}"then
+PushChar"}"
+L=L+2
+elseif N=="{"then
+local O=string.find(B,"}",L+1,true)
+local P=O and ParseInlineToken(string.sub(B,L+1,O-1),C)
+
+if not P then
+
+PushChar(N)
+L=L+1
+else
+if P.Drop then
+DropToken()
+else
+H,J=false,false
+Flush()
+table.insert(F,{
+Type="Icon",
+Content=P.Source,
+Options=P.Options,
+})
+end
+L=O+1
+end
+else
+PushChar(N)
+L=L+1
+end
+end
+
+Flush()
+
+
+
+
+local N=false
+for O,P in ipairs(F)do
+if P.Type=="Icon"then
+N=true
+break
+end
+end
+
+if N then
+local O={}
+for P,Q in ipairs(F)do
+if Q.Type~="Text"then
+table.insert(O,Q)
+else
+local R=Q.Content
+local S=F[P-1]
+local T=F[P+1]
+if not S or S.Type=="Icon"then
+R=string.gsub(R,"^%s+","")
+end
+if not T or T.Type=="Icon"then
+R=string.gsub(R,"%s+$","")
+end
+if R~=""then
+Q.Content=R
+table.insert(O,Q)
+end
+end
+end
+F=O
+end
+
+return F
+end
+
+
+
+function p.StripInlineIcons(B,C)
+if not p.HasInlineIcons(B)then
+return type(B)=="string"and B or""
+end
+
+local F={}
+for G,H in ipairs(p.ParseInlineText(B,C))do
+if H.Type=="Text"then
+table.insert(F,H.Content)
+end
+end
+
+local G=table.concat(F," ")
+return(string.match(G,"^%s*(.-)%s*$"))or G
+end
+
+
+
+function p.MaxInlineIconSize(B,C,F)
+F=F or 0
+if not p.HasInlineIcons(B)then
+return F
+end
+
+local G=F
+for H,J in ipairs(p.ParseInlineText(B,C))do
+if J.Type=="Icon"then
+local L=J.Options or{}
+local M=L.Height or L.Size
+or(C and C.IconSize)or F
+if M and M>G then
+G=M
+end
+end
+end
+return G
+end
+
+
+
+
+local function InlineIconCacheName(B,C,F)
+local G=B
+if type(B)=="table"then
+G=B.url or B.gif or B.mp4 or B.webm or B.file or"icon"
+end
+G=tostring(G)
+G=string.match(G,"([^/]+)$")or G
+G=string.gsub(G,"[^%w%-_]","_")
+if#G>24 then
+G=string.sub(G,1,24)
+end
+return(F or"Inline").."-"..tostring(C or 1).."-"..G
+end
+p.InlineIconCacheName=InlineIconCacheName
+
+
+
+function p.InlineIconFrame(B,C)
+if type(B)~="table"or B.Type~="Icon"then return nil end
+
+local F=B.Content
+if not IsImageSource(F)then return nil end
+
+C=C or{}
+local G=B.Options or{}
+
+local H=G.Height or G.Size or C.IconSize or 18
+local J=G.Width or G.Size or H
+
+local L=G.Themed
+if L==nil then L=C.IconThemed end
+
+if L==nil then L=p.TryIcon(F)~=nil end
+
+if G.Color then L=false end
+
+local M=G.KeepAspect
+if M==nil then M=C.IconKeepAspect end
+
+local N=p.Image(
+F,
+InlineIconCacheName(F,C.Index,C.CachePrefix),
+0,
+C.Folder,
+C.ImageKind or"Icon",
+L and true or false,
+L and true or false,
+C.ThemeTagName or"Text",
+{
+ScaleType=G.ScaleType or C.IconScaleType,
+KeepAspect=M,
+Size=UDim2.fromOffset(J,H),
+}
+)
+if not N then return nil end
+
+N.Name="InlineIcon"
+N.Size=UDim2.fromOffset(J,H)
+N.BackgroundTransparency=1
+
+local O=N:FindFirstChildOfClass"ImageLabel"
+if O then
+local P=G.Transparency
+if P==nil then P=C.IconTransparency end
+if P~=nil then
+O.ImageTransparency=P
+end
+if G.Color then
+
+p.Objects[O]=nil
+O.ImageColor3=G.Color
+end
+end
+
+return N,O
+end
+
+
+
+function p.TrySetWraps(B,C)
+if not B then return false end
+return(pcall(function()
+B.Wraps=C~=false
+end))
+end
+
+function p.Image(B,C,F,G,H,J,L,M,N)
+G=G or"Temp"
+C=p.SanitizeFilename(C)
+
+
+
+local O={}
+if type(N)=="table"then
+for P,Q in pairs(N)do O[P]=Q end
+end
+if type(B)=="table"then
+for P,Q in ipairs(v)do
+if O[Q]==nil and B[Q]~=nil then
+O[Q]=B[Q]
+end
+end
+end
+
+local P=p.ResolveImageScaleType(H,O)
+local Q=(O.KeepAspect or O.Native or O.Original)and true or false
+local R=Q or type(O.OnNativeSize)=="function"
+
+local S=(O.ScaleType or O.Crop or O.Stretch or O.Fit)and P or"Fit"
+
+local T=r("Frame",{
+Size=O.Size or UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
 },{
 r("ImageLabel",{
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
-ScaleType=M,
-ResampleMode=L.ResampleMode or nil,
-ThemeTag=(p.Icon(x)or G)and{
-ImageColor3=F and(H or"Icon")or nil
+ScaleType=P,
+ResampleMode=O.ResampleMode or nil,
+ThemeTag=(p.Icon(B)or L)and{
+ImageColor3=J and(M or"Icon")or nil
 }or nil,
 },{
 r("UICorner",{
-CornerRadius=UDim.new(0,A)
+CornerRadius=UDim.new(0,F)
 })
 })
 })
-local R=Q:FindFirstChildOfClass"ImageLabel"
-local S=(type(x)=="table"and x.url)or x
-local T=(type(x)=="table"and(x.gif or x.file))or nil
-local U=(type(x)=="table"and x.mp4)or nil
-local V=(type(x)=="table"and x.webm)or nil
+local U=T:FindFirstChildOfClass"ImageLabel"
+local V=(type(B)=="table"and B.url)or B
+local W=(type(B)=="table"and(B.gif or B.file))or nil
+local X=(type(B)=="table"and B.mp4)or nil
+local Y=(type(B)=="table"and B.webm)or nil
 
 
-local function SetNativeSize(W)
-W=p.ToVector2(W)
-if not W or W.X<=0 or W.Y<=0 then return end
-if type(S)=="string"then
-p.ImageNativeSizes[S]=W
+local function SetNativeSize(_)
+_=p.ToVector2(_)
+if not _ or _.X<=0 or _.Y<=0 then return end
+if type(V)=="string"then
+p.ImageNativeSizes[V]=_
 end
-if N and R then
-p.ApplyImageAspect(R,W)
+if Q and U then
+p.ApplyImageAspect(U,_)
 end
-if type(L.OnNativeSize)=="function"then
-pcall(L.OnNativeSize,W,Q)
-end
-end
-
-
-local function ReadNativeSizeFromFile(W)
-if not O then return end
-if not(isfile and readfile and isfile(W))then return end
-local X,Y=pcall(readfile,W)
-if X then
-SetNativeSize(p.GetImageSizeFromData(Y))
+if type(O.OnNativeSize)=="function"then
+pcall(O.OnNativeSize,_,T)
 end
 end
 
 
-if R and L.ImageRectOffset then
-R.ImageRectOffset=p.ToVector2(L.ImageRectOffset)or Vector2.zero
-end
-if R and L.ImageRectSize then
-local W=p.ToVector2(L.ImageRectSize)
-if W then
-R.ImageRectSize=W
-SetNativeSize(W)
-end
-end
-if L.NativeSize then
-SetNativeSize(L.NativeSize)
-end
-
-if type(S)=="string"and p.Icon(S)then
-local W=p.Icon(S)
-if not R then
-R=r("ImageLabel",{
-Size=UDim2.new(1,0,1,0),
-BackgroundTransparency=1,
-ScaleType=M,
-})
-R.Parent=Q
-end
-R.Image=W[1]
-R.ImageRectOffset=W[2].ImageRectPosition
-R.ImageRectSize=W[2].ImageRectSize
-SetNativeSize(W[2].ImageRectSize)
-elseif type(S)=="string"and string.find(S,"http")then
-local W="ANUI/"..B.."/assets"
-if isfolder and makefolder then
-if not isfolder"ANUI"then makefolder"ANUI"end
-if not isfolder("ANUI/"..B)then makefolder("ANUI/"..B)end
-if not isfolder(W)then makefolder(W)end
-end
-local aa,ab=pcall(function()
-task.spawn(function()
-local X=GetBaseUrl(S)
-local Y=LoadUrlMap(W)
-local _=Y[X]
-if V and isfile and isfile(W.."/"..V)then
-local aa,ab=pcall(getcustomasset,W.."/"..V)
+local function ReadNativeSizeFromFile(_)
+if not R then return end
+if not(isfile and readfile and isfile(_))then return end
+local aa,ab=pcall(readfile,_)
 if aa then
-local ac=r("VideoFrame",{
-BackgroundTransparency=1,
-Size=UDim2.new(1,0,1,0),
-Video=ab,
-Looped=true,
-Volume=0,
-},{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
-})
-ac.Parent=Q
-R.Visible=false
-ac:Play()
-Y[X]=Y[X]or{}
-Y[X].webm=V
-SaveUrlMap(W,Y)
-return
-end
-end
-if U and isfile and isfile(W.."/"..U)then
-local aa,ab=pcall(getcustomasset,W.."/"..U)
-if aa then
-local ac=r("VideoFrame",{
-BackgroundTransparency=1,
-Size=UDim2.new(1,0,1,0),
-Video=ab,
-Looped=true,
-Volume=0,
-},{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
-})
-ac.Parent=Q
-R.Visible=false
-ac:Play()
-Y[X]=Y[X]or{}
-Y[X].mp4=U
-SaveUrlMap(W,Y)
-return
-end
-end
-if T and isfile and isfile(W.."/"..T)then
-local aa,ab=pcall(getcustomasset,W.."/"..T)
-if aa and R then
-R.Image=ab
-R.ScaleType=P
-ReadNativeSizeFromFile(W.."/"..T)
-end
-end
-if _ and _.mp4 and isfile and isfile(W.."/".._.mp4)then
-local aa,ab=pcall(getcustomasset,W.."/".._.mp4)
-if aa then
-local ac=r("VideoFrame",{
-BackgroundTransparency=1,
-Size=UDim2.new(1,0,1,0),
-Video=ab,
-Looped=true,
-Volume=0,
-},{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
-})
-ac.Parent=Q
-R.Visible=false
-ac:Play()
-return
-end
-end
-if _ and _.webm and isfile and isfile(W.."/".._.webm)then
-local aa,ab=pcall(getcustomasset,W.."/".._.webm)
-if aa then
-local ac=r("VideoFrame",{
-BackgroundTransparency=1,
-Size=UDim2.new(1,0,1,0),
-Video=ab,
-Looped=true,
-Volume=0,
-},{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
-})
-ac.Parent=Q
-R.Visible=false
-ac:Play()
-return
-end
-end
-if _ and _.gif and isfile and isfile(W.."/".._.gif)then
-local aa,ab=pcall(getcustomasset,W.."/".._.gif)
-if aa and R then
-R.Image=ab
-R.ScaleType=P
-ReadNativeSizeFromFile(W.."/".._.gif)
-end
-local ac=p.ConvertGifToWebm(S,W,C,z)
-if ac then
-_.webm=C.."-"..z..".webm"
-SaveUrlMap(W,Y)
-local ad=r("VideoFrame",{
-BackgroundTransparency=1,
-Size=UDim2.new(1,0,1,0),
-Video=ac,
-Looped=true,
-Volume=0,
-},{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
-})
-ad.Parent=Q
-R.Visible=false
-ad:Play()
-return
-end
-end
-local aa=p.Request{Url=S,Method="GET"}
-local ab=aa and(aa.Body or aa)or""
-local ac=GetBaseUrl(S)
-local ad=string.lower((ac:match"%.([%w]+)$"or""))
-local ae
-if aa and aa.Headers then
-ae=aa.Headers["Content-Type"]or aa.Headers["content-type"]or aa.Headers["Content-type"]
-end
-if not ad or ad==""then
-if ae then
-if string.find(ae,"gif")then ad="gif"
-elseif string.find(ae,"jpeg")or string.find(ae,"jpg")then ad="jpg"
-elseif string.find(ae,"png")then ad="png"else ad="png"end
-else
-ad="png"
-end
-end
-local af=C.."-"..z.."."..ad
-local ag=W.."/"..af
-writefile(ag,ab)
-if O then
 SetNativeSize(p.GetImageSizeFromData(ab))
 end
-Y[ac]=Y[ac]or{}
-if ad=="gif"then
-Y[ac].gif=af
-SaveUrlMap(W,Y)
-if R then R.ScaleType=P end
-local ah=p.ConvertGifToWebm(S,W,C,z)
-if ah then
-Y[ac].webm=C.."-"..z..".webm"
-SaveUrlMap(W,Y)
-local ai=r("VideoFrame",{
+end
+
+
+if U and O.ImageRectOffset then
+U.ImageRectOffset=p.ToVector2(O.ImageRectOffset)or Vector2.zero
+end
+if U and O.ImageRectSize then
+local aa=p.ToVector2(O.ImageRectSize)
+if aa then
+U.ImageRectSize=aa
+SetNativeSize(aa)
+end
+end
+if O.NativeSize then
+SetNativeSize(O.NativeSize)
+end
+
+if type(V)=="string"and p.Icon(V)then
+local aa=p.Icon(V)
+if not U then
+U=r("ImageLabel",{
+Size=UDim2.new(1,0,1,0),
+BackgroundTransparency=1,
+ScaleType=P,
+})
+U.Parent=T
+end
+U.Image=aa[1]
+U.ImageRectOffset=aa[2].ImageRectPosition
+U.ImageRectSize=aa[2].ImageRectSize
+SetNativeSize(aa[2].ImageRectSize)
+elseif type(V)=="string"and string.find(V,"http")then
+local aa="ANUI/"..G.."/assets"
+if isfolder and makefolder then
+if not isfolder"ANUI"then makefolder"ANUI"end
+if not isfolder("ANUI/"..G)then makefolder("ANUI/"..G)end
+if not isfolder(aa)then makefolder(aa)end
+end
+local ab,ac=pcall(function()
+task.spawn(function()
+local ab=GetBaseUrl(V)
+local _=LoadUrlMap(aa)
+local ac=_[ab]
+if Y and isfile and isfile(aa.."/"..Y)then
+local ad,ae=pcall(getcustomasset,aa.."/"..Y)
+if ad then
+local af=r("VideoFrame",{
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,1,0),
-Video=ah,
+Video=ae,
 Looped=true,
 Volume=0,
 },{
-r("UICorner",{CornerRadius=UDim.new(0,A)})
+r("UICorner",{CornerRadius=UDim.new(0,F)})
 })
-ai.Parent=Q
-R.Visible=false
-ai:Play()
+af.Parent=T
+U.Visible=false
+af:Play()
+_[ab]=_[ab]or{}
+_[ab].webm=Y
+SaveUrlMap(aa,_)
 return
 end
 end
-local ah,ai=pcall(getcustomasset,ag)
+if X and isfile and isfile(aa.."/"..X)then
+local ad,ae=pcall(getcustomasset,aa.."/"..X)
+if ad then
+local af=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=ae,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,F)})
+})
+af.Parent=T
+U.Visible=false
+af:Play()
+_[ab]=_[ab]or{}
+_[ab].mp4=X
+SaveUrlMap(aa,_)
+return
+end
+end
+if W and isfile and isfile(aa.."/"..W)then
+local ad,ae=pcall(getcustomasset,aa.."/"..W)
+if ad and U then
+U.Image=ae
+U.ScaleType=S
+ReadNativeSizeFromFile(aa.."/"..W)
+end
+end
+if ac and ac.mp4 and isfile and isfile(aa.."/"..ac.mp4)then
+local ad,ae=pcall(getcustomasset,aa.."/"..ac.mp4)
+if ad then
+local af=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=ae,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,F)})
+})
+af.Parent=T
+U.Visible=false
+af:Play()
+return
+end
+end
+if ac and ac.webm and isfile and isfile(aa.."/"..ac.webm)then
+local ad,ae=pcall(getcustomasset,aa.."/"..ac.webm)
+if ad then
+local af=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=ae,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,F)})
+})
+af.Parent=T
+U.Visible=false
+af:Play()
+return
+end
+end
+if ac and ac.gif and isfile and isfile(aa.."/"..ac.gif)then
+local ad,ae=pcall(getcustomasset,aa.."/"..ac.gif)
+if ad and U then
+U.Image=ae
+U.ScaleType=S
+ReadNativeSizeFromFile(aa.."/"..ac.gif)
+end
+local af=p.ConvertGifToWebm(V,aa,H,C)
+if af then
+ac.webm=H.."-"..C..".webm"
+SaveUrlMap(aa,_)
+local ag=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=af,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,F)})
+})
+ag.Parent=T
+U.Visible=false
+ag:Play()
+return
+end
+end
+local ad=p.Request{Url=V,Method="GET"}
+local ae=ad and(ad.Body or ad)or""
+local af=GetBaseUrl(V)
+local ag=string.lower((af:match"%.([%w]+)$"or""))
+local ah
+if ad and ad.Headers then
+ah=ad.Headers["Content-Type"]or ad.Headers["content-type"]or ad.Headers["Content-type"]
+end
+if not ag or ag==""then
 if ah then
-if R then R.Image=ai end
+if string.find(ah,"gif")then ag="gif"
+elseif string.find(ah,"jpeg")or string.find(ah,"jpg")then ag="jpg"
+elseif string.find(ah,"png")then ag="png"else ag="png"end
 else
-warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",ag,tostring(ai)))
-Q:Destroy()
+ag="png"
+end
+end
+local ai=H.."-"..C.."."..ag
+local aj=aa.."/"..ai
+writefile(aj,ae)
+if R then
+SetNativeSize(p.GetImageSizeFromData(ae))
+end
+_[af]=_[af]or{}
+if ag=="gif"then
+_[af].gif=ai
+SaveUrlMap(aa,_)
+if U then U.ScaleType=S end
+local ak=p.ConvertGifToWebm(V,aa,H,C)
+if ak then
+_[af].webm=H.."-"..C..".webm"
+SaveUrlMap(aa,_)
+local al=r("VideoFrame",{
+BackgroundTransparency=1,
+Size=UDim2.new(1,0,1,0),
+Video=ak,
+Looped=true,
+Volume=0,
+},{
+r("UICorner",{CornerRadius=UDim.new(0,F)})
+})
+al.Parent=T
+U.Visible=false
+al:Play()
+return
+end
+end
+local ak,al=pcall(getcustomasset,aj)
+if ak then
+if U then U.Image=al end
+else
+warn(string.format("[ ANUI.Creator ] Failed to load custom asset '%s': %s",aj,tostring(al)))
+T:Destroy()
 return
 end
 end)
 end)
-if not aa then
-warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(ab))
-Q:Destroy()
+if not ab then
+warn("[ ANUI.Creator ]  '"..tostring(identifyexecutor and identifyexecutor()or"unknown").."' doesnt support the URL Images. Error: "..tostring(ac))
+T:Destroy()
 end
-elseif S==""then
-Q.Visible=false
+elseif V==""then
+T.Visible=false
 else
-if R then R.Image=S end
-if O then
-p.RequestImageNativeSize(S,SetNativeSize)
+if U then U.Image=V end
+if R then
+p.RequestImageNativeSize(V,SetNativeSize)
 end
 end
 
-return Q
+return T
 end
 
 
@@ -1555,7 +1962,7 @@ BackgroundColor3="Text",
 
 })
 
-local b=ab("Frame",{
+local aj=ab("Frame",{
 Size=UDim2.new(1,
 af.Icon and-28-ad.UIPadding or 0,
 1,0),
@@ -1604,12 +2011,12 @@ TextColor3="Text"
 },
 Text=af.Content,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
-Parent=b
+Parent=aj
 })
 end
 
 
-local d=aa.NewRoundFrame(ad.UICorner,"Squircle",{
+local ak=aa.NewRoundFrame(ad.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 Position=UDim2.new(2,0,1,0),
 AnchorPoint=Vector2.new(0,1),
@@ -1644,37 +2051,37 @@ CornerRadius=UDim.new(0,ad.UICorner),
 })
 }),
 
-b,
+aj,
 ag,ah,
 })
 
-local e=ab("Frame",{
+local al=ab("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,0,0),
 Parent=ae.Holder
 },{
-d
+ak
 })
 
-function af.Close(f)
+function af.Close(b)
 if not af.Closed then
 af.Closed=true
-ac(e,0.45,{Size=UDim2.new(1,0,0,-8)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ac(d,0.55,{Position=UDim2.new(2,0,1,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ac(al,0.45,{Size=UDim2.new(1,0,0,-8)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ac(ak,0.55,{Position=UDim2.new(2,0,1,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 task.wait(.45)
-e:Destroy()
+al:Destroy()
 end
 end
 
 task.spawn(function()
 task.wait()
-ac(e,0.45,{Size=UDim2.new(
+ac(al,0.45,{Size=UDim2.new(
 1,
 0,
 0,
-d.AbsoluteSize.Y
+ak.AbsoluteSize.Y
 )},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ac(d,0.45,{Position=UDim2.new(0,0,1,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ac(ak,0.45,{Position=UDim2.new(0,0,1,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 if af.Duration then
 ac(ai,af.Duration,{Size=UDim2.new(1,0,1,0)},Enum.EasingStyle.Linear,Enum.EasingDirection.InOut):Play()
 task.wait(af.Duration)
@@ -1704,38 +2111,38 @@ return ad end function a.e()
 
 
 
-local aa=4294967296;local ab=aa-1;local function c(ac,ad)local ae,af=0,1;while ac~=0 or ad~=0 do local ag,ah=ac%2,ad%2;local ai=(ag+ah)%2;ae=ae+ai*af;ac=math.floor(ac/2)ad=math.floor(ad/2)af=af*2 end;return ae%aa end;local function k(ac,ad,ae,...)local af;if ad then ac=ac%aa;ad=ad%aa;af=c(ac,ad)if ae then af=k(af,ae,...)end;return af elseif ac then return ac%aa else return 0 end end;local function n(ac,ad,ae,...)local af;if ad then ac=ac%aa;ad=ad%aa;af=(ac+ad-c(ac,ad))/2;if ae then af=n(af,ae,...)end;return af elseif ac then return ac%aa else return ab end end;local function o(ac)return ab-ac end;local function q(ac,ad)if ad<0 then return lshift(ac,-ad)end;return math.floor(ac%4294967296/2^ad)end;local function s(ac,ad)if ad>31 or ad<-31 then return 0 end;return q(ac%aa,ad)end;local function lshift(ac,ad)if ad<0 then return s(ac,-ad)end;return ac*2^ad%4294967296 end;local function t(ac,ad)ac=ac%aa;ad=ad%32;local ae=n(ac,2^ad-1)return s(ac,ad)+lshift(ae,32-ad)end;local ac={0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2}local function w(ad)return string.gsub(ad,".",function(ae)return string.format("%02x",string.byte(ae))end)end;local function y(ad,ae)local af=""for ag=1,ae do local ah=ad%256;af=string.char(ah)..af;ad=(ad-ah)/256 end;return af end;local function D(ad,ae)local af=0;for ag=ae,ae+3 do af=af*256+string.byte(ad,ag)end;return af end;local function E(ad,ae)local af=64-(ae+9)%64;ae=y(8*ae,8)ad=ad.."\128"..string.rep("\0",af)..ae;assert(#ad%64==0)return ad end;local function I(ad)ad[1]=0x6a09e667;ad[2]=0xbb67ae85;ad[3]=0x3c6ef372;ad[4]=0xa54ff53a;ad[5]=0x510e527f;ad[6]=0x9b05688c;ad[7]=0x1f83d9ab;ad[8]=0x5be0cd19;return ad end;local function K(ad,ae,af)local ag={}for ah=1,16 do ag[ah]=D(ad,ae+(ah-1)*4)end;for ah=17,64 do local ai=ag[ah-15]local b=k(t(ai,7),t(ai,18),s(ai,3))ai=ag[ah-2]ag[ah]=(ag[ah-16]+b+ag[ah-7]+k(t(ai,17),t(ai,19),s(ai,10)))%aa end;local ah,ai,b,d,e,f,g,h=af[1],af[2],af[3],af[4],af[5],af[6],af[7],af[8]for j=1,64 do local l=k(t(ah,2),t(ah,13),t(ah,22))local m=k(n(ah,ai),n(ah,b),n(ai,b))local p=(l+m)%aa;local r=k(t(e,6),t(e,11),t(e,25))local u=k(n(e,f),n(o(e),g))local v=(h+r+u+ac[j]+ag[j])%aa;h=g;g=f;f=e;e=(d+v)%aa;d=b;b=ai;ai=ah;ah=(v+p)%aa end;af[1]=(af[1]+ah)%aa;af[2]=(af[2]+ai)%aa;af[3]=(af[3]+b)%aa;af[4]=(af[4]+d)%aa;af[5]=(af[5]+e)%aa;af[6]=(af[6]+f)%aa;af[7]=(af[7]+g)%aa;af[8]=(af[8]+h)%aa end;local function Z(ad)ad=E(ad,#ad)local ae=I{}for af=1,#ad,64 do K(ad,af,ae)end;return w(y(ae[1],4)..y(ae[2],4)..y(ae[3],4)..y(ae[4],4)..y(ae[5],4)..y(ae[6],4)..y(ae[7],4)..y(ae[8],4))end;local ad;local ae={["\\"]="\\",["\""]="\"",["\b"]="b",["\f"]="f",["\n"]="n",["\r"]="r",["\t"]="t"}local af={["/"]="/"}for ag,ah in pairs(ae)do af[ah]=ag end;local ag=function(ag)return"\\"..(ae[ag]or string.format("u%04x",ag:byte()))end;local ah=function(ah)return"null"end;local ai=function(ai,b)local d={}b=b or{}if b[ai]then error"circular reference"end;b[ai]=true;if rawget(ai,1)~=nil or next(ai)==nil then local e=0;for f in pairs(ai)do if type(f)~="number"then error"invalid table: mixed or invalid key types"end;e=e+1 end;if e~=#ai then error"invalid table: sparse array"end;for f,g in ipairs(ai)do table.insert(d,ad(g,b))end;b[ai]=nil;return"["..table.concat(d,",").."]"else for e,f in pairs(ai)do if type(e)~="string"then error"invalid table: mixed or invalid key types"end;table.insert(d,ad(e,b)..":"..ad(f,b))end;b[ai]=nil;return"{"..table.concat(d,",").."}"end end;local b=function(b)return'"'..b:gsub('[%z\1-\31\\"]',ag)..'"'end;local d=function(d)if d~=d or d<=-math.huge or d>=math.huge then error("unexpected number value '"..tostring(d).."'")end;return string.format("%.14g",d)end;local e={["nil"]=ah,table=ai,string=b,number=d,boolean=tostring}ad=function(f,g)local h=type(f)local j=e[h]if j then return j(f,g)end;error("unexpected type '"..h.."'")end;local f=function(f)return ad(f)end;local g;local h=function(...)local h={}for j=1,select("#",...)do h[select(j,...)]=true end;return h end;local j=h(" ","\t","\r","\n")local l=h(" ","\t","\r","\n","]","}",",")local m=h("\\","/",'"',"b","f","n","r","t","u")local p=h("true","false","null")local r={["true"]=true,["false"]=false,null=nil}local u=function(u,v,x,z)for A=v,#u do if x[u:sub(A,A)]~=z then return A end end;return#u+1 end;local v=function(v,x,z)local A=1;local B=1;for C=1,x-1 do B=B+1;if v:sub(C,C)=="\n"then A=A+1;B=1 end end;error(string.format("%s at line %d col %d",z,A,B))end;local x=function(x)local z=math.floor;if x<=0x7f then return string.char(x)elseif x<=0x7ff then return string.char(z(x/64)+192,x%64+128)elseif x<=0xffff then return string.char(z(x/4096)+224,z(x%4096/64)+128,x%64+128)elseif x<=0x10ffff then return string.char(z(x/262144)+240,z(x%262144/4096)+128,z(x%4096/64)+128,x%64+128)end;error(string.format("invalid unicode codepoint '%x'",x))end;local z=function(z)local A=tonumber(z:sub(1,4),16)local B=tonumber(z:sub(7,10),16)if B then return x((A-0xd800)*0x400+B-0xdc00+0x10000)else return x(A)end end;local A=function(A,B)local C=""local F=B+1;local G=F;while F<=#A do local H=A:byte(F)if H<32 then v(A,F,"control character in string")elseif H==92 then C=C..A:sub(G,F-1)F=F+1;local J=A:sub(F,F)if J=="u"then local L=A:match("^[dD][89aAbB]%x%x\\u%x%x%x%x",F+1)or A:match("^%x%x%x%x",F+1)or v(A,F-1,"invalid unicode escape in string")C=C..z(L)F=F+#L else if not m[J]then v(A,F-1,"invalid escape char '"..J.."' in string")end;C=C..af[J]end;G=F+1 elseif H==34 then C=C..A:sub(G,F-1)return C,F+1 end;F=F+1 end;v(A,B,"expected closing quote for string")end;local B=function(B,C)local F=u(B,C,l)local G=B:sub(C,F-1)local H=tonumber(G)if not H then v(B,C,"invalid number '"..G.."'")end;return H,F end;local C=function(C,F)local G=u(C,F,l)local H=C:sub(F,G-1)if not p[H]then v(C,F,"invalid literal '"..H.."'")end;return r[H],G end;local F=function(F,G)local H={}local J=1;G=G+1;while 1 do local L;G=u(F,G,j,true)if F:sub(G,G)=="]"then G=G+1;break end;L,G=g(F,G)H[J]=L;J=J+1;G=u(F,G,j,true)local M=F:sub(G,G)G=G+1;if M=="]"then break end;if M~=","then v(F,G,"expected ']' or ','")end end;return H,G end;local G=function(G,H)local J={}H=H+1;while 1 do local L,M;H=u(G,H,j,true)if G:sub(H,H)=="}"then H=H+1;break end;if G:sub(H,H)~='"'then v(G,H,"expected string for key")end;L,H=g(G,H)H=u(G,H,j,true)if G:sub(H,H)~=":"then v(G,H,"expected ':' after key")end;H=u(G,H+1,j,true)M,H=g(G,H)J[L]=M;H=u(G,H,j,true)local N=G:sub(H,H)H=H+1;if N=="}"then break end;if N~=","then v(G,H,"expected '}' or ','")end end;return J,H end;local H={['"']=A,["0"]=B,["1"]=B,["2"]=B,["3"]=B,["4"]=B,["5"]=B,["6"]=B,["7"]=B,["8"]=B,["9"]=B,["-"]=B,t=C,f=C,n=C,["["]=F,["{"]=G}g=function(J,L)local M=J:sub(L,L)local N=H[M]if N then return N(J,L)end;v(J,L,"unexpected character '"..M.."'")end;local J=function(J)if type(J)~="string"then error("expected argument of type string, got "..type(J))end;local L,M=g(J,u(J,1,j,true))M=u(J,M,j,true)if M<=#J then v(J,M,"trailing garbage")end;return L end;
-local L,M,N=f,J,Z;
+local aa=4294967296;local ab=aa-1;local function c(ac,ad)local ae,af=0,1;while ac~=0 or ad~=0 do local ag,ah=ac%2,ad%2;local ai=(ag+ah)%2;ae=ae+ai*af;ac=math.floor(ac/2)ad=math.floor(ad/2)af=af*2 end;return ae%aa end;local function k(ac,ad,ae,...)local af;if ad then ac=ac%aa;ad=ad%aa;af=c(ac,ad)if ae then af=k(af,ae,...)end;return af elseif ac then return ac%aa else return 0 end end;local function n(ac,ad,ae,...)local af;if ad then ac=ac%aa;ad=ad%aa;af=(ac+ad-c(ac,ad))/2;if ae then af=n(af,ae,...)end;return af elseif ac then return ac%aa else return ab end end;local function o(ac)return ab-ac end;local function q(ac,ad)if ad<0 then return lshift(ac,-ad)end;return math.floor(ac%4294967296/2^ad)end;local function s(ac,ad)if ad>31 or ad<-31 then return 0 end;return q(ac%aa,ad)end;local function lshift(ac,ad)if ad<0 then return s(ac,-ad)end;return ac*2^ad%4294967296 end;local function t(ac,ad)ac=ac%aa;ad=ad%32;local ae=n(ac,2^ad-1)return s(ac,ad)+lshift(ae,32-ad)end;local ac={0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2}local function w(ad)return string.gsub(ad,".",function(ae)return string.format("%02x",string.byte(ae))end)end;local function y(ad,ae)local af=""for ag=1,ae do local ah=ad%256;af=string.char(ah)..af;ad=(ad-ah)/256 end;return af end;local function D(ad,ae)local af=0;for ag=ae,ae+3 do af=af*256+string.byte(ad,ag)end;return af end;local function E(ad,ae)local af=64-(ae+9)%64;ae=y(8*ae,8)ad=ad.."\128"..string.rep("\0",af)..ae;assert(#ad%64==0)return ad end;local function I(ad)ad[1]=0x6a09e667;ad[2]=0xbb67ae85;ad[3]=0x3c6ef372;ad[4]=0xa54ff53a;ad[5]=0x510e527f;ad[6]=0x9b05688c;ad[7]=0x1f83d9ab;ad[8]=0x5be0cd19;return ad end;local function K(ad,ae,af)local ag={}for ah=1,16 do ag[ah]=D(ad,ae+(ah-1)*4)end;for ah=17,64 do local ai=ag[ah-15]local aj=k(t(ai,7),t(ai,18),s(ai,3))ai=ag[ah-2]ag[ah]=(ag[ah-16]+aj+ag[ah-7]+k(t(ai,17),t(ai,19),s(ai,10)))%aa end;local ah,ai,aj,ak,al,b,d,e=af[1],af[2],af[3],af[4],af[5],af[6],af[7],af[8]for f=1,64 do local g=k(t(ah,2),t(ah,13),t(ah,22))local h=k(n(ah,ai),n(ah,aj),n(ai,aj))local j=(g+h)%aa;local l=k(t(al,6),t(al,11),t(al,25))local m=k(n(al,b),n(o(al),d))local p=(e+l+m+ac[f]+ag[f])%aa;e=d;d=b;b=al;al=(ak+p)%aa;ak=aj;aj=ai;ai=ah;ah=(p+j)%aa end;af[1]=(af[1]+ah)%aa;af[2]=(af[2]+ai)%aa;af[3]=(af[3]+aj)%aa;af[4]=(af[4]+ak)%aa;af[5]=(af[5]+al)%aa;af[6]=(af[6]+b)%aa;af[7]=(af[7]+d)%aa;af[8]=(af[8]+e)%aa end;local function Z(ad)ad=E(ad,#ad)local ae=I{}for af=1,#ad,64 do K(ad,af,ae)end;return w(y(ae[1],4)..y(ae[2],4)..y(ae[3],4)..y(ae[4],4)..y(ae[5],4)..y(ae[6],4)..y(ae[7],4)..y(ae[8],4))end;local ad;local ae={["\\"]="\\",["\""]="\"",["\b"]="b",["\f"]="f",["\n"]="n",["\r"]="r",["\t"]="t"}local af={["/"]="/"}for ag,ah in pairs(ae)do af[ah]=ag end;local ag=function(ag)return"\\"..(ae[ag]or string.format("u%04x",ag:byte()))end;local ah=function(ah)return"null"end;local ai=function(ai,aj)local ak={}aj=aj or{}if aj[ai]then error"circular reference"end;aj[ai]=true;if rawget(ai,1)~=nil or next(ai)==nil then local al=0;for b in pairs(ai)do if type(b)~="number"then error"invalid table: mixed or invalid key types"end;al=al+1 end;if al~=#ai then error"invalid table: sparse array"end;for b,d in ipairs(ai)do table.insert(ak,ad(d,aj))end;aj[ai]=nil;return"["..table.concat(ak,",").."]"else for al,b in pairs(ai)do if type(al)~="string"then error"invalid table: mixed or invalid key types"end;table.insert(ak,ad(al,aj)..":"..ad(b,aj))end;aj[ai]=nil;return"{"..table.concat(ak,",").."}"end end;local aj=function(aj)return'"'..aj:gsub('[%z\1-\31\\"]',ag)..'"'end;local ak=function(ak)if ak~=ak or ak<=-math.huge or ak>=math.huge then error("unexpected number value '"..tostring(ak).."'")end;return string.format("%.14g",ak)end;local al={["nil"]=ah,table=ai,string=aj,number=ak,boolean=tostring}ad=function(b,d)local e=type(b)local f=al[e]if f then return f(b,d)end;error("unexpected type '"..e.."'")end;local b=function(b)return ad(b)end;local d;local e=function(...)local e={}for f=1,select("#",...)do e[select(f,...)]=true end;return e end;local f=e(" ","\t","\r","\n")local g=e(" ","\t","\r","\n","]","}",",")local h=e("\\","/",'"',"b","f","n","r","t","u")local j=e("true","false","null")local l={["true"]=true,["false"]=false,null=nil}local m=function(m,p,r,u)for v=p,#m do if r[m:sub(v,v)]~=u then return v end end;return#m+1 end;local p=function(p,r,u)local v=1;local x=1;for z=1,r-1 do x=x+1;if p:sub(z,z)=="\n"then v=v+1;x=1 end end;error(string.format("%s at line %d col %d",u,v,x))end;local r=function(r)local u=math.floor;if r<=0x7f then return string.char(r)elseif r<=0x7ff then return string.char(u(r/64)+192,r%64+128)elseif r<=0xffff then return string.char(u(r/4096)+224,u(r%4096/64)+128,r%64+128)elseif r<=0x10ffff then return string.char(u(r/262144)+240,u(r%262144/4096)+128,u(r%4096/64)+128,r%64+128)end;error(string.format("invalid unicode codepoint '%x'",r))end;local u=function(u)local v=tonumber(u:sub(1,4),16)local x=tonumber(u:sub(7,10),16)if x then return r((v-0xd800)*0x400+x-0xdc00+0x10000)else return r(v)end end;local v=function(v,x)local z=""local A=x+1;local B=A;while A<=#v do local C=v:byte(A)if C<32 then p(v,A,"control character in string")elseif C==92 then z=z..v:sub(B,A-1)A=A+1;local F=v:sub(A,A)if F=="u"then local G=v:match("^[dD][89aAbB]%x%x\\u%x%x%x%x",A+1)or v:match("^%x%x%x%x",A+1)or p(v,A-1,"invalid unicode escape in string")z=z..u(G)A=A+#G else if not h[F]then p(v,A-1,"invalid escape char '"..F.."' in string")end;z=z..af[F]end;B=A+1 elseif C==34 then z=z..v:sub(B,A-1)return z,A+1 end;A=A+1 end;p(v,x,"expected closing quote for string")end;local x=function(x,z)local A=m(x,z,g)local B=x:sub(z,A-1)local C=tonumber(B)if not C then p(x,z,"invalid number '"..B.."'")end;return C,A end;local z=function(z,A)local B=m(z,A,g)local C=z:sub(A,B-1)if not j[C]then p(z,A,"invalid literal '"..C.."'")end;return l[C],B end;local A=function(A,B)local C={}local F=1;B=B+1;while 1 do local G;B=m(A,B,f,true)if A:sub(B,B)=="]"then B=B+1;break end;G,B=d(A,B)C[F]=G;F=F+1;B=m(A,B,f,true)local H=A:sub(B,B)B=B+1;if H=="]"then break end;if H~=","then p(A,B,"expected ']' or ','")end end;return C,B end;local B=function(B,C)local F={}C=C+1;while 1 do local G,H;C=m(B,C,f,true)if B:sub(C,C)=="}"then C=C+1;break end;if B:sub(C,C)~='"'then p(B,C,"expected string for key")end;G,C=d(B,C)C=m(B,C,f,true)if B:sub(C,C)~=":"then p(B,C,"expected ':' after key")end;C=m(B,C+1,f,true)H,C=d(B,C)F[G]=H;C=m(B,C,f,true)local J=B:sub(C,C)C=C+1;if J=="}"then break end;if J~=","then p(B,C,"expected '}' or ','")end end;return F,C end;local C={['"']=v,["0"]=x,["1"]=x,["2"]=x,["3"]=x,["4"]=x,["5"]=x,["6"]=x,["7"]=x,["8"]=x,["9"]=x,["-"]=x,t=z,f=z,n=z,["["]=A,["{"]=B}d=function(F,G)local H=F:sub(G,G)local J=C[H]if J then return J(F,G)end;p(F,G,"unexpected character '"..H.."'")end;local F=function(F)if type(F)~="string"then error("expected argument of type string, got "..type(F))end;local G,H=d(F,m(F,1,f,true))H=m(F,H,f,true)if H<=#F then p(F,H,"trailing garbage")end;return G end;
+local G,H,J=b,F,Z;
 
 
 
 
 
-local O={}
+local L={}
 
-local P=(cloneref or clonereference or function(P)return P end)
-
-
-function O.New(Q,R)
-
-local S=Q;
-local T=R;
-local U=true;
+local M=(cloneref or clonereference or function(M)return M end)
 
 
-local V=function(V)end;
+function L.New(N,O)
+
+local P=N;
+local Q=O;
+local R=true;
+
+
+local S=function(S)end;
 
 
 repeat task.wait(1)until game:IsLoaded();
 
 
-local W=false;
-local X,Y,_,aj,ak,al,am,an,ao=setclipboard or toclipboard,request or http_request or syn_request,string.char,tostring,string.sub,os.time,math.random,math.floor,gethwid or function()return P(game:GetService"Players").LocalPlayer.UserId end
+local T=false;
+local U,V,W,X,Y,_,am,an,ao=setclipboard or toclipboard,request or http_request or syn_request,string.char,tostring,string.sub,os.time,math.random,math.floor,gethwid or function()return M(game:GetService"Players").LocalPlayer.UserId end
 local ap,aq="",0;
 
 
 local ar="https://api.platoboost.app";
-local as=Y{
+local as=V{
 Url=ar.."/public/connectivity",
 Method="GET"
 };
@@ -1745,13 +2152,13 @@ end
 
 
 function cacheLink()
-if aq+(600)<al()then
-local at=Y{
+if aq+(600)<_()then
+local at=V{
 Url=ar.."/public/start",
 Method="POST",
-Body=L{
-service=S,
-identifier=N(ao())
+Body=G{
+service=P,
+identifier=J(ao())
 },
 Headers={
 ["Content-Type"]="application/json",
@@ -1760,24 +2167,24 @@ Headers={
 };
 
 if at.StatusCode==200 then
-local au=M(at.Body);
+local au=H(at.Body);
 
 if au.success==true then
 ap=au.data.url;
-aq=al();
+aq=_();
 return true,ap
 else
-V(au.message);
+S(au.message);
 return false,au.message
 end
 elseif at.StatusCode==429 then
 local au="you are being rate limited, please wait 20 seconds and try again.";
-V(au);
+S(au);
 return false,au
 end
 
 local au="Failed to cache link.";
-V(au);
+S(au);
 return false,au
 else
 return true,ap
@@ -1790,7 +2197,7 @@ cacheLink();
 local at=function()
 local at=""
 for au=1,16 do
-at=at.._(an(am()*(26))+97)
+at=at..W(an(am()*(26))+97)
 end
 return at
 end
@@ -1801,7 +2208,7 @@ local av=at();
 task.wait(0.2)
 if at()==av then
 local aw="platoboost nonce error.";
-V(aw);
+S(aw);
 error(aw);
 end
 end
@@ -1811,99 +2218,99 @@ local au=function()
 local au,av=cacheLink();
 
 if au then
-X(av);
+U(av);
 end
 end
 
 
 local av=function(av)
 local aw=at();
-local ax=ar.."/public/redeem/"..aj(S);
+local ax=ar.."/public/redeem/"..X(P);
 
 local ay={
-identifier=N(ao()),
+identifier=J(ao()),
 key=av
 }
 
-if U then
+if R then
 ay.nonce=aw;
 end
 
-local az=Y{
+local az=V{
 Url=ax,
 Method="POST",
-Body=L(ay),
+Body=G(ay),
 Headers={
 ["Content-Type"]="application/json"
 }
 };
 
 if az.StatusCode==200 then
-local aA=M(az.Body);
+local aA=H(az.Body);
 
 if aA.success==true then
 if aA.data.valid==true then
-if U then
-if aA.data.hash==N("true".."-"..aw.."-"..T)then
+if R then
+if aA.data.hash==J("true".."-"..aw.."-"..Q)then
 return true
 else
-V"failed to verify integrity.";
+S"failed to verify integrity.";
 return false
 end
 else
 return true
 end
 else
-V"key is invalid.";
+S"key is invalid.";
 return false
 end
 else
-if ak(aA.message,1,27)=="unique constraint violation"then
-V"you already have an active key, please wait for it to expire before redeeming it.";
+if Y(aA.message,1,27)=="unique constraint violation"then
+S"you already have an active key, please wait for it to expire before redeeming it.";
 return false
 else
-V(aA.message);
+S(aA.message);
 return false
 end
 end
 elseif az.StatusCode==429 then
-V"you are being rate limited, please wait 20 seconds and try again.";
+S"you are being rate limited, please wait 20 seconds and try again.";
 return false
 else
-V"server returned an invalid status code, please try again later.";
+S"server returned an invalid status code, please try again later.";
 return false
 end
 end
 
 
 local aw=function(aw)
-if W==true then
+if T==true then
 return false,("A request is already being sent, please slow down.")
 else
-W=true;
+T=true;
 end
 
 local ax=at();
-local ay=ar.."/public/whitelist/"..aj(S).."?identifier="..N(ao()).."&key="..aw;
+local ay=ar.."/public/whitelist/"..X(P).."?identifier="..J(ao()).."&key="..aw;
 
-if U then
+if R then
 ay=ay.."&nonce="..ax;
 end
 
-local az=Y{
+local az=V{
 Url=ay,
 Method="GET",
 };
 
-W=false;
+T=false;
 
 if az.StatusCode==200 then
-local aA=M(az.Body);
+local aA=H(az.Body);
 
 if aA.success==true then
 if aA.data.valid==true then
-if U then
-if aA.data.hash==N("true".."-"..ax.."-"..T)then
+if R then
+if aA.data.hash==J("true".."-"..ax.."-"..Q)then
 return true,""
 else
 return false,("failed to verify integrity.")
@@ -1912,7 +2319,7 @@ else
 return true
 end
 else
-if ak(aw,1,4)=="KEY_"then
+if Y(aw,1,4)=="KEY_"then
 return true,av(aw)
 else
 return false,("Key is invalid.")
@@ -1931,33 +2338,33 @@ end
 
 local ax=function(ax)
 local ay=at();
-local az=ar.."/public/flag/"..aj(S).."?name="..ax;
+local az=ar.."/public/flag/"..X(P).."?name="..ax;
 
-if U then
+if R then
 az=az.."&nonce="..ay;
 end
 
-local aA=Y{
+local aA=V{
 Url=az,
 Method="GET",
 };
 
 if aA.StatusCode==200 then
-local aB=M(aA.Body);
+local aB=H(aA.Body);
 
 if aB.success==true then
-if U then
-if aB.data.hash==N(aj(aB.data.value).."-"..ay.."-"..T)then
+if R then
+if aB.data.hash==J(X(aB.data.value).."-"..ay.."-"..Q)then
 return aB.data.value
 else
-V"failed to verify integrity.";
+S"failed to verify integrity.";
 return nil
 end
 else
 return aB.data.value
 end
 else
-V(aB.message);
+S(aB.message);
 return nil
 end
 else
@@ -1974,7 +2381,7 @@ Copy=au,
 end
 
 
-return O end function a.f()
+return L end function a.f()
 
 
 
@@ -2134,7 +2541,7 @@ New=a.load'g'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.260",
+    "version": "1.0.261",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -5440,65 +5847,91 @@ end
 
 
 
-local function ParseTextSegments(ah)
-local ai={}
-local aj=1
-local ak=false
-local al=#ah
 
-while aj<=al do
-local am,an=string.find(ah,"rbxassetid://%d+",aj)
-local ao,ap=string.find(ah,af,aj,true)
-local aq,ar,as=string.find(ah,"<gradient=([^>]*)>",aj)
-local at,au=string.find(ah,ag,aj,true)
 
-local av,aw,ax,ay
-for az,aA in ipairs{
-{s=am,e=an,k="Image"},
-{s=ao,e=ap,k="OpenPlain"},
-{s=aq,e=ar,k="OpenAttr",attr=as},
-{s=at,e=au,k="Close"},
+
+
+
+local function ParseTextSegments(ah,ai)
+local aj={}
+local ak=1
+local al=false
+local am=#ah
+
+
+
+
+local function PushTextWithIcons(an)
+if an==""then return end
+
+if not ai or not aa.HasInlineIcons(an)then
+table.insert(aj,{Type="Text",Content=an,Gradient=al})
+return
+end
+
+for ao,ap in ipairs(aa.ParseInlineText(an,ai))do
+if ap.Type=="Icon"then
+table.insert(aj,{
+Type="Icon",
+Content=ap.Content,
+Options=ap.Options,
+})
+elseif ap.Content~=""then
+table.insert(aj,{Type="Text",Content=ap.Content,Gradient=al})
+end
+end
+end
+
+while ak<=am do
+local an,ao=string.find(ah,"rbxassetid://%d+",ak)
+local ap,aq=string.find(ah,af,ak,true)
+local ar,as,at=string.find(ah,"<gradient=([^>]*)>",ak)
+local au,av=string.find(ah,ag,ak,true)
+
+local aw,ax,ay,az
+for aA,aB in ipairs{
+{s=an,e=ao,k="Image"},
+{s=ap,e=aq,k="OpenPlain"},
+{s=ar,e=as,k="OpenAttr",attr=at},
+{s=au,e=av,k="Close"},
 }do
-if aA.s and(not av or aA.s<av)then
-av,aw,ax,ay=aA.s,aA.e,aA.k,aA.attr
+if aB.s and(not aw or aB.s<aw)then
+aw,ax,ay,az=aB.s,aB.e,aB.k,aB.attr
 end
 end
 
-if not av then
-local az=string.sub(ah,aj)
-if az~=""then
-table.insert(ai,{Type="Text",Content=az,Gradient=ak})
-end
+if not aw then
+PushTextWithIcons(string.sub(ah,ak))
 break
 end
 
-local az=string.sub(ah,aj,av-1)
-if az~=""then
-table.insert(ai,{Type="Text",Content=az,Gradient=ak})
+PushTextWithIcons(string.sub(ah,ak,aw-1))
+
+if ay=="Image"then
+table.insert(aj,{Type="Image",Content=string.sub(ah,aw,ax)})
+elseif ay=="OpenPlain"then
+al=true
+elseif ay=="OpenAttr"then
+al=ParseGradientAttr(az)or true
+elseif ay=="Close"then
+al=false
 end
 
-if ax=="Image"then
-table.insert(ai,{Type="Image",Content=string.sub(ah,av,aw)})
-elseif ax=="OpenPlain"then
-ak=true
-elseif ax=="OpenAttr"then
-ak=ParseGradientAttr(ay)or true
-elseif ax=="Close"then
-ak=false
+ak=ax+1
 end
 
-aj=aw+1
-end
-
-return ai
+return aj
 end
 
 
-local function HasRichTokens(ah)
+
+
+local function HasRichTokens(ah,ai)
 if not ah or ah==""then return false end
 return string.find(ah,"rbxassetid://%d+")~=nil
 or string.find(ah,af,1,true)~=nil
 or string.find(ah,"<gradient=",1,true)~=nil
+or(ai~=false and aa.HasInlineIcons(ah))
 end
 
 
@@ -5633,10 +6066,43 @@ local ak=ai.ThumbnailSize
 local al=true
 local am=0
 
-local an
-local ao
+
+
+local an=ah.Icon or ah.Image
+if typeof(an)~="string"and type(an)~="table"then
+an=nil
+end
+
+local function InlineContext(ao,ap)
+return{
+Icon=an,
+IconSize=ah.InlineIconSize or(ao=="Desc"and 16 or 18),
+IconThemed=ah.InlineIconThemed,
+Folder=ah.Window and ah.Window.Folder,
+ImageKind="Icon",
+ThemeTagName=ao=="Desc"and"ElementDesc"or"ElementTitle",
+CachePrefix="Inline"..(ao or"Title"),
+Index=ap,
+IconTransparency=ao=="Desc"and 0.3 or 0,
+}
+end
+
+
+local ao=ah.InlineIcon~=false
+
+local function ParseInline(ap,aq)
+
+return ParseTextSegments(ap,ao and InlineContext(aq)or nil)
+end
+
+local function HasRich(ap)
+return HasRichTokens(ap,ao)
+end
+
+local ap
+local aq
 if ai.Thumbnail then
-an=aa.Image(
+ap=aa.Image(
 ai.Thumbnail,
 ai.Title,
 ah.Window.NewElements and ai.UICorner-11 or(ai.UICorner-4),
@@ -5645,10 +6111,10 @@ ah.Window.Folder,
 false,
 ai.IconThemed
 )
-an.Size=UDim2.new(1,0,0,ak)
+ap.Size=UDim2.new(1,0,0,ak)
 end
 if ai.Image then
-ao=aa.Image(
+aq=aa.Image(
 ai.Image,
 ai.Title,
 ah.Window.NewElements and ai.UICorner-11 or(ai.UICorner-4),
@@ -5659,12 +6125,12 @@ not ai.Color and true or false,
 "ElementIcon"
 )
 if typeof(ai.Color)=="string"then
-ao.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+aq.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
 elseif typeof(ai.Color)=="Color3"then
-ao.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
+aq.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
 end
 
-ao.Size=UDim2.new(0,aj,0,aj)
+aq.Size=UDim2.new(0,aj,0,aj)
 
 am=aj
 end
@@ -5672,53 +6138,60 @@ end
 
 
 
-local function CreateText(ap,aq,ar)
-local as=typeof(ai.Color)=="string"
+local function CreateText(ar,as,at)
+local au=typeof(ai.Color)=="string"
 and GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
 or typeof(ai.Color)=="Color3"
 and GetTextColorForHSB(ai.Color)
 
-local at=ResolveItemGradientProps(ar,aq=="Desc"and ai.DescGradient or ai.TitleGradient)
+local av=ResolveItemGradientProps(at,as=="Desc"and ai.DescGradient or ai.TitleGradient)
 
-local au=ab("TextLabel",{
+local aw=ab("TextLabel",{
 BackgroundTransparency=1,
-Text=ap or"",
-TextSize=aq=="Desc"and 15 or 17,
+Text=ar or"",
+TextSize=as=="Desc"and 15 or 17,
 TextXAlignment="Left",
 ThemeTag={
-TextColor3=(not ai.Color and not at)and("Element"..aq)or nil,
+TextColor3=(not ai.Color and not av)and("Element"..as)or nil,
 },
-TextColor3=at and Color3.new(1,1,1)or(ai.Color and as or nil),
-TextTransparency=aq=="Desc"and.3 or 0,
+TextColor3=av and Color3.new(1,1,1)or(ai.Color and au or nil),
+TextTransparency=as=="Desc"and.3 or 0,
 TextWrapped=true,
 Size=UDim2.new(ai.Justify=="Between"and 1 or 0,0,0,0),
 AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
-FontFace=Font.new(aa.Font,aq=="Desc"and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
+FontFace=Font.new(aa.Font,as=="Desc"and Enum.FontWeight.Medium or Enum.FontWeight.SemiBold)
 })
 
-ApplyGradientToLabel(au,at)
+ApplyGradientToLabel(aw,av)
 
-return au
+return aw
 end
 
-local ap=CreateText(ai.Title,"Title")
-local aq=ab("Frame",{
+local ar=CreateText(ai.Title,"Title")
+local as=ab("UIListLayout",{
+FillDirection=Enum.FillDirection.Horizontal,
+SortOrder=Enum.SortOrder.LayoutOrder,
+Padding=UDim.new(0,4),
+VerticalAlignment=Enum.VerticalAlignment.Center
+})
+
+
+if ai.Justify=="Between"then
+aa.TrySetWraps(as,true)
+end
+
+local at=ab("Frame",{
 Name="TitleRich",
 BackgroundTransparency=1,
 Size=UDim2.new(ai.Justify=="Between"and 1 or 0,0,0,0),
 AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
 Visible=false,
 },{
-ab("UIListLayout",{
-FillDirection=Enum.FillDirection.Horizontal,
-SortOrder=Enum.SortOrder.LayoutOrder,
-Padding=UDim.new(0,4),
-VerticalAlignment=Enum.VerticalAlignment.Center
-})
+as
 })
 
 
-local ar=ab("Frame",{
+local au=ab("Frame",{
 Name="DescContainer",
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,0,0),
@@ -5731,16 +6204,16 @@ Padding=UDim.new(0,2),
 })
 
 
-local function UpdateDesc(as)
+local function UpdateDesc(av)
 
-if not as or as==""then
-ar.Visible=false
+if not av or av==""then
+au.Visible=false
 return
 end
-ar.Visible=true
+au.Visible=true
 
-local function parseInline(at)
-return ParseTextSegments(at)
+local function parseInline(aw)
+return ParseInline(aw,"Desc")
 end
 
 local function getColumnWidth()
@@ -5748,59 +6221,87 @@ if typeof(ai.DescColumnWidth)=="number"and ai.DescColumnWidth>0 then
 return math.floor(ai.DescColumnWidth)
 end
 
-local at=ar.AbsoluteSize.X
-if not at or at<=0 then
+local aw=au.AbsoluteSize.X
+if not aw or aw<=0 then
 return 320
 end
-return math.clamp(math.floor(at*0.62),220,520)
+return math.clamp(math.floor(aw*0.62),220,520)
 end
 
-local function getOrCreateListLayout(at)
-local au=at:FindFirstChild"UIListLayout"
-if not au then
-au=ab("UIListLayout",{
-Parent=at,
+local function getOrCreateListLayout(aw)
+local ax=aw:FindFirstChild"UIListLayout"
+if not ax then
+ax=ab("UIListLayout",{
+Parent=aw,
 FillDirection=Enum.FillDirection.Horizontal,
 SortOrder=Enum.SortOrder.LayoutOrder,
 Padding=UDim.new(0,4),
 VerticalAlignment=Enum.VerticalAlignment.Center
 })
 else
-au.FillDirection=Enum.FillDirection.Horizontal
-au.SortOrder=Enum.SortOrder.LayoutOrder
-au.Padding=UDim.new(0,4)
-au.VerticalAlignment=Enum.VerticalAlignment.Center
+ax.FillDirection=Enum.FillDirection.Horizontal
+ax.SortOrder=Enum.SortOrder.LayoutOrder
+ax.Padding=UDim.new(0,4)
+ax.VerticalAlignment=Enum.VerticalAlignment.Center
 end
-return au
-end
-
-local function updateItemsInContainer(at,au)
-local av={}
-for aw,ax in ipairs(at:GetChildren())do
-if ax:IsA"GuiObject"then table.insert(av,ax)end
+return ax
 end
 
-for aw,ax in ipairs(au)do
-local ay=av[aw]
 
-if ay then
-local az=ay:IsA"TextLabel"
-local aA=ay:IsA"ImageLabel"
-local aB=az and(ay:GetAttribute"GradientSig"~=GradientSignature(ax.Gradient))
-if(ax.Type=="Text"and not az)or(ax.Type=="Image"and not aA)or aB then
-ay:Destroy()
-ay=nil
-end
+
+
+
+local function ItemSignature(aw)
+if aw.Type=="Text"then
+return"T|"..GradientSignature(aw.Gradient)
+elseif aw.Type=="Image"then
+return"I"
 end
 
-if not ay then
-if ax.Type=="Text"then
-ay=CreateText(ax.Content,"Desc",ax.Gradient)
-ay:SetAttribute("GradientSig",GradientSignature(ax.Gradient))
-ay.Parent=at
+local ax=aw.Options or{}
+return table.concat({
+"C",tostring(aw.Content),
+tostring(ax.Size),tostring(ax.Width),tostring(ax.Height),
+tostring(ax.Transparency),tostring(ax.Themed),
+tostring(ax.ScaleType),tostring(ax.KeepAspect),
+ax.Color and ax.Color:ToHex()or"",
+},"|")
+end
+
+local function updateItemsInContainer(aw,ax)
+local ay={}
+for az,aA in ipairs(aw:GetChildren())do
+if aA:IsA"GuiObject"then table.insert(ay,aA)end
+end
+
+
+
+
+local az=0
+
+for aA,aB in ipairs(ax)do
+local b=ItemSignature(aB)
+local d=ay[az+1]
+
+if d and d:GetAttribute"ItemSig"~=b then
+d:Destroy()
+table.remove(ay,az+1)
+d=nil
+end
+
+if not d then
+if aB.Type=="Text"then
+d=CreateText(aB.Content,"Desc",aB.Gradient)
+d:SetAttribute("GradientSig",GradientSignature(aB.Gradient))
+d.Parent=aw
+elseif aB.Type=="Icon"then
+d=aa.InlineIconFrame(aB,InlineContext("Desc",aA))
+if d then
+d.Parent=aw
+end
 else
-ay=ab("ImageLabel",{
-Parent=at,
+d=ab("ImageLabel",{
+Parent=aw,
 BackgroundTransparency=1,
 Size=UDim2.new(0,16,0,16),
 ScaleType=Enum.ScaleType.Fit,
@@ -5808,198 +6309,255 @@ ThemeTag={ImageColor3="ElementDesc"},
 ImageTransparency=0.3
 })
 end
+
+if d then
+d:SetAttribute("ItemSig",b)
+table.insert(ay,az+1,d)
+end
 end
 
-ay.LayoutOrder=aw
-ay.Visible=true
 
-if ax.Type=="Text"then
-if ay.Text~=ax.Content then
-ay.Text=ax.Content
+if d then
+az=az+1
+d.LayoutOrder=aA
+d.Visible=true
+
+if aB.Type=="Text"then
+if d.Text~=aB.Content then
+d.Text=aB.Content
 end
-ApplyGradientToLabel(ay,ResolveItemGradientProps(ax.Gradient,ai.DescGradient))
-if#au==1 then
-ay.Size=UDim2.new(1,0,0,0)
-ay.AutomaticSize=Enum.AutomaticSize.Y
-ay.TextWrapped=true
+ApplyGradientToLabel(d,ResolveItemGradientProps(aB.Gradient,ai.DescGradient))
+if#ax==1 then
+d.Size=UDim2.new(1,0,0,0)
+d.AutomaticSize=Enum.AutomaticSize.Y
+d.TextWrapped=true
 else
-ay.Size=UDim2.new(0,0,0,0)
-ay.AutomaticSize=Enum.AutomaticSize.XY
-ay.TextWrapped=false
+d.Size=UDim2.new(0,0,0,0)
+d.AutomaticSize=Enum.AutomaticSize.XY
+d.TextWrapped=false
+end
+elseif aB.Type=="Icon"then
+if ai.Color then
+local e=d:FindFirstChildOfClass"ImageLabel"
+local f=aB.Options or{}
+
+if e and not f.Color then
+if typeof(ai.Color)=="string"then
+e.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+elseif typeof(ai.Color)=="Color3"then
+e.ImageColor3=GetTextColorForHSB(ai.Color)
+end
+end
 end
 else
-if ay.Image~=ax.Content then
-ay.Image=ax.Content
+if d.Image~=aB.Content then
+d.Image=aB.Content
 end
 if ai.Color then
 if typeof(ai.Color)=="string"then
-ay.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+d.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
 elseif typeof(ai.Color)=="Color3"then
-ay.ImageColor3=GetTextColorForHSB(ai.Color)
+d.ImageColor3=GetTextColorForHSB(ai.Color)
 end
 end
 end
-end
-
-for aw=#au+1,#av do
-av[aw]:Destroy()
 end
 end
 
-local at=string.split(as,"\n")
-local au={}
-for av,aw in ipairs(at)do
-local ax=string.split(aw,"\t")
-if#ax>=2 then
-table.insert(au,{Cols={parseInline(ax[1]or""),parseInline(ax[2]or"")}})
+
+
+for aA=az+1,#ay do
+ay[aA]:Destroy()
+end
+end
+
+local aw=string.split(av,"\n")
+local ax={}
+for ay,az in ipairs(aw)do
+local aA=string.split(az,"\t")
+if#aA>=2 then
+table.insert(ax,{Cols={parseInline(aA[1]or""),parseInline(aA[2]or"")}})
 else
-table.insert(au,{Cols={parseInline(aw)}})
+table.insert(ax,{Cols={parseInline(az)}})
 end
 end
 
-local av={}
-for aw,ax in ipairs(ar:GetChildren())do
-if ax:IsA"Frame"then table.insert(av,ax)end
+local ay={}
+for az,aA in ipairs(au:GetChildren())do
+if aA:IsA"Frame"then table.insert(ay,aA)end
 end
 
-for aw,ax in ipairs(au)do
-local ay=av[aw]
+for az,aA in ipairs(ax)do
+local aB=ay[az]
 
-if not ay then
-ay=ab("Frame",{
-Parent=ar,
+if not aB then
+aB=ab("Frame",{
+Parent=au,
 BackgroundTransparency=1,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
 end
-ay.LayoutOrder=aw
-ay.Visible=true
+aB.LayoutOrder=az
+aB.Visible=true
 
-local az=ax.Cols
-if#az>=2 then
-local aA=getColumnWidth()
-local aB=getOrCreateListLayout(ay)
-aB.Padding=UDim.new(0,0)
+local b=aA.Cols
+if#b>=2 then
+local d=getColumnWidth()
+local e=getOrCreateListLayout(aB)
+e.Padding=UDim.new(0,0)
 
-local b=ay:FindFirstChild"Col1"
-if not b then
-b=ab("Frame",{
+local f=aB:FindFirstChild"Col1"
+if not f then
+f=ab("Frame",{
 Name="Col1",
-Parent=ay,
+Parent=aB,
 BackgroundTransparency=1,
-Size=UDim2.new(0,aA,0,0),
+Size=UDim2.new(0,d,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
-getOrCreateListLayout(b)
+getOrCreateListLayout(f)
 else
-b.Size=UDim2.new(0,aA,0,0)
-b.AutomaticSize=Enum.AutomaticSize.Y
-getOrCreateListLayout(b)
+f.Size=UDim2.new(0,d,0,0)
+f.AutomaticSize=Enum.AutomaticSize.Y
+getOrCreateListLayout(f)
 end
 
-local d=ay:FindFirstChild"Col2"
-if not d then
-d=ab("Frame",{
+local g=aB:FindFirstChild"Col2"
+if not g then
+g=ab("Frame",{
 Name="Col2",
-Parent=ay,
+Parent=aB,
 BackgroundTransparency=1,
-Size=UDim2.new(1,-aA,0,0),
+Size=UDim2.new(1,-d,0,0),
 AutomaticSize=Enum.AutomaticSize.Y,
 })
-getOrCreateListLayout(d)
+getOrCreateListLayout(g)
 else
-d.Size=UDim2.new(1,-aA,0,0)
-d.AutomaticSize=Enum.AutomaticSize.Y
-getOrCreateListLayout(d)
+g.Size=UDim2.new(1,-d,0,0)
+g.AutomaticSize=Enum.AutomaticSize.Y
+getOrCreateListLayout(g)
 end
 
-for e,f in ipairs(ay:GetChildren())do
-if f:IsA"GuiObject"and f~=b and f~=d then
-f:Destroy()
+for h,j in ipairs(aB:GetChildren())do
+if j:IsA"GuiObject"and j~=f and j~=g then
+j:Destroy()
 end
 end
 
-updateItemsInContainer(b,az[1])
-updateItemsInContainer(d,az[2])
+updateItemsInContainer(f,b[1])
+updateItemsInContainer(g,b[2])
 else
-for aA,aB in ipairs(ay:GetChildren())do
-if aB:IsA"Frame"and(aB.Name=="Col1"or aB.Name=="Col2")then
-aB:Destroy()
+for d,e in ipairs(aB:GetChildren())do
+if e:IsA"Frame"and(e.Name=="Col1"or e.Name=="Col2")then
+e:Destroy()
 end
 end
 
-getOrCreateListLayout(ay)
-updateItemsInContainer(ay,az[1])
+getOrCreateListLayout(aB)
+updateItemsInContainer(aB,b[1])
 end
 end
 
-for aw=#au+1,#av do
-av[aw]:Destroy()
+for az=#ax+1,#ay do
+ay[az]:Destroy()
 end
 end
 
-local function UpdateTitle(as)
-ap.Text=as or""
-ApplyGradientToLabel(ap,ResolveGradientProps(ai.TitleGradient))
+local function UpdateTitle(av)
+ar.Text=av or""
+ApplyGradientToLabel(ar,ResolveGradientProps(ai.TitleGradient))
 
-if not as or as==""then
-ap.Visible=true
-aq.Visible=false
+if not av or av==""then
+ar.Visible=true
+at.Visible=false
 return
 end
 
-if not HasRichTokens(as)then
-ap.Visible=true
-aq.Visible=false
+if not HasRich(av)then
+ar.Visible=true
+at.Visible=false
 return
 end
 
-ap.Visible=false
-aq.Visible=true
+local aw=ParseInline(av,"Title")
 
-for at,au in ipairs(aq:GetChildren())do
-if au:IsA"GuiObject"then
-au:Destroy()
+
+
+
+local ax=false
+for ay,az in ipairs(aw)do
+if az.Type~="Text"then
+ax=true
+break
+end
+end
+if not ax then
+ar.Visible=true
+at.Visible=false
+return
+end
+
+ar.Visible=false
+at.Visible=true
+
+for ay,az in ipairs(at:GetChildren())do
+if az:IsA"GuiObject"then
+az:Destroy()
 end
 end
 
-local at=ParseTextSegments(as)
-
-for au,av in ipairs(at)do
-if av.Type=="Text"then
-local aw=CreateText(av.Content,"Title",av.Gradient)
-aw.LayoutOrder=au
-if#at==1 then
-aw.Size=UDim2.new(1,0,0,0)
-aw.AutomaticSize=Enum.AutomaticSize.Y
-aw.TextWrapped=true
+for ay,az in ipairs(aw)do
+if az.Type=="Text"then
+local aA=CreateText(az.Content,"Title",az.Gradient)
+aA.LayoutOrder=ay
+if#aw==1 then
+aA.Size=UDim2.new(1,0,0,0)
+aA.AutomaticSize=Enum.AutomaticSize.Y
+aA.TextWrapped=true
 else
-aw.Size=UDim2.new(0,0,0,0)
-aw.AutomaticSize=Enum.AutomaticSize.XY
-aw.TextWrapped=false
+aA.Size=UDim2.new(0,0,0,0)
+aA.AutomaticSize=Enum.AutomaticSize.XY
+aA.TextWrapped=false
 end
-aw.Parent=aq
+aA.Parent=at
+elseif az.Type=="Icon"then
+
+local aA=aa.InlineIconFrame(az,InlineContext("Title",ay))
+if aA then
+aA.LayoutOrder=ay
+
+local aB=aA:FindFirstChildOfClass"ImageLabel"
+if aB and ai.Color and not(az.Options and az.Options.Color)then
+if typeof(ai.Color)=="string"then
+aB.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+elseif typeof(ai.Color)=="Color3"then
+aB.ImageColor3=GetTextColorForHSB(ai.Color)
+end
+end
+
+aA.Parent=at
+end
 else
-local aw=ab("ImageLabel",{
+local aA=ab("ImageLabel",{
 BackgroundTransparency=1,
 Size=UDim2.new(0,18,0,18),
 ScaleType=Enum.ScaleType.Fit,
 ThemeTag={ImageColor3="ElementTitle"},
 ImageTransparency=0,
-Image=av.Content,
-LayoutOrder=au,
+Image=az.Content,
+LayoutOrder=ay,
 })
 
 if ai.Color then
 if typeof(ai.Color)=="string"then
-aw.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+aA.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
 elseif typeof(ai.Color)=="Color3"then
-aw.ImageColor3=GetTextColorForHSB(ai.Color)
+aA.ImageColor3=GetTextColorForHSB(ai.Color)
 end
 end
 
-aw.Parent=aq
+aA.Parent=at
 end
 end
 end
@@ -6015,7 +6573,7 @@ FillDirection="Vertical",
 VerticalAlignment="Center",
 HorizontalAlignment=ai.Justify=="Between"and"Left"or"Center",
 }),
-an,
+ap,
 ab("Frame",{
 Size=UDim2.new(
 ai.Justify=="Between"and 1 or 0,
@@ -6031,17 +6589,17 @@ ab("UIListLayout",{
 Padding=UDim.new(0,ai.UIPadding),
 FillDirection="Horizontal",
 VerticalAlignment=(ah.ElementTable and ah.ElementTable.__type=="Dropdown")and"Center"
-or((ao and ah.ElementTable and ah.ElementTable.__type=="Toggle")and"Center"
+or((aq and ah.ElementTable and ah.ElementTable.__type=="Toggle")and"Center"
 or(ah.Window.NewElements and(ai.Justify=="Between"and"Top"or"Center")or"Center")),
 HorizontalAlignment=ai.Justify~="Between"and ai.Justify or"Center",
 }),
-ao,
+aq,
 ab("Frame",{
 BackgroundTransparency=1,
 AutomaticSize=ai.Justify=="Between"and"Y"or"XY",
 Size=UDim2.new(
 ai.Justify=="Between"and 1 or 0,
-ai.Justify=="Between"and(ao and-am-ai.UIPadding or-am)or 0,
+ai.Justify=="Between"and(aq and-am-ai.UIPadding or-am)or 0,
 1,
 0
 ),
@@ -6059,27 +6617,27 @@ FillDirection="Vertical",
 VerticalAlignment="Center",
 HorizontalAlignment="Left",
 }),
-ap,
-aq,
-ar
+ar,
+at,
+au
 }),
 })
 })
 
 
-local as=ah.LockedIcon or ah.LockIcon or"lock"
-local at=ah.LockedIconSize or 20
-local au=ah.LockedIconColor or Color3.new(1,1,1)
-local av=ah.LockedIconTransparency or.4
+local av=ah.LockedIcon or ah.LockIcon or"lock"
+local aw=ah.LockedIconSize or 20
+local ax=ah.LockedIconColor or Color3.new(1,1,1)
+local ay=ah.LockedIconTransparency or.4
 
-local aw=aa.Image(
-as,"lock",0,ah.Window.Folder,"Lock",false
+local az=aa.Image(
+av,"lock",0,ah.Window.Folder,"Lock",false
 )
-aw.Size=UDim2.new(0,at,0,at)
-aw.ImageLabel.ImageColor3=au
-aw.ImageLabel.ImageTransparency=av
+az.Size=UDim2.new(0,aw,0,aw)
+az.ImageLabel.ImageColor3=ax
+az.ImageLabel.ImageTransparency=ay
 
-local ax=ab("TextLabel",{
+local aA=ab("TextLabel",{
 Text="Locked",
 TextSize=18,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Medium),
@@ -6089,7 +6647,7 @@ TextColor3=Color3.new(1,1,1),
 TextTransparency=.05,
 })
 
-local ay=ab("Frame",{
+local aB=ab("Frame",{
 Size=UDim2.new(1,ai.UIPadding*2,1,ai.UIPadding*2),
 BackgroundTransparency=1,
 AnchorPoint=Vector2.new(0.5,0.5),
@@ -6097,13 +6655,13 @@ Position=UDim2.new(0.5,0,0.5,0),
 ZIndex=9999999,
 })
 
-local az,aA=ad(ai.UICorner,"Squircle",{
+local b,d=ad(ai.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=.25,
 ImageColor3=Color3.new(0,0,0),
 Visible=false,
 Active=false,
-Parent=ay,
+Parent=aB,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6111,30 +6669,15 @@ VerticalAlignment="Center",
 HorizontalAlignment="Center",
 Padding=UDim.new(0,8)
 }),
-aw,ax
+az,aA
 },nil,true)
 
-local aB,b=ad(ai.UICorner,"Squircle-Outline",{
+local e,f=ad(ai.UICorner,"Squircle-Outline",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=ay,
-},{
-ab("UIListLayout",{
-FillDirection="Horizontal",
-VerticalAlignment="Center",
-HorizontalAlignment="Center",
-Padding=UDim.new(0,8)
-}),
-},nil,true)
-
-local d,e=ad(ai.UICorner,"Squircle",{
-Size=UDim2.new(1,0,1,0),
-ImageTransparency=1,
-Active=false,
-ThemeTag={ImageColor3="Text"},
-Parent=ay,
+Parent=aB,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6144,12 +6687,27 @@ Padding=UDim.new(0,8)
 }),
 },nil,true)
 
-local f,g=ad(ai.UICorner,"Squircle-Outline",{
+local g,h=ad(ai.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=ay,
+Parent=aB,
+},{
+ab("UIListLayout",{
+FillDirection="Horizontal",
+VerticalAlignment="Center",
+HorizontalAlignment="Center",
+Padding=UDim.new(0,8)
+}),
+},nil,true)
+
+local j,l=ad(ai.UICorner,"Squircle-Outline",{
+Size=UDim2.new(1,0,1,0),
+ImageTransparency=1,
+Active=false,
+ThemeTag={ImageColor3="Text"},
+Parent=aB,
 },{
 ab("UIListLayout",{
 FillDirection="Horizontal",
@@ -6174,12 +6732,12 @@ NumberSequenceKeypoint.new(1,1)
 }),
 },nil,true)
 
-local h,j=ad(ai.UICorner,"Squircle",{
+local m,p=ad(ai.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
 ImageTransparency=1,
 Active=false,
 ThemeTag={ImageColor3="Text"},
-Parent=ay,
+Parent=aB,
 },{
 ab("UIGradient",{
 Name="HoverGradient",
@@ -6204,7 +6762,7 @@ Padding=UDim.new(0,8)
 }),
 },nil,true)
 
-local l,m=ad(ai.UICorner,"Squircle",{
+local r,u=ad(ai.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 ImageTransparency=ai.Color and.05 or.93,
@@ -6221,7 +6779,7 @@ and ai.Color
 )or nil
 },{
 ai.UIElements.Container,
-ay,
+aB,
 ab("UIPadding",{
 PaddingTop=UDim.new(0,ai.UIPadding),
 PaddingLeft=UDim.new(0,ai.UIPadding),
@@ -6230,56 +6788,56 @@ PaddingBottom=UDim.new(0,ai.UIPadding),
 }),
 },true,true)
 
-ai.UIElements.Main=l
-ai.UIElements.Locked=az
+ai.UIElements.Main=r
+ai.UIElements.Locked=b
 
 if ai.Hover then
-aa.AddSignal(l.MouseEnter,function()
+aa.AddSignal(r.MouseEnter,function()
 if al then
-ae(l,.12,{ImageTransparency=ai.Color and.15 or.9}):Play()
-ae(h,.12,{ImageTransparency=.9}):Play()
-ae(f,.12,{ImageTransparency=.8}):Play()
-aa.AddSignal(l.MouseMoved,function(p,r)
-h.HoverGradient.Offset=Vector2.new(((p-l.AbsolutePosition.X)/l.AbsoluteSize.X)-0.5,0)
-f.HoverGradient.Offset=Vector2.new(((p-l.AbsolutePosition.X)/l.AbsoluteSize.X)-0.5,0)
+ae(r,.12,{ImageTransparency=ai.Color and.15 or.9}):Play()
+ae(m,.12,{ImageTransparency=.9}):Play()
+ae(j,.12,{ImageTransparency=.8}):Play()
+aa.AddSignal(r.MouseMoved,function(v,x)
+m.HoverGradient.Offset=Vector2.new(((v-r.AbsolutePosition.X)/r.AbsoluteSize.X)-0.5,0)
+j.HoverGradient.Offset=Vector2.new(((v-r.AbsolutePosition.X)/r.AbsoluteSize.X)-0.5,0)
 end)
 end
 end)
-aa.AddSignal(l.InputEnded,function()
+aa.AddSignal(r.InputEnded,function()
 if al then
-ae(l,.12,{ImageTransparency=ai.Color and.05 or.93}):Play()
-ae(h,.12,{ImageTransparency=1}):Play()
-ae(f,.12,{ImageTransparency=1}):Play()
+ae(r,.12,{ImageTransparency=ai.Color and.05 or.93}):Play()
+ae(m,.12,{ImageTransparency=1}):Play()
+ae(j,.12,{ImageTransparency=1}):Play()
 end
 end)
 end
 
-function ai.SetTitle(p,r)
-ai.Title=r
-UpdateTitle(r)
+function ai.SetTitle(v,x)
+ai.Title=x
+UpdateTitle(x)
 end
 
-function ai.SetTitleGradient(p,r)
-ai.TitleGradient=r
+function ai.SetTitleGradient(v,x)
+ai.TitleGradient=x
 UpdateTitle(ai.Title)
 end
 
-function ai.SetDescGradient(p,r)
-ai.DescGradient=r
+function ai.SetDescGradient(v,x)
+ai.DescGradient=x
 UpdateDesc(ai.Desc)
 end
 
-function ai.SetDesc(p,r)
+function ai.SetDesc(v,x)
 
-if ai.Desc==r then
+if ai.Desc==x then
 return
 end
 
-ai.Desc=r
-UpdateDesc(r)
+ai.Desc=x
+UpdateDesc(x)
 
 if ah.ElementTable then
-ah.ElementTable.Desc=r
+ah.ElementTable.Desc=x
 end
 end
 
@@ -6287,9 +6845,9 @@ end
 UpdateDesc(ai.Desc)
 UpdateTitle(ai.Title)
 
-function ai.Colorize(p,r,u)
+function ai.Colorize(v,x,z)
 if ai.Color then
-r[u]=typeof(ai.Color)=="string"
+x[z]=typeof(ai.Color)=="string"
 and GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
 or typeof(ai.Color)=="Color3"
 and GetTextColorForHSB(ai.Color)
@@ -6298,28 +6856,28 @@ end
 end
 
 if ah.ElementTable then
-if ap and ap.GetPropertyChangedSignal then
-aa.AddSignal(ap:GetPropertyChangedSignal"Text",function()
-if ai.Title~=ap.Text then
-ai:SetTitle(ap.Text)
-ah.ElementTable.Title=ap.Text
+if ar and ar.GetPropertyChangedSignal then
+aa.AddSignal(ar:GetPropertyChangedSignal"Text",function()
+if ai.Title~=ar.Text then
+ai:SetTitle(ar.Text)
+ah.ElementTable.Title=ar.Text
 end
 end)
 end
 end
 
-function ai.SetThumbnail(p,r,u)
-ai.Thumbnail=r
-if u then
-ai.ThumbnailSize=u
-ak=u
+function ai.SetThumbnail(v,x,z)
+ai.Thumbnail=x
+if z then
+ai.ThumbnailSize=z
+ak=z
 end
 
-if an then
-if r then
-an:Destroy()
-an=aa.Image(
-r,
+if ap then
+if x then
+ap:Destroy()
+ap=aa.Image(
+x,
 ai.Title,
 ai.UICorner-3,
 ah.Window.Folder,
@@ -6327,19 +6885,19 @@ ah.Window.Folder,
 false,
 ai.IconThemed
 )
-an.Size=UDim2.new(1,0,0,ak)
-an.Parent=ai.UIElements.Container
-local v=ai.UIElements.Container:FindFirstChild"UIListLayout"
-if v then
-an.LayoutOrder=-1
+ap.Size=UDim2.new(1,0,0,ak)
+ap.Parent=ai.UIElements.Container
+local A=ai.UIElements.Container:FindFirstChild"UIListLayout"
+if A then
+ap.LayoutOrder=-1
 end
 else
-an.Visible=false
+ap.Visible=false
 end
 else
-if r then
-an=aa.Image(
-r,
+if x then
+ap=aa.Image(
+x,
 ai.Title,
 ai.UICorner-3,
 ah.Window.Folder,
@@ -6347,47 +6905,47 @@ ah.Window.Folder,
 false,
 ai.IconThemed
 )
-an.Size=UDim2.new(1,0,0,ak)
-an.Parent=ai.UIElements.Container
-local v=ai.UIElements.Container:FindFirstChild"UIListLayout"
-if v then
-an.LayoutOrder=-1
+ap.Size=UDim2.new(1,0,0,ak)
+ap.Parent=ai.UIElements.Container
+local A=ai.UIElements.Container:FindFirstChild"UIListLayout"
+if A then
+ap.LayoutOrder=-1
 end
 end
 end
 end
 
-function ai.SetImage(p,r,u)
-ai.Image=r
-if u then
-ai.ImageSize=u
-aj=u
+function ai.SetImage(v,x,z)
+ai.Image=x
+if z then
+ai.ImageSize=z
+aj=z
 end
 
-local v=ao
-if r then
-local x=aa.Image(
-r,
+local A=aq
+if x then
+local B=aa.Image(
+x,
 ai.Title,
 ai.UICorner-3,
 ah.Window.Folder,
 "Image",
 not ai.Color and true or false
 )
-if typeof(ai.Color)=="string"and x.ImageLabel then
-x.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
-elseif typeof(ai.Color)=="Color3"and x.ImageLabel then
-x.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
+if typeof(ai.Color)=="string"and B.ImageLabel then
+B.ImageLabel.ImageColor3=GetTextColorForHSB(Color3.fromHex(aa.Colors[ai.Color]))
+elseif typeof(ai.Color)=="Color3"and B.ImageLabel then
+B.ImageLabel.ImageColor3=GetTextColorForHSB(ai.Color)
 end
-x.Visible=true
-x.Size=UDim2.new(0,aj,0,aj)
+B.Visible=true
+B.Size=UDim2.new(0,aj,0,aj)
 am=aj
-if v and v.Parent then v:Destroy()end
-x.Parent=ai.UIElements.Container.TitleFrame
-ao=x
+if A and A.Parent then A:Destroy()end
+B.Parent=ai.UIElements.Container.TitleFrame
+aq=B
 else
-if ao then
-ao.Visible=false
+if aq then
+aq.Visible=false
 end
 am=0
 end
@@ -6395,42 +6953,42 @@ end
 ai.UIElements.Container.TitleFrame.TitleFrame.Size=UDim2.new(1,-am,1,0)
 end
 
-function ai.Destroy(p)
-l:Destroy()
+function ai.Destroy(v)
+r:Destroy()
 end
 
-function ai.SetLockedIcon(p,r,u,v,x)
-if aw and aw.ImageLabel then
-if r then
-aw.ImageLabel.Image=r
-end
-if u then
-aw.Size=UDim2.new(0,u,0,u)
-end
-if v then
-aw.ImageLabel.ImageColor3=v
-end
+function ai.SetLockedIcon(v,x,z,A,B)
+if az and az.ImageLabel then
 if x then
-aw.ImageLabel.ImageTransparency=x
+az.ImageLabel.Image=x
+end
+if z then
+az.Size=UDim2.new(0,z,0,z)
+end
+if A then
+az.ImageLabel.ImageColor3=A
+end
+if B then
+az.ImageLabel.ImageTransparency=B
 end
 end
 end
-function ai.Lock(p,r,u)
+function ai.Lock(v,x,z)
 al=false
-as=u or as
-ax.Text=r or"Locked"
-az.Active=true
-az.Visible=true
+av=z or av
+aA.Text=x or"Locked"
+b.Active=true
+b.Visible=true
 end
 
-function ai.Unlock(p)
+function ai.Unlock(v)
 al=true
-az.Active=false
-az.Visible=false
+b.Active=false
+b.Visible=false
 end
 
-function ai.Highlight(p)
-local r=ab("UIGradient",{
+function ai.Highlight(v)
+local x=ab("UIGradient",{
 Color=ColorSequence.new{
 ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),
 ColorSequenceKeypoint.new(0.5,Color3.new(1,1,1)),
@@ -6445,10 +7003,10 @@ NumberSequenceKeypoint.new(1,1)
 },
 Rotation=0,
 Offset=Vector2.new(-1,0),
-Parent=aB
+Parent=e
 })
 
-local u=ab("UIGradient",{
+local z=ab("UIGradient",{
 Color=ColorSequence.new{
 ColorSequenceKeypoint.new(0,Color3.new(1,1,1)),
 ColorSequenceKeypoint.new(0.5,Color3.new(1,1,1)),
@@ -6463,46 +7021,46 @@ NumberSequenceKeypoint.new(1,1)
 },
 Rotation=0,
 Offset=Vector2.new(-1,0),
-Parent=d
+Parent=g
 })
 
-aB.ImageTransparency=0.65
-d.ImageTransparency=0.88
+e.ImageTransparency=0.65
+g.ImageTransparency=0.88
 
-ae(r,0.75,{
+ae(x,0.75,{
 Offset=Vector2.new(1,0)
 }):Play()
 
-ae(u,0.75,{
+ae(z,0.75,{
 Offset=Vector2.new(1,0)
 }):Play()
 
 task.spawn(function()
 task.wait(.75)
-aB.ImageTransparency=1
-d.ImageTransparency=1
-r:Destroy()
-u:Destroy()
+e.ImageTransparency=1
+g.ImageTransparency=1
+x:Destroy()
+z:Destroy()
 end)
 end
 
-function ai.UpdateShape(p)
+function ai.UpdateShape(v)
 if ah.Window.NewElements then
-local r
-local u=ah.ParentType or(ah.ParentConfig and ah.ParentConfig.ParentType)
-if u=="Group"or u=="Paragraph"then
-r="Squircle"
+local x
+local z=ah.ParentType or(ah.ParentConfig and ah.ParentConfig.ParentType)
+if z=="Group"or z=="Paragraph"then
+x="Squircle"
 else
-r=getElementPosition(p.Elements,ai.Index)
+x=getElementPosition(v.Elements,ai.Index)
 end
 
-if r and l then
-m:SetType(r)
-aA:SetType(r)
-e:SetType(r)
-b:SetType(r.."-Outline")
-j:SetType(r)
-g:SetType(r.."-Outline")
+if x and r then
+u:SetType(x)
+d:SetType(x)
+h:SetType(x)
+f:SetType(x.."-Outline")
+p:SetType(x)
+l:SetType(x.."-Outline")
 end
 end
 end
@@ -10562,11 +11120,22 @@ local af=aa.Tween
 
 local ah={}
 
+
+
+
+local function IconCacheName(aj,ak)
+local al=aj
+if type(aj)=="table"then
+al=aj.url or aj.gif or aj.mp4 or aj.webm or aj.file or"SectionIcon"
+end
+return tostring(al)..":"..tostring(ak)
+end
+
 function ah.New(aj,ak)
 local al={
 __type="Section",
 Title=ak.Title or"Section",
-Icon=ak.Icon,
+Icon=ak.Icon or ak.Image,
 TextXAlignment=ak.TextXAlignment or"Left",
 TextSize=ak.TextSize or 19,
 Box=ak.Box or false,
@@ -10575,37 +11144,176 @@ TextTransparency=ak.TextTransparency or 0.05,
 Opened=ak.Opened or false,
 UIElements={},
 
-HeaderSize=42,
-IconSize=20,
+HeaderSize=ak.HeaderSize or 42,
 Padding=10,
+
+
+IconSize=ak.IconSize or 20,
+IconThemed=ak.IconThemed,
+IconTransparency=ak.IconTransparency or 0,
+IconScaleType=ak.IconScaleType or ak.ScaleType,
+IconKeepAspect=ak.IconKeepAspect,
+
+
+HeaderPadding=ak.HeaderPadding or 8,
 
 Elements={},
 
 Expandable=false,
 }
 
-local am
+local am=ak.ChevronSize or 20
 
 
-function al.SetIcon(an,ao)
-al.Icon=ao or nil
-if am then am:Destroy()end
-if ao then
-am=aa.Image(
-ao,
-ao..":"..al.Title,
+
+
+al.InlineIcon=ak.InlineIcon~=false
+
+local function InlineContext(an)
+return{
+Icon=al.Icon,
+IconSize=al.IconSize,
+IconThemed=al.IconThemed,
+IconTransparency=al.IconTransparency,
+IconScaleType=al.IconScaleType,
+IconKeepAspect=al.IconKeepAspect,
+Folder=ak.Window and ak.Window.Folder,
+ImageKind=al.__type,
+ThemeTagName="Text",
+CachePrefix="SectionTitle",
+Index=an,
+}
+end
+
+local function HasInlineTitle()
+return al.InlineIcon and aa.HasInlineIcons(al.Title)
+end
+
+
+
+
+
+
+local an=al.HeaderSize
+
+local function FitHeaderSize()
+local ao=al.IconSize
+if HasInlineTitle()then
+ao=aa.MaxInlineIconSize(al.Title,InlineContext(),ao)
+end
+
+al.HeaderSize=math.max(an,ao+12)
+end
+
+FitHeaderSize()
+
+local ao
+local ap
+local aq
+local ar
+local as
+
+
+
+
+
+local function RefreshHeader()
+local at=al.HeaderSize
+FitHeaderSize()
+
+if as then as()end
+if ar then ar()end
+
+if al.HeaderSize==at or not ao then return end
+
+if ao.Top.AutomaticSize==Enum.AutomaticSize.None then
+ao.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
+end
+ao.Content.Position=UDim2.new(0,0,0,al.HeaderSize)
+
+if ao.AutomaticSize==Enum.AutomaticSize.None then
+if al.Opened then
+al:Open()
+else
+ao.Size=UDim2.new(1,0,0,al.HeaderSize)
+end
+end
+end
+
+local function CreateIcon(at)
+local au=aa.Image(
+at,
+IconCacheName(at,al.Title),
 0,
-ak.Window.Folder,
+ak.Window and ak.Window.Folder,
 al.__type,
-true
+true,
+al.IconThemed,
+nil,
+{
+
+ScaleType=al.IconScaleType,
+KeepAspect=al.IconKeepAspect,
+Size=UDim2.fromOffset(al.IconSize,al.IconSize),
+}
 )
-am.Size=UDim2.new(0,al.IconSize,0,al.IconSize)
+if not au then return nil end
+
+au.Name="Icon"
+au.LayoutOrder=1
+au.Size=UDim2.new(0,al.IconSize,0,al.IconSize)
+
+local av=au:FindFirstChildOfClass"ImageLabel"
+if av then
+av.ImageTransparency=al.IconTransparency
+end
+
+return au,av
+end
+
+function al.SetIcon(at,au)
+al.Icon=au or nil
+
+if ap then
+ap:Destroy()
+ap,aq=nil,nil
+end
+
+if au then
+ap,aq=CreateIcon(au)
+
+
+if ap and ao and ao:FindFirstChild"Top"then
+ap.Parent=ao.Top
 end
 end
 
-local an=ae("Frame",{
-Size=UDim2.new(0,al.IconSize,0,al.IconSize),
+al.UIElements.Icon=ap
+
+
+RefreshHeader()
+
+return al
+end
+
+function al.SetIconSize(at,au)
+al.IconSize=au or al.IconSize
+if ap then
+ap.Size=UDim2.new(0,al.IconSize,0,al.IconSize)
+end
+RefreshHeader()
+return al
+end
+
+function al.GetIcon(at)
+return al.Icon
+end
+
+local at=ae("Frame",{
+Name="Chevron",
+Size=UDim2.new(0,am,0,am),
 BackgroundTransparency=1,
+LayoutOrder=3,
 Visible=false
 },{
 ae("ImageLabel",{
@@ -10626,10 +11334,12 @@ if al.Icon then
 al:SetIcon(al.Icon)
 end
 
-local ao=ae("TextLabel",{
+local au=ae("TextLabel",{
+Name="Title",
 BackgroundTransparency=1,
 TextXAlignment=al.TextXAlignment,
 AutomaticSize="Y",
+LayoutOrder=2,
 TextSize=al.TextSize,
 TextTransparency=al.TextTransparency,
 ThemeTag={
@@ -10649,19 +11359,117 @@ TextWrapped=true,
 })
 
 
-local function UpdateTitleSize()
-local ap=0
-if am then
-ap=ap-(al.IconSize+8)
+
+local av=ae("UIListLayout",{
+FillDirection="Horizontal",
+SortOrder="LayoutOrder",
+Padding=UDim.new(0,math.max(2,math.floor(al.HeaderPadding/2))),
+VerticalAlignment="Center",
+HorizontalAlignment=al.TextXAlignment=="Right"and"Right"
+or(al.TextXAlignment=="Center"and"Center"or"Left"),
+})
+
+aa.TrySetWraps(av,true)
+
+local aw=ae("Frame",{
+Name="TitleRich",
+BackgroundTransparency=1,
+LayoutOrder=2,
+Size=UDim2.new(1,0,0,0),
+AutomaticSize="Y",
+Visible=false,
+},{
+av,
+})
+
+local function CreateTitleTextPart(ax,ay)
+return ae("TextLabel",{
+Name="TitlePart",
+BackgroundTransparency=1,
+Text=ax,
+TextXAlignment=al.TextXAlignment,
+TextSize=al.TextSize,
+TextTransparency=al.TextTransparency,
+ThemeTag={
+TextColor3="Text",
+},
+FontFace=Font.new(aa.Font,al.FontWeight),
+LayoutOrder=ay,
+Size=UDim2.new(0,0,0,0),
+AutomaticSize="XY",
+TextWrapped=false,
+})
 end
-if an.Visible then
-ap=ap-(al.IconSize+8)
+
+as=function()
+if not HasInlineTitle()then
+
+au.Text=al.Title
+au.Visible=true
+aw.Visible=false
+for ax,ay in ipairs(aw:GetChildren())do
+if ay:IsA"GuiObject"then ay:Destroy()end
 end
-ao.Size=UDim2.new(1,ap,0,0)
+return
+end
+
+local ax=aa.ParseInlineText(al.Title,InlineContext())
+
+
+
+
+local ay=0
+local az={}
+for aA,aB in ipairs(ax)do
+if aB.Type=="Icon"then
+ay=ay+1
+else
+table.insert(az,aB.Content)
+end
+end
+if ay==0 then
+au.Text=table.concat(az)
+au.Visible=true
+aw.Visible=false
+return
+end
+
+for aA,aB in ipairs(aw:GetChildren())do
+if aB:IsA"GuiObject"then aB:Destroy()end
 end
 
 
-local ap=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
+
+for aA,aB in ipairs(ax)do
+local b
+if aB.Type=="Text"then
+b=CreateTitleTextPart(aB.Content,aA)
+else
+b=aa.InlineIconFrame(aB,InlineContext(aA))
+if b then b.LayoutOrder=aA end
+end
+if b then b.Parent=aw end
+end
+
+au.Visible=false
+aw.Visible=true
+end
+
+
+ar=function()
+local ax=0
+if ap then
+ax=ax-(al.IconSize+al.HeaderPadding)
+end
+if at.Visible then
+ax=ax-(am+al.HeaderPadding)
+end
+au.Size=UDim2.new(1,ax,0,0)
+aw.Size=UDim2.new(1,ax,0,0)
+end
+
+
+ao=aa.NewRoundFrame(ak.Window.ElementConfig.UICorner,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 BackgroundTransparency=1,
 Parent=ak.Parent,
@@ -10683,15 +11491,17 @@ al.Box and ae("UIPadding",{
 PaddingLeft=UDim.new(0,ak.Window.ElementConfig.UIPadding),
 PaddingRight=UDim.new(0,ak.Window.ElementConfig.UIPadding),
 })or nil,
-am,
-ao,
+ap,
+au,
+aw,
 ae("UIListLayout",{
-Padding=UDim.new(0,8),
+Padding=UDim.new(0,al.HeaderPadding),
+SortOrder="LayoutOrder",
 FillDirection="Horizontal",
 VerticalAlignment="Center",
 HorizontalAlignment="Left",
 }),
-an,
+at,
 }),
 ae("Frame",{
 BackgroundTransparency=1,
@@ -10714,7 +11524,15 @@ VerticalAlignment="Top",
 })
 })
 
-al.ElementFrame=ap
+al.ElementFrame=ao
+
+al.UIElements.Main=ao
+al.UIElements.Top=ao.Top
+al.UIElements.Content=ao.Content
+al.UIElements.Title=au
+al.UIElements.TitleRich=aw
+al.UIElements.Chevron=at
+al.UIElements.Icon=ap
 
 
 
@@ -10722,59 +11540,63 @@ al.ElementFrame=ap
 
 
 
-local aq=ak.ElementsModule
+local ax=ak.ElementsModule
 
-aq.Load(al,ap.Content,aq.Elements,ak.Window,ak.ANUI,function()
+ax.Load(al,ao.Content,ax.Elements,ak.Window,ak.ANUI,function()
 if not al.Expandable then
 al.Expandable=true
-an.Visible=true
-UpdateTitleSize()
+at.Visible=true
+ar()
 end
-end,aq,ak.UIScale,ak.Tab)
+end,ax,ak.UIScale,ak.Tab)
 
 
-UpdateTitleSize()
+as()
+ar()
 
-function al.SetTitle(ar,as)
-ao.Text=as
-end
+function al.SetTitle(ay,az)
+al.Title=az
 
-function al.Destroy(ar)
-for as,at in next,al.Elements do
-at:Destroy()
-end
-
-
-
-
-
-
-
-
-ap:Destroy()
+RefreshHeader()
+return al
 end
 
-function al.Open(ar)
+function al.Destroy(ay)
+for az,aA in next,al.Elements do
+aA:Destroy()
+end
+
+
+
+
+
+
+
+
+ao:Destroy()
+end
+
+function al.Open(ay)
 if al.Expandable then
 al.Opened=true
-af(ap,0.33,{
-Size=UDim2.new(1,0,0,al.HeaderSize+(ap.Content.AbsoluteSize.Y/ak.UIScale))
+af(ao,0.33,{
+Size=UDim2.new(1,0,0,al.HeaderSize+(ao.Content.AbsoluteSize.Y/ak.UIScale))
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 
-af(an.ImageLabel,0.1,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+af(at.ImageLabel,0.1,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
-function al.Close(ar)
+function al.Close(ay)
 if al.Expandable then
 al.Opened=false
-af(ap,0.26,{
+af(ao,0.26,{
 Size=UDim2.new(1,0,0,al.HeaderSize)
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-af(an.ImageLabel,0.1,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+af(at.ImageLabel,0.1,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
 
-aa.AddSignal(ap.Top.MouseButton1Click,function()
+aa.AddSignal(ao.Top.MouseButton1Click,function()
 if al.Expandable then
 if al.Opened then
 al:Close()
@@ -10784,7 +11606,7 @@ end
 end
 end)
 
-aa.AddSignal(ap.Content.UIListLayout:GetPropertyChangedSignal"AbsoluteContentSize",function()
+aa.AddSignal(ao.Content.UIListLayout:GetPropertyChangedSignal"AbsoluteContentSize",function()
 if al.Opened then
 al:Open()
 end
@@ -10801,11 +11623,11 @@ if al.Expandable then
 
 
 
-ap.Size=UDim2.new(1,0,0,al.HeaderSize)
-ap.AutomaticSize="None"
-ap.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
-ap.Top.AutomaticSize="None"
-ap.Content.Visible=true
+ao.Size=UDim2.new(1,0,0,al.HeaderSize)
+ao.AutomaticSize="None"
+ao.Top.Size=UDim2.new(1,0,0,al.HeaderSize)
+ao.Top.AutomaticSize="None"
+ao.Content.Visible=true
 end
 if al.Opened then
 al:Open()
@@ -10817,6 +11639,7 @@ return al.__type,al
 end
 
 return ah end function a.Q()
+
 local aa=a.load'b'
 local ae=aa.New
 
@@ -11080,11 +11903,15 @@ local af=aa.Tween
 local ah={}
 
 
+
+
+
 local function ResolveOption(aj)
+local ak
 if type(aj)=="table"then
-local ak=aj.Title or aj.Name or aj.Value or aj[1]
-return{
-Title=tostring(ak or""),
+local al=aj.Title or aj.Name or aj.Value or aj[1]
+ak={
+Title=tostring(al or""),
 Icon=aj.Icon or aj.Image,
 IconSize=aj.IconSize,
 ScaleType=aj.ScaleType,
@@ -11096,8 +11923,19 @@ ImageRectSize=aj.ImageRectSize,
 Desc=aj.Desc,
 Raw=aj,
 }
+else
+ak={Title=tostring(aj),Raw=aj}
 end
-return{Title=tostring(aj),Raw=aj}
+
+ak.Key=ak.Title
+if aa.HasInlineIcons(ak.Title)then
+local al=aa.StripInlineIcons(ak.Title,{Icon=ak.Icon})
+if al~=""then
+ak.Key=al
+end
+end
+
+return ak
 end
 
 
@@ -11271,6 +12109,21 @@ end)
 
 local aw={}
 
+
+
+local function NormalizeName(ax)
+if ax==nil then return nil end
+ax=tostring(ax)
+if aw[ax]or not aa.HasInlineIcons(ax)then
+return ax
+end
+local ay=aa.StripInlineIcons(ax)
+if ay~=""and aw[ay]then
+return ay
+end
+return ax
+end
+
 local function UpdateVisuals(ax)
 local ay=aa.Theme
 
@@ -11290,10 +12143,27 @@ end
 if typeof(d)=="Color3"then
 af(aA.Background,0.2,{ImageColor3=d}):Play()
 end
-af(aA.Title,0.2,{
+
+
+for h,j in ipairs(aA.TitleParts or{})do
+if j.Parent then
+af(j,0.2,{
 TextTransparency=f,
-TextColor3=typeof(e)=="Color3"and e or aA.Title.TextColor3,
+TextColor3=typeof(e)=="Color3"and e or j.TextColor3,
 }):Play()
+end
+end
+
+
+for h,j in ipairs(aA.TitleIcons or{})do
+if j.Label and j.Label.Parent then
+local l={ImageTransparency=f}
+if j.Tint and typeof(e)=="Color3"then
+l.ImageColor3=e
+end
+af(j.Label,0.2,l):Play()
+end
+end
 
 if aA.IconLabel and aA.IconLabel.Parent then
 local h={ImageTransparency=f}
@@ -11357,7 +12227,7 @@ end
 
 b=aa.Image(
 az.Icon,
-"CategoryIcon-"..az.Title,
+"CategoryIcon-"..az.Key,
 0,
 al and al.Folder,
 "Icon",
@@ -11384,6 +12254,9 @@ end or nil,
 b.Name="Icon"
 b.BackgroundTransparency=1
 
+
+b.LayoutOrder=-1
+
 d=b:FindFirstChildOfClass"ImageLabel"
 if d then
 d.ImageTransparency=an.Transparency
@@ -11391,22 +12264,84 @@ end
 b.Parent=aB
 end
 
-local f=ae("TextLabel",{
+local function CreateTitleLabel(f,g)
+return ae("TextLabel",{
 Name="Title",
-Text=az.Title,
+Text=f,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
 TextSize=an.TextSize,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
 ThemeTag={TextColor3=an.TextTag},
 TextTransparency=an.Transparency,
+LayoutOrder=g,
 Parent=aB,
 })
+end
 
-aw[az.Title]={
+local f={}
+local g={}
+local h
+
+
+local j=aa.HasInlineIcons(az.Title)
+and aa.ParseInlineText(az.Title,{
+Icon=az.Icon,
+IconSize=az.IconSize or an.IconSize,
+})
+or nil
+
+local l=false
+for m,p in ipairs(j or{})do
+if p.Type=="Icon"then
+l=true
+break
+end
+end
+
+if l then
+for m,p in ipairs(j)do
+if p.Type=="Text"then
+local r=CreateTitleLabel(p.Content,m)
+table.insert(f,r)
+h=h or r
+else
+local r,u=aa.InlineIconFrame(p,{
+Icon=az.Icon,
+IconSize=az.IconSize or an.IconSize,
+IconScaleType=az.ScaleType or an.IconScaleType,
+IconKeepAspect=az.KeepAspect,
+IconTransparency=an.Transparency,
+Folder=al and al.Folder,
+ImageKind="Icon",
+ThemeTagName=an.TextTag,
+CachePrefix="CategoryInline",
+Index=m,
+})
+if r then
+r.LayoutOrder=m
+r.Parent=aB
+table.insert(g,{
+Frame=r,
+Label=u,
+
+Tint=(p.Options and p.Options.Color)==nil
+and aa.Icon(p.Content)~=nil,
+})
+end
+end
+end
+else
+h=CreateTitleLabel(az.Title)
+table.insert(f,h)
+end
+
+aw[az.Key]={
 Frame=aA,
 Background=aB,
-Title=f,
+Title=h,
+TitleParts=f,
+TitleIcons=g,
 Icon=b,
 IconLabel=d,
 Tint=e,
@@ -11414,7 +12349,7 @@ Option=az,
 }
 
 aa.AddSignal(aA.MouseButton1Click,function()
-an:Select(az.Title)
+an:Select(az.Key)
 end)
 
 return az
@@ -11438,7 +12373,7 @@ end
 
 function an.Select(ax,ay,az)
 if ay==nil then return an end
-ay=tostring(ay)
+ay=NormalizeName(ay)
 
 an.Value=ay
 an.Selected=ay
@@ -11471,7 +12406,7 @@ end
 
 function an.Add(ax,ay,...)
 if ay==nil then return nil end
-ay=tostring(ay)
+ay=NormalizeName(ay)
 
 local az=an.Registry[ay]
 if not az then
@@ -11526,7 +12461,7 @@ end
 
 function an.GetElements(ax,ay)
 if ay==nil then return an.Registry end
-return an.Registry[tostring(ay)]or{}
+return an.Registry[NormalizeName(ay)]or{}
 end
 
 function an.Refresh(ax)
@@ -11539,7 +12474,7 @@ end
 
 
 function an.Capture(ax,ay)
-an.CaptureTarget=ay and tostring(ay)or nil
+an.CaptureTarget=ay and NormalizeName(ay)or nil
 return an
 end
 
@@ -11572,14 +12507,14 @@ local aA=CreateButton(ay,az)
 if aA then
 table.insert(an.Options,aA.Raw)
 if an.Value==nil then
-an:Select(aA.Title,true)
+an:Select(aA.Key,true)
 end
 end
 return an
 end
 
 function an.RemoveOption(ax,ay)
-ay=tostring(ay)
+ay=NormalizeName(ay)
 local az=aw[ay]
 if az then
 az.Frame:Destroy()
@@ -11587,7 +12522,7 @@ aw[ay]=nil
 end
 for aA,aB in ipairs(an.Options)do
 local b=ResolveOption(aB)
-if b.Title==ay then
+if b.Key==ay then
 table.remove(an.Options,aA)
 break
 end
@@ -11612,10 +12547,10 @@ end
 end
 
 local aA=az or an.Default
-if aA and aw[tostring(aA)]then
+if aA and aw[NormalizeName(aA)]then
 an:Select(aA,true)
 elseif an.Options[1]then
-an:Select(ResolveOption(an.Options[1]).Title,true)
+an:Select(ResolveOption(an.Options[1]).Key,true)
 end
 
 return an
@@ -11683,7 +12618,7 @@ end
 
 local ax=an.Default
 if ax==nil and ak.Options and ak.Options[1]then
-ax=ResolveOption(ak.Options[1]).Title
+ax=ResolveOption(ak.Options[1]).Key
 end
 if ax~=nil then
 

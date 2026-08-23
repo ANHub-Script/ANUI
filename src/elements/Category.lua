@@ -5,10 +5,14 @@ local Tween = Creator.Tween
 local Element = {}
 
 -- Option boleh string ("Automation") atau tabel ({ Title = "...", Icon = "..." })
+-- Title boleh memuat token ikon inline, mis. "{swords} Auto Farm".
+-- Key = judul tanpa token, dipakai sebagai nama option supaya
+-- Category:Select("Auto Farm") tetap jalan.
 local function ResolveOption(Option)
+    local Resolved
     if type(Option) == "table" then
         local Title = Option.Title or Option.Name or Option.Value or Option[1]
-        return {
+        Resolved = {
             Title      = tostring(Title or ""),
             Icon       = Option.Icon or Option.Image,
             IconSize   = Option.IconSize,
@@ -21,8 +25,19 @@ local function ResolveOption(Option)
             Desc       = Option.Desc,
             Raw        = Option,
         }
+    else
+        Resolved = { Title = tostring(Option), Raw = Option }
     end
-    return { Title = tostring(Option), Raw = Option }
+
+    Resolved.Key = Resolved.Title
+    if Creator.HasInlineIcons(Resolved.Title) then
+        local Stripped = Creator.StripInlineIcons(Resolved.Title, { Icon = Resolved.Icon })
+        if Stripped ~= "" then
+            Resolved.Key = Stripped
+        end
+    end
+
+    return Resolved
 end
 
 -- Cari frame dari sebuah elemen ANUI (Toggle/Group/Section/dll) atau Instance langsung
@@ -196,6 +211,21 @@ function Element:New(Config)
     -- =====================================================
     local ButtonObjects = {}
 
+    -- Nama option boleh ditulis dengan atau tanpa token ikon:
+    -- Select("Auto Farm") dan Select("{swords} Auto Farm") sama-sama jalan.
+    local function NormalizeName(Name)
+        if Name == nil then return nil end
+        Name = tostring(Name)
+        if ButtonObjects[Name] or not Creator.HasInlineIcons(Name) then
+            return Name
+        end
+        local Stripped = Creator.StripInlineIcons(Name)
+        if Stripped ~= "" and ButtonObjects[Stripped] then
+            return Stripped
+        end
+        return Name
+    end
+
     local function UpdateVisuals(SelectedName)
         local Theme = Creator.Theme
 
@@ -215,10 +245,27 @@ function Element:New(Config)
             if typeof(ColorVal) == "Color3" then
                 Tween(Objs.Background, 0.2, { ImageColor3 = ColorVal }):Play()
             end
-            Tween(Objs.Title, 0.2, {
-                TextTransparency = TargetTransparency,
-                TextColor3 = typeof(TextColorVal) == "Color3" and TextColorVal or Objs.Title.TextColor3,
-            }):Play()
+
+            -- judul bisa terdiri dari beberapa label kalau memuat ikon inline
+            for _, Label in ipairs(Objs.TitleParts or {}) do
+                if Label.Parent then
+                    Tween(Label, 0.2, {
+                        TextTransparency = TargetTransparency,
+                        TextColor3 = typeof(TextColorVal) == "Color3" and TextColorVal or Label.TextColor3,
+                    }):Play()
+                end
+            end
+
+            -- ikon inline di dalam judul ikut meredup/menyala bersama teksnya
+            for _, Item in ipairs(Objs.TitleIcons or {}) do
+                if Item.Label and Item.Label.Parent then
+                    local IconProps = { ImageTransparency = TargetTransparency }
+                    if Item.Tint and typeof(TextColorVal) == "Color3" then
+                        IconProps.ImageColor3 = TextColorVal
+                    end
+                    Tween(Item.Label, 0.2, IconProps):Play()
+                end
+            end
 
             if Objs.IconLabel and Objs.IconLabel.Parent then
                 local IconProps = { ImageTransparency = TargetTransparency }
@@ -282,7 +329,7 @@ function Element:New(Config)
 
             IconObj = Creator.Image(
                 Opt.Icon,
-                "CategoryIcon-" .. Opt.Title,
+                "CategoryIcon-" .. Opt.Key,
                 0,
                 Window and Window.Folder,
                 "Icon",
@@ -308,6 +355,9 @@ function Element:New(Config)
             )
             IconObj.Name = "Icon"
             IconObj.BackgroundTransparency = 1
+            -- selalu di depan judul, termasuk kalau judulnya dipecah jadi
+            -- beberapa segmen ber-LayoutOrder karena memuat ikon inline
+            IconObj.LayoutOrder = -1
 
             IconLabel = IconObj:FindFirstChildOfClass("ImageLabel")
             if IconLabel then
@@ -316,22 +366,84 @@ function Element:New(Config)
             IconObj.Parent = Background
         end
 
-        local TitleObj = New("TextLabel", {
-            Name = "Title",
-            Text = Opt.Title,
-            FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-            TextSize = Category.TextSize,
-            BackgroundTransparency = 1,
-            AutomaticSize = Enum.AutomaticSize.XY,
-            ThemeTag = { TextColor3 = Category.TextTag },
-            TextTransparency = Category.Transparency,
-            Parent = Background,
-        })
+        local function CreateTitleLabel(Text, Order)
+            return New("TextLabel", {
+                Name = "Title",
+                Text = Text,
+                FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
+                TextSize = Category.TextSize,
+                BackgroundTransparency = 1,
+                AutomaticSize = Enum.AutomaticSize.XY,
+                ThemeTag = { TextColor3 = Category.TextTag },
+                TextTransparency = Category.Transparency,
+                LayoutOrder = Order,
+                Parent = Background,
+            })
+        end
 
-        ButtonObjects[Opt.Title] = {
+        local TitleParts = {}
+        local TitleIcons = {}
+        local TitleObj
+
+        -- Judul boleh memuat ikon inline: "{swords} Auto Farm"
+        local Segments = Creator.HasInlineIcons(Opt.Title)
+            and Creator.ParseInlineText(Opt.Title, {
+                Icon = Opt.Icon,
+                IconSize = Opt.IconSize or Category.IconSize,
+            })
+            or nil
+
+        local HasInlineIcon = false
+        for _, Segment in ipairs(Segments or {}) do
+            if Segment.Type == "Icon" then
+                HasInlineIcon = true
+                break
+            end
+        end
+
+        if HasInlineIcon then
+            for Index, Segment in ipairs(Segments) do
+                if Segment.Type == "Text" then
+                    local Label = CreateTitleLabel(Segment.Content, Index)
+                    table.insert(TitleParts, Label)
+                    TitleObj = TitleObj or Label
+                else
+                    local InlineFrame, InlineLabel = Creator.InlineIconFrame(Segment, {
+                        Icon             = Opt.Icon,
+                        IconSize         = Opt.IconSize or Category.IconSize,
+                        IconScaleType    = Opt.ScaleType or Category.IconScaleType,
+                        IconKeepAspect   = Opt.KeepAspect,
+                        IconTransparency = Category.Transparency,
+                        Folder           = Window and Window.Folder,
+                        ImageKind        = "Icon",
+                        ThemeTagName     = Category.TextTag,
+                        CachePrefix      = "CategoryInline",
+                        Index            = Index,
+                    })
+                    if InlineFrame then
+                        InlineFrame.LayoutOrder = Index
+                        InlineFrame.Parent = Background
+                        table.insert(TitleIcons, {
+                            Frame = InlineFrame,
+                            Label = InlineLabel,
+                            -- ikon lucide ikut warna teks, gambar asli tidak
+                            Tint = (Segment.Options and Segment.Options.Color) == nil
+                                and Creator.Icon(Segment.Content) ~= nil,
+                        })
+                    end
+                end
+            end
+        else
+            TitleObj = CreateTitleLabel(Opt.Title)
+            table.insert(TitleParts, TitleObj)
+        end
+
+        ButtonObjects[Opt.Key] = {
             Frame = ButtonFrame,
             Background = Background,
             Title = TitleObj,
+            TitleParts = TitleParts,
+            TitleIcons = TitleIcons,
             Icon = IconObj,
             IconLabel = IconLabel,
             Tint = Tint,
@@ -339,7 +451,7 @@ function Element:New(Config)
         }
 
         Creator.AddSignal(ButtonFrame.MouseButton1Click, function()
-            Category:Select(Opt.Title)
+            Category:Select(Opt.Key)
         end)
 
         return Opt
@@ -363,7 +475,7 @@ function Element:New(Config)
 
     function Category:Select(Name, Silent)
         if Name == nil then return Category end
-        Name = tostring(Name)
+        Name = NormalizeName(Name)
 
         Category.Value = Name
         Category.Selected = Name
@@ -396,7 +508,7 @@ function Element:New(Config)
     --   Category:Add("Automation", { toggleA, toggleB })
     function Category:Add(Name, ...)
         if Name == nil then return nil end
-        Name = tostring(Name)
+        Name = NormalizeName(Name)
 
         local List = Category.Registry[Name]
         if not List then
@@ -451,7 +563,7 @@ function Element:New(Config)
 
     function Category:GetElements(Name)
         if Name == nil then return Category.Registry end
-        return Category.Registry[tostring(Name)] or {}
+        return Category.Registry[NormalizeName(Name)] or {}
     end
 
     function Category:Refresh()
@@ -464,7 +576,7 @@ function Element:New(Config)
     --   Tab:Toggle({...}) ; Tab:Toggle({...})
     --   Category:StopCapture()
     function Category:Capture(Name)
-        Category.CaptureTarget = Name and tostring(Name) or nil
+        Category.CaptureTarget = Name and NormalizeName(Name) or nil
         return Category
     end
 
@@ -497,14 +609,14 @@ function Element:New(Config)
         if Opt then
             table.insert(Category.Options, Opt.Raw)
             if Category.Value == nil then
-                Category:Select(Opt.Title, true)
+                Category:Select(Opt.Key, true)
             end
         end
         return Category
     end
 
     function Category:RemoveOption(Name)
-        Name = tostring(Name)
+        Name = NormalizeName(Name)
         local Objs = ButtonObjects[Name]
         if Objs then
             Objs.Frame:Destroy()
@@ -512,7 +624,7 @@ function Element:New(Config)
         end
         for Index, Option in ipairs(Category.Options) do
             local Opt = ResolveOption(Option)
-            if Opt.Title == Name then
+            if Opt.Key == Name then
                 table.remove(Category.Options, Index)
                 break
             end
@@ -537,10 +649,10 @@ function Element:New(Config)
         end
 
         local Default = NewDefault or Category.Default
-        if Default and ButtonObjects[tostring(Default)] then
+        if Default and ButtonObjects[NormalizeName(Default)] then
             Category:Select(Default, true)
         elseif Category.Options[1] then
-            Category:Select(ResolveOption(Category.Options[1]).Title, true)
+            Category:Select(ResolveOption(Category.Options[1]).Key, true)
         end
 
         return Category
@@ -608,7 +720,7 @@ function Element:New(Config)
 
     local Default = Category.Default
     if Default == nil and Config.Options and Config.Options[1] then
-        Default = ResolveOption(Config.Options[1]).Title
+        Default = ResolveOption(Config.Options[1]).Key
     end
     if Default ~= nil then
         -- silent: callback tidak ditembak saat pembuatan

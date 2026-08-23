@@ -153,15 +153,44 @@ local function ParseGradientAttr(attr)
 end
 
 -- Memecah teks menjadi beberapa segmen: teks biasa, gambar (rbxassetid://),
--- dan teks yang ditandai tag gradient (agar hanya sebagian teks yang gradient).
--- Mendukung dua bentuk tag:
+-- ikon inline token "{...}", dan teks yang ditandai tag gradient (agar hanya
+-- sebagian teks yang gradient).
+-- Mendukung dua bentuk tag gradient:
 --   <gradient>...</gradient>              -> pakai TitleGradient/DescGradient milik elemen
 --   <gradient=HEX1,HEX2,...>...</gradient> -> gradient custom miliknya sendiri (bisa beda-beda per tag)
-local function ParseTextSegments(str)
+-- Ikon inline (lihat Creator.ParseInlineText):
+--   "{icon} Auto {icon} Farm"   -> "{icon}" ambil dari Config.Icon/Config.Image
+--   "{swords} A {rocket} B"     -> sebut nama sendiri, boleh URL/rbxassetid
+--   "{icon:star size=28}"       -> atribut per token
+local function ParseTextSegments(str, Context)
     local Segments = {}
     local pos = 1
     local CurrentGradient = false -- false = normal, true = pakai gradient elemen, table = gradient custom
     local length = #str
+
+    -- Token ikon dipecah lebih dulu oleh Creator supaya aturannya sama di
+    -- semua elemen; hasil teksnya lalu diproses lagi untuk tag gradient.
+    -- Context nil = ikon inline dimatikan, token dibiarkan mentah.
+    local function PushTextWithIcons(Text)
+        if Text == "" then return end
+
+        if not Context or not Creator.HasInlineIcons(Text) then
+            table.insert(Segments, {Type = "Text", Content = Text, Gradient = CurrentGradient})
+            return
+        end
+
+        for _, Part in ipairs(Creator.ParseInlineText(Text, Context)) do
+            if Part.Type == "Icon" then
+                table.insert(Segments, {
+                    Type = "Icon",
+                    Content = Part.Content,
+                    Options = Part.Options,
+                })
+            elseif Part.Content ~= "" then
+                table.insert(Segments, {Type = "Text", Content = Part.Content, Gradient = CurrentGradient})
+            end
+        end
+    end
 
     while pos <= length do
         local imgS, imgE = string.find(str, "rbxassetid://%d+", pos)
@@ -182,17 +211,11 @@ local function ParseTextSegments(str)
         end
 
         if not nextS then
-            local rest = string.sub(str, pos)
-            if rest ~= "" then
-                table.insert(Segments, {Type = "Text", Content = rest, Gradient = CurrentGradient})
-            end
+            PushTextWithIcons(string.sub(str, pos))
             break
         end
 
-        local textPart = string.sub(str, pos, nextS - 1)
-        if textPart ~= "" then
-            table.insert(Segments, {Type = "Text", Content = textPart, Gradient = CurrentGradient})
-        end
+        PushTextWithIcons(string.sub(str, pos, nextS - 1))
 
         if kind == "Image" then
             table.insert(Segments, {Type = "Image", Content = string.sub(str, nextS, nextE)})
@@ -210,12 +233,15 @@ local function ParseTextSegments(str)
     return Segments
 end
 
--- Cek apakah teks butuh dipecah jadi beberapa TextLabel (ada gambar inline dan/atau tag gradient parsial)
-local function HasRichTokens(str)
+-- Cek apakah teks butuh dipecah jadi beberapa TextLabel (ada gambar inline,
+-- token ikon, dan/atau tag gradient parsial).
+-- AllowInline false = token "{...}" diabaikan (dianggap teks biasa).
+local function HasRichTokens(str, AllowInline)
     if not str or str == "" then return false end
     return string.find(str, "rbxassetid://%d+") ~= nil
         or string.find(str, GRADIENT_TAG_PLAIN, 1, true) ~= nil
         or string.find(str, "<gradient=", 1, true) ~= nil
+        or (AllowInline ~= false and Creator.HasInlineIcons(str))
 end
 
 -- Mengubah nilai Gradient sebuah segmen (false/true/table) menjadi UIGradient props final
@@ -350,6 +376,39 @@ return function(Config)
     local CanHover = true
     local IconOffset = 0
 
+    -- Konteks untuk ikon inline di dalam Title/Desc. Sumber "{icon}" diambil
+    -- dari Config.Icon (kalau elemennya punya) atau Config.Image.
+    local InlineIconSource = Config.Icon or Config.Image
+    if typeof(InlineIconSource) ~= "string" and type(InlineIconSource) ~= "table" then
+        InlineIconSource = nil
+    end
+
+    local function InlineContext(Type, Index)
+        return {
+            Icon         = InlineIconSource,
+            IconSize     = Config.InlineIconSize or (Type == "Desc" and 16 or 18),
+            IconThemed   = Config.InlineIconThemed,
+            Folder       = Config.Window and Config.Window.Folder,
+            ImageKind    = "Icon",
+            ThemeTagName = Type == "Desc" and "ElementDesc" or "ElementTitle",
+            CachePrefix  = "Inline" .. (Type or "Title"),
+            Index        = Index,
+            IconTransparency = Type == "Desc" and 0.3 or 0,
+        }
+    end
+
+    -- Ikon inline bisa dimatikan per elemen: InlineIcon = false
+    local InlineEnabled = Config.InlineIcon ~= false
+
+    local function ParseInline(str, Type)
+        -- Context nil = token dibiarkan mentah, hanya gradient/rbxassetid diproses
+        return ParseTextSegments(str, InlineEnabled and InlineContext(Type) or nil)
+    end
+
+    local function HasRich(str)
+        return HasRichTokens(str, InlineEnabled)
+    end
+
     local ThumbnailFrame
     local ImageFrame
     if Element.Thumbnail then
@@ -419,6 +478,18 @@ return function(Config)
     end
 
     local Title = CreateText(Element.Title, "Title")
+    local TitleRichLayout = New("UIListLayout", {
+        FillDirection = Enum.FillDirection.Horizontal,
+        SortOrder = Enum.SortOrder.LayoutOrder,
+        Padding = UDim.new(0, 4),
+        VerticalAlignment = Enum.VerticalAlignment.Center
+    })
+    -- judul panjang tetap bisa turun baris (properti baru, jadi lewat pcall).
+    -- Hanya kalau lebarnya terbatas; "XY" ikut lebar isi jadi tidak pernah wrap.
+    if Element.Justify == "Between" then
+        Creator.TrySetWraps(TitleRichLayout, true)
+    end
+
     local TitleRich = New("Frame", {
         Name = "TitleRich",
         BackgroundTransparency = 1,
@@ -426,12 +497,7 @@ return function(Config)
         AutomaticSize = Element.Justify == "Between" and "Y" or "XY",
         Visible = false,
     }, {
-        New("UIListLayout", {
-            FillDirection = Enum.FillDirection.Horizontal,
-            SortOrder = Enum.SortOrder.LayoutOrder,
-            Padding = UDim.new(0, 4),
-            VerticalAlignment = Enum.VerticalAlignment.Center
-        })
+        TitleRichLayout
     })
 
     -- Container Deskripsi
@@ -457,7 +523,7 @@ return function(Config)
         DescContainer.Visible = true
 
         local function parseInline(str)
-            return ParseTextSegments(str)
+            return ParseInline(str, "Desc")
         end
 
         local function getColumnWidth()
@@ -491,23 +557,46 @@ return function(Config)
             return layout
         end
 
+        -- Penanda jenis item, dipakai untuk memutuskan sebuah instance masih
+        -- bisa dipakai ulang atau harus dibuat baru. Isi teks & Image tidak
+        -- ikut dihitung karena di bawah cukup di-assign ulang; ikon inline ikut
+        -- karena ukuran/sumbernya menentukan cara frame-nya dibangun.
+        local function ItemSignature(itemData)
+            if itemData.Type == "Text" then
+                return "T|" .. GradientSignature(itemData.Gradient)
+            elseif itemData.Type == "Image" then
+                return "I"
+            end
+
+            local o = itemData.Options or {}
+            return table.concat({
+                "C", tostring(itemData.Content),
+                tostring(o.Size), tostring(o.Width), tostring(o.Height),
+                tostring(o.Transparency), tostring(o.Themed),
+                tostring(o.ScaleType), tostring(o.KeepAspect),
+                o.Color and o.Color:ToHex() or "",
+            }, "|")
+        end
+
         local function updateItemsInContainer(container, items)
             local currentItems = {}
             for _, c in ipairs(container:GetChildren()) do
                 if c:IsA("GuiObject") then table.insert(currentItems, c) end
             end
 
-            for j, itemData in ipairs(items) do
-                local itemFrame = currentItems[j]
+            -- Kursor terpisah dari indeks item: sebuah ikon bisa gagal dibangun
+            -- (sumber tidak sah) sehingga tidak memakai slot instance. Tanpa ini
+            -- posisi instance lama bergeser dan ikut dibuang tiap update.
+            local slot = 0
 
-                if itemFrame then
-                    local isText = itemFrame:IsA("TextLabel")
-                    local isImage = itemFrame:IsA("ImageLabel")
-                    local gradientChanged = isText and (itemFrame:GetAttribute("GradientSig") ~= GradientSignature(itemData.Gradient))
-                    if (itemData.Type == "Text" and not isText) or (itemData.Type == "Image" and not isImage) or gradientChanged then
-                        itemFrame:Destroy()
-                        itemFrame = nil
-                    end
+            for j, itemData in ipairs(items) do
+                local signature = ItemSignature(itemData)
+                local itemFrame = currentItems[slot + 1]
+
+                if itemFrame and itemFrame:GetAttribute("ItemSig") ~= signature then
+                    itemFrame:Destroy()
+                    table.remove(currentItems, slot + 1)
+                    itemFrame = nil
                 end
 
                 if not itemFrame then
@@ -515,6 +604,11 @@ return function(Config)
                         itemFrame = CreateText(itemData.Content, "Desc", itemData.Gradient)
                         itemFrame:SetAttribute("GradientSig", GradientSignature(itemData.Gradient))
                         itemFrame.Parent = container
+                    elseif itemData.Type == "Icon" then
+                        itemFrame = Creator.InlineIconFrame(itemData, InlineContext("Desc", j))
+                        if itemFrame then
+                            itemFrame.Parent = container
+                        end
                     else
                         itemFrame = New("ImageLabel", {
                             Parent = container,
@@ -525,40 +619,64 @@ return function(Config)
                             ImageTransparency = 0.3
                         })
                     end
+
+                    if itemFrame then
+                        itemFrame:SetAttribute("ItemSig", signature)
+                        table.insert(currentItems, slot + 1, itemFrame)
+                    end
                 end
 
-                itemFrame.LayoutOrder = j
-                itemFrame.Visible = true
+                -- sumber ikon tidak sah: dilewati supaya tidak ada kotak kosong
+                if itemFrame then
+                    slot = slot + 1
+                    itemFrame.LayoutOrder = j
+                    itemFrame.Visible = true
 
-                if itemData.Type == "Text" then
-                    if itemFrame.Text ~= itemData.Content then
-                        itemFrame.Text = itemData.Content
-                    end
-                    ApplyGradientToLabel(itemFrame, ResolveItemGradientProps(itemData.Gradient, Element.DescGradient))
-                    if #items == 1 then
-                        itemFrame.Size = UDim2.new(1, 0, 0, 0)
-                        itemFrame.AutomaticSize = Enum.AutomaticSize.Y
-                        itemFrame.TextWrapped = true
+                    if itemData.Type == "Text" then
+                        if itemFrame.Text ~= itemData.Content then
+                            itemFrame.Text = itemData.Content
+                        end
+                        ApplyGradientToLabel(itemFrame, ResolveItemGradientProps(itemData.Gradient, Element.DescGradient))
+                        if #items == 1 then
+                            itemFrame.Size = UDim2.new(1, 0, 0, 0)
+                            itemFrame.AutomaticSize = Enum.AutomaticSize.Y
+                            itemFrame.TextWrapped = true
+                        else
+                            itemFrame.Size = UDim2.new(0, 0, 0, 0)
+                            itemFrame.AutomaticSize = Enum.AutomaticSize.XY
+                            itemFrame.TextWrapped = false
+                        end
+                    elseif itemData.Type == "Icon" then
+                        if Element.Color then
+                            local Label = itemFrame:FindFirstChildOfClass("ImageLabel")
+                            local Options = itemData.Options or {}
+                            -- warna eksplisit di token tetap menang
+                            if Label and not Options.Color then
+                                if typeof(Element.Color) == "string" then
+                                    Label.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                                elseif typeof(Element.Color) == "Color3" then
+                                    Label.ImageColor3 = GetTextColorForHSB(Element.Color)
+                                end
+                            end
+                        end
                     else
-                        itemFrame.Size = UDim2.new(0, 0, 0, 0)
-                        itemFrame.AutomaticSize = Enum.AutomaticSize.XY
-                        itemFrame.TextWrapped = false
-                    end
-                else
-                    if itemFrame.Image ~= itemData.Content then
-                        itemFrame.Image = itemData.Content
-                    end
-                    if Element.Color then
-                        if typeof(Element.Color) == "string" then
-                            itemFrame.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
-                        elseif typeof(Element.Color) == "Color3" then
-                            itemFrame.ImageColor3 = GetTextColorForHSB(Element.Color)
+                        if itemFrame.Image ~= itemData.Content then
+                            itemFrame.Image = itemData.Content
+                        end
+                        if Element.Color then
+                            if typeof(Element.Color) == "string" then
+                                itemFrame.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                            elseif typeof(Element.Color) == "Color3" then
+                                itemFrame.ImageColor3 = GetTextColorForHSB(Element.Color)
+                            end
                         end
                     end
                 end
             end
 
-            for k = #items + 1, #currentItems do
+            -- sisa instance yang tidak terpakai lagi (pakai slot, bukan #items,
+            -- karena ikon yang gagal dibangun tidak memakai slot)
+            for k = slot + 1, #currentItems do
                 currentItems[k]:Destroy()
             end
         end
@@ -666,7 +784,25 @@ return function(Config)
             return
         end
 
-        if not HasRichTokens(text) then
+        if not HasRich(text) then
+            Title.Visible = true
+            TitleRich.Visible = false
+            return
+        end
+
+        local items = ParseInline(text, "Title")
+
+        -- Token yang tidak jadi ikon (mis. "Rate {5} stars") tetap teks biasa:
+        -- kalau tidak ada segmen non-teks sama sekali, pakai jalur TextLabel
+        -- tunggal supaya spasi & wrapping aslinya tidak berubah.
+        local hasRichItem = false
+        for _, item in ipairs(items) do
+            if item.Type ~= "Text" then
+                hasRichItem = true
+                break
+            end
+        end
+        if not hasRichItem then
             Title.Visible = true
             TitleRich.Visible = false
             return
@@ -680,8 +816,6 @@ return function(Config)
                 c:Destroy()
             end
         end
-
-        local items = ParseTextSegments(text)
 
         for idx, item in ipairs(items) do
             if item.Type == "Text" then
@@ -697,6 +831,23 @@ return function(Config)
                     lbl.TextWrapped = false
                 end
                 lbl.Parent = TitleRich
+            elseif item.Type == "Icon" then
+                -- token "{...}": lucide / rbxassetid / URL, ukuran per token
+                local frame = Creator.InlineIconFrame(item, InlineContext("Title", idx))
+                if frame then
+                    frame.LayoutOrder = idx
+
+                    local label = frame:FindFirstChildOfClass("ImageLabel")
+                    if label and Element.Color and not (item.Options and item.Options.Color) then
+                        if typeof(Element.Color) == "string" then
+                            label.ImageColor3 = GetTextColorForHSB(Color3.fromHex(Creator.Colors[Element.Color]))
+                        elseif typeof(Element.Color) == "Color3" then
+                            label.ImageColor3 = GetTextColorForHSB(Element.Color)
+                        end
+                    end
+
+                    frame.Parent = TitleRich
+                end
             else
                 local img = New("ImageLabel", {
                     BackgroundTransparency = 1,
