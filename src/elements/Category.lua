@@ -4,40 +4,146 @@ local Tween = Creator.Tween
 
 local Element = {}
 
+-- Option boleh string ("Automation") atau tabel ({ Title = "...", Icon = "..." })
+local function ResolveOption(Option)
+    if type(Option) == "table" then
+        local Title = Option.Title or Option.Name or Option.Value or Option[1]
+        return {
+            Title      = tostring(Title or ""),
+            Icon       = Option.Icon or Option.Image,
+            IconSize   = Option.IconSize,
+            ScaleType  = Option.ScaleType,
+            KeepAspect = Option.KeepAspect ~= nil and Option.KeepAspect or Option.Native,
+            NativeSize = Option.NativeSize,
+            Tint       = Option.Tint,
+            ImageRectOffset = Option.ImageRectOffset,
+            ImageRectSize   = Option.ImageRectSize,
+            Desc       = Option.Desc,
+            Raw        = Option,
+        }
+    end
+    return { Title = tostring(Option), Raw = Option }
+end
+
+-- Cari frame dari sebuah elemen ANUI (Toggle/Group/Section/dll) atau Instance langsung
+local function ResolveElementFrame(Item)
+    if typeof(Item) == "Instance" then
+        return Item
+    end
+    if type(Item) ~= "table" then
+        return nil
+    end
+
+    local Frame = rawget(Item, "ElementFrame")
+    if typeof(Frame) == "Instance" then
+        return Frame
+    end
+
+    local UIElements = rawget(Item, "UIElements")
+    if type(UIElements) == "table" and typeof(UIElements.Main) == "Instance" then
+        return UIElements.Main
+    end
+
+    for _, Key in ipairs({ "GroupFrame", "MainFrame", "Main", "Frame", "Container" }) do
+        local Value = rawget(Item, Key)
+        if typeof(Value) == "Instance" then
+            return Value
+        end
+    end
+
+    return nil
+end
+
 function Element:New(Config)
+    local Window = Config.Window
+    local Tab = Config.Tab
+
     local Category = {
-        __type = "Category",
-        Title = Config.Title,
-        Desc = Config.Desc,
-        Options = Config.Options or {}, 
-        Default = Config.Default, 
-        Callback = Config.Callback or function() end,
-        Parent = Config.Parent,
+        __type   = "Category",
+        Title    = Config.Title,
+        Desc     = Config.Desc,
+        Options  = {},
+        Default  = Config.Default,
+        Value    = nil,
+        Callback = Config.Callback or Config.OnChanged or function() end,
+        Parent   = Config.Parent,
         UIElements = {},
+
+        -- [ TAMPILAN ] semua bisa diatur dari config, tidak dipatok di script
+        Height        = Config.Height or 45,
+        ButtonHeight  = Config.ButtonHeight or 32,
+        IconSize      = Config.IconSize or 18,
+        TextSize      = Config.TextSize or 14,
+        Radius        = Config.Radius or 8,
+        Gap           = Config.Gap or Config.Padding or 8,
+        SidePadding   = Config.SidePadding or 12,
+        ScrollSpeed   = Config.ScrollSpeed or 35,
+        ActiveTag     = Config.ActiveTag or "Toggle",
+        InactiveTag   = Config.InactiveTag or "Button",
+        TextTag       = Config.TextTag or "Text",
+        Transparency  = Config.Transparency or 0.5,
+
+        -- [ IKON ] default: tidak dipotong, perbandingan ukuran asli dipertahankan
+        IconScaleType  = Config.IconScaleType or Config.ScaleType,
+        IconKeepAspect = Config.IconKeepAspect ~= false,
+        IconAutoWidth  = Config.IconAutoWidth ~= false,
+        TintIcon       = Config.TintIcon, -- nil = auto (lucide diwarnai, gambar asli tidak)
+
+        -- [ LAYOUT ] menempel di atas konten tab
+        ContentPadding   = Config.ContentPadding or 5,
+        AlignWithContent = Config.AlignWithContent ~= false,
+
+        -- [ MANAJEMEN ELEMEN ] library yang urus tampil/sembunyi elemen
+        AutoCapture = Config.AutoCapture ~= false,
+        Registry    = {},
+        Owners      = {},
     }
 
-    -- [FIX UTAMA] Wrapper Frame agar Section mendeteksi tinggi elemen ini
-    -- Tanpa ini, AutomaticSize Section akan menganggap Category tingginya 0
+    -- Sticky hanya masuk akal kalau Category memang anak langsung konten Tab
+    local CanStick = Tab and type(Tab.ReserveHeader) == "function"
+        and Tab.UIElements and Config.Parent == Tab.UIElements.ContainerFrame
+    local Sticky = Config.Sticky
+    if Sticky == nil then Sticky = CanStick end
+    Sticky = (Sticky and CanStick) and true or false
+
+    -- Wrapper: dibutuhkan agar AutomaticSize induk menghitung tinggi elemen ini
     local WrapperFrame = New("Frame", {
-        Size = UDim2.new(1, 0, 0, 45), -- Tinggi Fix 45px
+        Name = "Category",
+        Size = UDim2.new(1, 0, 0, Category.Height),
         BackgroundTransparency = 1,
-        Parent = Config.Parent,
     })
 
-    -- Container Scroll (Dimasukkan ke dalam Wrapper)
+    local Header
+    if Sticky then
+        -- Library yang memindahkan & menggeser konten tab, bukan script pemakai
+        Header = Tab:ReserveHeader(Category.Height, {
+            Name             = "CategoryHeader",
+            ContentPadding   = Category.ContentPadding,
+            AlignWithContent = Category.AlignWithContent,
+            ZIndex           = Config.ZIndex or 6,
+        })
+        WrapperFrame.Size = UDim2.new(1, 0, 1, 0)
+        WrapperFrame.Parent = Header.Frame
+    else
+        WrapperFrame.Parent = Config.Parent
+    end
+
+    -- Container scroll horizontal
     local MainFrame = New("ScrollingFrame", {
-        Size = UDim2.new(1, 0, 1, 0), -- Mengisi Wrapper
+        Name = "Options",
+        Size = UDim2.new(1, 0, 1, 0),
         BackgroundTransparency = 1,
-        ScrollingDirection = Enum.ScrollingDirection.X, -- Scroll Horizontal
-        ScrollBarThickness = 0, -- Sembunyikan scrollbar
+        ScrollingDirection = Enum.ScrollingDirection.X,
+        ScrollBarThickness = 0,
         CanvasSize = UDim2.new(0, 0, 0, 0),
         AutomaticCanvasSize = Enum.AutomaticSize.X,
-        Parent = WrapperFrame, 
+        Active = true,
+        Parent = WrapperFrame,
     }, {
         New("UIListLayout", {
             FillDirection = Enum.FillDirection.Horizontal,
             SortOrder = Enum.SortOrder.LayoutOrder,
-            Padding = UDim.new(0, 8),
+            Padding = UDim.new(0, Category.Gap),
             VerticalAlignment = Enum.VerticalAlignment.Center,
         }),
         New("UIPadding", {
@@ -46,142 +152,469 @@ function Element:New(Config)
         })
     })
 
-    -- [FIX START] - Logika Scroll Manual (Drag & Mouse Wheel)
-    MainFrame.Active = true -- Penting agar frame bisa menerima input
-    
-    local isDragging = false
-    local dragStart = Vector2.new()
-    local startCanvasPos = Vector2.new()
+    Category.UIElements.Main = WrapperFrame
+    Category.UIElements.Container = MainFrame
+    Category.UIElements.Header = Header and Header.Frame or nil
+    Category.Header = Header
+    Category.Sticky = Sticky
+    Category.ElementFrame = WrapperFrame
 
-    -- 1. Deteksi Klik untuk Mulai Drag
-    MainFrame.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            isDragging = true
-            dragStart = input.Position
-            startCanvasPos = MainFrame.CanvasPosition
+    -- [ SCROLL MANUAL: drag & roda mouse ]
+    local IsDragging = false
+    local DragStart = Vector2.new()
+    local StartCanvasPos = Vector2.new()
+
+    Creator.AddSignal(MainFrame.InputBegan, function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+            IsDragging = true
+            DragStart = Input.Position
+            StartCanvasPos = MainFrame.CanvasPosition
         end
     end)
 
-    -- 2. Deteksi Lepas Klik untuk Stop Drag
-    MainFrame.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            isDragging = false
+    Creator.AddSignal(MainFrame.InputEnded, function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+            IsDragging = false
         end
     end)
-    
-    -- 3. Deteksi Gerakan Mouse & Roda Mouse
-    MainFrame.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement then
-            if isDragging then
-                local delta = input.Position - dragStart
-                -- Menggeser CanvasPosition berdasarkan gerakan mouse
-                MainFrame.CanvasPosition = Vector2.new(startCanvasPos.X - delta.X, 0)
+
+    Creator.AddSignal(MainFrame.InputChanged, function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseMovement then
+            if IsDragging then
+                local Delta = Input.Position - DragStart
+                MainFrame.CanvasPosition = Vector2.new(StartCanvasPos.X - Delta.X, 0)
             end
-        elseif input.UserInputType == Enum.UserInputType.MouseWheel then
-            -- Mengubah Scroll Atas/Bawah menjadi Kiri/Kanan
-            local scrollAmount = input.Position.Z * -35 -- Atur kecepatan scroll di sini (-35)
-            MainFrame.CanvasPosition = MainFrame.CanvasPosition + Vector2.new(scrollAmount, 0)
+        elseif Input.UserInputType == Enum.UserInputType.MouseWheel then
+            -- scroll atas/bawah diubah jadi kiri/kanan
+            MainFrame.CanvasPosition = MainFrame.CanvasPosition
+                + Vector2.new(Input.Position.Z * -Category.ScrollSpeed, 0)
         end
     end)
-    -- [FIX END]
 
+    -- =====================================================
+    -- [ TOMBOL OPTION ]
+    -- =====================================================
     local ButtonObjects = {}
-    
-    local function UpdateVisuals(selectedName)
-        for name, objs in pairs(ButtonObjects) do
-            local isActive = (name == selectedName)
-            local Theme = Creator.Theme
-            
-            local ColorVal = Creator.GetThemeProperty(isActive and "Toggle" or "Button", Theme)
-            local TextColorVal = Creator.GetThemeProperty("Text", Theme)
-            local TargetTransparency = isActive and 0 or 0.5
 
-            Tween(objs.Background, 0.2, {ImageColor3 = ColorVal}):Play()
-            Tween(objs.Title, 0.2, {TextTransparency = TargetTransparency, TextColor3 = TextColorVal}):Play()
-            
-            if objs.Icon then
-                Tween(objs.Icon.ImageLabel, 0.2, {ImageTransparency = TargetTransparency, ImageColor3 = TextColorVal}):Play()
+    local function UpdateVisuals(SelectedName)
+        local Theme = Creator.Theme
+
+        for Name, Objs in pairs(ButtonObjects) do
+            local IsActive = (Name == SelectedName)
+            local Tag = IsActive and Category.ActiveTag or Category.InactiveTag
+            local ColorVal = Creator.GetThemeProperty(Tag, Theme)
+            local TextColorVal = Creator.GetThemeProperty(Category.TextTag, Theme)
+            local TargetTransparency = IsActive and 0 or Category.Transparency
+
+            -- ThemeTag ikut di-update supaya warna tetap benar saat ganti theme
+            local ThemeData = Creator.Objects[Objs.Background]
+            if ThemeData and ThemeData.Properties then
+                ThemeData.Properties.ImageColor3 = Tag
+            end
+
+            if typeof(ColorVal) == "Color3" then
+                Tween(Objs.Background, 0.2, { ImageColor3 = ColorVal }):Play()
+            end
+            Tween(Objs.Title, 0.2, {
+                TextTransparency = TargetTransparency,
+                TextColor3 = typeof(TextColorVal) == "Color3" and TextColorVal or Objs.Title.TextColor3,
+            }):Play()
+
+            if Objs.IconLabel and Objs.IconLabel.Parent then
+                local IconProps = { ImageTransparency = TargetTransparency }
+                -- ikon lucide (monokrom) ikut warna teks; gambar/asset asli
+                -- dibiarkan apa adanya supaya warnanya tidak hilang
+                if Objs.Tint and typeof(TextColorVal) == "Color3" then
+                    IconProps.ImageColor3 = TextColorVal
+                end
+                Tween(Objs.IconLabel, 0.2, IconProps):Play()
             end
         end
     end
 
-    for i, option in ipairs(Category.Options) do
-        local OptName = (type(option) == "table" and option.Title) or option
-        local OptIcon = (type(option) == "table" and option.Icon) or nil
-        
+    local function CreateButton(Option, Order)
+        local Opt = ResolveOption(Option)
+        if Opt.Title == "" then return nil end
+
         local ButtonFrame = New("TextButton", {
+            Name = "Option",
             AutoButtonColor = false,
-            Size = UDim2.new(0, 0, 0, 32),
+            Size = UDim2.new(0, 0, 0, Category.ButtonHeight),
             AutomaticSize = Enum.AutomaticSize.X,
             BackgroundTransparency = 1,
             Text = "",
             Parent = MainFrame,
-            LayoutOrder = i
+            LayoutOrder = Order or (#Category.Options + 1),
         })
 
-        local Background = Creator.NewRoundFrame(8, "Squircle", {
+        local Background = Creator.NewRoundFrame(Category.Radius, "Squircle", {
             Size = UDim2.new(1, 0, 1, 0),
-            ThemeTag = { ImageColor3 = "Button" },
+            ThemeTag = { ImageColor3 = Category.InactiveTag },
             Name = "Background",
-            Parent = ButtonFrame
+            Parent = ButtonFrame,
         }, {
-             New("UIListLayout", {
+            New("UIListLayout", {
                 FillDirection = Enum.FillDirection.Horizontal,
                 VerticalAlignment = Enum.VerticalAlignment.Center,
                 Padding = UDim.new(0, 6),
                 HorizontalAlignment = Enum.HorizontalAlignment.Center,
             }),
             New("UIPadding", {
-                PaddingLeft = UDim.new(0, 12),
-                PaddingRight = UDim.new(0, 12),
+                PaddingLeft = UDim.new(0, Category.SidePadding),
+                PaddingRight = UDim.new(0, Category.SidePadding),
             })
         })
 
-        local IconObj
-        if OptIcon then
-            IconObj = Creator.Image(OptIcon, "Icon", 0, Config.Window.Folder, "Icon", false)
-            IconObj.Size = UDim2.new(0, 18, 0, 18)
+        local IconObj, IconLabel
+        local Tint = Opt.Tint
+        if Tint == nil then Tint = Category.TintIcon end
+
+        if Opt.Icon then
+            local IconSize = Opt.IconSize or Category.IconSize
+            local KeepAspect = Opt.KeepAspect
+            if KeepAspect == nil then KeepAspect = Category.IconKeepAspect end
+
+            -- auto: hanya ikon lucide (monokrom) yang diwarnai mengikuti theme,
+            -- gambar/asset asli dibiarkan warna aslinya
+            if Tint == nil then
+                Tint = Creator.Icon(Opt.Icon) ~= nil
+            end
+
+            IconObj = Creator.Image(
+                Opt.Icon,
+                "CategoryIcon-" .. Opt.Title,
+                0,
+                Window and Window.Folder,
+                "Icon",
+                false,
+                nil,
+                nil,
+                {
+                    -- ikon tidak dipotong: perbandingan ukuran asli dipertahankan
+                    ScaleType  = Opt.ScaleType or Category.IconScaleType,
+                    KeepAspect = KeepAspect,
+                    NativeSize = Opt.NativeSize,
+                    ImageRectOffset = Opt.ImageRectOffset,
+                    ImageRectSize = Opt.ImageRectSize,
+                    Size       = UDim2.fromOffset(IconSize, IconSize),
+                    OnNativeSize = Category.IconAutoWidth and function(NativeSize, Frame)
+                        -- tinggi tetap sesuai IconSize, lebar mengikuti rasio asli
+                        -- (jadi tidak ada bagian yang terpotong & tidak ada ruang kosong)
+                        if not Frame or not Frame.Parent or NativeSize.Y <= 0 then return end
+                        local Ratio = NativeSize.X / NativeSize.Y
+                        Frame.Size = UDim2.fromOffset(math.max(1, math.floor(IconSize * Ratio + 0.5)), IconSize)
+                    end or nil,
+                }
+            )
+            IconObj.Name = "Icon"
             IconObj.BackgroundTransparency = 1
-            IconObj.ImageLabel.ImageTransparency = 0.5
+
+            IconLabel = IconObj:FindFirstChildOfClass("ImageLabel")
+            if IconLabel then
+                IconLabel.ImageTransparency = Category.Transparency
+            end
             IconObj.Parent = Background
         end
 
         local TitleObj = New("TextLabel", {
-            Text = OptName,
+            Name = "Title",
+            Text = Opt.Title,
             FontFace = Font.new(Creator.Font, Enum.FontWeight.Bold),
-            TextSize = 14,
+            TextSize = Category.TextSize,
             BackgroundTransparency = 1,
             AutomaticSize = Enum.AutomaticSize.XY,
-            ThemeTag = { TextColor3 = "Text" },
-            TextTransparency = 0.5,
-            Parent = Background
+            ThemeTag = { TextColor3 = Category.TextTag },
+            TextTransparency = Category.Transparency,
+            Parent = Background,
         })
 
-        ButtonObjects[OptName] = {
+        ButtonObjects[Opt.Title] = {
             Frame = ButtonFrame,
             Background = Background,
             Title = TitleObj,
-            Icon = IconObj
+            Icon = IconObj,
+            IconLabel = IconLabel,
+            Tint = Tint,
+            Option = Opt,
         }
 
         Creator.AddSignal(ButtonFrame.MouseButton1Click, function()
-            UpdateVisuals(OptName)
-            if Category.Callback then
-                Category.Callback(OptName)
-            end
+            Category:Select(Opt.Title)
         end)
+
+        return Opt
     end
 
-    if Category.Default then
-        UpdateVisuals(Category.Default)
-    elseif Category.Options[1] then
-        local firstOption = Category.Options[1]
-        local firstName = (type(firstOption) == "table" and firstOption.Title) or firstOption
-        UpdateVisuals(firstName)
+    -- =====================================================
+    -- [ API ]
+    -- =====================================================
+
+    local function ApplyVisibility(SelectedName)
+        for Name, Elements in pairs(Category.Registry) do
+            local Visible = (Name == SelectedName)
+            for _, Item in ipairs(Elements) do
+                local Frame = ResolveElementFrame(Item)
+                if Frame then
+                    Frame.Visible = Visible
+                end
+            end
+        end
     end
-    
-    -- Return WrapperFrame agar Section menganggap ini elemen yang valid
-    Category.ElementFrame = WrapperFrame 
+
+    function Category:Select(Name, Silent)
+        if Name == nil then return Category end
+        Name = tostring(Name)
+
+        Category.Value = Name
+        Category.Selected = Name
+
+        UpdateVisuals(Name)
+        ApplyVisibility(Name)
+
+        if not Silent and Category.Callback then
+            local Ok, Err = pcall(Category.Callback, Name)
+            if not Ok then
+                warn("[ ANUI.Category ] Callback error: " .. tostring(Err))
+            end
+        end
+
+        return Category
+    end
+    Category.SetValue = Category.Select
+
+    function Category:GetSelected()
+        return Category.Value
+    end
+
+    function Category:SetCallback(Callback)
+        Category.Callback = Callback or function() end
+        return Category
+    end
+
+    -- Daftarkan elemen ke sebuah kategori. Bisa banyak sekaligus:
+    --   Category:Add("Automation", toggleA, toggleB)
+    --   Category:Add("Automation", { toggleA, toggleB })
+    function Category:Add(Name, ...)
+        if Name == nil then return nil end
+        Name = tostring(Name)
+
+        local List = Category.Registry[Name]
+        if not List then
+            List = {}
+            Category.Registry[Name] = List
+        end
+
+        local First
+        for Index = 1, select("#", ...) do
+            local Item = select(Index, ...)
+            if type(Item) == "table" and rawget(Item, "__type") == nil and #Item > 0 then
+                for _, Sub in ipairs(Item) do
+                    local Added = Category:Add(Name, Sub)
+                    First = First or Added
+                end
+            elseif Item ~= nil then
+                local Owner = Category.Owners[Item]
+                if Owner ~= Name then
+                    if Owner then
+                        Category:Remove(Item)
+                    end
+                    table.insert(List, Item)
+                    Category.Owners[Item] = Name
+                end
+                local Frame = ResolveElementFrame(Item)
+                if Frame then
+                    Frame.Visible = (Name == Category.Value)
+                end
+                First = First or Item
+            end
+        end
+
+        return First
+    end
+
+    function Category:Remove(Item)
+        local Name = Item and Category.Owners[Item]
+        if not Name then return false end
+
+        local List = Category.Registry[Name]
+        if List then
+            for Index, Value in ipairs(List) do
+                if Value == Item then
+                    table.remove(List, Index)
+                    break
+                end
+            end
+        end
+        Category.Owners[Item] = nil
+        return true
+    end
+
+    function Category:GetElements(Name)
+        if Name == nil then return Category.Registry end
+        return Category.Registry[tostring(Name)] or {}
+    end
+
+    function Category:Refresh()
+        ApplyVisibility(Category.Value)
+        return Category
+    end
+
+    -- Tangkap otomatis elemen yang dibuat setelah ini, tanpa Add() satu-satu:
+    --   Category:Capture("Automation")
+    --   Tab:Toggle({...}) ; Tab:Toggle({...})
+    --   Category:StopCapture()
+    function Category:Capture(Name)
+        Category.CaptureTarget = Name and tostring(Name) or nil
+        return Category
+    end
+
+    function Category:StopCapture()
+        Category.CaptureTarget = nil
+        return Category
+    end
+
+    -- Versi terbungkus: Category:With("Automation", function() Tab:Toggle({...}) end)
+    function Category:With(Name, Builder)
+        local Previous = Category.CaptureTarget
+        Category:Capture(Name)
+
+        local Ok, Err
+        if type(Builder) == "function" then
+            Ok, Err = pcall(Builder, function(...)
+                return Category:Add(Name, ...)
+            end)
+        end
+
+        Category.CaptureTarget = Previous
+        if Ok == false then
+            warn("[ ANUI.Category ] With('" .. tostring(Name) .. "') error: " .. tostring(Err))
+        end
+        return Category
+    end
+
+    function Category:AddOption(Option, Order)
+        local Opt = CreateButton(Option, Order)
+        if Opt then
+            table.insert(Category.Options, Opt.Raw)
+            if Category.Value == nil then
+                Category:Select(Opt.Title, true)
+            end
+        end
+        return Category
+    end
+
+    function Category:RemoveOption(Name)
+        Name = tostring(Name)
+        local Objs = ButtonObjects[Name]
+        if Objs then
+            Objs.Frame:Destroy()
+            ButtonObjects[Name] = nil
+        end
+        for Index, Option in ipairs(Category.Options) do
+            local Opt = ResolveOption(Option)
+            if Opt.Title == Name then
+                table.remove(Category.Options, Index)
+                break
+            end
+        end
+        Category.Registry[Name] = nil
+        return Category
+    end
+
+    function Category:SetOptions(Options, NewDefault)
+        for Name, Objs in pairs(ButtonObjects) do
+            Objs.Frame:Destroy()
+            ButtonObjects[Name] = nil
+        end
+        Category.Options = {}
+        Category.Value = nil
+
+        for Index, Option in ipairs(Options or {}) do
+            local Opt = CreateButton(Option, Index)
+            if Opt then
+                table.insert(Category.Options, Option)
+            end
+        end
+
+        local Default = NewDefault or Category.Default
+        if Default and ButtonObjects[tostring(Default)] then
+            Category:Select(Default, true)
+        elseif Category.Options[1] then
+            Category:Select(ResolveOption(Category.Options[1]).Title, true)
+        end
+
+        return Category
+    end
+
+    function Category:GetOptions()
+        return Category.Options
+    end
+
+    function Category:SetHeight(Height)
+        Category.Height = Height
+        if Header then
+            Header:SetHeight(Height)
+        else
+            WrapperFrame.Size = UDim2.new(1, 0, 0, Height)
+        end
+        return Category
+    end
+
+    function Category:Destroy()
+        Category:StopCapture()
+        Category.Registry = {}
+        Category.Owners = {}
+
+        -- lepas hook auto-capture supaya tidak menggantung setelah dihapus
+        if Tab and Category.CaptureHook and rawget(Tab, "__OnElementCreated") == Category.CaptureHook then
+            Tab.__OnElementCreated = Category.PreviousHook
+        end
+
+        if Header then
+            Header:Release()
+        end
+        WrapperFrame:Destroy()
+    end
+
+    -- =====================================================
+    -- [ INISIALISASI ]
+    -- =====================================================
+    for Index, Option in ipairs(Config.Options or {}) do
+        local Opt = CreateButton(Option, Index)
+        if Opt then
+            table.insert(Category.Options, Option)
+        end
+    end
+
+    -- Hook auto-capture (elemen yang dibuat lewat Tab setelah Category ini)
+    if Tab and Category.AutoCapture then
+        local PreviousHook = rawget(Tab, "__OnElementCreated")
+        local CaptureHook
+        CaptureHook = function(Content, ElementConfig, Owner)
+            if PreviousHook then
+                pcall(PreviousHook, Content, ElementConfig, Owner)
+            end
+            if Category.CaptureTarget
+                and Content ~= Category
+                and ElementConfig and ElementConfig.Parent == Config.Parent then
+                Category:Add(Category.CaptureTarget, Content)
+            end
+        end
+
+        Category.PreviousHook = PreviousHook
+        Category.CaptureHook = CaptureHook
+        Tab.__OnElementCreated = CaptureHook
+    end
+
+    local Default = Category.Default
+    if Default == nil and Config.Options and Config.Options[1] then
+        Default = ResolveOption(Config.Options[1]).Title
+    end
+    if Default ~= nil then
+        -- silent: callback tidak ditembak saat pembuatan
+        Category:Select(Default, true)
+    end
+
     return Category.__type, Category
 end
 

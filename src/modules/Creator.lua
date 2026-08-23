@@ -424,6 +424,8 @@ function Creator.SetLanguage(lang)
 end
 
 function Creator.Icon(Icon, formatdefault)
+    -- ikon selalu berupa nama/string; tabel (mis. { url = "..." }) bukan ikon
+    if type(Icon) == "table" then return nil end
     return Icons.Icon(Icon, nil, formatdefault ~= false)
 end
 
@@ -795,20 +797,259 @@ local function SaveUrlMap(dir, map)
     writefile(mapPath, HttpService:JSONEncode(map))
 end
 
-function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, ThemeTagName)
+-- =========================================================
+-- [ IMAGE SIZING / SCALE TYPE ]
+-- Semua gambar & ikon dibuat lewat Creator.Image. Dulu ScaleType selalu
+-- "Crop" sehingga gambar selalu dipotong supaya mengisi kotaknya.
+-- Sekarang bisa diatur (per jenis, atau per pemanggilan lewat Options):
+--   "Fit"     -> perbandingan ukuran asli gambar dipertahankan, TIDAK dipotong
+--   "Crop"    -> gambar mengisi penuh kotak, sisanya dipotong
+--   "Stretch" -> gambar ditarik mengikuti kotak (bisa gepeng)
+-- Ubah default global: Creator.SetImageScaleType("Icon", "Fit")
+-- =========================================================
+Creator.ImageScaleTypes = {
+    Default       = "Fit",   -- ikon & gambar umum: ukuran asli, tidak dipotong
+    Thumbnail     = "Crop",  -- pengisi kartu, memang harus penuh
+    TabImage      = "Crop",
+    ProfileBanner = "Crop",
+    ProfileAvatar = "Crop",
+    Background    = "Crop",
+}
+
+-- Cache ukuran asli (pixel) gambar: { ["rbxassetid://123"] = Vector2.new(512, 256) }
+Creator.ImageNativeSizes = {}
+Creator.AutoDetectNativeSize = true
+
+local ImageOptionKeys = {
+    "ScaleType", "Fit", "Crop", "Stretch", "KeepAspect", "Native", "Original",
+    "NativeSize", "ResampleMode", "Size", "ImageRectOffset", "ImageRectSize", "OnNativeSize",
+}
+
+function Creator.SetImageScaleType(Kind, ScaleType)
+    if type(Kind) == "table" then
+        for Key, Value in pairs(Kind) do
+            Creator.ImageScaleTypes[Key] = Value
+        end
+        return Creator.ImageScaleTypes
+    end
+    if ScaleType == nil then
+        Kind, ScaleType = "Default", Kind
+    end
+    Creator.ImageScaleTypes[Kind] = ScaleType
+    return Creator.ImageScaleTypes
+end
+
+function Creator.ResolveImageScaleType(Kind, Options)
+    Options = Options or {}
+
+    local Value = Options.ScaleType
+    if Value == nil and Options.Fit then Value = "Fit" end
+    if Value == nil and Options.Crop then Value = "Crop" end
+    if Value == nil and Options.Stretch then Value = "Stretch" end
+    if Value == nil then
+        Value = Creator.ImageScaleTypes[Kind or "Default"] or Creator.ImageScaleTypes.Default or "Fit"
+    end
+
+    if typeof(Value) == "EnumItem" then
+        Value = Value.Name
+    end
+    return Value
+end
+
+-- Menerima Vector2, {512, 256}, {X = 512, Y = 256}, "512x256", "16:9"
+function Creator.ToVector2(Value)
+    if typeof(Value) == "Vector2" then
+        return Value
+    end
+    if type(Value) == "table" then
+        local X = Value.X or Value.x or Value.Width or Value[1]
+        local Y = Value.Y or Value.y or Value.Height or Value[2]
+        if X and Y then return Vector2.new(X, Y) end
+    end
+    if type(Value) == "string" then
+        local X, Y = string.match(Value, "([%d%.]+)%s*[xX:,]%s*([%d%.]+)")
+        if X and Y then return Vector2.new(tonumber(X), tonumber(Y)) end
+    end
+    return nil
+end
+
+local function ReadU16BE(Data, Index)
+    local A, B = string.byte(Data, Index, Index + 1)
+    if not B then return nil end
+    return A * 256 + B
+end
+
+local function ReadU32BE(Data, Index)
+    local A, B, C, D = string.byte(Data, Index, Index + 3)
+    if not D then return nil end
+    return A * 16777216 + B * 65536 + C * 256 + D
+end
+
+-- Baca ukuran asli gambar langsung dari isi file (tanpa perlu load ke Roblox)
+function Creator.GetImageSizeFromData(Data)
+    local Ok, Size = pcall(function()
+        return Creator.ParseImageSizeFromData(Data)
+    end)
+    return Ok and Size or nil
+end
+
+function Creator.ParseImageSizeFromData(Data)
+    if type(Data) ~= "string" or #Data < 16 then return nil end
+
+    -- PNG
+    if string.byte(Data, 1) == 0x89 and string.sub(Data, 2, 4) == "PNG" then
+        local W, H = ReadU32BE(Data, 17), ReadU32BE(Data, 21)
+        if W and H and W > 0 and H > 0 then return Vector2.new(W, H) end
+        return nil
+    end
+
+    -- GIF (little endian)
+    if string.sub(Data, 1, 3) == "GIF" then
+        local A, B, C, D = string.byte(Data, 7, 10)
+        if D then return Vector2.new(A + B * 256, C + D * 256) end
+        return nil
+    end
+
+    -- BMP (little endian)
+    if string.sub(Data, 1, 2) == "BM" and #Data >= 26 then
+        local A, B, C, D = string.byte(Data, 19, 22)
+        local E, F, G, H = string.byte(Data, 23, 26)
+        if H then
+            return Vector2.new(
+                A + B * 256 + C * 65536 + D * 16777216,
+                E + F * 256 + G * 65536 + H * 16777216
+            )
+        end
+        return nil
+    end
+
+    -- JPEG: cari marker SOF (0xFFC0..0xFFCF, kecuali C4/C8/CC)
+    if string.byte(Data, 1) == 0xFF and string.byte(Data, 2) == 0xD8 then
+        local Index = 3
+        while Index < #Data - 8 do
+            if string.byte(Data, Index) ~= 0xFF then
+                Index = Index + 1
+            else
+                local Marker = string.byte(Data, Index + 1)
+                if Marker == 0xFF then
+                    Index = Index + 1
+                else
+                    local Length = ReadU16BE(Data, Index + 2)
+                    if not Length or Length < 2 then return nil end
+                    if Marker >= 0xC0 and Marker <= 0xCF
+                        and Marker ~= 0xC4 and Marker ~= 0xC8 and Marker ~= 0xCC then
+                        local H = ReadU16BE(Data, Index + 5)
+                        local W = ReadU16BE(Data, Index + 7)
+                        if W and H and W > 0 and H > 0 then return Vector2.new(W, H) end
+                        return nil
+                    end
+                    Index = Index + 2 + Length
+                end
+            end
+        end
+    end
+
+    return nil
+end
+
+function Creator.GetImageNativeSize(Image)
+    if type(Image) ~= "string" then return nil end
+    return Creator.ImageNativeSizes[Image]
+end
+
+function Creator.SetImageNativeSize(Image, Size)
+    Size = Creator.ToVector2(Size)
+    if type(Image) == "string" and Size then
+        Creator.ImageNativeSizes[Image] = Size
+    end
+    return Size
+end
+
+-- Best-effort: minta ukuran asli asset ke engine (tidak semua asset/executor mendukung)
+function Creator.RequestImageNativeSize(Image, Callback)
+    if type(Image) ~= "string" or Image == "" then return nil end
+
+    local Cached = Creator.ImageNativeSizes[Image]
+    if Cached then
+        if Callback then Callback(Cached) end
+        return Cached
+    end
+    if not Creator.AutoDetectNativeSize then return nil end
+
+    task.spawn(function()
+        local Ok, Size = pcall(function()
+            local AssetService = cloneref(game:GetService("AssetService"))
+            local Editable = AssetService:CreateEditableImageAsync(Content.fromUri(Image))
+            local Result = Editable and Editable.Size
+            if Editable then pcall(function() Editable:Destroy() end) end
+            return Result
+        end)
+        if Ok and typeof(Size) == "Vector2" and Size.X > 0 and Size.Y > 0 then
+            Creator.ImageNativeSizes[Image] = Size
+            if Callback then Callback(Size) end
+        end
+    end)
+    return nil
+end
+
+-- Kunci ImageLabel ke perbandingan ukuran asli gambar, tanpa keluar dari kotaknya.
+-- Berguna kalau kotak gambar tidak sama rasio dengan gambarnya (mis. UICorner /
+-- background tidak boleh kelihatan kosong di sisi yang tidak terpakai).
+function Creator.ApplyImageAspect(Label, Size)
+    Size = Creator.ToVector2(Size)
+    if not Label or not Size or Size.X <= 0 or Size.Y <= 0 then return nil end
+
+    local Constraint = Label:FindFirstChildOfClass("UIAspectRatioConstraint")
+    if not Constraint then
+        Constraint = Instance.new("UIAspectRatioConstraint")
+        Constraint.Name = "ANUIImageAspect"
+        Constraint.Parent = Label
+    end
+    Constraint.AspectRatio = Size.X / Size.Y
+    Constraint.AspectType = Enum.AspectType.FitWithinMaxSize
+    Constraint.DominantAxis = Enum.DominantAxis.Width
+
+    Label.AnchorPoint = Vector2.new(0.5, 0.5)
+    Label.Position = UDim2.fromScale(0.5, 0.5)
+
+    return Constraint
+end
+
+function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, ThemeTagName, Options)
     Folder = Folder or "Temp"
     Name = Creator.SanitizeFilename(Name)
-    
+
+    -- Options boleh dikirim lewat parameter, atau ditempel di value gambarnya:
+    -- Creator.Image({ url = "...", Fit = true, NativeSize = "512x256" }, ...)
+    local Opts = {}
+    if type(Options) == "table" then
+        for Key, Value in pairs(Options) do Opts[Key] = Value end
+    end
+    if type(Img) == "table" then
+        for _, Key in ipairs(ImageOptionKeys) do
+            if Opts[Key] == nil and Img[Key] ~= nil then
+                Opts[Key] = Img[Key]
+            end
+        end
+    end
+
+    local ScaleType = Creator.ResolveImageScaleType(Type, Opts)
+    local KeepAspect = (Opts.KeepAspect or Opts.Native or Opts.Original) and true or false
+    local WantsNative = KeepAspect or type(Opts.OnNativeSize) == "function"
+    -- gif/video di-load dari file: paksa "Fit" kecuali pemanggil minta lain
+    local FileScaleType = (Opts.ScaleType or Opts.Crop or Opts.Stretch or Opts.Fit) and ScaleType or "Fit"
+
     local ImageFrame = New("Frame", {
-        Size = UDim2.new(0,0,0,0),
+        Size = Opts.Size or UDim2.new(0,0,0,0),
         BackgroundTransparency = 1,
     }, {
         New("ImageLabel", {
             Size = UDim2.new(1,0,1,0),
             BackgroundTransparency = 1,
-            ScaleType = "Crop",
+            ScaleType = ScaleType,
+            ResampleMode = Opts.ResampleMode or nil,
             ThemeTag = (Creator.Icon(Img) or Themed) and {
-                ImageColor3 = IsThemeTag and (ThemeTagName or "Icon") or nil 
+                ImageColor3 = IsThemeTag and (ThemeTagName or "Icon") or nil
             } or nil,
         }, {
             New("UICorner", {
@@ -821,19 +1062,61 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
     local PreFileGif = (type(Img) == "table" and (Img.gif or Img.file)) or nil
     local PreFileMp4 = (type(Img) == "table" and Img.mp4) or nil
     local PreFileWebm = (type(Img) == "table" and Img.webm) or nil
+
+    -- Dipanggil setiap kali ukuran asli gambar diketahui
+    local function SetNativeSize(Size)
+        Size = Creator.ToVector2(Size)
+        if not Size or Size.X <= 0 or Size.Y <= 0 then return end
+        if type(SourceUrl) == "string" then
+            Creator.ImageNativeSizes[SourceUrl] = Size
+        end
+        if KeepAspect and ImageLabel then
+            Creator.ApplyImageAspect(ImageLabel, Size)
+        end
+        if type(Opts.OnNativeSize) == "function" then
+            pcall(Opts.OnNativeSize, Size, ImageFrame)
+        end
+    end
+
+    -- Untuk gambar dari URL/file: ukuran asli dibaca dari header file-nya
+    local function ReadNativeSizeFromFile(Path)
+        if not WantsNative then return end
+        if not (isfile and readfile and isfile(Path)) then return end
+        local Ok, Data = pcall(readfile, Path)
+        if Ok then
+            SetNativeSize(Creator.GetImageSizeFromData(Data))
+        end
+    end
+
+    -- Sprite sheet manual (mis. ikon dari game lain yang pakai ImageRect)
+    if ImageLabel and Opts.ImageRectOffset then
+        ImageLabel.ImageRectOffset = Creator.ToVector2(Opts.ImageRectOffset) or Vector2.zero
+    end
+    if ImageLabel and Opts.ImageRectSize then
+        local Rect = Creator.ToVector2(Opts.ImageRectSize)
+        if Rect then
+            ImageLabel.ImageRectSize = Rect
+            SetNativeSize(Rect)
+        end
+    end
+    if Opts.NativeSize then
+        SetNativeSize(Opts.NativeSize)
+    end
+
     if type(SourceUrl) == "string" and Creator.Icon(SourceUrl) then
         local ic = Creator.Icon(SourceUrl)
         if not ImageLabel then
             ImageLabel = New("ImageLabel", {
                 Size = UDim2.new(1,0,1,0),
                 BackgroundTransparency = 1,
-                ScaleType = "Crop",
+                ScaleType = ScaleType,
             })
             ImageLabel.Parent = ImageFrame
         end
         ImageLabel.Image = ic[1]
         ImageLabel.ImageRectOffset = ic[2].ImageRectPosition
         ImageLabel.ImageRectSize = ic[2].ImageRectSize
+        SetNativeSize(ic[2].ImageRectSize)
     elseif type(SourceUrl) == "string" and string.find(SourceUrl,"http") then
         local dir = "ANUI/" .. Folder .. "/assets"
         if isfolder and makefolder then
@@ -892,7 +1175,8 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                     local okGif, gifAsset = pcall(getcustomasset, dir .. "/" .. PreFileGif)
                     if okGif and ImageLabel then
                         ImageLabel.Image = gifAsset
-                        ImageLabel.ScaleType = "Fit"
+                        ImageLabel.ScaleType = FileScaleType
+                        ReadNativeSizeFromFile(dir .. "/" .. PreFileGif)
                     end
                 end
                 if entry and entry.mp4 and isfile and isfile(dir .. "/" .. entry.mp4) then
@@ -935,7 +1219,8 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                     local okGif, gifAsset = pcall(getcustomasset, dir .. "/" .. entry.gif)
                     if okGif and ImageLabel then
                         ImageLabel.Image = gifAsset
-                        ImageLabel.ScaleType = "Fit"
+                        ImageLabel.ScaleType = FileScaleType
+                        ReadNativeSizeFromFile(dir .. "/" .. entry.gif)
                     end
                     local videoAsset = Creator.ConvertGifToWebm(SourceUrl, dir, Type, Name)
                     if videoAsset then
@@ -976,11 +1261,14 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
                 local FileName = Type .. "-" .. Name .. "." .. ext
                 local FullPath = dir .. "/" .. FileName
                 writefile(FullPath, body)
+                if WantsNative then
+                    SetNativeSize(Creator.GetImageSizeFromData(body))
+                end
                 map[baseUrl] = map[baseUrl] or {}
                 if ext == "gif" then
                     map[baseUrl].gif = FileName
                     SaveUrlMap(dir, map)
-                    if ImageLabel then ImageLabel.ScaleType = "Fit" end
+                    if ImageLabel then ImageLabel.ScaleType = FileScaleType end
                     local videoAsset = Creator.ConvertGifToWebm(SourceUrl, dir, Type, Name)
                     if videoAsset then
                         map[baseUrl].webm = Type .. "-" .. Name .. ".webm"
@@ -1018,8 +1306,11 @@ function Creator.Image(Img, Name, Corner, Folder, Type, IsThemeTag, Themed, Them
         ImageFrame.Visible = false
     else
         if ImageLabel then ImageLabel.Image = SourceUrl end
+        if WantsNative then
+            Creator.RequestImageNativeSize(SourceUrl, SetNativeSize)
+        end
     end
-    
+
     return ImageFrame
 end
 

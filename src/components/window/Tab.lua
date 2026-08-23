@@ -803,7 +803,115 @@ function TabModule.New(Config, UIScale)
     end
 
     Tab.UIElements.ContainerFrame.Parent = Tab.UIElements.ContainerFrameCanvas
-    
+
+    -- =====================================================
+    -- [ STICKY HEADER MANAGER ]
+    -- Dipakai elemen yang harus menempel di atas konten tab (mis. Category)
+    -- supaya script pemakai TIDAK perlu memindah parent & menghitung
+    -- Position/Size/UIPadding ContainerFrame secara manual.
+    --   local Header = Tab:ReserveHeader(45)   -- Header.Frame siap dipakai
+    --   Header:SetHeight(60)                   -- ubah tinggi, layout ikut
+    --   Header:Release()                       -- kembalikan layout seperti semula
+    -- =====================================================
+    Tab.Headers = {}
+    do
+        local Container = Tab.UIElements.ContainerFrame
+        local Canvas = Tab.UIElements.ContainerFrameCanvas
+        local BasePadding = Container:FindFirstChildOfClass("UIPadding")
+
+        local BasePosY = Container.Position.Y.Offset
+        local BaseSizeY = Container.Size.Y.Offset
+        local BasePadTop = BasePadding and BasePadding.PaddingTop.Offset or 0
+
+        Tab.HeaderOffset = 0
+        Tab.HeaderContentPadding = Tab.HeaderContentPadding or 5
+
+        local function Relayout()
+            local Offset = 0
+            for _, Header in ipairs(Tab.Headers) do
+                Header.Frame.Position = UDim2.new(0, 0, 0, BasePosY + Offset)
+                Header.Frame.Size = UDim2.new(1, 0, 0, Header.Height)
+                Offset = Offset + Header.Height
+            end
+
+            Tab.HeaderOffset = Offset
+            Container.Position = UDim2.new(0, 0, 0, BasePosY + Offset)
+            Container.Size = UDim2.new(1, 0, 1, BaseSizeY - Offset)
+
+            if BasePadding then
+                -- kalau ada header, padding atas konten dikecilkan (jarak sudah
+                -- diambil oleh header itu sendiri)
+                BasePadding.PaddingTop = UDim.new(0, Offset > 0 and Tab.HeaderContentPadding or BasePadTop)
+            end
+        end
+
+        Tab.RelayoutHeaders = Relayout
+
+        function Tab:ReserveHeader(Height, HeaderConfig)
+            HeaderConfig = HeaderConfig or {}
+
+            local ContentHeight = Height or 0
+            local PadTop = HeaderConfig.PaddingTop or BasePadTop
+            local PadBottom = HeaderConfig.PaddingBottom or 0
+            local AlignWithContent = HeaderConfig.AlignWithContent ~= false
+
+            if HeaderConfig.ContentPadding then
+                Tab.HeaderContentPadding = HeaderConfig.ContentPadding
+            end
+
+            local Frame = New("Frame", {
+                Name = HeaderConfig.Name or "TabHeader",
+                Size = UDim2.new(1, 0, 0, ContentHeight + PadTop + PadBottom),
+                BackgroundTransparency = 1,
+                ZIndex = HeaderConfig.ZIndex or 6,
+                Parent = Canvas,
+            }, {
+                New("UIPadding", {
+                    PaddingTop = UDim.new(0, PadTop),
+                    PaddingBottom = UDim.new(0, PadBottom),
+                    PaddingLeft = (AlignWithContent and BasePadding) and BasePadding.PaddingLeft or UDim.new(0, 0),
+                    PaddingRight = (AlignWithContent and BasePadding) and BasePadding.PaddingRight or UDim.new(0, 0),
+                })
+            })
+
+            local Header = {
+                Frame = Frame,
+                Tab = Tab,
+                ContentHeight = ContentHeight,
+                Height = ContentHeight + PadTop + PadBottom,
+                Released = false,
+            }
+
+            function Header:SetHeight(NewHeight)
+                Header.ContentHeight = NewHeight or 0
+                Header.Height = Header.ContentHeight + PadTop + PadBottom
+                Relayout()
+                return Header
+            end
+
+            function Header:Release(KeepFrame)
+                if Header.Released then return end
+                Header.Released = true
+
+                for Index, Value in ipairs(Tab.Headers) do
+                    if Value == Header then
+                        table.remove(Tab.Headers, Index)
+                        break
+                    end
+                end
+                if not KeepFrame then
+                    Frame:Destroy()
+                end
+                Relayout()
+            end
+
+            table.insert(Tab.Headers, Header)
+            Relayout()
+
+            return Header
+        end
+    end
+
     TabModule.Containers[TabIndex] = Tab.UIElements.ContainerFrameCanvas
     TabModule.Tabs[TabIndex] = Tab
     

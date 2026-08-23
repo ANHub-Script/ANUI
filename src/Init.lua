@@ -130,6 +130,31 @@ function ANUI:SetFont(FontId)
     Creator.UpdateFont(FontId)
 end
 
+-- [ IMAGE / ICON SIZING ]
+-- Atur cara gambar mengisi kotaknya secara global:
+--   ANUI:SetImageScaleType("Fit")                  -- default untuk semua gambar
+--   ANUI:SetImageScaleType("ProfileBanner", "Fit") -- khusus satu jenis
+--   ANUI:SetImageScaleType({ Icon = "Fit", Thumbnail = "Crop" })
+-- "Fit" = ukuran asli gambar dipertahankan (tidak dipotong)
+-- "Crop" = gambar mengisi penuh kotaknya, sisanya dipotong
+function ANUI:SetImageScaleType(Kind, ScaleType)
+    return Creator.SetImageScaleType(Kind, ScaleType)
+end
+
+function ANUI:GetImageScaleTypes()
+    return Creator.ImageScaleTypes
+end
+
+-- Daftarkan ukuran asli gambar secara manual (kalau engine tidak bisa mendeteksi),
+-- supaya rasio aslinya bisa dipakai: ANUI:SetImageNativeSize("rbxassetid://1", "512x256")
+function ANUI:SetImageNativeSize(Image, Size)
+    return Creator.SetImageNativeSize(Image, Size)
+end
+
+function ANUI:GetImageNativeSize(Image)
+    return Creator.GetImageNativeSize(Image)
+end
+
 function ANUI:OnThemeChange(func)
     ANUI.OnThemeChangeFunction = func
 end

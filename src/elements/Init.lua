@@ -116,6 +116,18 @@ return {
                 if OnElementCreateFunction then
                     OnElementCreateFunction(content, tbl.Elements)
                 end
+
+                -- Hook internal (opsional): dipakai elemen seperti Category untuk
+                -- menangkap elemen-elemen yang dibuat sesudahnya, tanpa script
+                -- pemakai harus mendaftarkan elemennya satu-satu.
+                local CreatedHook = rawget(tbl, "__OnElementCreated")
+                if type(CreatedHook) == "function" then
+                    local ok, err = pcall(CreatedHook, content, config, tbl)
+                    if not ok then
+                        warn("[ ANUI ] __OnElementCreated error: " .. tostring(err))
+                    end
+                end
+
                 return content
             end
         end

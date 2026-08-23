@@ -9,4 +9,7 @@ return { -- lucide
     Dropdown    = "chevrons-up-down",
     Code        = "terminal",
     Colorpicker = "palette",
+    Category    = "layout-grid",
+    Image       = "image",
+    Group       = "layers",
 }
