@@ -1,6 +1,7 @@
 local Creator = require("../modules/Creator")
 local New = Creator.New
 local Tween = Creator.Tween
+local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
 local Element = {}
 
@@ -119,6 +120,10 @@ function Element:New(Config)
         and Tab.UIElements and Config.Parent == Tab.UIElements.ContainerFrame
     local Sticky = Config.Sticky
     if Sticky == nil then Sticky = CanStick end
+    if Sticky and not CanStick then
+        -- di dalam Section/Group, sticky tidak didukung; jangan diam-diam dibuang
+        warn("[ ANUI.Category ] Sticky diabaikan: Category ini bukan anak langsung konten Tab")
+    end
     Sticky = (Sticky and CanStick) and true or false
 
     -- Wrapper: dibutuhkan agar AutomaticSize induk menghitung tinggi elemen ini
@@ -175,28 +180,108 @@ function Element:New(Config)
     Category.ElementFrame = WrapperFrame
 
     -- [ SCROLL MANUAL: drag & roda mouse ]
+    -- Strip ini ScrollingFrame sendiri (arah X). Kalau Category dipasang di dalam
+    -- Section/Group, strip-nya ikut berada DI DALAM ScrollingFrame konten tab,
+    -- jadi satu gesture dipakai dua-duanya: strip geser ke samping sekaligus
+    -- halaman ke-scroll ke bawah. Selama kursor/jari ada di atas strip, konten
+    -- tab dikunci supaya yang gerak cuma strip-nya. Di luar strip, halaman
+    -- ke-scroll seperti biasa.
     local IsDragging = false
     local DragStart = Vector2.new()
     local StartCanvasPos = Vector2.new()
+    -- Dibaca tombol option: klik yang sebenarnya cuma akhir dari drag strip
+    -- tidak boleh ikut mengganti kategori.
+    local DidDrag = false
+
+    local Hovering = false
+    local ReleaseConnection
+
+    local PageTab = (Tab and type(Tab.LockScroll) == "function") and Tab or nil
+
+    -- Kunci dipegang selama masih hover ATAU masih drag. Dua-duanya dilacak
+    -- terpisah: drag yang keluar dari strip mematikan hover, tapi kuncinya harus
+    -- tetap jalan sampai tombol/jari dilepas.
+    local function SyncPageScroll()
+        if not PageTab then return end
+        if Hovering or IsDragging then
+            PageTab:LockScroll(Category, WrapperFrame)
+        else
+            PageTab:UnlockScroll(Category)
+        end
+    end
+
+    Category.ReleasePageScroll = function()
+        Hovering = false
+        IsDragging = false
+        SyncPageScroll()
+    end
+
+    local function StopDrag()
+        IsDragging = false
+        if ReleaseConnection then
+            ReleaseConnection:Disconnect()
+            ReleaseConnection = nil
+        end
+        SyncPageScroll()
+    end
+
+    Creator.AddSignal(MainFrame.MouseEnter, function()
+        Hovering = true
+        SyncPageScroll()
+    end)
+
+    Creator.AddSignal(MainFrame.MouseLeave, function()
+        Hovering = false
+        SyncPageScroll()
+    end)
+
+    -- Strip dibuang/dilepas dari UI: kunci jangan sampai nyangkut
+    Creator.AddSignal(WrapperFrame.AncestryChanged, function(_, NewParent)
+        if NewParent == nil then
+            Category.ReleasePageScroll()
+        end
+    end)
 
     Creator.AddSignal(MainFrame.InputBegan, function(Input)
-        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+        local IsMouse = Input.UserInputType == Enum.UserInputType.MouseButton1
+        local IsTouch = Input.UserInputType == Enum.UserInputType.Touch
+        if not (IsMouse or IsTouch) then return end
+
+        -- Sentuhan tidak memicu MouseEnter/MouseLeave, jadi jalur input dipakai
+        -- juga supaya di HP halaman tetap dikunci selama jari di atas strip.
+        if IsTouch then Hovering = true end
+
+        DidDrag = false
+
+        -- Di HP geser horizontal sudah ditangani ScrollingFrame-nya sendiri
+        -- (lengkap dengan inersia), jadi CanvasPosition TIDAK digeser manual:
+        -- kalau dua-duanya jalan, jaraknya jadi dobel.
+        if IsMouse then
             IsDragging = true
             DragStart = Input.Position
             StartCanvasPos = MainFrame.CanvasPosition
         end
-    end)
 
-    Creator.AddSignal(MainFrame.InputEnded, function(Input)
-        if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-            IsDragging = false
-        end
+        SyncPageScroll()
+
+        -- Dilepas di luar strip tetap mengakhiri drag & kunci. MainFrame.InputEnded
+        -- tidak kena kalau kursor sudah keluar duluan, jadi dipantau global.
+        if ReleaseConnection then ReleaseConnection:Disconnect() end
+        ReleaseConnection = cloneref(game:GetService("UserInputService")).InputEnded:Connect(function(EndInput)
+            if EndInput ~= Input then return end
+            if IsTouch then Hovering = false end
+            StopDrag()
+        end)
     end)
 
     Creator.AddSignal(MainFrame.InputChanged, function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseMovement then
             if IsDragging then
                 local Delta = Input.Position - DragStart
+                -- geseran kecil masih dihitung klik, bukan drag
+                if math.abs(Delta.X) > 4 then
+                    DidDrag = true
+                end
                 MainFrame.CanvasPosition = Vector2.new(StartCanvasPos.X - Delta.X, 0)
             end
         elseif Input.UserInputType == Enum.UserInputType.MouseWheel then
@@ -451,6 +536,8 @@ function Element:New(Config)
         }
 
         Creator.AddSignal(ButtonFrame.MouseButton1Click, function()
+            -- klik ini cuma akhir dari drag strip: kategori jangan diganti
+            if DidDrag then return end
             Category:Select(Opt.Key)
         end)
 
@@ -676,6 +763,10 @@ function Element:New(Config)
         Category:StopCapture()
         Category.Registry = {}
         Category.Owners = {}
+
+        -- Dibuang saat kursor masih di atas strip tidak mengirim MouseLeave, jadi
+        -- kunci scroll konten tab dilepas di sini juga.
+        Category.ReleasePageScroll()
 
         -- lepas hook auto-capture supaya tidak menggantung setelah dihapus
         if Tab and Category.CaptureHook and rawget(Tab, "__OnElementCreated") == Category.CaptureHook then

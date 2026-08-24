@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.265  |  2026-08-24  |  Roblox UI Library for scripts
+    v1.0.266  |  2026-08-24  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -2919,7 +2919,7 @@ New=a.load'h'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.265",
+    "version": "1.0.266",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -13334,150 +13334,155 @@ return af end function a.V()
 local aa=a.load'b'
 local ae=aa.New
 local af=aa.Tween
+local ah=(cloneref or clonereference or function(ah)return ah end)
 
-local ah={}
-
-
-
+local aj={}
 
 
-local function ResolveOption(aj)
-local ak
-if type(aj)=="table"then
-local al=aj.Title or aj.Name or aj.Value or aj[1]
-ak={
-Title=tostring(al or""),
-Icon=aj.Icon or aj.Image,
-IconSize=aj.IconSize,
-ScaleType=aj.ScaleType,
-KeepAspect=aj.KeepAspect~=nil and aj.KeepAspect or aj.Native,
-NativeSize=aj.NativeSize,
-Tint=aj.Tint,
-ImageRectOffset=aj.ImageRectOffset,
-ImageRectSize=aj.ImageRectSize,
-Desc=aj.Desc,
-Raw=aj,
+
+
+
+local function ResolveOption(ak)
+local al
+if type(ak)=="table"then
+local am=ak.Title or ak.Name or ak.Value or ak[1]
+al={
+Title=tostring(am or""),
+Icon=ak.Icon or ak.Image,
+IconSize=ak.IconSize,
+ScaleType=ak.ScaleType,
+KeepAspect=ak.KeepAspect~=nil and ak.KeepAspect or ak.Native,
+NativeSize=ak.NativeSize,
+Tint=ak.Tint,
+ImageRectOffset=ak.ImageRectOffset,
+ImageRectSize=ak.ImageRectSize,
+Desc=ak.Desc,
+Raw=ak,
 }
 else
-ak={Title=tostring(aj),Raw=aj}
+al={Title=tostring(ak),Raw=ak}
 end
 
-ak.Key=ak.Title
-if aa.HasInlineIcons(ak.Title)then
-local al=aa.StripInlineIcons(ak.Title,{Icon=ak.Icon})
-if al~=""then
-ak.Key=al
+al.Key=al.Title
+if aa.HasInlineIcons(al.Title)then
+local am=aa.StripInlineIcons(al.Title,{Icon=al.Icon})
+if am~=""then
+al.Key=am
 end
 end
 
-return ak
+return al
 end
 
 
-local function ResolveElementFrame(aj)
-if typeof(aj)=="Instance"then
-return aj
-end
-if type(aj)~="table"then
-return nil
-end
-
-local ak=rawget(aj,"ElementFrame")
+local function ResolveElementFrame(ak)
 if typeof(ak)=="Instance"then
 return ak
 end
-
-local al=rawget(aj,"UIElements")
-if type(al)=="table"and typeof(al.Main)=="Instance"then
-return al.Main
+if type(ak)~="table"then
+return nil
 end
 
-for am,an in ipairs{"GroupFrame","MainFrame","Main","Frame","Container"}do
-local ao=rawget(aj,an)
-if typeof(ao)=="Instance"then
-return ao
+local al=rawget(ak,"ElementFrame")
+if typeof(al)=="Instance"then
+return al
+end
+
+local am=rawget(ak,"UIElements")
+if type(am)=="table"and typeof(am.Main)=="Instance"then
+return am.Main
+end
+
+for an,ao in ipairs{"GroupFrame","MainFrame","Main","Frame","Container"}do
+local ap=rawget(ak,ao)
+if typeof(ap)=="Instance"then
+return ap
 end
 end
 
 return nil
 end
 
-function ah.New(aj,ak)
-local al=ak.Window
-local am=ak.Tab
+function aj.New(ak,al)
+local am=al.Window
+local an=al.Tab
 
-local an={
+local ao={
 __type="Category",
-Title=ak.Title,
-Desc=ak.Desc,
+Title=al.Title,
+Desc=al.Desc,
 Options={},
-Default=ak.Default,
+Default=al.Default,
 Value=nil,
-Callback=ak.Callback or ak.OnChanged or function()end,
-Parent=ak.Parent,
+Callback=al.Callback or al.OnChanged or function()end,
+Parent=al.Parent,
 UIElements={},
 
 
-Height=ak.Height or 45,
-ButtonHeight=ak.ButtonHeight or 32,
-IconSize=ak.IconSize or 18,
-TextSize=ak.TextSize or 14,
-Radius=ak.Radius or 8,
-Gap=ak.Gap or ak.Padding or 8,
-SidePadding=ak.SidePadding or 12,
-ScrollSpeed=ak.ScrollSpeed or 35,
-ActiveTag=ak.ActiveTag or"Toggle",
-InactiveTag=ak.InactiveTag or"Button",
-TextTag=ak.TextTag or"Text",
-Transparency=ak.Transparency or 0.5,
+Height=al.Height or 45,
+ButtonHeight=al.ButtonHeight or 32,
+IconSize=al.IconSize or 18,
+TextSize=al.TextSize or 14,
+Radius=al.Radius or 8,
+Gap=al.Gap or al.Padding or 8,
+SidePadding=al.SidePadding or 12,
+ScrollSpeed=al.ScrollSpeed or 35,
+ActiveTag=al.ActiveTag or"Toggle",
+InactiveTag=al.InactiveTag or"Button",
+TextTag=al.TextTag or"Text",
+Transparency=al.Transparency or 0.5,
 
 
-IconScaleType=ak.IconScaleType or ak.ScaleType,
-IconKeepAspect=ak.IconKeepAspect~=false,
-IconAutoWidth=ak.IconAutoWidth~=false,
-TintIcon=ak.TintIcon,
+IconScaleType=al.IconScaleType or al.ScaleType,
+IconKeepAspect=al.IconKeepAspect~=false,
+IconAutoWidth=al.IconAutoWidth~=false,
+TintIcon=al.TintIcon,
 
 
-ContentPadding=ak.ContentPadding or 5,
-AlignWithContent=ak.AlignWithContent~=false,
+ContentPadding=al.ContentPadding or 5,
+AlignWithContent=al.AlignWithContent~=false,
 
 
-AutoCapture=ak.AutoCapture~=false,
+AutoCapture=al.AutoCapture~=false,
 Registry={},
 Owners={},
 }
 
 
-local ao=am and type(am.ReserveHeader)=="function"
-and am.UIElements and ak.Parent==am.UIElements.ContainerFrame
-local ap=ak.Sticky
-if ap==nil then ap=ao end
-ap=(ap and ao)and true or false
+local ap=an and type(an.ReserveHeader)=="function"
+and an.UIElements and al.Parent==an.UIElements.ContainerFrame
+local aq=al.Sticky
+if aq==nil then aq=ap end
+if aq and not ap then
+
+warn"[ ANUI.Category ] Sticky diabaikan: Category ini bukan anak langsung konten Tab"
+end
+aq=(aq and ap)and true or false
 
 
-local aq=ae("Frame",{
+local ar=ae("Frame",{
 Name="Category",
-Size=UDim2.new(1,0,0,an.Height),
+Size=UDim2.new(1,0,0,ao.Height),
 BackgroundTransparency=1,
 })
 
-local ar
-if ap then
+local as
+if aq then
 
-ar=am:ReserveHeader(an.Height,{
+as=an:ReserveHeader(ao.Height,{
 Name="CategoryHeader",
-ContentPadding=an.ContentPadding,
-AlignWithContent=an.AlignWithContent,
-ZIndex=ak.ZIndex or 6,
+ContentPadding=ao.ContentPadding,
+AlignWithContent=ao.AlignWithContent,
+ZIndex=al.ZIndex or 6,
 })
-aq.Size=UDim2.new(1,0,1,0)
-aq.Parent=ar.Frame
+ar.Size=UDim2.new(1,0,1,0)
+ar.Parent=as.Frame
 else
-aq.Parent=ak.Parent
+ar.Parent=al.Parent
 end
 
 
-local as=ae("ScrollingFrame",{
+local at=ae("ScrollingFrame",{
 Name="Options",
 Size=UDim2.new(1,0,1,0),
 BackgroundTransparency=1,
@@ -13486,12 +13491,12 @@ ScrollBarThickness=0,
 CanvasSize=UDim2.new(0,0,0,0),
 AutomaticCanvasSize=Enum.AutomaticSize.X,
 Active=true,
-Parent=aq,
+Parent=ar,
 },{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
 SortOrder=Enum.SortOrder.LayoutOrder,
-Padding=UDim.new(0,an.Gap),
+Padding=UDim.new(0,ao.Gap),
 VerticalAlignment=Enum.VerticalAlignment.Center,
 }),
 ae("UIPadding",{
@@ -13500,138 +13505,218 @@ PaddingRight=UDim.new(0,2),
 })
 })
 
-an.UIElements.Main=aq
-an.UIElements.Container=as
-an.UIElements.Header=ar and ar.Frame or nil
-an.Header=ar
-an.Sticky=ap
-an.ElementFrame=aq
+ao.UIElements.Main=ar
+ao.UIElements.Container=at
+ao.UIElements.Header=as and as.Frame or nil
+ao.Header=as
+ao.Sticky=aq
+ao.ElementFrame=ar
 
 
-local at=false
-local au=Vector2.new()
+
+
+
+
+
+
+local au=false
 local av=Vector2.new()
+local aw=Vector2.new()
 
-aa.AddSignal(as.InputBegan,function(aw)
-if aw.UserInputType==Enum.UserInputType.MouseButton1 then
-at=true
-au=aw.Position
-av=as.CanvasPosition
+
+local ax=false
+
+local ay=false
+local az
+
+local aA=(an and type(an.LockScroll)=="function")and an or nil
+
+
+
+
+local function SyncPageScroll()
+if not aA then return end
+if ay or au then
+aA:LockScroll(ao,ar)
+else
+aA:UnlockScroll(ao)
+end
+end
+
+ao.ReleasePageScroll=function()
+ay=false
+au=false
+SyncPageScroll()
+end
+
+local function StopDrag()
+au=false
+if az then
+az:Disconnect()
+az=nil
+end
+SyncPageScroll()
+end
+
+aa.AddSignal(at.MouseEnter,function()
+ay=true
+SyncPageScroll()
+end)
+
+aa.AddSignal(at.MouseLeave,function()
+ay=false
+SyncPageScroll()
+end)
+
+
+aa.AddSignal(ar.AncestryChanged,function(aB,b)
+if b==nil then
+ao.ReleasePageScroll()
 end
 end)
 
-aa.AddSignal(as.InputEnded,function(aw)
-if aw.UserInputType==Enum.UserInputType.MouseButton1 then
-at=false
+aa.AddSignal(at.InputBegan,function(aB)
+local b=aB.UserInputType==Enum.UserInputType.MouseButton1
+local d=aB.UserInputType==Enum.UserInputType.Touch
+if not(b or d)then return end
+
+
+
+if d then ay=true end
+
+ax=false
+
+
+
+
+if b then
+au=true
+av=aB.Position
+aw=at.CanvasPosition
+end
+
+SyncPageScroll()
+
+
+
+if az then az:Disconnect()end
+az=ah(game:GetService"UserInputService").InputEnded:Connect(function(e)
+if e~=aB then return end
+if d then ay=false end
+StopDrag()
+end)
+end)
+
+aa.AddSignal(at.InputChanged,function(aB)
+if aB.UserInputType==Enum.UserInputType.MouseMovement then
+if au then
+local b=aB.Position-av
+
+if math.abs(b.X)>4 then
+ax=true
+end
+at.CanvasPosition=Vector2.new(aw.X-b.X,0)
+end
+elseif aB.UserInputType==Enum.UserInputType.MouseWheel then
+
+at.CanvasPosition=at.CanvasPosition
++Vector2.new(aB.Position.Z*-ao.ScrollSpeed,0)
 end
 end)
 
-aa.AddSignal(as.InputChanged,function(aw)
-if aw.UserInputType==Enum.UserInputType.MouseMovement then
-if at then
-local ax=aw.Position-au
-as.CanvasPosition=Vector2.new(av.X-ax.X,0)
+
+
+
+local aB={}
+
+
+
+local function NormalizeName(b)
+if b==nil then return nil end
+b=tostring(b)
+if aB[b]or not aa.HasInlineIcons(b)then
+return b
 end
-elseif aw.UserInputType==Enum.UserInputType.MouseWheel then
-
-as.CanvasPosition=as.CanvasPosition
-+Vector2.new(aw.Position.Z*-an.ScrollSpeed,0)
+local d=aa.StripInlineIcons(b)
+if d~=""and aB[d]then
+return d
 end
-end)
-
-
-
-
-local aw={}
-
-
-
-local function NormalizeName(ax)
-if ax==nil then return nil end
-ax=tostring(ax)
-if aw[ax]or not aa.HasInlineIcons(ax)then
-return ax
-end
-local ay=aa.StripInlineIcons(ax)
-if ay~=""and aw[ay]then
-return ay
-end
-return ax
+return b
 end
 
-local function UpdateVisuals(ax)
-local ay=aa.Theme
+local function UpdateVisuals(b)
+local d=aa.Theme
 
-for az,aA in pairs(aw)do
-local aB=(az==ax)
-local b=aB and an.ActiveTag or an.InactiveTag
-local d=aa.GetThemeProperty(b,ay)
-local e=aa.GetThemeProperty(an.TextTag,ay)
-local f=aB and 0 or an.Transparency
+for e,f in pairs(aB)do
+local g=(e==b)
+local h=g and ao.ActiveTag or ao.InactiveTag
+local j=aa.GetThemeProperty(h,d)
+local l=aa.GetThemeProperty(ao.TextTag,d)
+local m=g and 0 or ao.Transparency
 
 
-local g=aa.Objects[aA.Background]
-if g and g.Properties then
-g.Properties.ImageColor3=b
+local p=aa.Objects[f.Background]
+if p and p.Properties then
+p.Properties.ImageColor3=h
 end
 
-if typeof(d)=="Color3"then
-af(aA.Background,0.2,{ImageColor3=d}):Play()
+if typeof(j)=="Color3"then
+af(f.Background,0.2,{ImageColor3=j}):Play()
 end
 
 
-for h,j in ipairs(aA.TitleParts or{})do
-if j.Parent then
-af(j,0.2,{
-TextTransparency=f,
-TextColor3=typeof(e)=="Color3"and e or j.TextColor3,
+for r,u in ipairs(f.TitleParts or{})do
+if u.Parent then
+af(u,0.2,{
+TextTransparency=m,
+TextColor3=typeof(l)=="Color3"and l or u.TextColor3,
 }):Play()
 end
 end
 
 
-for h,j in ipairs(aA.TitleIcons or{})do
-if j.Label and j.Label.Parent then
-local l={ImageTransparency=f}
-if j.Tint and typeof(e)=="Color3"then
-l.ImageColor3=e
+for r,u in ipairs(f.TitleIcons or{})do
+if u.Label and u.Label.Parent then
+local v={ImageTransparency=m}
+if u.Tint and typeof(l)=="Color3"then
+v.ImageColor3=l
 end
-af(j.Label,0.2,l):Play()
-end
-end
-
-if aA.IconLabel and aA.IconLabel.Parent then
-local h={ImageTransparency=f}
-
-
-if aA.Tint and typeof(e)=="Color3"then
-h.ImageColor3=e
-end
-af(aA.IconLabel,0.2,h):Play()
-end
+af(u.Label,0.2,v):Play()
 end
 end
 
-local function CreateButton(ax,ay)
-local az=ResolveOption(ax)
-if az.Title==""then return nil end
+if f.IconLabel and f.IconLabel.Parent then
+local r={ImageTransparency=m}
 
-local aA=ae("TextButton",{
+
+if f.Tint and typeof(l)=="Color3"then
+r.ImageColor3=l
+end
+af(f.IconLabel,0.2,r):Play()
+end
+end
+end
+
+local function CreateButton(b,d)
+local e=ResolveOption(b)
+if e.Title==""then return nil end
+
+local f=ae("TextButton",{
 Name="Option",
 AutoButtonColor=false,
-Size=UDim2.new(0,0,0,an.ButtonHeight),
+Size=UDim2.new(0,0,0,ao.ButtonHeight),
 AutomaticSize=Enum.AutomaticSize.X,
 BackgroundTransparency=1,
 Text="",
-Parent=as,
-LayoutOrder=ay or(#an.Options+1),
+Parent=at,
+LayoutOrder=d or(#ao.Options+1),
 })
 
-local aB=aa.NewRoundFrame(an.Radius,"Squircle",{
+local g=aa.NewRoundFrame(ao.Radius,"Squircle",{
 Size=UDim2.new(1,0,1,0),
-ThemeTag={ImageColor3=an.InactiveTag},
+ThemeTag={ImageColor3=ao.InactiveTag},
 Name="Background",
-Parent=aA,
+Parent=f,
 },{
 ae("UIListLayout",{
 FillDirection=Enum.FillDirection.Horizontal,
@@ -13640,430 +13725,436 @@ Padding=UDim.new(0,6),
 HorizontalAlignment=Enum.HorizontalAlignment.Center,
 }),
 ae("UIPadding",{
-PaddingLeft=UDim.new(0,an.SidePadding),
-PaddingRight=UDim.new(0,an.SidePadding),
+PaddingLeft=UDim.new(0,ao.SidePadding),
+PaddingRight=UDim.new(0,ao.SidePadding),
 })
 })
 
-local b,d
-local e=az.Tint
-if e==nil then e=an.TintIcon end
+local h,j
+local l=e.Tint
+if l==nil then l=ao.TintIcon end
 
-if az.Icon then
-local f=az.IconSize or an.IconSize
-local g=az.KeepAspect
-if g==nil then g=an.IconKeepAspect end
+if e.Icon then
+local m=e.IconSize or ao.IconSize
+local p=e.KeepAspect
+if p==nil then p=ao.IconKeepAspect end
 
 
 
-if e==nil then
-e=aa.Icon(az.Icon)~=nil
+if l==nil then
+l=aa.Icon(e.Icon)~=nil
 end
 
-b=aa.Image(
-az.Icon,
-"CategoryIcon-"..az.Key,
+h=aa.Image(
+e.Icon,
+"CategoryIcon-"..e.Key,
 0,
-al and al.Folder,
+am and am.Folder,
 "Icon",
 false,
 nil,
 nil,
 {
 
-ScaleType=az.ScaleType or an.IconScaleType,
-KeepAspect=g,
-NativeSize=az.NativeSize,
-ImageRectOffset=az.ImageRectOffset,
-ImageRectSize=az.ImageRectSize,
-Size=UDim2.fromOffset(f,f),
-OnNativeSize=an.IconAutoWidth and function(h,j)
+ScaleType=e.ScaleType or ao.IconScaleType,
+KeepAspect=p,
+NativeSize=e.NativeSize,
+ImageRectOffset=e.ImageRectOffset,
+ImageRectSize=e.ImageRectSize,
+Size=UDim2.fromOffset(m,m),
+OnNativeSize=ao.IconAutoWidth and function(r,u)
 
 
-if not j or not j.Parent or h.Y<=0 then return end
-local l=h.X/h.Y
-j.Size=UDim2.fromOffset(math.max(1,math.floor(f*l+0.5)),f)
+if not u or not u.Parent or r.Y<=0 then return end
+local v=r.X/r.Y
+u.Size=UDim2.fromOffset(math.max(1,math.floor(m*v+0.5)),m)
 end or nil,
 }
 )
-b.Name="Icon"
-b.BackgroundTransparency=1
+h.Name="Icon"
+h.BackgroundTransparency=1
 
 
-b.LayoutOrder=-1
+h.LayoutOrder=-1
 
-d=b:FindFirstChildOfClass"ImageLabel"
-if d then
-d.ImageTransparency=an.Transparency
+j=h:FindFirstChildOfClass"ImageLabel"
+if j then
+j.ImageTransparency=ao.Transparency
 end
-b.Parent=aB
+h.Parent=g
 end
 
-local function CreateTitleLabel(f,g)
+local function CreateTitleLabel(m,p)
 return ae("TextLabel",{
 Name="Title",
-Text=f,
+Text=m,
 FontFace=Font.new(aa.Font,Enum.FontWeight.Bold),
-TextSize=an.TextSize,
+TextSize=ao.TextSize,
 BackgroundTransparency=1,
 AutomaticSize=Enum.AutomaticSize.XY,
-ThemeTag={TextColor3=an.TextTag},
-TextTransparency=an.Transparency,
-LayoutOrder=g,
-Parent=aB,
+ThemeTag={TextColor3=ao.TextTag},
+TextTransparency=ao.Transparency,
+LayoutOrder=p,
+Parent=g,
 })
 end
 
-local f={}
-local g={}
-local h
+local m={}
+local p={}
+local r
 
 
-local j=aa.HasInlineIcons(az.Title)
-and aa.ParseInlineText(az.Title,{
-Icon=az.Icon,
-IconSize=az.IconSize or an.IconSize,
+local u=aa.HasInlineIcons(e.Title)
+and aa.ParseInlineText(e.Title,{
+Icon=e.Icon,
+IconSize=e.IconSize or ao.IconSize,
 })
 or nil
 
-local l=false
-for m,p in ipairs(j or{})do
-if p.Type=="Icon"then
-l=true
+local v=false
+for x,z in ipairs(u or{})do
+if z.Type=="Icon"then
+v=true
 break
 end
 end
 
-if l then
-for m,p in ipairs(j)do
-if p.Type=="Text"then
-local r=CreateTitleLabel(p.Content,m)
-table.insert(f,r)
-h=h or r
+if v then
+for x,z in ipairs(u)do
+if z.Type=="Text"then
+local A=CreateTitleLabel(z.Content,x)
+table.insert(m,A)
+r=r or A
 else
-local r,u=aa.InlineIconFrame(p,{
-Icon=az.Icon,
-IconSize=az.IconSize or an.IconSize,
-IconScaleType=az.ScaleType or an.IconScaleType,
-IconKeepAspect=az.KeepAspect,
-IconTransparency=an.Transparency,
-Folder=al and al.Folder,
+local A,B=aa.InlineIconFrame(z,{
+Icon=e.Icon,
+IconSize=e.IconSize or ao.IconSize,
+IconScaleType=e.ScaleType or ao.IconScaleType,
+IconKeepAspect=e.KeepAspect,
+IconTransparency=ao.Transparency,
+Folder=am and am.Folder,
 ImageKind="Icon",
-ThemeTagName=an.TextTag,
+ThemeTagName=ao.TextTag,
 CachePrefix="CategoryInline",
-Index=m,
+Index=x,
 })
-if r then
-r.LayoutOrder=m
-r.Parent=aB
-table.insert(g,{
-Frame=r,
-Label=u,
+if A then
+A.LayoutOrder=x
+A.Parent=g
+table.insert(p,{
+Frame=A,
+Label=B,
 
-Tint=(p.Options and p.Options.Color)==nil
-and aa.Icon(p.Content)~=nil,
+Tint=(z.Options and z.Options.Color)==nil
+and aa.Icon(z.Content)~=nil,
 })
 end
 end
 end
 else
-h=CreateTitleLabel(az.Title)
-table.insert(f,h)
+r=CreateTitleLabel(e.Title)
+table.insert(m,r)
 end
 
-aw[az.Key]={
-Frame=aA,
-Background=aB,
-Title=h,
-TitleParts=f,
-TitleIcons=g,
-Icon=b,
-IconLabel=d,
-Tint=e,
-Option=az,
+aB[e.Key]={
+Frame=f,
+Background=g,
+Title=r,
+TitleParts=m,
+TitleIcons=p,
+Icon=h,
+IconLabel=j,
+Tint=l,
+Option=e,
 }
 
-aa.AddSignal(aA.MouseButton1Click,function()
-an:Select(az.Key)
+aa.AddSignal(f.MouseButton1Click,function()
+
+if ax then return end
+ao:Select(e.Key)
 end)
 
-return az
+return e
 end
 
 
 
 
 
-local function ApplyVisibility(ax)
-for ay,az in pairs(an.Registry)do
-local aA=(ay==ax)
-for aB,b in ipairs(az)do
-local d=ResolveElementFrame(b)
-if d then
-d.Visible=aA
+local function ApplyVisibility(b)
+for d,e in pairs(ao.Registry)do
+local f=(d==b)
+for g,h in ipairs(e)do
+local j=ResolveElementFrame(h)
+if j then
+j.Visible=f
 end
 end
 end
 end
 
-function an.Select(ax,ay,az)
-if ay==nil then return an end
-ay=NormalizeName(ay)
+function ao.Select(b,d,e)
+if d==nil then return ao end
+d=NormalizeName(d)
 
-an.Value=ay
-an.Selected=ay
+ao.Value=d
+ao.Selected=d
 
-UpdateVisuals(ay)
-ApplyVisibility(ay)
+UpdateVisuals(d)
+ApplyVisibility(d)
 
-if not az and an.Callback then
-local aA,aB=pcall(an.Callback,ay)
-if not aA then
-warn("[ ANUI.Category ] Callback error: "..tostring(aB))
+if not e and ao.Callback then
+local f,g=pcall(ao.Callback,d)
+if not f then
+warn("[ ANUI.Category ] Callback error: "..tostring(g))
 end
 end
 
-return an
+return ao
 end
-an.SetValue=an.Select
+ao.SetValue=ao.Select
 
-function an.GetSelected(ax)
-return an.Value
-end
-
-function an.SetCallback(ax,ay)
-an.Callback=ay or function()end
-return an
+function ao.GetSelected(b)
+return ao.Value
 end
 
+function ao.SetCallback(b,d)
+ao.Callback=d or function()end
+return ao
+end
+
 
 
 
-function an.Add(ax,ay,...)
-if ay==nil then return nil end
-ay=NormalizeName(ay)
+function ao.Add(b,d,...)
+if d==nil then return nil end
+d=NormalizeName(d)
 
-local az=an.Registry[ay]
-if not az then
-az={}
-an.Registry[ay]=az
-end
-
-local aA
-for aB=1,select("#",...)do
-local b=select(aB,...)
-if type(b)=="table"and rawget(b,"__type")==nil and#b>0 then
-for d,e in ipairs(b)do
-local f=an:Add(ay,e)
-aA=aA or f
-end
-elseif b~=nil then
-local d=an.Owners[b]
-if d~=ay then
-if d then
-an:Remove(b)
-end
-table.insert(az,b)
-an.Owners[b]=ay
-end
-local e=ResolveElementFrame(b)
-if e then
-e.Visible=(ay==an.Value)
-end
-aA=aA or b
-end
+local e=ao.Registry[d]
+if not e then
+e={}
+ao.Registry[d]=e
 end
 
-return aA
+local f
+for g=1,select("#",...)do
+local h=select(g,...)
+if type(h)=="table"and rawget(h,"__type")==nil and#h>0 then
+for j,l in ipairs(h)do
+local m=ao:Add(d,l)
+f=f or m
+end
+elseif h~=nil then
+local j=ao.Owners[h]
+if j~=d then
+if j then
+ao:Remove(h)
+end
+table.insert(e,h)
+ao.Owners[h]=d
+end
+local l=ResolveElementFrame(h)
+if l then
+l.Visible=(d==ao.Value)
+end
+f=f or h
+end
 end
 
-function an.Remove(ax,ay)
-local az=ay and an.Owners[ay]
-if not az then return false end
+return f
+end
 
-local aA=an.Registry[az]
-if aA then
-for aB,b in ipairs(aA)do
-if b==ay then
-table.remove(aA,aB)
+function ao.Remove(b,d)
+local e=d and ao.Owners[d]
+if not e then return false end
+
+local f=ao.Registry[e]
+if f then
+for g,h in ipairs(f)do
+if h==d then
+table.remove(f,g)
 break
 end
 end
 end
-an.Owners[ay]=nil
+ao.Owners[d]=nil
 return true
 end
 
-function an.GetElements(ax,ay)
-if ay==nil then return an.Registry end
-return an.Registry[NormalizeName(ay)]or{}
+function ao.GetElements(b,d)
+if d==nil then return ao.Registry end
+return ao.Registry[NormalizeName(d)]or{}
 end
 
-function an.Refresh(ax)
-ApplyVisibility(an.Value)
-return an
-end
-
-
-
-
-
-function an.Capture(ax,ay)
-an.CaptureTarget=ay and NormalizeName(ay)or nil
-return an
-end
-
-function an.StopCapture(ax)
-an.CaptureTarget=nil
-return an
+function ao.Refresh(b)
+ApplyVisibility(ao.Value)
+return ao
 end
 
 
-function an.With(ax,ay,az)
-local aA=an.CaptureTarget
-an:Capture(ay)
 
-local aB,b
-if type(az)=="function"then
-aB,b=pcall(az,function(...)
-return an:Add(ay,...)
+
+
+function ao.Capture(b,d)
+ao.CaptureTarget=d and NormalizeName(d)or nil
+return ao
+end
+
+function ao.StopCapture(b)
+ao.CaptureTarget=nil
+return ao
+end
+
+
+function ao.With(b,d,e)
+local f=ao.CaptureTarget
+ao:Capture(d)
+
+local g,h
+if type(e)=="function"then
+g,h=pcall(e,function(...)
+return ao:Add(d,...)
 end)
 end
 
-an.CaptureTarget=aA
-if aB==false then
-warn("[ ANUI.Category ] With('"..tostring(ay).."') error: "..tostring(b))
+ao.CaptureTarget=f
+if g==false then
+warn("[ ANUI.Category ] With('"..tostring(d).."') error: "..tostring(h))
 end
-return an
-end
-
-function an.AddOption(ax,ay,az)
-local aA=CreateButton(ay,az)
-if aA then
-table.insert(an.Options,aA.Raw)
-if an.Value==nil then
-an:Select(aA.Key,true)
-end
-end
-return an
+return ao
 end
 
-function an.RemoveOption(ax,ay)
-ay=NormalizeName(ay)
-local az=aw[ay]
-if az then
-az.Frame:Destroy()
-aw[ay]=nil
+function ao.AddOption(b,d,e)
+local f=CreateButton(d,e)
+if f then
+table.insert(ao.Options,f.Raw)
+if ao.Value==nil then
+ao:Select(f.Key,true)
 end
-for aA,aB in ipairs(an.Options)do
-local b=ResolveOption(aB)
-if b.Key==ay then
-table.remove(an.Options,aA)
+end
+return ao
+end
+
+function ao.RemoveOption(b,d)
+d=NormalizeName(d)
+local e=aB[d]
+if e then
+e.Frame:Destroy()
+aB[d]=nil
+end
+for f,g in ipairs(ao.Options)do
+local h=ResolveOption(g)
+if h.Key==d then
+table.remove(ao.Options,f)
 break
 end
 end
-an.Registry[ay]=nil
-return an
+ao.Registry[d]=nil
+return ao
 end
 
-function an.SetOptions(ax,ay,az)
-for aA,aB in pairs(aw)do
-aB.Frame:Destroy()
-aw[aA]=nil
+function ao.SetOptions(b,d,e)
+for f,g in pairs(aB)do
+g.Frame:Destroy()
+aB[f]=nil
 end
-an.Options={}
-an.Value=nil
+ao.Options={}
+ao.Value=nil
 
-for aA,aB in ipairs(ay or{})do
-local b=CreateButton(aB,aA)
-if b then
-table.insert(an.Options,aB)
+for f,g in ipairs(d or{})do
+local h=CreateButton(g,f)
+if h then
+table.insert(ao.Options,g)
 end
-end
-
-local aA=az or an.Default
-if aA and aw[NormalizeName(aA)]then
-an:Select(aA,true)
-elseif an.Options[1]then
-an:Select(ResolveOption(an.Options[1]).Key,true)
 end
 
-return an
+local f=e or ao.Default
+if f and aB[NormalizeName(f)]then
+ao:Select(f,true)
+elseif ao.Options[1]then
+ao:Select(ResolveOption(ao.Options[1]).Key,true)
 end
 
-function an.GetOptions(ax)
-return an.Options
+return ao
 end
 
-function an.SetHeight(ax,ay)
-an.Height=ay
-if ar then
-ar:SetHeight(ay)
+function ao.GetOptions(b)
+return ao.Options
+end
+
+function ao.SetHeight(b,d)
+ao.Height=d
+if as then
+as:SetHeight(d)
 else
-aq.Size=UDim2.new(1,0,0,ay)
+ar.Size=UDim2.new(1,0,0,d)
 end
-return an
-end
-
-function an.Destroy(ax)
-an:StopCapture()
-an.Registry={}
-an.Owners={}
-
-
-if am and an.CaptureHook and rawget(am,"__OnElementCreated")==an.CaptureHook then
-am.__OnElementCreated=an.PreviousHook
+return ao
 end
 
-if ar then
-ar:Release()
+function ao.Destroy(b)
+ao:StopCapture()
+ao.Registry={}
+ao.Owners={}
+
+
+
+ao.ReleasePageScroll()
+
+
+if an and ao.CaptureHook and rawget(an,"__OnElementCreated")==ao.CaptureHook then
+an.__OnElementCreated=ao.PreviousHook
 end
-aq:Destroy()
+
+if as then
+as:Release()
 end
-
-
-
-
-for ax,ay in ipairs(ak.Options or{})do
-local az=CreateButton(ay,ax)
-if az then
-table.insert(an.Options,ay)
-end
+ar:Destroy()
 end
 
 
-if am and an.AutoCapture then
-local ax=rawget(am,"__OnElementCreated")
-local ay
-ay=function(az,aA,aB)
-if ax then
-pcall(ax,az,aA,aB)
-end
-if an.CaptureTarget
-and az~=an
-and aA and aA.Parent==ak.Parent then
-an:Add(an.CaptureTarget,az)
+
+
+for b,d in ipairs(al.Options or{})do
+local e=CreateButton(d,b)
+if e then
+table.insert(ao.Options,d)
 end
 end
 
-an.PreviousHook=ax
-an.CaptureHook=ay
-am.__OnElementCreated=ay
+
+if an and ao.AutoCapture then
+local b=rawget(an,"__OnElementCreated")
+local d
+d=function(e,f,g)
+if b then
+pcall(b,e,f,g)
+end
+if ao.CaptureTarget
+and e~=ao
+and f and f.Parent==al.Parent then
+ao:Add(ao.CaptureTarget,e)
+end
 end
 
-local ax=an.Default
-if ax==nil and ak.Options and ak.Options[1]then
-ax=ResolveOption(ak.Options[1]).Key
-end
-if ax~=nil then
-
-an:Select(ax,true)
+ao.PreviousHook=b
+ao.CaptureHook=d
+an.__OnElementCreated=d
 end
 
-return an.__type,an
+local b=ao.Default
+if b==nil and al.Options and al.Options[1]then
+b=ResolveOption(al.Options[1]).Key
+end
+if b~=nil then
+
+ao:Select(b,true)
 end
 
-return ah end function a.W()
+return ao.__type,ao
+end
+
+return aj end function a.W()
 
 return{
 Elements={
@@ -15146,6 +15237,64 @@ Relayout()
 
 return v
 end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+do
+local aA=ap.UIElements.ContainerFrame
+local aB=ap.UIElements.ContainerFrameCanvas
+local b={}
+
+local function IsAlive(d)
+if typeof(d)~="Instance"then return true end
+return d.Parent~=nil
+end
+
+local function Refresh()
+local d=false
+
+for e,f in pairs(b)do
+if IsAlive(f)then
+d=true
+else
+b[e]=nil
+end
+end
+
+
+if not aB.Visible then
+d=false
+end
+
+aA.ScrollingEnabled=not d
+end
+
+ap.RefreshScrollLock=Refresh
+
+function ap.LockScroll(d,e,f)
+if e==nil then return end
+b[e]=f or false
+Refresh()
+end
+
+function ap.UnlockScroll(d,e)
+if e==nil then return end
+if b[e]==nil then return end
+b[e]=nil
+Refresh()
+end
+
+af.AddSignal(aB:GetPropertyChangedSignal"Visible",Refresh)
 end
 
 am.Containers[at]=ap.UIElements.ContainerFrameCanvas

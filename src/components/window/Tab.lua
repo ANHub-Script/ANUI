@@ -912,6 +912,64 @@ function TabModule.New(Config, UIScale)
         end
     end
 
+    -- =====================================================
+    -- [ SCROLL LOCK ]
+    -- Dipakai elemen yang punya scroll sendiri (mis. Category) atau yang sedang
+    -- di-drag supaya konten tab TIDAK ikut ke-scroll oleh gesture yang sama.
+    --   Tab:LockScroll(Owner, Frame)   -- kunci
+    --   Tab:UnlockScroll(Owner)        -- lepas
+    -- Pemilik disimpan sebagai set, BUKAN penghitung: elemen yang dibuang tepat
+    -- di bawah kursor tidak pernah mengirim MouseLeave, jadi penghitung akan
+    -- nyangkut dan halaman tidak bisa di-scroll selamanya. Frame-nya opsional,
+    -- dipakai buat membuang pemilik yang instance-nya sudah mati.
+    -- =====================================================
+    do
+        local Container = Tab.UIElements.ContainerFrame
+        local Canvas = Tab.UIElements.ContainerFrameCanvas
+        local Owners = {}
+
+        local function IsAlive(Frame)
+            if typeof(Frame) ~= "Instance" then return true end
+            return Frame.Parent ~= nil
+        end
+
+        local function Refresh()
+            local Locked = false
+
+            for Owner, Frame in pairs(Owners) do
+                if IsAlive(Frame) then
+                    Locked = true
+                else
+                    Owners[Owner] = nil
+                end
+            end
+
+            -- tab yang sedang tidak tampil tidak boleh menahan kunci
+            if not Canvas.Visible then
+                Locked = false
+            end
+
+            Container.ScrollingEnabled = not Locked
+        end
+
+        Tab.RefreshScrollLock = Refresh
+
+        function Tab:LockScroll(Owner, Frame)
+            if Owner == nil then return end
+            Owners[Owner] = Frame or false
+            Refresh()
+        end
+
+        function Tab:UnlockScroll(Owner)
+            if Owner == nil then return end
+            if Owners[Owner] == nil then return end
+            Owners[Owner] = nil
+            Refresh()
+        end
+
+        Creator.AddSignal(Canvas:GetPropertyChangedSignal("Visible"), Refresh)
+    end
+
     TabModule.Containers[TabIndex] = Tab.UIElements.ContainerFrameCanvas
     TabModule.Tabs[TabIndex] = Tab
     
