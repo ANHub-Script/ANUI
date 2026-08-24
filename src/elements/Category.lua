@@ -198,22 +198,75 @@ function Element:New(Config)
 
     local PageTab = (Tab and type(Tab.LockScroll) == "function") and Tab or nil
 
+    -- ScrollingFrame konten tab. Dipakai langsung (bukan cuma lewat LockScroll)
+    -- karena roda mouse tetap diteruskan ke induk walaupun ScrollingEnabled-nya
+    -- sudah false, jadi posisi kanvasnya perlu dikembalikan sendiri.
+    local PageScroll = (Tab and Tab.UIElements
+        and typeof(Tab.UIElements.ContainerFrame) == "Instance")
+        and Tab.UIElements.ContainerFrame or nil
+
+    local RunService = cloneref(game:GetService("RunService"))
+    local UserInputService = cloneref(game:GetService("UserInputService"))
+
+    -- Sentuhan aktif di atas strip (jari belum diangkat)
+    local TouchActive = false
+
+    -- Backstop: ScrollingEnabled = false saja TIDAK cukup, roda mouse tetap
+    -- diteruskan ke ScrollingFrame induk. Jadi selama gesture ada di atas strip,
+    -- posisi kanvas konten tab dipaku tiap frame. Snap-back-nya terjadi sebelum
+    -- frame digambar, jadi tidak kelihatan berkedip.
+    local PinConnection
+    local PinPos
+
+    local function UnpinPage()
+        if PinConnection then
+            PinConnection:Disconnect()
+            PinConnection = nil
+        end
+    end
+
+    local function ReleaseLock()
+        Hovering = false
+        UnpinPage()
+        if PageTab then PageTab:UnlockScroll(Category) end
+    end
+
+    local function PinPage()
+        if not PageScroll or PinConnection then return end
+        PinPos = PageScroll.CanvasPosition
+        PinConnection = RunService.RenderStepped:Connect(function()
+            -- strip sudah dibuang: jangan menahan halaman
+            if WrapperFrame.Parent == nil or PageScroll.Parent == nil then
+                ReleaseLock()
+                return
+            end
+            if not Hovering and not IsDragging and not TouchActive then
+                ReleaseLock()
+                return
+            end
+            if PageScroll.CanvasPosition ~= PinPos then
+                PageScroll.CanvasPosition = PinPos
+            end
+        end)
+    end
+
     -- Kunci dipegang selama masih hover ATAU masih drag. Dua-duanya dilacak
     -- terpisah: drag yang keluar dari strip mematikan hover, tapi kuncinya harus
     -- tetap jalan sampai tombol/jari dilepas.
     local function SyncPageScroll()
-        if not PageTab then return end
-        if Hovering or IsDragging then
-            PageTab:LockScroll(Category, WrapperFrame)
+        if Hovering or IsDragging or TouchActive then
+            if PageTab then PageTab:LockScroll(Category, WrapperFrame) end
+            PinPage()
         else
-            PageTab:UnlockScroll(Category)
+            ReleaseLock()
         end
     end
 
     Category.ReleasePageScroll = function()
         Hovering = false
         IsDragging = false
-        SyncPageScroll()
+        TouchActive = false
+        ReleaseLock()
     end
 
     local function StopDrag()
@@ -249,7 +302,7 @@ function Element:New(Config)
 
         -- Sentuhan tidak memicu MouseEnter/MouseLeave, jadi jalur input dipakai
         -- juga supaya di HP halaman tetap dikunci selama jari di atas strip.
-        if IsTouch then Hovering = true end
+        if IsTouch then TouchActive = true end
 
         DidDrag = false
 
@@ -267,9 +320,9 @@ function Element:New(Config)
         -- Dilepas di luar strip tetap mengakhiri drag & kunci. MainFrame.InputEnded
         -- tidak kena kalau kursor sudah keluar duluan, jadi dipantau global.
         if ReleaseConnection then ReleaseConnection:Disconnect() end
-        ReleaseConnection = cloneref(game:GetService("UserInputService")).InputEnded:Connect(function(EndInput)
+        ReleaseConnection = UserInputService.InputEnded:Connect(function(EndInput)
             if EndInput ~= Input then return end
-            if IsTouch then Hovering = false end
+            if IsTouch then TouchActive = false end
             StopDrag()
         end)
     end)
@@ -285,6 +338,11 @@ function Element:New(Config)
                 MainFrame.CanvasPosition = Vector2.new(StartCanvasPos.X - Delta.X, 0)
             end
         elseif Input.UserInputType == Enum.UserInputType.MouseWheel then
+            -- Roda mouse di atas strip: event ini pasti terpanggil walaupun
+            -- MouseEnter tadi terlewat, jadi kuncinya dipasang di sini juga.
+            Hovering = true
+            SyncPageScroll()
+
             -- scroll atas/bawah diubah jadi kiri/kanan
             MainFrame.CanvasPosition = MainFrame.CanvasPosition
                 + Vector2.new(Input.Position.Z * -Category.ScrollSpeed, 0)
