@@ -84,6 +84,18 @@ return {
                     function content:SetDescGradient(gradient)
                         frame:SetDescGradient(gradient)
                     end
+                    -- Button inline di dalam Title/Desc. Diteruskan di sini supaya
+                    -- semua elemen ber-Desc punya API yang sama, bukan cuma
+                    -- Toggle/Button/Keybind yang membungkusnya sendiri.
+                    function content:SetButtons(buttons)
+                        return frame:SetButtons(buttons)
+                    end
+                    function content:GetButton(key)
+                        return frame:GetButton(key)
+                    end
+                    function content:GetButtons()
+                        return frame:GetButtons()
+                    end
                     function content:SetImage(img, size)
                         frame:SetImage(img, size)
                     end
