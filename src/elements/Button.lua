@@ -15,6 +15,7 @@ function Element:New(Config)
         IconAlign = Config.IconAlign or "Right",
         Locked = Config.Locked or false,
         Callback = Config.Callback or function() end,
+        Buttons = Config.Buttons,
         UIElements = {}
     }
     
@@ -25,6 +26,7 @@ function Element:New(Config)
         Desc = Button.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Button.Buttons,
         Parent = Config.Parent,
         -- Image = Config.Image,
         -- ImageSize = Config.ImageSize,  
@@ -91,11 +93,30 @@ function Element:New(Config)
 
     Creator.AddSignal(Button.ButtonFrame.UIElements.Main.MouseButton1Click, function()
         if CanCallback then
+            -- klik yang mendarat di button inline dalam Desc bukan milik elemen ini
+            if Button.ButtonFrame:IsInlineButtonActive() then
+                return
+            end
             task.spawn(function()
                 Creator.SafeCallback(Button.Callback)
             end)
         end
     end)
+
+    -- Button inline di dalam Title/Desc (lihat components/ui/InlineButton.lua)
+    function Button:SetButtons(buttons)
+        Button.Buttons = buttons
+        return Button.ButtonFrame:SetButtons(buttons)
+    end
+
+    function Button:GetButton(key)
+        return Button.ButtonFrame:GetButton(key)
+    end
+
+    function Button:GetButtons()
+        return Button.ButtonFrame:GetButtons()
+    end
+
     return Button.__type, Button
 end
 

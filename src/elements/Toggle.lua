@@ -23,6 +23,7 @@ function Element:New(Config)
         ThumbnailSize = Config.ThumbnailSize or 80,
         Type = Config.Type or "Toggle",
         Callback = Config.Callback or function() end,
+        Buttons = Config.Buttons,
         UIElements = {}
     }
 
@@ -37,6 +38,7 @@ function Element:New(Config)
         Desc = Toggle.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Toggle.Buttons,
         Image = initialImage,
         ImageSize = Toggle.ImageSize,  
         Thumbnail = Toggle.Thumbnail,
@@ -297,6 +299,10 @@ function Element:New(Config)
                 if Toggle.Disabled then
                     return
                 end
+                -- klik/tap yang mendarat di button inline dalam Desc bukan milik toggle
+                if Toggle.ToggleFrame:IsInlineButtonActive() then
+                    return
+                end
                 ToggleFunc:Animate(input, Toggle)
             end
         end)
@@ -305,10 +311,27 @@ function Element:New(Config)
             if Toggle.Disabled then
                 return
             end
+            if Toggle.ToggleFrame:IsInlineButtonActive() then
+                return
+            end
             Toggle:Set(not Toggle.Value, nil, Config.Window.NewElements)
         end)
     end
-    
+
+    -- Button inline di dalam Title/Desc (lihat components/ui/InlineButton.lua)
+    function Toggle:SetButtons(buttons)
+        Toggle.Buttons = buttons
+        return Toggle.ToggleFrame:SetButtons(buttons)
+    end
+
+    function Toggle:GetButton(key)
+        return Toggle.ToggleFrame:GetButton(key)
+    end
+
+    function Toggle:GetButtons()
+        return Toggle.ToggleFrame:GetButtons()
+    end
+
     return Toggle.__type, Toggle
 end
 

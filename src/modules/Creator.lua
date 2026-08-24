@@ -193,6 +193,37 @@ function Creator.Gradient(stops, props)
     return gradientData
 end
 
+-- Warna teks/ikon yang terbaca di atas sebuah warna latar: gelap untuk latar
+-- terang, terang untuk latar gelap. Rumusnya sama dengan yang dipakai elemen
+-- ber-Color (components/window/Element.lua & components/ui/Tag.lua); di sini
+-- supaya komponen baru tidak perlu menyalinnya lagi.
+function Creator.GetContrastTextColor(Color)
+    if typeof(Color) ~= "Color3" then return nil end
+
+    local R, G, B = Color.R, Color.G, Color.B
+    local Max = math.max(R, G, B)
+    local Min = math.min(R, G, B)
+    local Delta = Max - Min
+
+    local Hue = 0
+    if Delta ~= 0 then
+        if Max == R then
+            Hue = (G - B) / Delta % 6
+        elseif Max == G then
+            Hue = (B - R) / Delta + 2
+        else
+            Hue = (R - G) / Delta + 4
+        end
+        Hue = Hue * 60
+    end
+
+    local Brightness = 0.299 * R + 0.587 * G + 0.114 * B
+    if Brightness > 0.5 then
+        return Color3.fromHSV(Hue / 360, 0, 0.05)
+    end
+    return Color3.fromHSV(Hue / 360, 0, 0.98)
+end
+
 function Creator.SetTheme(Theme)
     Creator.Theme = Theme
     Creator.UpdateTheme(nil, false)
@@ -1110,6 +1141,61 @@ local function ParseInlineAttrValue(Key, Raw)
     return Raw
 end
 
+-- Scanner atribut "key=value" yang menerima nilai berkutip:
+--   variant=Ghost   text="Sell All"   label='Beli 1x'
+-- ParseInlineAttrValue (jalur ikon) memakai pola "[^%s]+" sehingga nilai
+-- berspasi ikut terpotong. Button butuh label bebas, jadi scanner-nya dipisah
+-- dan jalur ikon dibiarkan apa adanya.
+-- Balik map { [namaHurufKecil] = string }.
+function Creator.ParseInlineAttrs(Text)
+    local Attrs = {}
+    if type(Text) ~= "string" or Text == "" then
+        return Attrs
+    end
+
+    local Position = 1
+    local Length = #Text
+
+    while Position <= Length do
+        -- Tidak di-anchor: token yang bukan "key=value" (mis. key tanpa nilai)
+        -- otomatis dilewati alih-alih menghentikan sisa atributnya.
+        local KeyStart, KeyEnd, Key = string.find(Text, "([%w_]+)%s*=", Position)
+        if not KeyStart then break end
+
+        Position = KeyEnd + 1
+
+        -- lompati spasi antara "=" dan nilainya
+        local _, SpaceEnd = string.find(Text, "^%s*", Position)
+        if SpaceEnd and SpaceEnd >= Position then
+            Position = SpaceEnd + 1
+        end
+
+        local Quote = string.sub(Text, Position, Position)
+        local Value
+
+        if Quote == '"' or Quote == "'" then
+            local CloseAt = string.find(Text, Quote, Position + 1, true)
+            if CloseAt then
+                Value = string.sub(Text, Position + 1, CloseAt - 1)
+                Position = CloseAt + 1
+            else
+                -- kutip tidak ditutup: sisanya diambil apa adanya
+                Value = string.sub(Text, Position + 1)
+                Position = Length + 1
+            end
+        else
+            local _, ValueEnd, Raw = string.find(Text, "^([^%s]*)", Position)
+            Value = Raw or ""
+            -- nilai kosong ("key=" lalu spasi): tetap maju supaya tidak macet
+            Position = (ValueEnd and ValueEnd >= Position) and (ValueEnd + 1) or (Position + 1)
+        end
+
+        Attrs[string.lower(Key)] = Value
+    end
+
+    return Attrs
+end
+
 -- Isi token "{...}" -> sumber ikon + atributnya.
 -- Balik nil kalau isinya tidak berbentuk token ikon yang sah.
 local function ParseInlineToken(Body, Context)
@@ -1117,6 +1203,25 @@ local function ParseInlineToken(Body, Context)
 
     local Head = string.match(Body, "^(%S+)") or ""
     local Rest = string.sub(Body, #Head + 1)
+
+    -- "{button}" / "{button:sell}" / "{btn:sell variant=Ghost}": kontrol inline,
+    -- bukan ikon. Key opsional; token tanpa key dinomori oleh pemanggil sesuai
+    -- urutan kemunculannya. Dicek lebih dulu supaya tidak ikut aturan ikon.
+    local HeadName, HeadKey = string.match(Head, "^(%a+):(.*)$")
+    local BaseHead = string.lower(HeadName or Head)
+    if BaseHead == "button" or BaseHead == "btn" then
+        return {
+            Button = true,
+            Key = (HeadKey and HeadKey ~= "") and HeadKey or nil,
+            Attrs = Creator.ParseInlineAttrs(Rest),
+        }
+    end
+
+    -- Ikon inline dimatikan (InlineIcon = false): token dibiarkan mentah seperti
+    -- teks biasa. Button di atas tetap jalan karena bukan ikon.
+    if Context and Context.Icons == false then
+        return nil
+    end
 
     local Source
     local Explicit = false
@@ -1162,6 +1267,14 @@ end
 function Creator.HasInlineIcons(Text)
     if type(Text) ~= "string" or Text == "" then return false end
     return string.find(Text, "{", 1, true) ~= nil
+end
+
+-- Khusus token button. Dipakai supaya button tetap terdeteksi walau ikon inline
+-- dimatikan (InlineIcon = false).
+function Creator.HasInlineButtons(Text)
+    if type(Text) ~= "string" or Text == "" then return false end
+    return string.find(Text, "{%s*[Bb][Uu][Tt][Tt][Oo][Nn]") ~= nil
+        or string.find(Text, "{%s*[Bb][Tt][Nn]") ~= nil
 end
 
 -- Teks -> daftar segmen { Type = "Text"|"Icon", Content = ..., Options = ... }
@@ -1236,6 +1349,15 @@ function Creator.ParseInlineText(Text, Context)
             else
                 if Token.Drop then
                     DropToken()
+                elseif Token.Button then
+                    -- kontrol inline; dibangun oleh pemanggil (Element)
+                    DropPending, DropSpaced = false, false
+                    Flush()
+                    table.insert(Segments, {
+                        Type = "Button",
+                        Key = Token.Key,
+                        Attrs = Token.Attrs,
+                    })
                 else
                     DropPending, DropSpaced = false, false
                     Flush()
@@ -1255,18 +1377,18 @@ function Creator.ParseInlineText(Text, Context)
 
     Flush()
 
-    -- Ikon berlaku seperti objek inline yang jaraknya sudah diatur Padding
-    -- layout, jadi spasi yang menempel ke ikon dibuang supaya tidak dobel.
-    -- Teks tanpa ikon sama sekali dibiarkan utuh.
-    local HasIcon = false
+    -- Ikon & button berlaku seperti objek inline yang jaraknya sudah diatur
+    -- Padding layout, jadi spasi yang menempel ke objek dibuang supaya tidak
+    -- dobel. Teks tanpa objek sama sekali dibiarkan utuh.
+    local HasObject = false
     for _, Segment in ipairs(Segments) do
-        if Segment.Type == "Icon" then
-            HasIcon = true
+        if Segment.Type ~= "Text" then
+            HasObject = true
             break
         end
     end
 
-    if HasIcon then
+    if HasObject then
         local Kept = {}
         for Index, Segment in ipairs(Segments) do
             if Segment.Type ~= "Text" then
@@ -1275,10 +1397,10 @@ function Creator.ParseInlineText(Text, Context)
                 local Content = Segment.Content
                 local Previous = Segments[Index - 1]
                 local Next = Segments[Index + 1]
-                if not Previous or Previous.Type == "Icon" then
+                if not Previous or Previous.Type ~= "Text" then
                     Content = string.gsub(Content, "^%s+", "")
                 end
-                if not Next or Next.Type == "Icon" then
+                if not Next or Next.Type ~= "Text" then
                     Content = string.gsub(Content, "%s+$", "")
                 end
                 if Content ~= "" then

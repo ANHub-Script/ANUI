@@ -57,6 +57,7 @@ function Element:New(Config)
         Desc = Dropdown.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Config.Buttons,
         Image = Config.Image,
         ImageSize = Config.ImageSize,
         IconThemed = Config.IconThemed,

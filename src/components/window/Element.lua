@@ -3,6 +3,8 @@ local New = Creator.New
 local NewRoundFrame = Creator.NewRoundFrame
 local Tween = Creator.Tween
 
+local InlineButton = require("../ui/InlineButton")
+
 local cloneref = (cloneref or clonereference or function(instance) return instance end)
 
 local function Color3ToHSB(color)
@@ -186,6 +188,9 @@ end
 local GRADIENT_TAG_PLAIN = "<gradient>"
 local GRADIENT_TAG_CLOSE = "</gradient>"
 
+local BUTTON_TAG_PLAIN = "<button>"
+local BUTTON_TAG_CLOSE = "</button>"
+
 -- Teks memakai tag <gradient> atau tidak. Dipakai untuk dua hal:
 --   1. teks bertag WAJIB lewat jalur banyak-TextLabel, kalau tidak tag-nya
 --      ikut tampil mentah di layar;
@@ -196,6 +201,20 @@ local function HasGradientTag(str)
     return string.find(str, GRADIENT_TAG_PLAIN, 1, true) ~= nil
         or string.find(str, "<gradient=", 1, true) ~= nil
         or string.find(str, GRADIENT_TAG_CLOSE, 1, true) ~= nil
+end
+
+-- Teks memuat tag <button ...>...</button>. Sama seperti gradient, teks bertag
+-- harus lewat jalur banyak-item supaya tag-nya tidak tampil mentah.
+local function HasButtonTag(str)
+    if type(str) ~= "string" or str == "" then return false end
+    return string.find(str, BUTTON_TAG_PLAIN, 1, true) ~= nil
+        or string.find(str, "<button=", 1, true) ~= nil
+        or string.find(str, "<button ", 1, true) ~= nil
+end
+
+-- Teks memuat button dalam bentuk apa pun (tag atau token "{button}")
+local function HasAnyButton(str)
+    return HasButtonTag(str) or Creator.HasInlineButtons(str)
 end
 
 -- Parse atribut tag, contoh: "FF3CAC,784BA0,2B86C5" atau "FF3CAC,2B86C5|90" (|rotasi opsional)
@@ -280,10 +299,33 @@ local function ParseTextSegments(str, Context, TagAware)
                     Content = Part.Content,
                     Options = Part.Options,
                 })
+            elseif Part.Type == "Button" then
+                -- token "{button:key}"; label & sisanya diambil dari
+                -- Element.Buttons oleh pemanggil
+                table.insert(Segments, {
+                    Type = "Button",
+                    Key = Part.Key,
+                    Attrs = Part.Attrs,
+                })
             elseif Part.Content ~= "" then
                 table.insert(Segments, {Type = "Text", Content = Part.Content, Gradient = CurrentGradient})
             end
         end
+    end
+
+    -- Isi tag "<button=key attr=...>Label</button>" -> key + atribut + label
+    local function ParseButtonTagHead(attr)
+        if type(attr) ~= "string" or attr == "" then
+            return nil, {}
+        end
+
+        -- kata pertama adalah key, kecuali kalau ternyata sebuah atribut
+        local _, headEnd, head = string.find(attr, "^%s*(%S*)")
+        if head and head ~= "" and not string.find(head, "=", 1, true) then
+            return head, Creator.ParseInlineAttrs(string.sub(attr, (headEnd or 0) + 1))
+        end
+
+        return nil, Creator.ParseInlineAttrs(attr)
     end
 
     while pos <= length do
@@ -291,6 +333,8 @@ local function ParseTextSegments(str, Context, TagAware)
         local plainS, plainE = string.find(str, GRADIENT_TAG_PLAIN, pos, true)
         local attrS, attrE, attrCapture = string.find(str, "<gradient=([^>]*)>", pos)
         local closeS, closeE = string.find(str, GRADIENT_TAG_CLOSE, pos, true)
+        local btnPlainS, btnPlainE = string.find(str, BUTTON_TAG_PLAIN, pos, true)
+        local btnAttrS, btnAttrE, btnAttrCapture = string.find(str, "<button[ =]([^>]*)>", pos)
 
         local nextS, nextE, kind, attrVal
         for _, candidate in ipairs({
@@ -298,6 +342,8 @@ local function ParseTextSegments(str, Context, TagAware)
             {s = plainS, e = plainE, k = "OpenPlain"},
             {s = attrS, e = attrE, k = "OpenAttr", attr = attrCapture},
             {s = closeS, e = closeE, k = "Close"},
+            {s = btnPlainS, e = btnPlainE, k = "Button"},
+            {s = btnAttrS, e = btnAttrE, k = "Button", attr = btnAttrCapture},
         }) do
             if candidate.s and (not nextS or candidate.s < nextS) then
                 nextS, nextE, kind, attrVal = candidate.s, candidate.e, candidate.k, candidate.attr
@@ -311,6 +357,10 @@ local function ParseTextSegments(str, Context, TagAware)
 
         PushTextWithIcons(string.sub(str, pos, nextS - 1))
 
+        -- Tag button memakan isinya sampai "</button>", jadi posisi lanjutnya
+        -- tidak selalu tepat setelah tag pembuka.
+        local nextPos = nextE + 1
+
         if kind == "Image" then
             table.insert(Segments, {Type = "Image", Content = string.sub(str, nextS, nextE)})
         elseif kind == "OpenPlain" then
@@ -319,21 +369,42 @@ local function ParseTextSegments(str, Context, TagAware)
             CurrentGradient = ParseGradientAttr(attrVal) or true
         elseif kind == "Close" then
             CurrentGradient = false
+        elseif kind == "Button" then
+            local closeAt, closeEnd = string.find(str, BUTTON_TAG_CLOSE, nextE + 1, true)
+            local key, attrs = ParseButtonTagHead(attrVal)
+
+            -- Label sebuah button hanya teks polos: tag/token lain di dalamnya
+            -- dibuang supaya tidak tampil mentah di atas tombol.
+            local label = string.sub(str, nextE + 1, (closeAt and closeAt - 1) or length)
+            label = string.gsub(label, "</?gradient[^>]*>", "")
+            label = string.match(label, "^%s*(.-)%s*$") or label
+
+            table.insert(Segments, {
+                Type = "Button",
+                Key = key,
+                Attrs = attrs,
+                -- tag tanpa penutup: sisa teksnya dianggap label
+                Label = label,
+            })
+
+            nextPos = (closeEnd or length) + 1
         end
 
-        pos = nextE + 1
+        pos = nextPos
     end
 
     return Segments
 end
 
 -- Cek apakah teks butuh dipecah jadi beberapa TextLabel (ada gambar inline,
--- token ikon, dan/atau tag gradient parsial).
--- AllowInline false = token "{...}" diabaikan (dianggap teks biasa).
+-- token ikon, tag gradient parsial, dan/atau button inline).
+-- AllowInline false = token "{...}" diabaikan (dianggap teks biasa), tapi button
+-- tetap dihitung karena bukan ikon.
 local function HasRichTokens(str, AllowInline)
     if not str or str == "" then return false end
     return string.find(str, "rbxassetid://%d+") ~= nil
         or HasGradientTag(str)
+        or HasAnyButton(str)
         or (AllowInline ~= false and Creator.HasInlineIcons(str))
 end
 
@@ -491,6 +562,10 @@ return function(Config)
         UIElements = {},
         DescColumnWidth = Config.DescColumnWidth,
 
+        -- Button inline di dalam Title/Desc. Map key -> spec, atau array kalau
+        -- token/tag-nya ditulis tanpa key.
+        Buttons = Config.Buttons,
+
         Index = Config.Index
     }
 
@@ -517,6 +592,8 @@ return function(Config)
             CachePrefix  = "Inline" .. (Type or "Title"),
             Index        = Index,
             IconTransparency = Type == "Desc" and 0.3 or 0,
+            -- false = token ikon dibiarkan mentah; token button tetap diproses
+            Icons        = Config.InlineIcon ~= false,
         }
     end
 
@@ -524,12 +601,142 @@ return function(Config)
     local InlineEnabled = Config.InlineIcon ~= false
 
     local function ParseInline(str, Type, TagAware)
-        -- Context nil = token dibiarkan mentah, hanya gradient/rbxassetid diproses
-        return ParseTextSegments(str, InlineEnabled and InlineContext(Type) or nil, TagAware)
+        -- Context selalu dikirim: kalau ikon dimatikan, Context.Icons = false
+        -- membuat token ikon dibiarkan mentah sementara token button tetap jalan.
+        return ParseTextSegments(str, InlineContext(Type), TagAware)
     end
 
     local function HasRich(str)
         return HasRichTokens(str, InlineEnabled)
+    end
+
+    -- ===== Button inline =====
+
+    -- Kapan sebuah button inline terakhir ditekan. Dipakai elemen induk
+    -- (Toggle dsb.) lewat :IsInlineButtonActive() supaya klik pada button tidak
+    -- ikut memicu aksi elemennya.
+    local InlineLastPress = 0
+
+    -- Instance button -> API-nya. Dipakai untuk tiga hal: memakai ulang instance
+    -- saat Desc di-update (Api:Update), :GetButton(), dan supaya Lock/Unlock
+    -- elemen ikut mengunci button-nya.
+    -- Weak key: entri ikut terbuang sendiri saat instance-nya di-Destroy.
+    local ActiveButtons = setmetatable({}, { __mode = "k" })
+    local IsLocked = false
+
+    local function ForEachButton(fn)
+        for Frame, Api in pairs(ActiveButtons) do
+            if Frame.Parent then
+                fn(Api, Frame)
+            else
+                ActiveButtons[Frame] = nil
+            end
+        end
+    end
+
+    -- Dipanggil setiap kali sebuah button dibuat atau dipakai ulang
+    local function RegisterButton(Frame, Api, Spec)
+        ActiveButtons[Frame] = Api
+        Api.SpecLocked = Spec.Locked and true or false
+
+        if IsLocked or Api.SpecLocked then
+            Api:Lock()
+        else
+            Api:Unlock()
+        end
+    end
+
+    -- Config Buttons boleh ditulis ringkas: sebuah function dianggap Callback.
+    local function NormalizeButtonEntry(Entry)
+        if type(Entry) == "function" then
+            return { Callback = Entry }
+        elseif type(Entry) == "table" then
+            return Entry
+        end
+        return nil
+    end
+
+    -- Segmen button -> spec siap pakai, atau nil kalau tidak ada padanannya di
+    -- Config.Buttons (segmen dibuang, mengikuti perilaku token ikon tanpa sumber).
+    --
+    -- Urutan menang: atribut inline > label di dalam tag > tabel Buttons.
+    local function ResolveButtonSpec(Segment, AutoIndex)
+        local Source = Element.Buttons
+        if type(Source) ~= "table" then return nil end
+
+        local Key = Segment.Key
+        local Entry
+
+        if Key ~= nil then
+            Entry = NormalizeButtonEntry(Source[Key])
+            -- "{button:2}" boleh menunjuk entri array; key-nya ikut jadi angka
+            -- supaya :GetButton(2) dan :GetButton("2") tidak berbeda hasil
+            if not Entry then
+                local AsNumber = tonumber(Key)
+                if AsNumber then
+                    Entry = NormalizeButtonEntry(Source[AsNumber])
+                    if Entry then Key = AsNumber end
+                end
+            end
+        else
+            -- tanpa key: ambil berurutan sesuai kemunculan di teks
+            Entry = NormalizeButtonEntry(Source[AutoIndex])
+            Key = AutoIndex
+        end
+
+        if not Entry then return nil end
+
+        local Spec = {}
+        for Field, Value in pairs(Entry) do
+            Spec[Field] = Value
+        end
+
+        Spec.Key = Key
+
+        if Segment.Label and Segment.Label ~= "" then
+            Spec.Title = Segment.Label
+        end
+
+        for Field, Value in pairs(InlineButton.NormalizeAttrs(Segment.Attrs)) do
+            Spec[Field] = Value
+        end
+
+        Spec.Title = Spec.Title or (type(Key) == "string" and Key) or "Button"
+
+        return Spec
+    end
+
+    local function ButtonContext(Index)
+        return {
+            Folder = Config.Window and Config.Window.Folder,
+            Index = Index,
+            OnPress = function()
+                InlineLastPress = os.clock()
+            end,
+        }
+    end
+
+    -- Isi Spec ke setiap segmen button, sekaligus menomori yang tanpa key.
+    -- Dipanggil sekali per update supaya penomorannya konsisten lintas baris.
+    local function ResolveButtonsIn(itemLists)
+        local AutoIndex = 0
+        local Found = false
+
+        for _, items in ipairs(itemLists) do
+            for _, item in ipairs(items) do
+                if item.Type == "Button" then
+                    if item.Key == nil then
+                        AutoIndex = AutoIndex + 1
+                        item.Spec = ResolveButtonSpec(item, AutoIndex)
+                    else
+                        item.Spec = ResolveButtonSpec(item, nil)
+                    end
+                    Found = Found or item.Spec ~= nil
+                end
+            end
+        end
+
+        return Found
     end
 
     local ThumbnailFrame
@@ -674,7 +881,7 @@ return function(Config)
             return math.clamp(math.floor(w * 0.62), 220, 520)
         end
 
-        local function getOrCreateListLayout(parent)
+        local function getOrCreateListLayout(parent, wraps)
             local layout = parent:FindFirstChild("UIListLayout")
             if not layout then
                 layout = New("UIListLayout", {
@@ -690,6 +897,11 @@ return function(Config)
                 layout.Padding = UDim.new(0, 4)
                 layout.VerticalAlignment = Enum.VerticalAlignment.Center
             end
+            -- Baris yang memuat button biasanya "teks panjang + tombol", jadi
+            -- perlu boleh turun baris. Baris lain dibiarkan seperti semula.
+            if wraps then
+                Creator.TrySetWraps(layout, true)
+            end
             return layout
         end
 
@@ -702,6 +914,19 @@ return function(Config)
                 return "T|" .. GradientSignature(itemData.Gradient)
             elseif itemData.Type == "Image" then
                 return "I"
+            elseif itemData.Type == "Button" then
+                -- Title/Icon/Locked TIDAK ikut: itu diurus Api:Update() supaya
+                -- instance-nya bisa dipakai ulang saat teksnya berubah.
+                local Spec = itemData.Spec or {}
+                return table.concat({
+                    "B", tostring(itemData.Key),
+                    tostring(Spec.Variant),
+                    Spec.Color and tostring(Spec.Color) or "",
+                    Spec.TextColor and tostring(Spec.TextColor) or "",
+                    tostring(Spec.Height), tostring(Spec.Width),
+                    tostring(Spec.Radius), tostring(Spec.TextSize),
+                    tostring(Spec.Padding),
+                }, "|")
             end
 
             local o = itemData.Options or {}
@@ -744,6 +969,16 @@ return function(Config)
                         itemFrame = Creator.InlineIconFrame(itemData, InlineContext("Desc", j))
                         if itemFrame then
                             itemFrame.Parent = container
+                        end
+                    elseif itemData.Type == "Button" then
+                        -- spec tidak ketemu di Config.Buttons: segmen dibuang
+                        if itemData.Spec then
+                            local Frame, Api = InlineButton.New(itemData.Spec, ButtonContext(j))
+                            if Frame then
+                                RegisterButton(Frame, Api, itemData.Spec)
+                                Frame.Parent = container
+                                itemFrame = Frame
+                            end
                         end
                     else
                         itemFrame = New("ImageLabel", {
@@ -795,6 +1030,13 @@ return function(Config)
                                 end
                             end
                         end
+                    elseif itemData.Type == "Button" then
+                        -- instance dipakai ulang: cukup segarkan teks/ikon/callback
+                        local Api = ActiveButtons[itemFrame]
+                        if Api and itemData.Spec then
+                            Api:Update(itemData.Spec)
+                            RegisterButton(itemFrame, Api, itemData.Spec)
+                        end
                     else
                         if itemFrame.Image ~= itemData.Content then
                             itemFrame.Image = itemData.Content
@@ -828,6 +1070,29 @@ return function(Config)
             end
         end
 
+        -- Penomoran button tanpa key harus melihat SELURUH desc sekaligus, jadi
+        -- dilakukan setelah semua baris & kolom selesai diparse. Urutannya
+        -- deterministik: baris atas ke bawah, kolom kiri lalu kanan.
+        local itemLists = {}
+        for _, lineData in ipairs(parsedData) do
+            for _, items in ipairs(lineData.Cols) do
+                table.insert(itemLists, items)
+            end
+        end
+        ResolveButtonsIn(itemLists)
+
+        -- Baris yang memuat button dibolehkan turun baris (lihat getOrCreateListLayout)
+        local function lineHasButton(lineData)
+            for _, items in ipairs(lineData.Cols) do
+                for _, item in ipairs(items) do
+                    if item.Type == "Button" and item.Spec then
+                        return true
+                    end
+                end
+            end
+            return false
+        end
+
         local currentLines = {}
         for _, c in ipairs(DescContainer:GetChildren()) do
             if c:IsA("Frame") then table.insert(currentLines, c) end
@@ -835,6 +1100,7 @@ return function(Config)
 
         for i, lineData in ipairs(parsedData) do
             local lineFrame = currentLines[i]
+            local wraps = lineHasButton(lineData)
 
             if not lineFrame then
                 lineFrame = New("Frame", {
@@ -862,11 +1128,11 @@ return function(Config)
                         Size = UDim2.new(0, colWidth, 0, 0),
                         AutomaticSize = Enum.AutomaticSize.Y,
                     })
-                    getOrCreateListLayout(leftCol)
+                    getOrCreateListLayout(leftCol, wraps)
                 else
                     leftCol.Size = UDim2.new(0, colWidth, 0, 0)
                     leftCol.AutomaticSize = Enum.AutomaticSize.Y
-                    getOrCreateListLayout(leftCol)
+                    getOrCreateListLayout(leftCol, wraps)
                 end
 
                 local rightCol = lineFrame:FindFirstChild("Col2")
@@ -878,11 +1144,11 @@ return function(Config)
                         Size = UDim2.new(1, -colWidth, 0, 0),
                         AutomaticSize = Enum.AutomaticSize.Y,
                     })
-                    getOrCreateListLayout(rightCol)
+                    getOrCreateListLayout(rightCol, wraps)
                 else
                     rightCol.Size = UDim2.new(1, -colWidth, 0, 0)
                     rightCol.AutomaticSize = Enum.AutomaticSize.Y
-                    getOrCreateListLayout(rightCol)
+                    getOrCreateListLayout(rightCol, wraps)
                 end
 
                 for _, c in ipairs(lineFrame:GetChildren()) do
@@ -900,7 +1166,7 @@ return function(Config)
                     end
                 end
 
-                getOrCreateListLayout(lineFrame)
+                getOrCreateListLayout(lineFrame, wraps)
                 updateItemsInContainer(lineFrame, cols[1])
             end
         end
@@ -927,6 +1193,7 @@ return function(Config)
         end
 
         local items = ParseInline(text, "Title")
+        ResolveButtonsIn({ items })
 
         -- Token yang tidak jadi ikon (mis. "Rate {5} stars") tetap teks biasa:
         -- kalau tidak ada segmen non-teks sama sekali, pakai jalur TextLabel
@@ -990,6 +1257,17 @@ return function(Config)
                     end
 
                     frame.Parent = TitleRich
+                end
+            elseif item.Type == "Button" then
+                -- Judul dibangun ulang penuh setiap update, jadi tidak ada
+                -- instance yang bisa dipakai ulang di sini.
+                if item.Spec then
+                    local frame, api = InlineButton.New(item.Spec, ButtonContext(idx))
+                    if frame then
+                        frame.LayoutOrder = idx
+                        RegisterButton(frame, api, item.Spec)
+                        frame.Parent = TitleRich
+                    end
                 end
             else
                 local img = New("ImageLabel", {
@@ -1294,6 +1572,71 @@ return function(Config)
         end
     end
 
+    -- ===== API button inline =====
+
+    -- Sedang ada button inline yang di-hover / baru saja ditekan.
+    -- Elemen induk memakai ini untuk mengabaikan klik yang sebenarnya ditujukan
+    -- ke button, bukan ke elemennya.
+    --
+    -- Status hover dibaca langsung dari button yang masih hidup, bukan dari
+    -- penghitung: kalau dihitung, sebuah button yang dibuang saat kursor sedang
+    -- di atasnya (Desc di-update di bawah kursor) tidak pernah mengirim
+    -- MouseLeave dan penghitungnya nyangkut — elemennya jadi tidak bisa diklik
+    -- selamanya. ForEachButton sekalian membuang entri yang instance-nya mati.
+    function Element:IsInlineButtonActive()
+        local Hovering = false
+        ForEachButton(function(Api)
+            if not Hovering and Api:IsHovering() then
+                Hovering = true
+            end
+        end)
+        if Hovering then
+            return true
+        end
+
+        -- Sentuhan di HP tidak meninggalkan status hover, jadi tekanan terakhir
+        -- dipakai sebagai jendela singkat.
+        return (os.clock() - InlineLastPress) < 0.2
+    end
+
+    -- Map key -> Api dari button yang sedang tampil
+    function Element:GetButtons()
+        local Result = {}
+        ForEachButton(function(Api)
+            if Api.Key ~= nil then
+                Result[Api.Key] = Api
+            end
+        end)
+        return Result
+    end
+
+    function Element:GetButton(key)
+        local Found
+        ForEachButton(function(Api)
+            if Found == nil and Api.Key == key then
+                Found = Api
+            end
+        end)
+        return Found
+    end
+
+    -- Ganti seluruh tabel Buttons lalu bangun ulang Title & Desc
+    function Element:SetButtons(buttons)
+        Element.Buttons = buttons
+        if Config.ElementTable then
+            Config.ElementTable.Buttons = buttons
+        end
+
+        -- instance lama dibuang: spec-nya bisa berubah total
+        ForEachButton(function(_, Frame)
+            ActiveButtons[Frame] = nil
+            Frame:Destroy()
+        end)
+
+        UpdateDesc(Element.Desc)
+        UpdateTitle(Element.Title)
+    end
+
     -- Inisialisasi awal
     UpdateDesc(Element.Desc)
     UpdateTitle(Element.Title)
@@ -1428,16 +1771,33 @@ return function(Config)
     end
     function Element:Lock(text,Image) -- Tambahkan 'text' di dalam kurung
         CanHover = false
+        IsLocked = true
         LockIconAsset = Image or LockIconAsset
         LockedTitle.Text = text or "Locked" -- Tambahkan baris ini untuk ganti teksnya
         Locked.Active = true
         Locked.Visible = true
+
+        -- Overlay "Locked" sudah menyerap klik lewat Active = true, tapi button
+        -- inline tetap ikut dikunci supaya tampilannya redup dan callback-nya
+        -- tidak jalan kalau overlay-nya kebetulan tidak menutupi (mis. dipanggil
+        -- langsung lewat Api).
+        ForEachButton(function(Api)
+            Api:Lock()
+        end)
     end
 
     function Element:Unlock()
         CanHover = true
+        IsLocked = false
         Locked.Active = false
         Locked.Visible = false
+
+        -- button yang memang diminta terkunci lewat spec-nya sendiri tetap terkunci
+        ForEachButton(function(Api)
+            if not Api.SpecLocked then
+                Api:Unlock()
+            end
+        end)
     end
 
     function Element:Highlight()

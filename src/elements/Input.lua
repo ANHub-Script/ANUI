@@ -35,6 +35,7 @@ function Element:New(Config)
         Desc = Input.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Config.Buttons,
         Parent = Config.Parent,
         TextOffset = Input.Width,
         Hover = false,

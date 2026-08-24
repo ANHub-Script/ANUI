@@ -23,6 +23,7 @@ function Element:New(Config)
         Callback = Config.Callback or function() end,
         CanChange = Config.CanChange or true,
         Picking = false,
+        Buttons = Config.Buttons,
         UIElements = {},
     }
     
@@ -33,6 +34,7 @@ function Element:New(Config)
         Desc = Keybind.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Keybind.Buttons,
         Parent = Config.Parent,
         TextOffset = 85,
         Hover = Keybind.CanChange,
@@ -91,6 +93,10 @@ function Element:New(Config)
 
     Creator.AddSignal(Keybind.KeybindFrame.UIElements.Main.MouseButton1Click, function()
         if CanCallback then
+            -- klik yang mendarat di button inline dalam Desc bukan milik elemen ini
+            if Keybind.KeybindFrame:IsInlineButtonActive() then
+                return
+            end
             if Keybind.CanChange then
                 Keybind.Picking = true
                 Keybind.UIElements.Keybind.Frame.Frame.TextLabel.Text = "..."
@@ -146,6 +152,20 @@ function Element:New(Config)
         end
     end)
     
+    -- Button inline di dalam Title/Desc (lihat components/ui/InlineButton.lua)
+    function Keybind:SetButtons(buttons)
+        Keybind.Buttons = buttons
+        return Keybind.KeybindFrame:SetButtons(buttons)
+    end
+
+    function Keybind:GetButton(key)
+        return Keybind.KeybindFrame:GetButton(key)
+    end
+
+    function Keybind:GetButtons()
+        return Keybind.KeybindFrame:GetButtons()
+    end
+
     return Keybind.__type, Keybind
 end
 

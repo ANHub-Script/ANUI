@@ -61,6 +61,7 @@ function Element:New(Config)
         Desc = Slider.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Config.Buttons,
         Parent = Config.Parent,
         TextOffset = Slider.Width,
         Hover = false,

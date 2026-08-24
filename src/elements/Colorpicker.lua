@@ -652,6 +652,7 @@ function Element:New(Config)
         Desc = Colorpicker.Desc,
         TitleGradient = Config.TitleGradient,
         DescGradient = Config.DescGradient,
+        Buttons = Config.Buttons,
         Parent = Config.Parent,
         TextOffset = 40,
         Hover = false,
