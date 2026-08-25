@@ -1,9 +1,27 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
+
+// ---------------------------------------------------------------------------
+// Version — auto-synced from the root package.json
+// ---------------------------------------------------------------------------
+// Reads the library version so the navbar badge stays in sync every time
+// `npm run build` bumps it. Runs at docs build time; the deploy workflow
+// rebuilds on every push, so no manual edits are ever needed.
+function readVersion(): string {
+  try {
+    const pkgPath = fileURLToPath(new URL('../../package.json', import.meta.url))
+    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'))
+    return pkg.version ? `v${pkg.version}` : 'latest'
+  } catch {
+    return 'latest'
+  }
+}
+const VERSION = readVersion()
 
 // ---------------------------------------------------------------------------
 // Project constants
 // ---------------------------------------------------------------------------
-const VERSION = 'v1.0.267'
 const GITHUB = 'https://github.com/ANHub-Script/ANUI'
 const DOCS_REPO = 'https://github.com/ANHub-Script/ANUI'
 const DISCORD = 'https://discord.gg/bUkCZvmrpH'
@@ -14,26 +32,80 @@ const discordIcon = {
   svg: '<svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Discord</title><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>'
 }
 
-// A tiny translation helper: pass the English + Indonesian strings, the active
-// locale picks the right one. Keeps EN and ID nav/sidebars perfectly in sync.
-type T = (en: string, id: string) => string
-const EN: T = (en) => en
-const ID: T = (_en, id) => id
+// ---------------------------------------------------------------------------
+// i18n — one dictionary, six languages. Keeps every locale's nav/sidebar/UI
+// perfectly in sync. Element names (Button, Toggle, …) are API identifiers and
+// stay in English on purpose.
+// ---------------------------------------------------------------------------
+type Lang = 'en' | 'id' | 'ru' | 'zh' | 'ja' | 'th'
+type Entry = Record<Lang, string>
+
+const UI: Record<string, Entry> = {
+  // Navbar
+  guide: { en: 'Guide', id: 'Panduan', ru: 'Руководство', zh: '指南', ja: 'ガイド', th: 'คู่มือ' },
+  elements: { en: 'Elements', id: 'Elemen', ru: 'Элементы', zh: '组件', ja: '要素', th: 'องค์ประกอบ' },
+  features: { en: 'Features', id: 'Fitur', ru: 'Возможности', zh: '功能', ja: '機能', th: 'ฟีเจอร์' },
+  examples: { en: 'Examples', id: 'Contoh', ru: 'Примеры', zh: '示例', ja: '例', th: 'ตัวอย่าง' },
+  reference: { en: 'Reference', id: 'Referensi', ru: 'Справочник', zh: '参考', ja: 'リファレンス', th: 'อ้างอิง' },
+  releaseNotes: { en: 'Release Notes', id: 'Catatan Rilis', ru: 'Список изменений', zh: '更新日志', ja: 'リリースノート', th: 'บันทึกการเปลี่ยนแปลง' },
+
+  // Sidebar groups
+  gettingStarted: { en: 'Getting Started', id: 'Memulai', ru: 'Начало работы', zh: '快速开始', ja: 'スタートガイド', th: 'เริ่มต้นใช้งาน' },
+
+  // Sidebar items
+  introduction: { en: 'Introduction', id: 'Pengenalan', ru: 'Введение', zh: '简介', ja: 'はじめに', th: 'บทนำ' },
+  installation: { en: 'Installation', id: 'Instalasi', ru: 'Установка', zh: '安装', ja: 'インストール', th: 'การติดตั้ง' },
+  quickStart: { en: 'Quick Start', id: 'Mulai Cepat', ru: 'Быстрый старт', zh: '快速上手', ja: 'クイックスタート', th: 'เริ่มต้นอย่างรวดเร็ว' },
+  windowConfig: { en: 'Window Configuration', id: 'Konfigurasi Window', ru: 'Настройка окна', zh: '窗口配置', ja: 'ウィンドウ設定', th: 'การตั้งค่าหน้าต่าง' },
+  tabsSections: { en: 'Tabs & Sections', id: 'Tab & Section', ru: 'Вкладки и разделы', zh: '标签页与分区', ja: 'タブとセクション', th: 'แท็บและเซกชัน' },
+  overview: { en: 'Overview', id: 'Ikhtisar', ru: 'Обзор', zh: '概览', ja: '概要', th: 'ภาพรวม' },
+  notifications: { en: 'Notifications', id: 'Notifikasi', ru: 'Уведомления', zh: '通知', ja: '通知', th: 'การแจ้งเตือน' },
+  dialogsPopups: { en: 'Dialogs & Popups', id: 'Dialog & Popup', ru: 'Диалоги и всплывающие окна', zh: '对话框与弹窗', ja: 'ダイアログとポップアップ', th: 'ไดอะล็อกและป๊อปอัป' },
+  configFlags: { en: 'Config & Flags', id: 'Konfigurasi & Flag', ru: 'Конфигурация и флаги', zh: '配置与标记', ja: '設定とフラグ', th: 'การตั้งค่าและแฟลก' },
+  keySystem: { en: 'Key System', id: 'Sistem Key', ru: 'Система ключей', zh: '密钥系统', ja: 'キーシステム', th: 'ระบบคีย์' },
+  themes: { en: 'Themes & Appearance', id: 'Tema & Tampilan', ru: 'Темы и оформление', zh: '主题与外观', ja: 'テーマと外観', th: 'ธีมและรูปลักษณ์' },
+  localization: { en: 'Localization', id: 'Lokalisasi', ru: 'Локализация', zh: '本地化', ja: 'ローカライズ', th: 'การแปลภาษา' },
+  scheduler: { en: 'Scheduler & Loops', id: 'Scheduler & Loop', ru: 'Планировщик и циклы', zh: '调度器与循环', ja: 'スケジューラとループ', th: 'ตัวจัดตารางและลูป' },
+  openButton: { en: 'Open Button', id: 'Tombol Buka', ru: 'Кнопка открытия', zh: '打开按钮', ja: '開くボタン', th: 'ปุ่มเปิด' },
+  basicMenu: { en: 'Basic Menu', id: 'Menu Dasar', ru: 'Базовое меню', zh: '基础菜单', ja: '基本メニュー', th: 'เมนูพื้นฐาน' },
+  configSystem: { en: 'Config System', id: 'Sistem Konfigurasi', ru: 'Система конфигурации', zh: '配置系统', ja: '設定システム', th: 'ระบบการตั้งค่า' },
+  categoryPages: { en: 'Category Pages', id: 'Halaman Kategori', ru: 'Страницы категорий', zh: '分类页面', ja: 'カテゴリページ', th: 'หน้าหมวดหมู่' },
+  apiCheatsheet: { en: 'API Cheatsheet', id: 'Ringkasan API', ru: 'Шпаргалка по API', zh: 'API 速查表', ja: 'API チートシート', th: 'สรุป API' },
+
+  // Misc theme UI
+  editLink: { en: 'Edit this page on GitHub', id: 'Edit halaman ini di GitHub', ru: 'Редактировать эту страницу на GitHub', zh: '在 GitHub 上编辑此页', ja: 'GitHub でこのページを編集', th: 'แก้ไขหน้านี้บน GitHub' },
+  onThisPage: { en: 'On this page', id: 'Di halaman ini', ru: 'На этой странице', zh: '本页目录', ja: 'このページの内容', th: 'ในหน้านี้' },
+  prev: { en: 'Previous', id: 'Sebelumnya', ru: 'Назад', zh: '上一页', ja: '前のページ', th: 'ก่อนหน้า' },
+  next: { en: 'Next', id: 'Berikutnya', ru: 'Вперёд', zh: '下一页', ja: '次のページ', th: 'ถัดไป' },
+  lastUpdated: { en: 'Last updated', id: 'Terakhir diperbarui', ru: 'Последнее обновление', zh: '最后更新', ja: '最終更新', th: 'อัปเดตล่าสุด' },
+  footerMsg: { en: 'Released under the MIT License.', id: 'Dirilis di bawah Lisensi MIT.', ru: 'Распространяется по лицензии MIT.', zh: '基于 MIT 许可证发布。', ja: 'MIT ライセンスの下で公開されています。', th: 'เผยแพร่ภายใต้ลิขสิทธิ์ MIT' },
+  footerCopyright: {
+    en: 'Copyright © 2024–present ANHub-Script · Based on WindUI by Footagesus',
+    id: 'Hak Cipta © 2024–sekarang ANHub-Script · Berbasis WindUI oleh Footagesus',
+    ru: 'Авторское право © 2024–настоящее время ANHub-Script · На основе WindUI от Footagesus',
+    zh: '版权所有 © 2024–至今 ANHub-Script · 基于 Footagesus 的 WindUI',
+    ja: '著作権 © 2024–現在 ANHub-Script · Footagesus の WindUI をベースに',
+    th: 'ลิขสิทธิ์ © 2024–ปัจจุบัน ANHub-Script · อ้างอิงจาก WindUI โดย Footagesus'
+  }
+}
+
+const tr = (lang: Lang) => (key: keyof typeof UI): string => UI[key][lang] ?? UI[key].en
 
 // ---------------------------------------------------------------------------
 // Navbar
 // ---------------------------------------------------------------------------
-function nav(p: string, t: T): DefaultTheme.NavItem[] {
+function nav(p: string, lang: Lang): DefaultTheme.NavItem[] {
+  const t = tr(lang)
   return [
-    { text: t('Guide', 'Panduan'), link: `${p}/guide/introduction`, activeMatch: `${p}/guide/` },
-    { text: t('Elements', 'Elemen'), link: `${p}/elements/`, activeMatch: `${p}/elements/` },
-    { text: t('Features', 'Fitur'), link: `${p}/features/notifications`, activeMatch: `${p}/features/` },
-    { text: t('Examples', 'Contoh'), link: `${p}/examples/`, activeMatch: `${p}/examples/` },
-    { text: t('Reference', 'Referensi'), link: `${p}/api/`, activeMatch: `${p}/api/` },
+    { text: t('guide'), link: `${p}/guide/introduction`, activeMatch: `${p}/guide/` },
+    { text: t('elements'), link: `${p}/elements/`, activeMatch: `${p}/elements/` },
+    { text: t('features'), link: `${p}/features/notifications`, activeMatch: `${p}/features/` },
+    { text: t('examples'), link: `${p}/examples/`, activeMatch: `${p}/examples/` },
+    { text: t('reference'), link: `${p}/api/`, activeMatch: `${p}/api/` },
     {
       text: VERSION,
       items: [
-        { text: t('Release Notes', 'Catatan Rilis'), link: `${GITHUB}/releases` },
+        { text: t('releaseNotes'), link: `${GITHUB}/releases` },
         { text: 'GitHub', link: GITHUB },
         { text: 'Discord', link: DISCORD },
         { text: 'YouTube', link: YOUTUBE }
@@ -45,24 +117,25 @@ function nav(p: string, t: T): DefaultTheme.NavItem[] {
 // ---------------------------------------------------------------------------
 // Sidebar (shared across all doc pages of a locale)
 // ---------------------------------------------------------------------------
-function sidebar(p: string, t: T): DefaultTheme.SidebarItem[] {
+function sidebar(p: string, lang: Lang): DefaultTheme.SidebarItem[] {
+  const t = tr(lang)
   return [
     {
-      text: t('Getting Started', 'Memulai'),
+      text: t('gettingStarted'),
       collapsed: false,
       items: [
-        { text: t('Introduction', 'Pengenalan'), link: `${p}/guide/introduction` },
-        { text: t('Installation', 'Instalasi'), link: `${p}/guide/installation` },
-        { text: t('Quick Start', 'Mulai Cepat'), link: `${p}/guide/getting-started` },
-        { text: t('Window Configuration', 'Konfigurasi Window'), link: `${p}/guide/window-configuration` },
-        { text: t('Tabs & Sections', 'Tab & Section'), link: `${p}/guide/tabs-and-sections` }
+        { text: t('introduction'), link: `${p}/guide/introduction` },
+        { text: t('installation'), link: `${p}/guide/installation` },
+        { text: t('quickStart'), link: `${p}/guide/getting-started` },
+        { text: t('windowConfig'), link: `${p}/guide/window-configuration` },
+        { text: t('tabsSections'), link: `${p}/guide/tabs-and-sections` }
       ]
     },
     {
-      text: t('Elements', 'Elemen'),
+      text: t('elements'),
       collapsed: false,
       items: [
-        { text: t('Overview', 'Ikhtisar'), link: `${p}/elements/` },
+        { text: t('overview'), link: `${p}/elements/` },
         { text: 'Button', link: `${p}/elements/button` },
         { text: 'Toggle', link: `${p}/elements/toggle` },
         { text: 'Slider', link: `${p}/elements/slider` },
@@ -81,37 +154,65 @@ function sidebar(p: string, t: T): DefaultTheme.SidebarItem[] {
       ]
     },
     {
-      text: t('Features', 'Fitur'),
+      text: t('features'),
       collapsed: false,
       items: [
-        { text: t('Notifications', 'Notifikasi'), link: `${p}/features/notifications` },
-        { text: t('Dialogs & Popups', 'Dialog & Popup'), link: `${p}/features/dialogs-and-popups` },
-        { text: t('Config & Flags', 'Konfigurasi & Flag'), link: `${p}/features/config-and-flags` },
-        { text: t('Key System', 'Sistem Key'), link: `${p}/features/key-system` },
-        { text: t('Themes & Appearance', 'Tema & Tampilan'), link: `${p}/features/themes` },
-        { text: t('Localization', 'Lokalisasi'), link: `${p}/features/localization` },
-        { text: t('Scheduler & Loops', 'Scheduler & Loop'), link: `${p}/features/scheduler` },
-        { text: t('Open Button', 'Tombol Buka'), link: `${p}/features/open-button` }
+        { text: t('notifications'), link: `${p}/features/notifications` },
+        { text: t('dialogsPopups'), link: `${p}/features/dialogs-and-popups` },
+        { text: t('configFlags'), link: `${p}/features/config-and-flags` },
+        { text: t('keySystem'), link: `${p}/features/key-system` },
+        { text: t('themes'), link: `${p}/features/themes` },
+        { text: t('localization'), link: `${p}/features/localization` },
+        { text: t('scheduler'), link: `${p}/features/scheduler` },
+        { text: t('openButton'), link: `${p}/features/open-button` }
       ]
     },
     {
-      text: t('Examples', 'Contoh'),
+      text: t('examples'),
       collapsed: false,
       items: [
-        { text: t('Overview', 'Ikhtisar'), link: `${p}/examples/` },
-        { text: t('Basic Menu', 'Menu Dasar'), link: `${p}/examples/basic-menu` },
-        { text: t('Config System', 'Sistem Konfigurasi'), link: `${p}/examples/config-system` },
-        { text: t('Category Pages', 'Halaman Kategori'), link: `${p}/examples/category-pages` }
+        { text: t('overview'), link: `${p}/examples/` },
+        { text: t('basicMenu'), link: `${p}/examples/basic-menu` },
+        { text: t('configSystem'), link: `${p}/examples/config-system` },
+        { text: t('categoryPages'), link: `${p}/examples/category-pages` }
       ]
     },
     {
-      text: t('Reference', 'Referensi'),
+      text: t('reference'),
       collapsed: false,
-      items: [
-        { text: t('API Cheatsheet', 'Ringkasan API'), link: `${p}/api/` }
-      ]
+      items: [{ text: t('apiCheatsheet'), link: `${p}/api/` }]
     }
   ]
+}
+
+// ---------------------------------------------------------------------------
+// Per-locale theme config
+// ---------------------------------------------------------------------------
+function localeTheme(p: string, lang: Lang): DefaultTheme.Config {
+  const t = tr(lang)
+  return {
+    nav: nav(p, lang),
+    sidebar: sidebar(p, lang),
+    editLink: { pattern: `${DOCS_REPO}/edit/main/docs/:path`, text: t('editLink') },
+    outline: { level: [2, 3], label: t('onThisPage') },
+    docFooter: { prev: t('prev'), next: t('next') },
+    lastUpdated: { text: t('lastUpdated') },
+    footer: { message: t('footerMsg'), copyright: t('footerCopyright') }
+  }
+}
+
+// Local-search UI strings per locale (English is built-in).
+type SearchTr = { button: { buttonText: string; buttonAriaLabel: string }; modal: any }
+function searchTr(buttonText: string, displayDetails: string, resetButtonTitle: string, noResultsText: string, selectText: string, navigateText: string, closeText: string): SearchTr {
+  return {
+    button: { buttonText, buttonAriaLabel: buttonText },
+    modal: {
+      displayDetails,
+      resetButtonTitle,
+      noResultsText,
+      footer: { selectText, navigateText, closeText }
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -139,17 +240,11 @@ export default defineConfig({
       provider: 'local',
       options: {
         locales: {
-          id: {
-            translations: {
-              button: { buttonText: 'Cari', buttonAriaLabel: 'Cari' },
-              modal: {
-                displayDetails: 'Tampilkan detail',
-                resetButtonTitle: 'Reset pencarian',
-                noResultsText: 'Tidak ada hasil untuk',
-                footer: { selectText: 'untuk memilih', navigateText: 'untuk berpindah', closeText: 'untuk menutup' }
-              }
-            }
-          }
+          id: searchTr('Cari', 'Tampilkan detail', 'Reset pencarian', 'Tidak ada hasil untuk', 'untuk memilih', 'untuk berpindah', 'untuk menutup'),
+          ru: searchTr('Поиск', 'Показать подробности', 'Сбросить поиск', 'Нет результатов для', 'выбрать', 'перейти', 'закрыть'),
+          zh: searchTr('搜索', '显示详细列表', '清除查询条件', '无法找到相关结果', '选择', '切换', '关闭'),
+          ja: searchTr('検索', '詳細を表示', '検索をリセット', '見つかりませんでした', '選択', '移動', '閉じる'),
+          th: searchTr('ค้นหา', 'แสดงรายละเอียด', 'ล้างการค้นหา', 'ไม่พบผลลัพธ์สำหรับ', 'เพื่อเลือก', 'เพื่อนำทาง', 'เพื่อปิด')
         }
       }
     },
@@ -160,44 +255,11 @@ export default defineConfig({
   },
 
   locales: {
-    root: {
-      label: 'English',
-      lang: 'en',
-      themeConfig: {
-        nav: nav('', EN),
-        sidebar: sidebar('', EN),
-        editLink: {
-          pattern: `${DOCS_REPO}/edit/main/docs/:path`,
-          text: 'Edit this page on GitHub'
-        },
-        outline: { level: [2, 3], label: 'On this page' },
-        docFooter: { prev: 'Previous', next: 'Next' },
-        lastUpdated: { text: 'Last updated' },
-        footer: {
-          message: 'Released under the MIT License.',
-          copyright: 'Copyright © 2024–present ANHub-Script · Based on WindUI by Footagesus'
-        }
-      }
-    },
-    id: {
-      label: 'Bahasa Indonesia',
-      lang: 'id',
-      link: '/id/',
-      themeConfig: {
-        nav: nav('/id', ID),
-        sidebar: sidebar('/id', ID),
-        editLink: {
-          pattern: `${DOCS_REPO}/edit/main/docs/:path`,
-          text: 'Edit halaman ini di GitHub'
-        },
-        outline: { level: [2, 3], label: 'Di halaman ini' },
-        docFooter: { prev: 'Sebelumnya', next: 'Berikutnya' },
-        lastUpdated: { text: 'Terakhir diperbarui' },
-        footer: {
-          message: 'Dirilis di bawah Lisensi MIT.',
-          copyright: 'Hak Cipta © 2024–sekarang ANHub-Script · Berbasis WindUI oleh Footagesus'
-        }
-      }
-    }
+    root: { label: 'English', lang: 'en', themeConfig: localeTheme('', 'en') },
+    id: { label: 'Bahasa Indonesia', lang: 'id', link: '/id/', themeConfig: localeTheme('/id', 'id') },
+    ru: { label: 'Русский', lang: 'ru', link: '/ru/', themeConfig: localeTheme('/ru', 'ru') },
+    zh: { label: '简体中文', lang: 'zh-Hans', link: '/zh/', themeConfig: localeTheme('/zh', 'zh') },
+    ja: { label: '日本語', lang: 'ja', link: '/ja/', themeConfig: localeTheme('/ja', 'ja') },
+    th: { label: 'ไทย', lang: 'th', link: '/th/', themeConfig: localeTheme('/th', 'th') }
   }
 })
