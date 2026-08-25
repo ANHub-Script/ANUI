@@ -394,6 +394,14 @@ async function issueKey() {
       return record;
     }
 
+    // A 409 with no known sha is not a race: the branch has no commits yet, so
+    // there is nothing for the Contents API to build a commit on top of.
+    if (response.status === 409 && !dbSha) {
+      throw new Error('The repository ' + CFG.owner + '/' + CFG.repo + ' has no commits on ' +
+        (CFG.branch || 'main') + ' yet. Add any file (a README is enough) so the branch exists, ' +
+        'then generate again.');
+    }
+
     // Someone else committed between our GET and PUT. Re-read and redo.
     if (response.status === 409 || response.status === 422) {
       await sleep(400 + attempt * 600);
