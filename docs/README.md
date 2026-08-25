@@ -1,8 +1,9 @@
 # ANUI Documentation
 
 The official documentation site for **ANUI** (Advanced Roblox UI Library), built with
-[VitePress](https://vitepress.dev). Fully bilingual: **English** (default) and
-**Bahasa Indonesia** (`/id/`).
+[VitePress](https://vitepress.dev). Fully translated into four languages:
+**English** (default), **Bahasa Indonesia** (`/id/`), **Русский** (`/ru/`) and
+**简体中文** (`/zh/`) — 35 pages per locale, 140 in total.
 
 - **Live site:** https://ANHub-Script.github.io/ANUI/
 - **Repo:** https://github.com/ANHub-Script/ANUI (docs live in this `docs/` folder)
@@ -54,12 +55,14 @@ docs/
 ├─ examples/              # Copy-paste recipes
 ├─ api/                   # API cheatsheet
 ├─ id/                    # 🇮🇩 Bahasa Indonesia mirror of everything above
+├─ ru/                    # 🇷🇺 Русский mirror
+├─ zh/                    # 🇨🇳 简体中文 mirror
 ├─ package.json
 └─ README.md              # you are here
 ```
 
 Every English page under `guide/`, `elements/`, `features/`, `examples/`, and `api/`
-has a matching translation under `id/…`.
+has a matching translation under `id/…`, `ru/…`, and `zh/…`.
 
 ---
 
@@ -71,19 +74,25 @@ Pages are plain Markdown with VitePress extensions (containers like `::: tip`,
 **To add a new page:**
 
 1. Create the English page, e.g. `elements/my-element.md`.
-2. Create its translation, e.g. `id/elements/my-element.md`.
-3. Register it in **both** sidebars inside `.vitepress/config.mts` — the `sidebar()`
-   helper builds the tree for a given locale, so add your entry there (it takes a path
-   prefix `''` for English / `'/id'` for Indonesian and a translator `t`).
+2. Create its translations: `id/elements/my-element.md`, `ru/elements/my-element.md`,
+   `zh/elements/my-element.md`.
+3. Register it once in `.vitepress/config.mts` — the `sidebar(prefix, lang)` helper builds
+   the tree for every locale from a single definition, so adding one entry there covers all
+   four languages. If the entry needs a translated label, add a key to the `UI` dictionary
+   at the top of the file with a value for each of `en`, `id`, `ru`, `zh`.
 
 **Internal links are locale-relative and omit the base:**
-English pages link like `/elements/toggle`; Indonesian pages link like
-`/id/elements/toggle`. VitePress prepends the base automatically — never hard-code
-`/ANUI/` in a link.
+English pages link like `/elements/toggle`; the translations link like
+`/id/elements/toggle`, `/ru/elements/toggle`, `/zh/elements/toggle`. VitePress prepends the
+base automatically — never hard-code `/ANUI/` in a link.
 
-**Navigation & UI strings** (navbar, sidebar group titles, search labels, footer) are
-defined once in `config.mts` using a small `t(en, id)` translation helper, so both
-locales stay in sync.
+**Navigation & UI strings** (navbar, sidebar group titles, search labels, footer, prev/next)
+live in a single `UI` dictionary in `config.mts`, keyed by string then language, so all four
+locales stay in sync. Element names (`Button`, `Toggle`, …) are API identifiers and stay in
+English in every locale.
+
+**To add a language:** add its code to the `Lang` type, add a translation to every `UI`
+entry, add a `searchTr(...)` line, and register it in `locales` at the bottom of the file.
 
 ---
 
