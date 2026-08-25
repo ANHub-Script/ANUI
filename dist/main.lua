@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.276  |  2026-08-25  |  Roblox UI Library for scripts
+    v1.0.277  |  2026-08-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -3504,7 +3504,7 @@ return aa end function a.l()
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.276",
+    "version": "1.0.277",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",
@@ -4245,6 +4245,7 @@ CornerRadius=UDim.new(0,20),
 end
 
 
+
 local h=ab.NewRoundFrame(99,"Squircle",{
 Size=UDim2.new(0,42,0,4),
 AnchorPoint=Vector2.new(0.5,0),
@@ -4253,7 +4254,16 @@ ThemeTag={
 ImageColor3="Text",
 },
 ImageTransparency=.82,
+})
+
+local j=ad("Frame",{
+Size=UDim2.new(0,132,0,24),
+AnchorPoint=Vector2.new(0.5,0),
+Position=UDim2.new(0.5,0,0,0),
+BackgroundTransparency=1,
 ZIndex=3,
+},{
+h
 })
 
 ad("Frame",{
@@ -4280,7 +4290,7 @@ NumberSequenceKeypoint.new(1,1),
 }
 })
 }),
-h,
+j,
 ad("Frame",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
@@ -4309,15 +4319,15 @@ PaddingBottom=UDim.new(0,18),
 
 
 
-local j=af("Exit","log-out",function()
+local l=af("Exit","log-out",function()
 am:Close()()
 end,"Tertiary",f.Frame)
 
 if g then
-j.Parent=g
-j.Size=UDim2.new(0,0,0,42)
-j.Position=UDim2.new(0,10,1,-10)
-j.AnchorPoint=Vector2.new(0,1)
+l.Parent=g
+l.Size=UDim2.new(0,0,0,42)
+l.Position=UDim2.new(0,10,1,-10)
+l.AnchorPoint=Vector2.new(0,1)
 end
 
 if ah.KeySystem.URL then
@@ -4335,11 +4345,11 @@ if ah.KeySystem.API then
 
 
 
-local l=240
-local m=false
-local p=af("Get key","key",nil,"Secondary",f.Frame)
+local m=240
+local p=false
+local r=af("Get key","key",nil,"Secondary",f.Frame)
 
-local r=ab.NewRoundFrame(99,"Squircle",{
+local u=ab.NewRoundFrame(99,"Squircle",{
 Size=UDim2.new(0,1,1,0),
 ThemeTag={
 ImageColor3="Text",
@@ -4351,16 +4361,16 @@ ad("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.new(0,0,1,0),
 AutomaticSize="X",
-Parent=p.Frame,
+Parent=r.Frame,
 },{
-r,
+u,
 ad("UIPadding",{
 PaddingLeft=UDim.new(0,5),
 PaddingRight=UDim.new(0,5),
 })
 })
 
-local u=ab.Image(
+local v=ab.Image(
 "chevron-down",
 "chevron-down",
 0,
@@ -4369,17 +4379,17 @@ local u=ab.Image(
 true
 )
 
-u.Size=UDim2.new(1,0,1,0)
+v.Size=UDim2.new(1,0,1,0)
 
 ad("Frame",{
 Size=UDim2.new(0,21,0,21),
-Parent=p.Frame,
+Parent=r.Frame,
 BackgroundTransparency=1,
 },{
-u
+v
 })
 
-local v=ab.NewRoundFrame(15,"Squircle",{
+local x=ab.NewRoundFrame(15,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 ThemeTag={
@@ -4398,15 +4408,15 @@ Padding=UDim.new(0,5),
 })
 })
 
-local x=ad("Frame",{
+local z=ad("Frame",{
 BackgroundTransparency=1,
-Size=UDim2.new(0,l,0,0),
+Size=UDim2.new(0,m,0,0),
 ClipsDescendants=true,
 AnchorPoint=Vector2.new(1,0),
-Parent=p,
+Parent=r,
 Position=UDim2.new(1,0,1,15)
 },{
-v
+x
 })
 
 ad("TextLabel",{
@@ -4420,7 +4430,7 @@ Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
 TextXAlignment="Left",
-Parent=v,
+Parent=x,
 },{
 ad("UIPadding",{
 PaddingTop=UDim.new(0,10),
@@ -4430,31 +4440,31 @@ PaddingBottom=UDim.new(0,10),
 })
 })
 
-for z,A in next,ah.KeySystem.API do
-local B,C=ah.ANUI.Services.Build(A,{
+for A,B in next,ah.KeySystem.API do
+local C,F=ah.ANUI.Services.Build(B,{
 Folder=ah.Folder or ah.Title,
 })
 
-if B then
-table.insert(an,B)
+if C then
+table.insert(an,C)
 
-local F=A.Icon or C.Icon or"user"
+local G=B.Icon or F.Icon or"user"
 
-local G=ab.Image(
-F,
-F,
+local H=ab.Image(
+G,
+G,
 0,
 "Temp",
 "KeySystem",
 true
 )
-G.Size=UDim2.new(0,24,0,24)
+H.Size=UDim2.new(0,24,0,24)
 
-local H=ab.NewRoundFrame(10,"Squircle",{
+local J=ab.NewRoundFrame(10,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 ThemeTag={ImageColor3="Text"},
 ImageTransparency=1,
-Parent=v,
+Parent=x,
 AutomaticSize="Y",
 },{
 ad("UIListLayout",{
@@ -4462,7 +4472,7 @@ FillDirection="Horizontal",
 Padding=UDim.new(0,10),
 VerticalAlignment="Center",
 }),
-G,
+H,
 ad("UIPadding",{
 PaddingTop=UDim.new(0,10),
 PaddingLeft=UDim.new(0,10),
@@ -4480,7 +4490,7 @@ Padding=UDim.new(0,5),
 HorizontalAlignment="Center",
 }),
 ad("TextLabel",{
-Text=A.Title or C.Name,
+Text=B.Title or F.Name,
 BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 ThemeTag={TextColor3="Text"},
@@ -4492,7 +4502,7 @@ TextWrapped=true,
 TextXAlignment="Left",
 }),
 ad("TextLabel",{
-Text=A.Desc or"",
+Text=B.Desc or"",
 BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Regular),
 ThemeTag={TextColor3="Text"},
@@ -4501,20 +4511,20 @@ TextSize=16,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
-Visible=A.Desc and true or false,
+Visible=B.Desc and true or false,
 TextXAlignment="Left",
 })
 })
 },true)
 
-ab.AddSignal(H.MouseEnter,function()
-ae(H,0.08,{ImageTransparency=.95}):Play()
+ab.AddSignal(J.MouseEnter,function()
+ae(J,0.08,{ImageTransparency=.95}):Play()
 end)
-ab.AddSignal(H.InputEnded,function()
-ae(H,0.08,{ImageTransparency=1}):Play()
+ab.AddSignal(J.InputEnded,function()
+ae(J,0.08,{ImageTransparency=1}):Play()
 end)
-ab.AddSignal(H.MouseButton1Click,function()
-B.Copy()
+ab.AddSignal(J.MouseButton1Click,function()
+C.Copy()
 ah.ANUI:Notify{
 Title="Key System",
 Content="Key link copied to clipboard.",
@@ -4524,29 +4534,29 @@ end)
 end
 end
 
-ab.AddSignal(p.MouseButton1Click,function()
-if not m then
-ae(x,.3,{Size=UDim2.new(0,l,0,v.AbsoluteSize.Y+1)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ae(u,.3,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ab.AddSignal(r.MouseButton1Click,function()
+if not p then
+ae(z,.3,{Size=UDim2.new(0,m,0,x.AbsoluteSize.Y+1)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ae(v,.3,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 else
-ae(x,.25,{Size=UDim2.new(0,l,0,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ae(u,.25,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ae(z,.25,{Size=UDim2.new(0,m,0,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ae(v,.25,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
-m=not m
+p=not p
 end)
 
 end
 
 local function SetVerified()
-local l=Color3.fromHex(ab.Colors.Green)
+local m=Color3.fromHex(ab.Colors.Green)
 SetIconLabel(av,"check")
 aw.Text="Verified"
-aw.TextColor3=l
+aw.TextColor3=m
 aw.TextTransparency=0
 if av then
-av.ImageColor3=l
+av.ImageColor3=m
 end
-ax.ImageColor3=l
+ax.ImageColor3=m
 ae(ax,.2,{ImageTransparency=.85}):Play()
 end
 
@@ -4557,32 +4567,32 @@ task.wait(.25)
 am:Close()()
 end
 
-local function handleSuccess(l)
+local function handleSuccess(m)
 CloseAccepted()
-writefile((ah.Folder or"Temp").."/"..ai..".key",tostring(l))
+writefile((ah.Folder or"Temp").."/"..ai..".key",tostring(m))
 task.wait(.4)
 aj(true)
 end
 
-local function handleFailure(l)
+local function handleFailure(m)
 FlashError()
 ah.ANUI:Notify{
 Title="Key System. Error",
-Content=l or"Invalid key.",
+Content=m or"Invalid key.",
 Icon="triangle-alert",
 }
 end
 
-local l=af("Submit","arrow-right",function()
-local l=tostring(ao or"empty")local m=
+local function Submit()
+local m=tostring(ao or"empty")local p=
 ah.Folder or ah.Title
 
 if ah.KeySystem.KeyValidator then
-local p=ah.KeySystem.KeyValidator(l)
+local r=ah.KeySystem.KeyValidator(m)
 
-if p then
+if r then
 if ah.KeySystem.SaveKey then
-handleSuccess(l)
+handleSuccess(m)
 else
 CloseAccepted()
 task.wait(.4)
@@ -4592,13 +4602,13 @@ else
 handleFailure"Invalid key."
 end
 elseif not ah.KeySystem.API then
-local p=type(ah.KeySystem.Key)=="table"
-and table.find(ah.KeySystem.Key,l)
-or ah.KeySystem.Key==l
+local r=type(ah.KeySystem.Key)=="table"
+and table.find(ah.KeySystem.Key,m)
+or ah.KeySystem.Key==m
 
-if p then
+if r then
 if ah.KeySystem.SaveKey then
-handleSuccess(l)
+handleSuccess(m)
 else
 CloseAccepted()
 task.wait(.4)
@@ -4608,40 +4618,52 @@ else
 handleFailure"Invalid key."
 end
 else
-local p,r
-for u,v in next,an do
-local x,z=v.Verify(l)
-if x then
-p,r=true,z
+local r,u
+for v,x in next,an do
+local z,A=x.Verify(m)
+if z then
+r,u=true,A
 break
 end
-r=z
+u=A
 end
 
-if p then
-handleSuccess(l)
+if r then
+handleSuccess(m)
 else
-handleFailure(r)
+handleFailure(u)
 end
 end
-end,"Primary",f)
+end
 
-l.AnchorPoint=Vector2.new(1,0.5)
-l.Position=UDim2.new(1,0,0.5,0)
+local m=af("Submit","arrow-right",Submit,"Primary",f)
 
 
-local m=ab.Drag(
+local p=b:FindFirstChildWhichIsA("TextBox",true)
+if p then
+ab.AddSignal(p.FocusLost,function(r)
+if r then
+task.spawn(Submit)
+end
+end)
+end
+
+m.AnchorPoint=Vector2.new(1,0.5)
+m.Position=UDim2.new(1,0,0.5,0)
+
+
+local r=ab.Drag(
 am.UIElements.MainContainer,
-{aA,h,g},
-function(m)
-ae(h,m and.1 or.25,{
-ImageTransparency=m and.35 or.82,
-Size=UDim2.new(0,m and 58 or 42,0,4),
+{aA,j,g},
+function(r)
+ae(h,r and.1 or.25,{
+ImageTransparency=r and.35 or.82,
+Size=UDim2.new(0,r and 58 or 42,0,4),
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 )
-m:Set(ah.KeySystem.Draggable~=false)
-h.Visible=ah.KeySystem.Draggable~=false
+r:Set(ah.KeySystem.Draggable~=false)
+j.Visible=ah.KeySystem.Draggable~=false
 
 am:Open()
 end

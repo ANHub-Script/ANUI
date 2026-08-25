@@ -304,7 +304,8 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         })
     end
     
-    -- Pegangan geser di atas kartu.
+    -- Pegangan geser di atas kartu. Pill-nya kecil, jadi area sentuhnya
+    -- dilebarkan lewat frame transparan di sekelilingnya.
     local GrabPill = Creator.NewRoundFrame(99, "Squircle", {
         Size = UDim2.new(0,42,0,4),
         AnchorPoint = Vector2.new(0.5,0),
@@ -313,7 +314,16 @@ function KeySystem.new(Config, Filename, func, keyValidator)
             ImageColor3 = "Text",
         },
         ImageTransparency = .82,
+    })
+
+    local GrabHandle = New("Frame", {
+        Size = UDim2.new(0,132,0,24),
+        AnchorPoint = Vector2.new(0.5,0),
+        Position = UDim2.new(0.5,0,0,0),
+        BackgroundTransparency = 1,
         ZIndex = 3,
+    }, {
+        GrabPill
     })
 
     local MainFrame = New("Frame", {
@@ -340,7 +350,7 @@ function KeySystem.new(Config, Filename, func, keyValidator)
                 })
             })
         }),
-        GrabPill,
+        GrabHandle,
         New("Frame", {
             Size = UDim2.new(1,0,0,0),
             AutomaticSize = "Y",
@@ -633,7 +643,7 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         })
     end
     
-    local SubmitButton = CreateButton("Submit", "arrow-right", function()
+    local function Submit()
         local key = tostring(EnteredKey or "empty")
         local folder = Config.Folder or Config.Title
         
@@ -684,15 +694,27 @@ function KeySystem.new(Config, Filename, func, keyValidator)
                 handleFailure(result)
             end
         end
-    end, "Primary", ButtonsContainer)
-    
+    end
+
+    local SubmitButton = CreateButton("Submit", "arrow-right", Submit, "Primary", ButtonsContainer)
+
+    -- Enter di kolom key ikut mengirim.
+    local KeyTextBox = InputFrame:FindFirstChildWhichIsA("TextBox", true)
+    if KeyTextBox then
+        Creator.AddSignal(KeyTextBox.FocusLost, function(enterPressed)
+            if enterPressed then
+                task.spawn(Submit)
+            end
+        end)
+    end
+
     SubmitButton.AnchorPoint = Vector2.new(1,0.5)
     SubmitButton.Position = UDim2.new(1,0,0.5,0)
     
     -- Kartu digeser dari header, pegangan atas, atau thumbnail.
     local DragModule = Creator.Drag(
         KeyDialog.UIElements.MainContainer,
-        { TitleContainer, GrabPill, ThumbnailFrame },
+        { TitleContainer, GrabHandle, ThumbnailFrame },
         function(dragging)
             Tween(GrabPill, dragging and .1 or .25, {
                 ImageTransparency = dragging and .35 or .82,
@@ -701,7 +723,7 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         end
     )
     DragModule:Set(Config.KeySystem.Draggable ~= false)
-    GrabPill.Visible = Config.KeySystem.Draggable ~= false
+    GrabHandle.Visible = Config.KeySystem.Draggable ~= false
 
     KeyDialog:Open()
 end
