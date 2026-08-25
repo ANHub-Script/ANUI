@@ -27,7 +27,7 @@
 
 window.ANUI_KEYGEN_CONFIG = {
   owner: "ANHub-Script",
-  repo: "ANUI",
+  repo: "ANUI-Keys",
   branch: "main",
   dbPath: "db/keys.json",
 

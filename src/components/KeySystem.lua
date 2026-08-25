@@ -25,27 +25,89 @@ function KeySystem.new(Config, Filename, func, keyValidator)
     
     KeyDialog.UIElements.Main.AutomaticSize = "Y"
     KeyDialog.UIElements.Main.Size = UDim2.new(0,UISize,0,0)
-    
-    local IconFrame
-    
-    if Config.Icon then
-        
-        IconFrame = Creator.Image(
-            Config.Icon,
-            Config.Title .. ":" .. Config.Icon,
-            0,
-            "Temp",
-            "KeySystem",
-            Config.IconThemed
-        )
-        IconFrame.Size = UDim2.new(0,24,0,24)
-        IconFrame.LayoutOrder = -1
+
+    -- Hairline gradien di sekeliling kartu. ZIndex-nya di atas Main (99999)
+    -- supaya thumbnail tidak menutupinya.
+    Creator.NewRoundFrame(KeyDialog.UICorner, "SquircleOutline", {
+        Size = UDim2.new(1,0,1,0),
+        ThemeTag = {
+            ImageColor3 = "Outline",
+        },
+        ImageTransparency = .85,
+        ZIndex = 100000,
+        Parent = KeyDialog.UIElements.MainContainer,
+    }, {
+        New("UIGradient", {
+            Rotation = 70,
+            Transparency = NumberSequence.new({
+                NumberSequenceKeypoint.new(0, .2),
+                NumberSequenceKeypoint.new(.5, 1),
+                NumberSequenceKeypoint.new(1, .35),
+            })
+        })
+    })
+
+    local function IconLabel(Name, Size)
+        local Data = Creator.Icon(Name)
+        if not Data then return nil end
+        return New("ImageLabel", {
+            Image = Data[1],
+            ImageRectSize = Data[2].ImageRectSize,
+            ImageRectOffset = Data[2].ImageRectPosition,
+            Size = UDim2.new(0,Size,0,Size),
+            BackgroundTransparency = 1,
+            ThemeTag = {
+                ImageColor3 = "Icon",
+            },
+        })
     end
-    
+
+    local function SetIconLabel(Label, Name)
+        local Data = Label and Creator.Icon(Name)
+        if not Data then return end
+        Label.Image = Data[1]
+        Label.ImageRectSize = Data[2].ImageRectSize
+        Label.ImageRectOffset = Data[2].ImageRectPosition
+    end
+
+    local IconFrame = Creator.Image(
+        Config.Icon or "key",
+        Config.Title .. ":" .. tostring(Config.Icon or "key"),
+        0,
+        "Temp",
+        "KeySystem",
+        Config.Icon and Config.IconThemed or (not Config.Icon)
+    )
+    IconFrame.Size = UDim2.new(0,22,0,22)
+    IconFrame.AnchorPoint = Vector2.new(0.5,0.5)
+    IconFrame.Position = UDim2.new(0.5,0,0.5,0)
+
+    -- Ikon dibungkus badge supaya header punya titik fokus.
+    local IconBadge = Creator.NewRoundFrame(13, "Squircle", {
+        Size = UDim2.new(0,40,0,40),
+        ThemeTag = {
+            ImageColor3 = "Text",
+        },
+        ImageTransparency = .93,
+        LayoutOrder = -1,
+    }, {
+        IconFrame,
+        Creator.NewRoundFrame(13, "SquircleOutline", {
+            Size = UDim2.new(1,0,1,0),
+            ThemeTag = {
+                ImageColor3 = "Outline",
+            },
+            ImageTransparency = .9,
+        })
+    })
+
     local Title = New("TextLabel", {
-        AutomaticSize = "XY",
+        Size = UDim2.new(1,0,0,0),
+        AutomaticSize = "Y",
         BackgroundTransparency = 1,
         Text = Config.KeySystem.Title or Config.Title,
+        TextXAlignment = "Left",
+        TextTruncate = "AtEnd",
         FontFace = Font.new(Creator.Font, Enum.FontWeight.SemiBold),
         ThemeTag = {
             TextColor3 = "Text",
@@ -53,49 +115,124 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         TextSize = 20
     })
 
-    local KeySystemTitle = New("TextLabel", {
-        AutomaticSize = "XY",
+    local Subtitle = New("TextLabel", {
+        Size = UDim2.new(1,0,0,0),
+        AutomaticSize = "Y",
         BackgroundTransparency = 1,
-        Text = "Key System",
-        AnchorPoint = Vector2.new(1,0.5),
-        Position = UDim2.new(1,0,0.5,0),
-        TextTransparency = 1, -- .4 -- hidden
+        Text = Config.KeySystem.Subtitle or "Key System",
+        TextXAlignment = "Left",
+        TextTruncate = "AtEnd",
+        TextTransparency = .55,
         FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
         ThemeTag = {
             TextColor3 = "Text",
         },
-        TextSize = 16
+        TextSize = 15
     })
     
-    local IconAndTitleContainer = New("Frame", {
-        BackgroundTransparency = 1,
+    local StatusIcon = IconLabel("lock", 15)
+    local StatusLabel = New("TextLabel", {
         AutomaticSize = "XY",
+        BackgroundTransparency = 1,
+        Text = "Locked",
+        TextTransparency = .25,
+        FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
+        ThemeTag = {
+            TextColor3 = "Text",
+        },
+        TextSize = 15
+    })
+
+    -- Badge status di kanan header: "Locked" jadi "Verified" saat key diterima.
+    local StatusPill = Creator.NewRoundFrame(99, "Squircle", {
+        Size = UDim2.new(0,0,0,0),
+        AutomaticSize = "XY",
+        AnchorPoint = Vector2.new(1,0.5),
+        Position = UDim2.new(1,0,0.5,0),
+        ThemeTag = {
+            ImageColor3 = "Text",
+        },
+        ImageTransparency = .93,
+    }, {
+        New("UIListLayout", {
+            Padding = UDim.new(0,7),
+            FillDirection = "Horizontal",
+            VerticalAlignment = "Center"
+        }),
+        New("UIPadding", {
+            PaddingTop = UDim.new(0,7),
+            PaddingLeft = UDim.new(0,11),
+            PaddingRight = UDim.new(0,12),
+            PaddingBottom = UDim.new(0,7),
+        }),
+        StatusIcon, StatusLabel,
+    })
+    
+    local TitleStack = New("Frame", {
+        Size = UDim2.new(1,-(40+14),0,0),
+        AutomaticSize = "Y",
+        BackgroundTransparency = 1,
+    }, {
+        New("UIListLayout", {
+            Padding = UDim.new(0,2),
+            FillDirection = "Vertical",
+        }),
+        Title, Subtitle
+    })
+
+    -- 110px di kanan disisakan untuk StatusPill.
+    local HeaderRow = New("Frame", {
+        Size = UDim2.new(1,-110,0,0),
+        AutomaticSize = "Y",
+        BackgroundTransparency = 1,
     }, {
         New("UIListLayout", {
             Padding = UDim.new(0,14),
             FillDirection = "Horizontal",
             VerticalAlignment = "Center"
         }),
-        IconFrame, Title
+        IconBadge, TitleStack
     })
-    
+
     local TitleContainer = New("Frame", {
         AutomaticSize = "Y",
         Size = UDim2.new(1,0,0,0),
         BackgroundTransparency = 1,
+        LayoutOrder = 1,
     }, {
-        -- New("UIListLayout", {
-        --     Padding = UDim.new(0,9),
-        --     FillDirection = "Horizontal",
-        --     VerticalAlignment = "Bottom"
-        -- }),
-        IconAndTitleContainer, KeySystemTitle,
+        HeaderRow, StatusPill,
+    })
+
+    local HeaderDivider = Creator.NewRoundFrame(99, "Squircle", {
+        Size = UDim2.new(1,0,0,1),
+        ThemeTag = {
+            ImageColor3 = "Outline",
+        },
+        ImageTransparency = .9,
+        LayoutOrder = 2,
     })
     
     local InputFrame = CreateInput("Enter Key", "key", nil, "Input", function(k)
         EnteredKey = k
-    end)
-    
+    end, true)
+    InputFrame.LayoutOrder = 4
+
+    -- Outline merah yang berkedip saat key ditolak.
+    local InputGlow = Creator.NewRoundFrame(10, "SquircleOutline", {
+        Size = UDim2.new(1,0,1,0),
+        ImageColor3 = Color3.fromHex(Creator.Colors.Red),
+        ImageTransparency = 1,
+        ZIndex = 5,
+        Parent = InputFrame,
+    })
+
+    local function FlashError()
+        Tween(InputGlow, .12, { ImageTransparency = .1 }):Play()
+        task.delay(.55, function()
+            Tween(InputGlow, .35, { ImageTransparency = 1 }):Play()
+        end)
+    end
+
     local NoteText
     if Config.KeySystem.Note and Config.KeySystem.Note ~= "" then
         NoteText = New("TextLabel", {
@@ -104,8 +241,10 @@ function KeySystem.new(Config, Filename, func, keyValidator)
             FontFace = Font.new(Creator.Font, Enum.FontWeight.Medium),
             TextXAlignment = "Left",
             Text = Config.KeySystem.Note,
-            TextSize = 18,
-            TextTransparency = .4,
+            TextSize = 17,
+            TextTransparency = .45,
+            LineHeight = 1.15,
+            LayoutOrder = 3,
             ThemeTag = {
                 TextColor3 = "Text",
             },
@@ -118,6 +257,7 @@ function KeySystem.new(Config, Filename, func, keyValidator)
     local ButtonsContainer = New("Frame", {
         Size = UDim2.new(1,0,0,42),
         BackgroundTransparency = 1,
+        LayoutOrder = 5,
     }, {
         New("Frame", {
             BackgroundTransparency = 1,
@@ -164,31 +304,63 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         })
     end
     
+    -- Pegangan geser di atas kartu.
+    local GrabPill = Creator.NewRoundFrame(99, "Squircle", {
+        Size = UDim2.new(0,42,0,4),
+        AnchorPoint = Vector2.new(0.5,0),
+        Position = UDim2.new(0.5,0,0,9),
+        ThemeTag = {
+            ImageColor3 = "Text",
+        },
+        ImageTransparency = .82,
+        ZIndex = 3,
+    })
+
     local MainFrame = New("Frame", {
-        --AutomaticSize = "XY",
-        Size = UDim2.new(1, ThumbnailFrame and -ThumbnailSize or 0,1,0),
+        Size = UDim2.new(1, ThumbnailFrame and -ThumbnailSize or 0,0,0),
+        AutomaticSize = "Y",
         Position = UDim2.new(0, ThumbnailFrame and ThumbnailSize or 0,0,0),
         BackgroundTransparency = 1,
         Parent = KeyDialog.UIElements.Main
     }, {
+        -- Cahaya lembut di kepala kartu.
+        Creator.NewRoundFrame(KeyDialog.UICorner, "Squircle-TL-TR", {
+            Size = UDim2.new(1,0,0,120),
+            ThemeTag = {
+                ImageColor3 = "Text",
+            },
+            ImageTransparency = .96,
+            ZIndex = 0,
+        }, {
+            New("UIGradient", {
+                Rotation = 90,
+                Transparency = NumberSequence.new({
+                    NumberSequenceKeypoint.new(0, 0),
+                    NumberSequenceKeypoint.new(1, 1),
+                })
+            })
+        }),
+        GrabPill,
         New("Frame", {
-            --AutomaticSize = "XY",
-            Size = UDim2.new(1,0,1,0),
+            Size = UDim2.new(1,0,0,0),
+            AutomaticSize = "Y",
             BackgroundTransparency = 1,
+            ZIndex = 2,
         }, {
             New("UIListLayout", {
-                Padding = UDim.new(0,18),
+                Padding = UDim.new(0,16),
                 FillDirection = "Vertical",
             }),
             TitleContainer,
+            HeaderDivider,
             NoteText,
             InputFrame,
             ButtonsContainer,
             New("UIPadding", {
-                PaddingTop = UDim.new(0,16),
-                PaddingLeft = UDim.new(0,16),
-                PaddingRight = UDim.new(0,16),
-                PaddingBottom = UDim.new(0,16),
+                PaddingTop = UDim.new(0,26),
+                PaddingLeft = UDim.new(0,18),
+                PaddingRight = UDim.new(0,18),
+                PaddingBottom = UDim.new(0,18),
             })
         }),
     })
@@ -425,11 +597,40 @@ function KeySystem.new(Config, Filename, func, keyValidator)
 
     end
     
-    local function handleSuccess(key)
+    local function SetVerified()
+        local Green = Color3.fromHex(Creator.Colors.Green)
+        SetIconLabel(StatusIcon, "check")
+        StatusLabel.Text = "Verified"
+        StatusLabel.TextColor3 = Green
+        StatusLabel.TextTransparency = 0
+        if StatusIcon then
+            StatusIcon.ImageColor3 = Green
+        end
+        StatusPill.ImageColor3 = Green
+        Tween(StatusPill, .2, { ImageTransparency = .85 }):Play()
+    end
+
+    -- Semua jalur "key diterima" lewat sini supaya badge sempat berubah dulu.
+    local function CloseAccepted()
+        SetVerified()
+        task.wait(.25)
         KeyDialog:Close()()
+    end
+
+    local function handleSuccess(key)
+        CloseAccepted()
         writefile((Config.Folder or "Temp") .. "/" .. Filename .. ".key", tostring(key))
         task.wait(.4)
         func(true)
+    end
+
+    local function handleFailure(reason)
+        FlashError()
+        Config.ANUI:Notify({
+            Title = "Key System. Error",
+            Content = reason or "Invalid key.",
+            Icon = "triangle-alert",
+        })
     end
     
     local SubmitButton = CreateButton("Submit", "arrow-right", function()
@@ -438,35 +639,33 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         
         if Config.KeySystem.KeyValidator then
             local isValid = Config.KeySystem.KeyValidator(key)
-            
+
             if isValid then
                 if Config.KeySystem.SaveKey then
                     handleSuccess(key)
                 else
-                    KeyDialog:Close()()
+                    CloseAccepted()
                     task.wait(.4)
                     func(true)
                 end
             else
-                Config.ANUI:Notify({
-                    Title = "Key System. Error",
-                    Content = "Invalid key.",
-                    Icon = "triangle-alert",
-                })
+                handleFailure("Invalid key.")
             end
-        elseif not Config.KeySystem.API then            
+        elseif not Config.KeySystem.API then
             local isKey = type(Config.KeySystem.Key) == "table"
                 and table.find(Config.KeySystem.Key, key)
                 or Config.KeySystem.Key == key
-    
+
             if isKey then
                 if Config.KeySystem.SaveKey then
                     handleSuccess(key)
                 else
-                    KeyDialog:Close()()
+                    CloseAccepted()
                     task.wait(.4)
                     func(true)
                 end
+            else
+                handleFailure("Invalid key.")
             end
         else
             local isSuccess, result
@@ -478,15 +677,11 @@ function KeySystem.new(Config, Filename, func, keyValidator)
                 end
                 result = res
             end
-    
+
             if isSuccess then
                 handleSuccess(key)
             else
-                Config.ANUI:Notify({
-                    Title = "Key System. Error",
-                    Content = result,
-                    Icon = "triangle-alert",
-                })
+                handleFailure(result)
             end
         end
     end, "Primary", ButtonsContainer)
@@ -494,15 +689,20 @@ function KeySystem.new(Config, Filename, func, keyValidator)
     SubmitButton.AnchorPoint = Vector2.new(1,0.5)
     SubmitButton.Position = UDim2.new(1,0,0.5,0)
     
-    -- TitleContainer:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-    --     KeyDialog.UIElements.Main.Size = UDim2.new(
-    --         0,
-    --         TitleContainer.AbsoluteSize.X +24+24+24+24+9,
-    --         0,
-    --         0
-    --     )
-    -- end)
-    
+    -- Kartu digeser dari header, pegangan atas, atau thumbnail.
+    local DragModule = Creator.Drag(
+        KeyDialog.UIElements.MainContainer,
+        { TitleContainer, GrabPill, ThumbnailFrame },
+        function(dragging)
+            Tween(GrabPill, dragging and .1 or .25, {
+                ImageTransparency = dragging and .35 or .82,
+                Size = UDim2.new(0, dragging and 58 or 42, 0, 4),
+            }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        end
+    )
+    DragModule:Set(Config.KeySystem.Draggable ~= false)
+    GrabPill.Visible = Config.KeySystem.Draggable ~= false
+
     KeyDialog:Open()
 end
 
