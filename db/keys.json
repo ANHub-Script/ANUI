@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": 1787681450,
+  "updated_at": 1787681909,
   "ttl_hours": 24,
   "keys": {
     "a1b2c3d4e5f60718293a4b5c6d7e8f90": {
@@ -12,11 +12,11 @@
       "revoked": false
     },
     "e41fcccbf16f6049ccf137165cd37a1a": {
-      "key": "ANUI-HZHJV-NWW2Z-NZB4A",
-      "sig": "2e10b20c2d0e5aaf2aff556d31ca636c",
-      "issued_at": 1787681450,
-      "expires_at": 1787767850,
-      "regen": 3,
+      "key": "ANUI-1VD9M-0NG7G-WG2AZ",
+      "sig": "0c0cb95e2d9379806533a8d8f46bc325",
+      "issued_at": 1787681909,
+      "expires_at": 1787768309,
+      "regen": 4,
       "revoked": false
     }
   }
