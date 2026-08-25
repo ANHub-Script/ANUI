@@ -1,0 +1,11 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="anuiGrad" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#40c9ff"/>
+      <stop offset="1" stop-color="#e81cff"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#anuiGrad)"/>
+  <path d="M32 15 L49 47 H40.2 L32 30.6 L23.8 47 H15 Z" fill="#ffffff"/>
+  <circle cx="32" cy="47" r="3.4" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,57 @@
+/**
+ * ANUI documentation — custom theme
+ * Brand gradient: cyan (#40c9ff) → magenta (#e81cff)
+ */
+
+:root {
+  /* Brand palette */
+  --vp-c-brand-1: #0a84c4; /* links / accents (AA on white) */
+  --vp-c-brand-2: #1c9fe0;
+  --vp-c-brand-3: #40c9ff; /* buttons */
+  --vp-c-brand-soft: rgba(64, 201, 255, 0.14);
+
+  /* Buttons */
+  --vp-button-brand-bg: #1c9fe0;
+  --vp-button-brand-hover-bg: #40c9ff;
+  --vp-button-brand-active-bg: #0a84c4;
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-hover-border: transparent;
+
+  /* Home hero */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #40c9ff 30%, #e81cff);
+  --vp-home-hero-image-background-image: linear-gradient(45deg, #40c9ff 40%, #e81cff 100%);
+  --vp-home-hero-image-filter: blur(48px);
+}
+
+.dark {
+  --vp-c-brand-1: #5cd0ff; /* lighter for dark backgrounds */
+  --vp-c-brand-2: #40c9ff;
+  --vp-c-brand-3: #1c9fe0;
+  --vp-c-brand-soft: rgba(64, 201, 255, 0.16);
+
+  --vp-button-brand-bg: #1c9fe0;
+  --vp-button-brand-hover-bg: #40c9ff;
+}
+
+/* Slightly stronger hero glow on wide screens */
+@media (min-width: 640px) {
+  :root {
+    --vp-home-hero-image-filter: blur(56px);
+  }
+}
+@media (min-width: 960px) {
+  :root {
+    --vp-home-hero-image-filter: blur(68px);
+  }
+}
+
+/* Brand-tinted inline code */
+:not(pre) > code {
+  color: var(--vp-c-brand-1);
+}
+
+/* Make custom-block titles a touch bolder */
+.custom-block-title {
+  font-weight: 700;
+}

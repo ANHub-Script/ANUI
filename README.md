@@ -5,7 +5,7 @@
 **A modern, feature-rich UI library for Roblox with premium design and complete documentation**
 
 [![Beta](https://img.shields.io/badge/Status-Beta-yellow)](https://github.com/ANHub-Script/ANUI)
-[![Documentation](https://img.shields.io/badge/Docs-Complete-green)](https://ANHub-Script.github.io/ANUI-Docs/)
+[![Documentation](https://img.shields.io/badge/Docs-Complete-green)](https://ANHub-Script.github.io/ANUI/)
 [![Discord](https://img.shields.io/badge/Discord-Join-7289da)](https://discord.gg/bUkCZvmrpH)
 
 </div>
@@ -82,8 +82,8 @@ Tab:Button({
 ## 📖 Documentation
 
 ### 🌐 **Online Documentation**
-- **[Official Docs Website](https://ANHub-Script.github.io/ANUI-Docs/)** - Live documentation
-- **[Installation Guide](https://anhub-script.github.io/ANUI-Docs/index.html#installation)** - Get started quickly
+- **[Official Docs Website](https://ANHub-Script.github.io/ANUI/)** - Live documentation
+- **[Installation Guide](https://ANHub-Script.github.io/ANUI/guide/installation)** - Get started quickly
 
 ---
 
@@ -140,6 +140,6 @@ This project is in **Beta** and actively maintained. Feel free to use, modify, a
 
 **Made with ❤️ by the ANUI Team**
 
-[Documentation](https://ANHub-Script.github.io/ANUI-Docs/) • [Discord](https://discord.gg/bUkCZvmrpH) • [GitHub](https://github.com/ANHub-Script/ANUI)
+[Documentation](https://ANHub-Script.github.io/ANUI/) • [Discord](https://discord.gg/bUkCZvmrpH) • [GitHub](https://github.com/ANHub-Script/ANUI)
 
 </div>

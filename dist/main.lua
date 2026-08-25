@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.267  |  2026-08-24  |  Roblox UI Library for scripts
+    v1.0.268  |  2026-08-25  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -2919,7 +2919,7 @@ New=a.load'h'.New
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.267",
+    "version": "1.0.268",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/cy6uMRmeZ",

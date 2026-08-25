@@ -10,10 +10,13 @@ lerna-debug.log*
 node_modules
 updater
 RR
-docs
 # script
 ask
 docs-website
+
+# VitePress build output (the docs/ source itself IS tracked)
+docs/.vitepress/dist
+docs/.vitepress/cache
 dist-ssr
 *.local
 .env
