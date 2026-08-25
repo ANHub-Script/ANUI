@@ -52,6 +52,7 @@ Each entry in `API` is a table with a `Type` and that provider's required argume
 | `luarmor` | `ScriptId`, `Discord` | Luarmor key service. |
 | `platoboost` | `ServiceId`, `Secret` | Platoboost key service. |
 | `pandadevelopment` | `ServiceId` | Panda Development key service. |
+| `github` | `Owner`, `Repo`, `URL`, `Secret` | Your own per-device keys with a 24h lifetime, database committed to a GitHub repo. See [GitHub Key System](/features/github-key-system). |
 
 ```lua
 API = {
@@ -145,4 +146,5 @@ ANUI:CreateWindow({
 
 ## See also
 
+- [GitHub Key System](/features/github-key-system) — per-device keys with a 24-hour lifetime, generated on your own GitHub Pages site.
 - [Window Configuration](/guide/window-configuration) — where `KeySystem` and `Folder` are set.

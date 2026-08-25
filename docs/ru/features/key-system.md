@@ -52,6 +52,7 @@ local Window = ANUI:CreateWindow({
 | `luarmor` | `ScriptId`, `Discord` | Сервис ключей Luarmor. |
 | `platoboost` | `ServiceId`, `Secret` | Сервис ключей Platoboost. |
 | `pandadevelopment` | `ServiceId` | Сервис ключей Panda Development. |
+| `github` | `Owner`, `Repo`, `URL`, `Secret` | Ваши собственные ключи на устройство со сроком жизни 24 часа, база данных хранится в репозитории GitHub. См. [Ключи через GitHub](/ru/features/github-key-system). |
 
 ```lua
 API = {
@@ -145,4 +146,5 @@ ANUI:CreateWindow({
 
 ## См. также
 
+- [Ключи через GitHub](/ru/features/github-key-system) — ключи на устройство со сроком жизни 24 часа, выдаваемые вашим сайтом на GitHub Pages.
 - [Настройка окна](/ru/guide/window-configuration) — где задаются `KeySystem` и `Folder`.

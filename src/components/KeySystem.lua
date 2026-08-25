@@ -319,20 +319,18 @@ function KeySystem.new(Config, Filename, func, keyValidator)
         })
         
         for _, i in next, Config.KeySystem.API do
-            local serviceDef = Config.ANUI.Services[i.Type]
-            if serviceDef then
-                local args = {}
-                for _, argName in next, serviceDef.Args do
-                    table.insert(args, i[argName])
-                end
-                
-                local serviceInstance = serviceDef.New(table.unpack(args))
-                serviceInstance.Type = i.Type
+            local serviceInstance, serviceDef = Config.ANUI.Services.Build(i, {
+                Folder = Config.Folder or Config.Title,
+            })
+
+            if serviceInstance then
                 table.insert(Services, serviceInstance)
-                
+
+                local ServiceIcon = i.Icon or serviceDef.Icon or "user"
+
                 local IconFrame = Creator.Image(
-                    i.Icon or serviceDef.Icon or Icons[i.Type] or "user",
-                    i.Icon or serviceDef.Icon or Icons[i.Type] or "user",
+                    ServiceIcon,
+                    ServiceIcon,
                     0,
                     "Temp",
                     "KeySystem",

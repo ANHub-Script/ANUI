@@ -52,6 +52,7 @@ local Window = ANUI:CreateWindow({
 | `luarmor` | `ScriptId`, `Discord` | Luarmor 密钥服务。 |
 | `platoboost` | `ServiceId`, `Secret` | Platoboost 密钥服务。 |
 | `pandadevelopment` | `ServiceId` | Panda Development 密钥服务。 |
+| `github` | `Owner`、`Repo`、`URL`、`Secret` | 你自己的按设备密钥，有效期 24 小时，数据库提交到 GitHub 仓库。参见 [GitHub 密钥系统](/zh/features/github-key-system)。 |
 
 ```lua
 API = {
@@ -145,4 +146,5 @@ ANUI:CreateWindow({
 
 ## 参见
 
+- [GitHub 密钥系统](/zh/features/github-key-system) —— 按设备发放、有效期 24 小时的密钥，由你自己的 GitHub Pages 站点生成。
 - [窗口配置](/zh/guide/window-configuration) —— `KeySystem` 与 `Folder` 的设置位置。

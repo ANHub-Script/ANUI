@@ -52,6 +52,7 @@ Setiap entri dalam `API` adalah tabel dengan `Type` dan argumen wajib milik peny
 | `luarmor` | `ScriptId`, `Discord` | Layanan key Luarmor. |
 | `platoboost` | `ServiceId`, `Secret` | Layanan key Platoboost. |
 | `pandadevelopment` | `ServiceId` | Layanan key Panda Development. |
+| `github` | `Owner`, `Repo`, `URL`, `Secret` | Key per-device milikmu sendiri dengan masa berlaku 24 jam, database di-commit ke repo GitHub. Lihat [Sistem Key GitHub](/id/features/github-key-system). |
 
 ```lua
 API = {
@@ -145,4 +146,5 @@ ANUI:CreateWindow({
 
 ## Lihat juga
 
+- [Sistem Key GitHub](/id/features/github-key-system) — key per-device dengan masa berlaku 24 jam, digenerate dari situs GitHub Pages milikmu.
 - [Konfigurasi Window](/id/guide/window-configuration) — tempat `KeySystem` dan `Folder` diatur.

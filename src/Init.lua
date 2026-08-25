@@ -351,16 +351,12 @@ function ANUI:CreateWindow(Config)
             if isfile(keyPath) then
                 local fileKey = readfile(keyPath)
                 local isSuccess = false
-                 
+
+                local serviceContext = { Folder = Config.Folder or Config.Title }
+
                 for _, i in next, Config.KeySystem.API do
-                    local serviceData = ANUI.Services[i.Type]
-                    if serviceData then
-                        local args = {}
-                        for _, argName in next, serviceData.Args do
-                            table.insert(args, i[argName])
-                        end
-                        
-                        local service = serviceData.New(table.unpack(args))
+                    local service = ANUI.Services.Build(i, serviceContext)
+                    if service then
                         local success = service.Verify(fileKey)
                         if success then
                             isSuccess = true
@@ -368,7 +364,7 @@ function ANUI:CreateWindow(Config)
                         end
                     end
                 end
-                    
+
                 CanLoadWindow = isSuccess
                 if not isSuccess then loadKeysystem() end
             else
