@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.284  |  2026-08-26  |  Roblox UI Library for scripts
+    v1.0.285  |  2026-08-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -3504,7 +3504,7 @@ return aa end function a.l()
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.284",
+    "version": "1.0.285",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/qN47S3mKZA",
@@ -14257,8 +14257,18 @@ Owners={},
 local function IsInsideSection()
 local ap=al.Parent
 while ap do
+
+local aq=typeof(ap)
+if aq=="Instance"then
+
+local ar,as=pcall(rawget,ap,"__type")
+if ar and as=="Section"then
+return ap
+end
+elseif aq=="table"then
 if rawget(ap,"__type")=="Section"then
 return ap
+end
 end
 ap=ap.Parent
 end

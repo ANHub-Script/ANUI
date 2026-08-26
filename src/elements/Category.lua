@@ -119,8 +119,18 @@ function Element:New(Config)
     local function IsInsideSection()
         local Parent = Config.Parent
         while Parent do
-            if rawget(Parent, "__type") == "Section" then
-                return Parent
+            -- Gunakan typeof untuk Instance, rawget untuk table
+            local parentType = typeof(Parent)
+            if parentType == "Instance" then
+                -- Cek __type di Instance via metatable atau property
+                local success, typeVal = pcall(rawget, Parent, "__type")
+                if success and typeVal == "Section" then
+                    return Parent
+                end
+            elseif parentType == "table" then
+                if rawget(Parent, "__type") == "Section" then
+                    return Parent
+                end
             end
             Parent = Parent.Parent
         end
