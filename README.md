@@ -11,7 +11,7 @@ localization and a drift-free loop scheduler — in a single `loadstring`.
 
 [![version](https://img.shields.io/github/package-json/v/ANHub-Script/ANUI?style=for-the-badge&label=version&labelColor=1c1c1c&color=40c9ff)](https://github.com/ANHub-Script/ANUI/releases)
 [![docs](https://img.shields.io/badge/docs-anui-e81cff?style=for-the-badge&labelColor=1c1c1c)](https://ANHub-Script.github.io/ANUI/)
-[![discord](https://img.shields.io/badge/discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=1c1c1c)](https://discord.gg/bUkCZvmrpH)
+[![discord](https://img.shields.io/badge/discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=1c1c1c)](https://discord.gg/qN47S3mKZA)
 [![license](https://img.shields.io/badge/license-MIT-30ff6a?style=for-the-badge&labelColor=1c1c1c)](#license)
 
 **[Documentation](https://ANHub-Script.github.io/ANUI/)** ·
@@ -211,7 +211,7 @@ Released under the **MIT License**. Copyright © 2024–present ANHub-Script.
 <div align="center">
 
 **[Docs](https://ANHub-Script.github.io/ANUI/)** ·
-**[Discord](https://discord.gg/bUkCZvmrpH)** ·
+**[Discord](https://discord.gg/qN47S3mKZA)** ·
 **[YouTube](https://www.youtube.com/@ANHubRoblox)** ·
 **[GitHub](https://github.com/ANHub-Script/ANUI)**
 

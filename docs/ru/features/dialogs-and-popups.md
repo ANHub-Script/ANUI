@@ -126,7 +126,7 @@ ANUI:Popup({
     },
     Buttons = {
         { Title = "Copy Discord", Variant = "Primary", Icon = "link", Callback = function()
-            setclipboard("https://discord.gg/bUkCZvmrpH")
+            setclipboard("https://discord.gg/qN47S3mKZA")
         end },
         { Title = "Close", Variant = "Secondary", Callback = function() end },
     },

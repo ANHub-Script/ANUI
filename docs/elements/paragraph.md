@@ -129,7 +129,7 @@ myTab:Paragraph({
             Title = "Copy link",
             Icon = "link",
             Callback = function()
-                setclipboard("https://discord.gg/bUkCZvmrpH")
+                setclipboard("https://discord.gg/qN47S3mKZA")
             end
         }
     }

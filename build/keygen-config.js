@@ -225,7 +225,7 @@ async function main() {
       await pick('cooldown', 'Cooldown between regenerations, seconds', '0', 'ANUI_COOLDOWN')
     ),
     brandName: await pick('brand', 'Brand name shown on the page', 'ANUI', 'ANUI_BRAND'),
-    discordUrl: await pick('discord', 'Discord invite (optional)', 'https://discord.gg/bUkCZvmrpH', 'ANUI_DISCORD'),
+    discordUrl: await pick('discord', 'Discord invite (optional)', 'https://discord.gg/qN47S3mKZA', 'ANUI_DISCORD'),
     keyGroups: 3,
     keyGroupSize: 5,
   };

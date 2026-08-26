@@ -4,13 +4,13 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.279  |  2026-08-25  |  Roblox UI Library for scripts
+    v1.0.280  |  2026-08-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
     Author: ANHub-Script (Footages, .ftgs, oftgs)
     Github: https://github.com/ANHub-Script/ANUI
-    Discord: https://discord.gg/cy6uMRmeZ
+    Discord: https://discord.gg/qN47S3mKZA
     License: MIT
 ]]
 
@@ -3504,10 +3504,10 @@ return aa end function a.l()
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.279",
+    "version": "1.0.280",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
-    "discord": "https://discord.gg/cy6uMRmeZ",
+    "discord": "https://discord.gg/qN47S3mKZA",
     "author": "ANHub-Script",
     "description": "Roblox UI Library for scripts",
     "license": "MIT",

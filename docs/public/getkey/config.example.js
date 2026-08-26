@@ -41,7 +41,7 @@ window.ANUI_KEYGEN_CONFIG = {
 
   // Cosmetic.
   brandName: 'ANUI',
-  discordUrl: 'https://discord.gg/bUkCZvmrpH',
+  discordUrl: 'https://discord.gg/qN47S3mKZA',
 
   // Scrambled credentials — produced by build/keygen-config.js.
   //   token  : fine-grained PAT with Contents:write on the repo above

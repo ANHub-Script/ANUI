@@ -59,7 +59,7 @@ API = {
     {
         Type = "luarmor",
         ScriptId = "your-script-id",
-        Discord = "https://discord.gg/bUkCZvmrpH",
+        Discord = "https://discord.gg/qN47S3mKZA",
         Icon = "key",          -- необязательно
         Title = "Luarmor",     -- необязательно
         Desc = "Get a key",    -- необязательно
@@ -80,7 +80,7 @@ ANUI:CreateWindow({
     KeySystem = {
         Title = "My Hub — Key",
         Note = "Get your key from the Discord.",
-        URL = "https://discord.gg/bUkCZvmrpH",
+        URL = "https://discord.gg/qN47S3mKZA",
         Key = { "key1", "key2" },
         SaveKey = true,
     },
@@ -117,7 +117,7 @@ ANUI:CreateWindow({
             {
                 Type = "luarmor",
                 ScriptId = "your-script-id",
-                Discord = "https://discord.gg/bUkCZvmrpH",
+                Discord = "https://discord.gg/qN47S3mKZA",
             },
         },
     },

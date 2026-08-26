@@ -10,7 +10,7 @@
     Docs      https://ANHub-Script.github.io/ANUI/
     Elements  https://ANHub-Script.github.io/ANUI/elements/
     API       https://ANHub-Script.github.io/ANUI/api/
-    Discord   https://discord.gg/bUkCZvmrpH
+    Discord   https://discord.gg/qN47S3mKZA
 
   Layout of this file
     1.  Load & window          — ANUI:CreateWindow, Tag, OpenButton
@@ -89,7 +89,7 @@ local Badges = {
         Title = "Discord",
         Desc = "Join the ANHub Discord",
         Callback = function()
-            setclipboard("https://discord.gg/bUkCZvmrpH")
+            setclipboard("https://discord.gg/qN47S3mKZA")
             ANUI:Notify({
                 Title = "Discord",
                 Content = "Invite link copied to clipboard!",
@@ -1045,7 +1045,7 @@ do
                         Variant = "Primary",
                         Icon = "link",
                         Callback = function()
-                            setclipboard("https://discord.gg/bUkCZvmrpH")
+                            setclipboard("https://discord.gg/qN47S3mKZA")
                         end,
                     },
                     { Title = "Close", Variant = "Secondary", Callback = function() end },

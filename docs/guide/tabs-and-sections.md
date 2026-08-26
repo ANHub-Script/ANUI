@@ -58,7 +58,7 @@ local Badges = {
         Title = "Discord",
         Desc = "Join ANHUB Discord",
         Callback = function()
-            setclipboard("https://discord.gg/bUkCZvmrpH")
+            setclipboard("https://discord.gg/qN47S3mKZA")
             ANUI:Notify({ Title = "Discord", Content = "Invite link copied!", Icon = "geist:logo-discord", Duration = 3 })
         end
     },
