@@ -10,7 +10,7 @@ lerna-debug.log*
 node_modules
 updater
 RR
-# script
+script
 brand
 ask
 docs-website
