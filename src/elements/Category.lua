@@ -115,16 +115,33 @@ function Element:New(Config)
         Owners      = {},
     }
 
-    -- Sticky hanya masuk akal kalau Category memang anak langsung konten Tab
-    local CanStick = Tab and type(Tab.ReserveHeader) == "function"
+    -- Deteksi apakah Category berada di dalam Section (melihat keturunan parent)
+    local function IsInsideSection()
+        local Parent = Config.Parent
+        while Parent do
+            if rawget(Parent, "__type") == "Section" then
+                return Parent
+            end
+            Parent = Parent.Parent
+        end
+        return nil
+    end
+
+    local SectionRef = IsInsideSection()
+
+    -- Sticky: boleh kalau direktur konten Tab, ATAU jika di dalam Section
+    local CanStickWithTab = Tab and type(Tab.ReserveHeader) == "function"
         and Tab.UIElements and Config.Parent == Tab.UIElements.ContainerFrame
+    local CanStickWithSection = SectionRef ~= nil
+    local CanStick = CanStickWithTab or CanStickWithSection
+
     local Sticky = Config.Sticky
     if Sticky == nil then Sticky = CanStick end
-    if Sticky and not CanStick then
+    if Sticky and not (CanStickWithTab or CanStickWithSection) then
         -- di dalam Section/Group, sticky tidak didukung; jangan diam-diam dibuang
-        warn("[ ANUI.Category ] Sticky diabaikan: Category ini bukan anak langsung konten Tab")
+        warn("[ ANUI.Category ] Sticky diabaikan: Category ini bukan anak langsung konten Tab juga bukan di dalam Section")
     end
-    Sticky = (Sticky and CanStick) and true or false
+    Sticky = (Sticky and (CanStickWithTab or CanStickWithSection)) and true or false
 
     -- Wrapper: dibutuhkan agar AutomaticSize induk menghitung tinggi elemen ini
     local WrapperFrame = New("Frame", {
@@ -135,15 +152,31 @@ function Element:New(Config)
 
     local Header
     if Sticky then
-        -- Library yang memindahkan & menggeser konten tab, bukan script pemakai
-        Header = Tab:ReserveHeader(Category.Height, {
-            Name             = "CategoryHeader",
-            ContentPadding   = Category.ContentPadding,
-            AlignWithContent = Category.AlignWithContent,
-            ZIndex           = Config.ZIndex or 6,
-        })
-        WrapperFrame.Size = UDim2.new(1, 0, 1, 0)
-        WrapperFrame.Parent = Header.Frame
+        if CanStickWithSection and SectionRef then
+            -- Di dalam Section: gunakan Tab's ReserveHeader. Header akan ikut
+            -- Tab's relayout otomatis, posisinya akan ditentukan urutan penyisipan
+            -- di antara header lain (profile header, dll). Header ini akan menempel
+            -- di bagian Atas konten Tab, di atas Section content.
+            Header = Tab:ReserveHeader(Category.Height, {
+                Name             = "CategoryHeader",
+                ContentPadding   = Category.ContentPadding,
+                AlignWithContent = Category.AlignWithContent,
+                ZIndex           = Config.ZIndex or 6,
+            })
+            -- WrapperFrame dipindahkan ke Header.Frame
+            WrapperFrame.Size = UDim2.new(1, 0, 1, 0)
+            WrapperFrame.Parent = Header.Frame
+        else
+            -- Library yang memindahkan & menggeser konten tab, bukan script pemakai
+            Header = Tab:ReserveHeader(Category.Height, {
+                Name             = "CategoryHeader",
+                ContentPadding   = Category.ContentPadding,
+                AlignWithContent = Category.AlignWithContent,
+                ZIndex           = Config.ZIndex or 6,
+            })
+            WrapperFrame.Size = UDim2.new(1, 0, 1, 0)
+            WrapperFrame.Parent = Header.Frame
+        end
     else
         WrapperFrame.Parent = Config.Parent
     end
