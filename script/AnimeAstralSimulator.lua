@@ -132,8 +132,8 @@ end
 
 local GameIconURL = string.format("rbxthumb://type=GameIcon&id=%d&w=150&h=150", game.GameId)
 local BaseProfile = {
-    Banner = "rbxassetid://124762019485618",
-    Avatar = GameIconURL,
+    Banner = "rbxassetid://128566288820219",
+    Avatar = "rbxassetid://124221128249471",
     Status = true,
     Badges = {
         {
@@ -193,7 +193,7 @@ UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANU
 if not IsPremium then
     Window = UI:CreateWindow({
         Title = "AN Hub - Souls Incremental",
-        Icon = "rbxassetid://84366761557806",
+        Icon = "rbxassetid://124221128249471",
         Author = "Aditya Nugraha",
         Folder = "SoulsIncremental",
         Size = UDim2.fromOffset(580, 460),

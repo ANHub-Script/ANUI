@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.287  |  2026-08-26  |  Roblox UI Library for scripts
+    v1.0.288  |  2026-08-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -3504,7 +3504,7 @@ return aa end function a.l()
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.287",
+    "version": "1.0.288",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/qN47S3mKZA",
@@ -15442,7 +15442,9 @@ ap.UIElements.Main.Frame.Size=UDim2.new(1,0,0,120)
 local aA=55
 if ap.Profile.Banner then
 local aB=af.Image(
-ap.Profile.Banner,"SidebarBanner",0,Window.Folder,"ProfileBanner",false
+ap.Profile.Banner,"SidebarBanner",0,Window.Folder,"ProfileBanner",false,false,false,nil,{
+ScaleType="Stretch"
+}
 )
 aB.Size=UDim2.new(1,0,0,aA)
 aB.Position=UDim2.new(0,0,0,0)
@@ -15451,7 +15453,6 @@ aB.Parent=ap.UIElements.Main.Frame
 aB.ZIndex=1
 
 if aB:FindFirstChild"ImageLabel"then
-aB.ImageLabel.ScaleType=Enum.ScaleType.Crop
 aB.ImageLabel.Size=UDim2.fromScale(1,1)
 end
 end
@@ -15810,7 +15811,9 @@ ClipsDescendants=true
 })
 
 if ap.Profile.Banner then
-local e=af.Image(ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false)
+local e=af.Image(ap.Profile.Banner,"Banner",0,Window.Folder,"ProfileBanner",false,false,false,nil,{
+ScaleType="Stretch"
+})
 e.Size=UDim2.new(1,0,1,0)
 e.Parent=d
 end

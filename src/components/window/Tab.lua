@@ -200,16 +200,17 @@ function TabModule.New(Config, UIScale)
         local BannerH = 55
         if Tab.Profile.Banner then
             local BannerFrame = Creator.Image(
-                Tab.Profile.Banner, "SidebarBanner", 0, Window.Folder, "ProfileBanner", false
+                Tab.Profile.Banner, "SidebarBanner", 0, Window.Folder, "ProfileBanner", false, false, false, nil, {
+                    ScaleType = "Stretch"
+                }
             )
             BannerFrame.Size = UDim2.new(1, 0, 0, BannerH)
             BannerFrame.Position = UDim2.new(0, 0, 0, 0)
             BannerFrame.BackgroundTransparency = 1
             BannerFrame.Parent = Tab.UIElements.Main.Frame
             BannerFrame.ZIndex = 1
-            
+
             if BannerFrame:FindFirstChild("ImageLabel") then
-                BannerFrame.ImageLabel.ScaleType = Enum.ScaleType.Crop
                 BannerFrame.ImageLabel.Size = UDim2.fromScale(1, 1)
             end
         end
@@ -568,7 +569,9 @@ function TabModule.New(Config, UIScale)
         })
 
         if Tab.Profile.Banner then
-            local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false)
+            local BannerImg = Creator.Image(Tab.Profile.Banner, "Banner", 0, Window.Folder, "ProfileBanner", false, false, false, nil, {
+                ScaleType = "Stretch"
+            })
             BannerImg.Size = UDim2.new(1, 0, 1, 0)
             BannerImg.Parent = Banner
         end
