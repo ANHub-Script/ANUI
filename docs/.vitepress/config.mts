@@ -40,54 +40,55 @@ const discordIcon = {
 // To add a locale: add its code to `Lang`, add a translation to every UI entry
 // below, then register it in `locales` at the bottom (plus a `searchTr` line).
 // ---------------------------------------------------------------------------
-type Lang = 'en' | 'id' | 'ja' | 'ru' | 'zh'
+type Lang = 'en' | 'id' | 'ja' | 'ru' | 'th' | 'zh'
 type Entry = Record<Lang, string>
 
 const UI: Record<string, Entry> = {
   // Navbar
-  guide: { en: 'Guide', id: 'Panduan', ja: 'ガイド', ru: 'Руководство', zh: '指南' },
-  elements: { en: 'Elements', id: 'Elemen', ja: 'エレメント', ru: 'Элементы', zh: '组件' },
-  features: { en: 'Features', id: 'Fitur', ja: '機能', ru: 'Возможности', zh: '功能' },
-  examples: { en: 'Examples', id: 'Contoh', ja: 'サンプル', ru: 'Примеры', zh: '示例' },
-  reference: { en: 'Reference', id: 'Referensi', ja: 'リファレンス', ru: 'Справочник', zh: '参考' },
-  releaseNotes: { en: 'Release Notes', id: 'Catatan Rilis', ja: 'リリースノート', ru: 'Список изменений', zh: '更新日志' },
+  guide: { en: 'Guide', id: 'Panduan', ja: 'ガイド', ru: 'Руководство', th: 'คู่มือ', zh: '指南' },
+  elements: { en: 'Elements', id: 'Elemen', ja: 'エレメント', ru: 'Элементы', th: 'อิลิเมนต์', zh: '组件' },
+  features: { en: 'Features', id: 'Fitur', ja: '機能', ru: 'Возможности', th: 'ฟีเจอร์', zh: '功能' },
+  examples: { en: 'Examples', id: 'Contoh', ja: 'サンプル', ru: 'Примеры', th: 'ตัวอย่าง', zh: '示例' },
+  reference: { en: 'Reference', id: 'Referensi', ja: 'リファレンス', ru: 'Справочник', th: 'เอกสารอ้างอิง', zh: '参考' },
+  releaseNotes: { en: 'Release Notes', id: 'Catatan Rilis', ja: 'リリースノート', ru: 'Список изменений', th: 'บันทึกการอัปเดต', zh: '更新日志' },
 
   // Sidebar groups
-  gettingStarted: { en: 'Getting Started', id: 'Memulai', ja: '入門', ru: 'Начало работы', zh: '快速开始' },
+  gettingStarted: { en: 'Getting Started', id: 'Memulai', ja: '入門', ru: 'Начало работы', th: 'เริ่มต้น', zh: '快速开始' },
 
   // Sidebar items
-  introduction: { en: 'Introduction', id: 'Pengenalan', ja: 'はじめに', ru: 'Введение', zh: '简介' },
-  installation: { en: 'Installation', id: 'Instalasi', ja: 'インストール', ru: 'Установка', zh: '安装' },
-  quickStart: { en: 'Quick Start', id: 'Mulai Cepat', ja: 'クイックスタート', ru: 'Быстрый старт', zh: '快速上手' },
-  windowConfig: { en: 'Window Configuration', id: 'Konfigurasi Window', ja: 'ウィンドウ設定', ru: 'Настройка окна', zh: '窗口配置' },
-  tabsSections: { en: 'Tabs & Sections', id: 'Tab & Section', ja: 'タブとセクション', ru: 'Вкладки и разделы', zh: '标签页与分区' },
-  overview: { en: 'Overview', id: 'Ikhtisar', ja: '概要', ru: 'Обзор', zh: '概览' },
-  notifications: { en: 'Notifications', id: 'Notifikasi', ja: '通知', ru: 'Уведомления', zh: '通知' },
-  dialogsPopups: { en: 'Dialogs & Popups', id: 'Dialog & Popup', ja: 'ダイアログとポップアップ', ru: 'Диалоги и всплывающие окна', zh: '对话框与弹窗' },
-  configFlags: { en: 'Config & Flags', id: 'Konfigurasi & Flag', ja: '設定と Flag', ru: 'Конфигурация и флаги', zh: '配置与 Flag' },
-  keySystem: { en: 'Key System', id: 'Sistem Key', ja: 'キーシステム', ru: 'Система ключей', zh: '密钥系统' },
-  githubKeys: { en: 'GitHub Key System', id: 'Sistem Key GitHub', ja: 'GitHub キーシステム', ru: 'Ключи через GitHub', zh: 'GitHub 密钥系统' },
-  themes: { en: 'Themes & Appearance', id: 'Tema & Tampilan', ja: 'テーマと外観', ru: 'Темы и оформление', zh: '主题与外观' },
-  localization: { en: 'Localization', id: 'Lokalisasi', ja: 'ローカライズ', ru: 'Локализация', zh: '本地化' },
-  scheduler: { en: 'Scheduler & Loops', id: 'Scheduler & Loop', ja: 'スケジューラーとループ', ru: 'Планировщик и циклы', zh: '调度器与循环' },
-  openButton: { en: 'Open Button', id: 'Tombol Buka', ja: 'オープンボタン', ru: 'Кнопка открытия', zh: '打开按钮' },
-  basicMenu: { en: 'Basic Menu', id: 'Menu Dasar', ja: '基本メニュー', ru: 'Базовое меню', zh: '基础菜单' },
-  configSystem: { en: 'Config System', id: 'Sistem Konfigurasi', ja: '設定システム', ru: 'Система конфигурации', zh: '配置系统' },
-  categoryPages: { en: 'Category Pages', id: 'Halaman Kategori', ja: 'カテゴリーページ', ru: 'Страницы категорий', zh: '分类页面' },
-  apiCheatsheet: { en: 'API Cheatsheet', id: 'Ringkasan API', ja: 'API チートシート', ru: 'Шпаргалка по API', zh: 'API 速查表' },
+  introduction: { en: 'Introduction', id: 'Pengenalan', ja: 'はじめに', ru: 'Введение', th: 'บทนำ', zh: '简介' },
+  installation: { en: 'Installation', id: 'Instalasi', ja: 'インストール', ru: 'Установка', th: 'การติดตั้ง', zh: '安装' },
+  quickStart: { en: 'Quick Start', id: 'Mulai Cepat', ja: 'クイックスタート', ru: 'Быстрый старт', th: 'เริ่มใช้งานด่วน', zh: '快速上手' },
+  windowConfig: { en: 'Window Configuration', id: 'Konfigurasi Window', ja: 'ウィンドウ設定', ru: 'Настройка окна', th: 'การตั้งค่าหน้าต่าง', zh: '窗口配置' },
+  tabsSections: { en: 'Tabs & Sections', id: 'Tab & Section', ja: 'タブとセクション', ru: 'Вкладки и разделы', th: 'แท็บและเซกชัน', zh: '标签页与分区' },
+  overview: { en: 'Overview', id: 'Ikhtisar', ja: '概要', ru: 'Обзор', th: 'ภาพรวม', zh: '概览' },
+  notifications: { en: 'Notifications', id: 'Notifikasi', ja: '通知', ru: 'Уведомления', th: 'การแจ้งเตือน', zh: '通知' },
+  dialogsPopups: { en: 'Dialogs & Popups', id: 'Dialog & Popup', ja: 'ダイアログとポップアップ', ru: 'Диалоги и всплывающие окна', th: 'ไดอะล็อกและป๊อปอัป', zh: '对话框与弹窗' },
+  configFlags: { en: 'Config & Flags', id: 'Konfigurasi & Flag', ja: '設定と Flag', ru: 'Конфигурация и флаги', th: 'การตั้งค่าและ Flag', zh: '配置与 Flag' },
+  keySystem: { en: 'Key System', id: 'Sistem Key', ja: 'キーシステム', ru: 'Система ключей', th: 'ระบบ Key', zh: '密钥系统' },
+  githubKeys: { en: 'GitHub Key System', id: 'Sistem Key GitHub', ja: 'GitHub キーシステム', ru: 'Ключи через GitHub', th: 'ระบบ Key GitHub', zh: 'GitHub 密钥系统' },
+  themes: { en: 'Themes & Appearance', id: 'Tema & Tampilan', ja: 'テーマと外観', ru: 'Темы и оформление', th: 'ธีมและรูปลักษณ์', zh: '主题与外观' },
+  localization: { en: 'Localization', id: 'Lokalisasi', ja: 'ローカライズ', ru: 'Локализация', th: 'การแปลภาษา', zh: '本地化' },
+  scheduler: { en: 'Scheduler & Loops', id: 'Scheduler & Loop', ja: 'スケジューラーとループ', ru: 'Планировщик и циклы', th: 'ตัวกำหนดเวลาและลูป', zh: '调度器与循环' },
+  openButton: { en: 'Open Button', id: 'Tombol Buka', ja: 'オープンボタン', ru: 'Кнопка открытия', th: 'ปุ่มเปิด', zh: '打开按钮' },
+  basicMenu: { en: 'Basic Menu', id: 'Menu Dasar', ja: '基本メニュー', ru: 'Базовое меню', th: 'เมนูพื้นฐาน', zh: '基础菜单' },
+  configSystem: { en: 'Config System', id: 'Sistem Konfigurasi', ja: '設定システム', ru: 'Система конфигурации', th: 'ระบบการตั้งค่า', zh: '配置系统' },
+  categoryPages: { en: 'Category Pages', id: 'Halaman Kategori', ja: 'カテゴリーページ', ru: 'Страницы категорий', th: 'หน้าหมวดหมู่', zh: '分类页面' },
+  apiCheatsheet: { en: 'API Cheatsheet', id: 'Ringkasan API', ja: 'API チートシート', ru: 'Шпаргалка по API', th: 'สรุป API', zh: 'API 速查表' },
 
   // Misc theme UI
-  editLink: { en: 'Edit this page on GitHub', id: 'Edit halaman ini di GitHub', ja: 'このページを GitHub で編集', ru: 'Редактировать эту страницу на GitHub', zh: '在 GitHub 上编辑此页' },
-  onThisPage: { en: 'On this page', id: 'Di halaman ini', ja: 'このページの内容', ru: 'На этой странице', zh: '本页目录' },
-  prev: { en: 'Previous', id: 'Sebelumnya', ja: '前へ', ru: 'Назад', zh: '上一页' },
-  next: { en: 'Next', id: 'Berikutnya', ja: '次へ', ru: 'Вперёд', zh: '下一页' },
-  lastUpdated: { en: 'Last updated', id: 'Terakhir diperbarui', ja: '最終更新', ru: 'Последнее обновление', zh: '最后更新' },
-  footerMsg: { en: 'Released under the MIT License.', id: 'Dirilis di bawah Lisensi MIT.', ja: 'MIT ライセンスの下で公開されています。', ru: 'Распространяется по лицензии MIT.', zh: '基于 MIT 许可证发布。' },
+  editLink: { en: 'Edit this page on GitHub', id: 'Edit halaman ini di GitHub', ja: 'このページを GitHub で編集', ru: 'Редактировать эту страницу на GitHub', th: 'แก้ไขหน้านี้บน GitHub', zh: '在 GitHub 上编辑此页' },
+  onThisPage: { en: 'On this page', id: 'Di halaman ini', ja: 'このページの内容', ru: 'На этой странице', th: 'ในหน้านี้', zh: '本页目录' },
+  prev: { en: 'Previous', id: 'Sebelumnya', ja: '前へ', ru: 'Назад', th: 'ก่อนหน้า', zh: '上一页' },
+  next: { en: 'Next', id: 'Berikutnya', ja: '次へ', ru: 'Вперёд', th: 'ถัดไป', zh: '下一页' },
+  lastUpdated: { en: 'Last updated', id: 'Terakhir diperbarui', ja: '最終更新', ru: 'Последнее обновление', th: 'อัปเดตล่าสุด', zh: '最后更新' },
+  footerMsg: { en: 'Released under the MIT License.', id: 'Dirilis di bawah Lisensi MIT.', ja: 'MIT ライセンスの下で公開されています。', ru: 'Распространяется по лицензии MIT.', th: 'เผยแพร่ภายใต้สัญญาอนุญาต MIT', zh: '基于 MIT 许可证发布。' },
   footerCopyright: {
     en: 'Copyright © 2024–present ANHub-Script · Based on WindUI by Footagesus',
     id: 'Hak Cipta © 2024–sekarang ANHub-Script · Berbasis WindUI oleh Footagesus',
     ja: 'Copyright © 2024–現在 ANHub-Script · Footagesus の WindUI をベース',
     ru: 'Авторское право © 2024–настоящее время ANHub-Script · На основе WindUI от Footagesus',
+    th: 'ลิขสิทธิ์ © 2024–ปัจจุบัน ANHub-Script · พัฒนาต่อยอดจาก WindUI โดย Footagesus',
     zh: '版权所有 © 2024–至今 ANHub-Script · 基于 Footagesus 的 WindUI'
   }
 }
@@ -247,6 +248,7 @@ export default defineConfig({
           id: searchTr('Cari', 'Tampilkan detail', 'Reset pencarian', 'Tidak ada hasil untuk', 'untuk memilih', 'untuk berpindah', 'untuk menutup'),
           ja: searchTr('検索', '詳細リストを表示', '検索をクリア', '結果が見つかりません', '選択', '切り替え', '閉じる'),
           ru: searchTr('Поиск', 'Показать подробности', 'Сбросить поиск', 'Нет результатов для', 'выбрать', 'перейти', 'закрыть'),
+          th: searchTr('ค้นหา', 'แสดงรายละเอียด', 'รีเซ็ตการค้นหา', 'ไม่พบผลลัพธ์สำหรับ', 'เลือก', 'เลื่อน', 'ปิด'),
           zh: searchTr('搜索', '显示详细列表', '清除查询条件', '无法找到相关结果', '选择', '切换', '关闭')
         }
       }
@@ -262,6 +264,7 @@ export default defineConfig({
     id: { label: 'Bahasa Indonesia', lang: 'id', link: '/id/', themeConfig: localeTheme('/id', 'id') },
     ja: { label: '日本語', lang: 'ja', link: '/ja/', themeConfig: localeTheme('/ja', 'ja') },
     ru: { label: 'Русский', lang: 'ru', link: '/ru/', themeConfig: localeTheme('/ru', 'ru') },
+    th: { label: 'ไทย', lang: 'th', link: '/th/', themeConfig: localeTheme('/th', 'th') },
     zh: { label: '简体中文', lang: 'zh-Hans', link: '/zh/', themeConfig: localeTheme('/zh', 'zh') }
   }
 })
