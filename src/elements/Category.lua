@@ -294,14 +294,23 @@ function Element:New(Config)
     end
 
     -- Kunci dipegang selama masih hover ATAU masih drag. Dua-duanya dilacak
-    -- terpisah: drag yang keluar dari strip mematikan hover, tapi kuncinya harus
+    -- terpisah: drag yang keluar dari strip mematiko hover, tapi kuncinya harus
     -- tetap jalan sampai tombol/jari dilepas.
+    -- TAMBAHAN: selalu kunci jika Category di dalam Section dengan sticky,
+    -- agar header tetap fixed saat scroll vertikal Section.
     local function SyncPageScroll()
-        if Hovering or IsDragging or TouchActive then
+        local ShouldLock = Sticky and CanStickWithSection and SectionRef ~= nil
+        if ShouldLock then
             if PageTab then PageTab:LockScroll(Category, WrapperFrame) end
             PinPage()
         else
-            ReleaseLock()
+            if Hovering or IsDragging or TouchActive then
+                -- Masih ada interaksi, tetep kunci
+                if PageTab then PageTab:LockScroll(Category, WrapperFrame) end
+                PinPage()
+            else
+                ReleaseLock()
+            end
         end
     end
 

@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.0.285  |  2026-08-26  |  Roblox UI Library for scripts
+    v1.0.286  |  2026-08-26  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -3504,7 +3504,7 @@ return aa end function a.l()
 return[[
 {
     "name": "ANUI",
-    "version": "1.0.285",
+    "version": "1.0.286",
     "main": "./dist/main.lua",
     "repository": "https://github.com/ANHub-Script/ANUI",
     "discord": "https://discord.gg/qN47S3mKZA",
@@ -14434,12 +14434,21 @@ end
 
 
 
+
+
 local function SyncPageScroll()
+local m=at and ar and ap~=nil
+if m then
+if d then d:LockScroll(ao,au)end
+PinPage()
+else
 if aB or ax or h then
+
 if d then d:LockScroll(ao,au)end
 PinPage()
 else
 ReleaseLock()
+end
 end
 end
 
