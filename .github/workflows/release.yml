@@ -1,0 +1,108 @@
+name: Release ANUI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing vX.Y.Z tag to release'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Validate, build and publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Read release version
+        id: version
+        shell: bash
+        run: |
+          TAG="${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}"
+          VERSION="${TAG#v}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release tag: $TAG"
+            exit 1
+          fi
+
+          if [[ "$VERSION" != "$PACKAGE_VERSION" ]]; then
+            echo "Tag version ($VERSION) does not match package.json ($PACKAGE_VERSION)."
+            exit 1
+          fi
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Install Aftman tools
+        uses: ok-nick/setup-aftman@v0.4.0
+
+      - name: Build release artifact
+        run: node build/build.js dev src/Init.lua
+
+      - name: Verify release artifact
+        shell: bash
+        run: |
+          test -s dist/main.lua
+          grep -q "ANUI" dist/main.lua
+          echo "Release artifact ready: dist/main.lua"
+
+      - name: Prepare release notes
+        shell: bash
+        run: |
+          TAG="${{ steps.version.outputs.tag }}"
+          VERSION="${{ steps.version.outputs.version }}"
+
+          {
+            echo "# ANUI v${VERSION}"
+            echo
+            echo "See [CHANGELOG.md](https://github.com/ANHub-Script/ANUI/blob/main/CHANGELOG.md) for the curated project history."
+            echo
+            echo "## Install"
+            echo
+            echo '```lua'
+            echo "local ANUI = loadstring(game:HttpGet(\"https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/tags/${TAG}/dist/main.lua\"))()"
+            echo '```'
+            echo
+            echo "## Changes"
+            echo
+            echo "GitHub will generate the detailed change list from commits and pull requests below."
+          } > release-notes.md
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ANUI v${{ steps.version.outputs.version }}
+          body_path: release-notes.md
+          generate_release_notes: true
+          files: |
+            dist/main.lua
+            CHANGELOG.md
+          fail_on_unmatched_files: true
