@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" data-state="boot">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="noindex">
+<title>Get Key — ANUI</title>
+<link rel="icon" href="../logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<main id="main" class="shell">
+
+  <header class="head">
+    <img class="head__logo" src="../logo.svg" alt="" width="44" height="44">
+    <div class="head__text">
+      <h1 class="head__title" data-brand>ANUI</h1>
+      <p class="head__sub">Device key generator</p>
+    </div>
+    <span class="pill" data-ttl-pill>24h per device</span>
+  </header>
+
+  <!-- Device ---------------------------------------------------------------->
+  <section class="panel" aria-labelledby="device-h">
+    <h2 class="panel__h" id="device-h">Device</h2>
+
+    <p class="hint" data-fp-hint>Reading device from link…</p>
+
+    <div class="fp" data-fp-wrap hidden>
+      <code class="fp__value" data-fp>—</code>
+      <button class="icon-btn" type="button" data-copy-fp title="Copy fingerprint" aria-label="Copy fingerprint">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+      </button>
+    </div>
+
+    <form class="manual" data-manual-form hidden>
+      <label class="manual__label" for="fp-input">Paste the fingerprint from your script</label>
+      <div class="manual__row">
+        <input id="fp-input" class="input" type="text" inputmode="latin" autocomplete="off"
+               spellcheck="false" placeholder="32 hex characters" data-fp-input>
+        <button class="btn btn--ghost" type="submit">Use</button>
+      </div>
+      <p class="manual__err" data-fp-error role="alert" hidden></p>
+    </form>
+  </section>
+
+  <!-- Key ------------------------------------------------------------------->
+  <section class="panel panel--key" aria-labelledby="key-h">
+    <h2 class="panel__h" id="key-h">Key</h2>
+
+    <div class="status" data-status role="status" aria-live="polite">Waiting for a device…</div>
+
+    <div class="keybox" data-keybox hidden>
+      <code class="keybox__value" data-key>—</code>
+      <button class="btn btn--ghost keybox__copy" type="button" data-copy-key>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+        <span data-copy-key-label>Copy</span>
+      </button>
+    </div>
+
+    <div class="clock" data-clock hidden>
+      <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#40c9ff"/>
+            <stop offset="1" stop-color="#e81cff"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring__track" cx="60" cy="60" r="52"/>
+        <circle class="ring__fill" cx="60" cy="60" r="52" data-ring/>
+      </svg>
+      <div class="clock__text">
+        <strong class="clock__big" data-remaining>--:--</strong>
+        <span class="clock__label">until expiry</span>
+      </div>
+    </div>
+
+    <dl class="meta" data-meta hidden>
+      <div><dt>Issued</dt><dd data-issued>—</dd></div>
+      <div><dt>Expires</dt><dd data-expires>—</dd></div>
+      <div><dt>Regenerated</dt><dd data-regen>—</dd></div>
+    </dl>
+  </section>
+
+  <!-- Actions --------------------------------------------------------------->
+  <div class="actions">
+    <button class="btn btn--primary" type="button" data-generate disabled>
+      <span data-generate-label>Generate key</span>
+    </button>
+    <button class="btn btn--ghost" type="button" data-refresh disabled>Refresh</button>
+  </div>
+
+  <p class="notice" data-notice role="alert" hidden></p>
+
+  <footer class="foot">
+    <p>One active key per device. Generating again immediately invalidates the previous key.</p>
+    <p class="foot__links">
+      <a href="../" data-docs>Documentation</a>
+      <a href="#" data-discord hidden>Discord</a>
+    </p>
+  </footer>
+
+</main>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

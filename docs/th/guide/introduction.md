@@ -46,7 +46,7 @@ ANUI ทำงานภายใน executor script Roblox Executor ของค
 ## ลิงก์
 
 - GitHub: [github.com/ANHub-Script/ANUI](https://github.com/ANHub-Script/ANUI)
-- Discord: [discord.gg/bUkCZvmrpH](https://discord.gg/qN47S3mKZA)
+- Discord: [https://discord.gg/qN47S3mKZA](https://discord.gg/qN47S3mKZA)
 - YouTube: [@ANHubRoblox](https://www.youtube.com/@ANHubRoblox)
 
 ---

@@ -46,7 +46,7 @@ ANUI 运行在 Roblox 脚本执行器内部。你的执行器必须支持：
 ## 链接
 
 - GitHub：[github.com/ANHub-Script/ANUI](https://github.com/ANHub-Script/ANUI)
-- Discord：[discord.gg/bUkCZvmrpH](https://discord.gg/qN47S3mKZA)
+- Discord：[https://discord.gg/qN47S3mKZA](https://discord.gg/qN47S3mKZA)
 - YouTube：[@ANHubRoblox](https://www.youtube.com/@ANHubRoblox)
 
 ---
